@@ -1,0 +1,4 @@
+fe_address_edit = "Edit address"
+fe_address_saved = "Address saved"
+fe_address_add = "Add address"
+fe_address_export = "Export addresses"

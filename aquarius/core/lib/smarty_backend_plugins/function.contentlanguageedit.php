@@ -1,0 +1,56 @@
+<?
+/** Function generating action links for different languages.
+  * Params:
+  *    node: id of the node to be edited
+  *    currentlg: language id of the current lang
+  *    class: optional class attribute of the generated a tags 
+  *    return: Whether to include the current action in links (default true)
+  *    assign: optional parameter to assign links to a variable name instead of returning a string
+  * The function shows nothing if there's only one lang.
+  */
+function smarty_function_contentlanguageedit($params, &$smarty) {
+    require_once $smarty->_get_plugin_filepath('modifier','makeaction');
+    $node_id = get($params, 'node');
+    $currentlg = get($params, 'currentlg');
+    if (!intval($node_id)) $smarty->trigger_error("content-language-edit: missing 'node' parameter, got '$nodeid'");
+    $class = get($params, 'class');
+
+    
+    $node = DB_DataObject::factory('node');
+    $node->id = $node_id;
+    
+    $links = array();
+    foreach(db_Languages::getLanguages() as $lang) {
+        $content = $node->get_content($lang->lg, false);
+        $lgaction = Action::make('contentedit', 'edit', $node->id, $lang->lg);
+        if ($lgaction) {
+        
+            $actionparams = array('action0'=>$lgaction);
+            if (get($params, 'return', true)) $actionparams['action1'] = $smarty->get_template_vars('lastaction');
+            
+            $lglink = smarty_function_url($actionparams, $smarty);
+
+            $link_class = $class;
+            if ($lang->lg==$currentlg) $link_class .= ' active';
+            if (!$content) $link_class .= ' dim';
+            $link = '<a href="'.$lglink.'" class="'.$link_class.'" title="'.$lang->name.': '.$smarty->get_config_vars("s_edit").'">'.$lang->lg.'</a>&nbsp;';
+            if (ADMIN_SHOW_CONTENT_ACTIVE_FLAGS) {
+                if ($content) {
+                    $lgtoggle = Action::make("contentedit", "toggle_active", $node->id, $lang->lg);
+                    $link .= '<input type="image" name="'.str($lgtoggle).'" class="imagebutton littleflag" src="picts/flag_'.$content->active.'.gif" title="'.$lang->name.': '.$smarty->get_config_vars("content_tooltip_active").'" alt=""/>';
+                } else {
+                    $link .= '<img class="imagebutton littleflag" src="picts/flag_empty.gif"/>';
+                }
+            }
+            $links []= $link.'&nbsp;&nbsp;';
+        }
+    }
+
+    $assign = get($params, 'assign');
+    if ($assign) {
+        $smarty->assign($assign, $links);
+    } else {
+        return (count($links) > 1) ? implode(" ",$links) : '';
+    }
+}
+?>

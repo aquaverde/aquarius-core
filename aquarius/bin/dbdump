@@ -1,0 +1,22 @@
+#!/usr/bin/env php5
+<?
+/*
+
+Wrapper to dump all data from database configured in config.local.php
+
+*/
+
+require_once "../config.local.php";
+
+$options = array(
+	'--no-create-db',
+	'--add-drop-table',
+	'--skip-extended-insert', // so diffing of dumps is possible
+	'--host='.$config['db']['host'],
+	'--password='.$config['db']['pass'],
+	'--user='.$config['db']['user']
+);
+
+system("mysqldump ".join(" ", $options)." ".$config['db']['name']);
+
+?>

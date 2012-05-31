@@ -1,0 +1,567 @@
+# Formfield titles
+
+formfield_city = PLZ, Ort
+formfield_company = Firma
+formfield_date = Datum
+formfield_email = E-Mail
+formfield_email_confirmation_sender = Bestätigungs-Mail: Absender-E-Mail Adresse
+formfield_email_confirmation_subject = Bestätigungs-Mail: Betreff
+formfield_email_confirmation_text = Bestätigungs-Mail: Text
+formfield_email_subject = E-Mail Betreff
+formfield_email_thanx = Bestätigungstext für Website
+formfield_fax = Fax
+formfield_files = Dateien (PDF)
+formfield_download = Dateien (PDF)
+formfield_googleanalytics = Google Analytics Code
+formfield_googlemaps_url = Google Maps URL für grosse Kartenansicht
+formfield_htmltitle = HTML-Titel (optional)
+formfield_latLng_x = Breitenmass
+formfield_latLng_y = Längenmass
+formfield_metadescription = META-Description (optional, 2-3 Sätze)
+formfield_metakeywords = META-Keywords (10 bis 30 Schlüsselwörte mit Komma getrennt)
+formfield_phone = Telefon
+formfield_function = Funktion
+formfield_pictures = Bilder
+formfield_picture = Bild
+formfield_send_confirmation_mail = Bestätigungs-Mail an Kunden schicken (bitte 3 nächsten Felder ausfüllen)
+formfield_street = Strasse, Nr
+formfield_target_email = Ziel E-Mail (mit Komma trennen)
+formfield_text = Text
+formfield_teasertext = Anrisstext
+formfield_introtext = Introtext
+formfield_title = Titel
+formfield_title2 = Seitentitel (optional)
+formfield_urltitle = URL-Titel (optional)
+formfield_link = Link
+formfield_intern_link = Interner Link
+formfield_intern_links = Interne Links
+formfield_links = Links
+formfield_background = Hintergrundbild
+formfield_picture_header = Kopfbild
+
+
+# Language name translations
+s_de = "Deutsch"
+s_fr = "Französisch"
+s_en = "Englisch"
+
+# login
+
+login_frontend = "login into frontend"
+
+# menus
+menu_inventory = "Seiten"
+menu_reload = "Navigation neu laden"
+menu_filemgr = "Medien"
+menu_modules = "Module"
+menu_config = "Konfiguration"
+
+menu_sitemap = "Sitemap"
+menu_lastchanges = "Letzte änderungen"
+menu_lastsearches= "Zuletzt gesucht"
+menu_nodetree = "Webseiten"
+
+menu_filemgr_browse = "Übersicht"
+menu_filemgr_upload = "Upload"
+menu_filemgr_dir_settings = "Verzeichnisse"
+menu_filemgr_update_thumbnails = "Vorschaubilder aktualisieren"
+
+menu_config_cmsuser = "CMS Benutzer"
+menu_config_wording = "Wording"
+menu_config_feuser = "Benutzer & Gruppen"
+menu_config_feuser_user = "Benutzer"
+menu_config_feuser_group = "Gruppen"
+
+menu_super = "Siteadmin"
+menu_super_site_structure= "Site Structure"
+menu_super_sitemap = "Sitemap"
+menu_super_forms = "Forms"
+menu_super_cmsuser = "CMS Benutzer"
+menu_super_langs = "Sprachen"
+menu_super_modules = "Module"
+menu_super_tools = "Werkzeuge"
+menu_super_createcontent = "Inhalte kopieren"
+menu_super_genclasses = "DB-Klassen generieren"
+menu_super_checkdb = "DB Integrität"
+menu_super_updatecache = "Node Cache aktualisieren"
+menu_super_convert_content = "Content in neues Format konvertieren"
+menu_super_links = "Links"
+lastchanges_menu = "Letzte Änderungen"
+
+
+# tabs
+
+tab_main = "Hauptinhalt"
+tab_extended = "Erweitert"
+tab_pictures = "Medien"
+tab_SEO = "Metadaten"
+
+
+# formtypes
+
+formtype_ef = "Eingabefeld"
+formtype_sf = "Selectfield"
+formtype_radiogroup = "Radiogroup"
+formtype_radiobool = "Radiobool"
+formtype_checkbox = "Checkbox"
+formtype_date = "Datum"
+formtype_file = "Datei"
+formtype_link = "Link"
+formtype_urltitle = "URL Titel"
+formtype_mle = "Multiline Entryfield"
+formtype_nodelist = "Nodelist"
+formtype_pointing = "Pointing"
+formtype_pointing_legend = "Pointing Legend"
+formtype_rte = "Richtext"
+Anzahl_Zeichen = "Anzahl Zeichen"
+formtype_int = "Nummer"
+formtype_xref = "Xref"
+formtype_xref_selection = "Xref Auswahl"
+formtype_code = "Code"
+
+s_wording_admin = "Wording bearbeiten"
+s_wording_keyword = "Wording"
+s_wording_translation = "Übersetzung"
+s_to_contents = "Gehe zu Sub-Seiten"
+s_show_outer = "bearbeiten"
+s_hide_outer = "Sub-Seiten anzeigen"
+
+activate = "aktivieren"
+deactivate = "deaktivieren"
+active = "Aktiv"
+inactive = "Inaktiv"
+
+s_title = "Titel"
+s_node = "Seite"
+s_parent = "Elternseite"
+s_form = "Formular"
+s_content_form = "Inhaltformular"
+s_category_form = "Kategorieformular"
+s_parent_node = "Elternseite"
+s_boxdepth = "Wenn Box: Tiefe"
+s_weight = "Gewichtung"
+s_active = "Aktiv"
+node_tooltip_active = "Seitenaktivierung"
+content_tooltip_active = "aktivieren/deaktivieren"
+s_access_restricted = "Zugangsbeschränkung"
+s_created = "Erstellt"
+s_last_change = "Letzte Änderung"
+s_last_changed = "Zuletzt geändert"
+s_last_changes = "Letzte Änderungen"
+s_template = "Template"
+s_cancel = "Abbrechen"
+s_done = "Speichern und schliessen"
+s_submit = "Abschicken"
+
+change_form_submit = "ok"
+s_formadmin_field_name = "Feldname"
+s_formadmin_field_description = "Beschreibung"
+s_formadmin_field_type = "Typ"
+s_formadmin_field_weight = "Reihenfolge"
+s_formadmin_field_size = "Grösse"
+s_formadmin_field_sup1 = "Sup1"
+s_formadmin_field_sup2 = "Sup2"
+s_formadmin_field_sup3 = "Sup3"
+s_formadmin_field_sup4 = "Sup4"
+s_form_sorted_by = "Sortiert nach Formfeld"
+
+form_import_no_file_upload = "Keine Datei hochgeladen"
+form_import_failed_opening = "Konnte Datei nicht öffnen"
+form_import_parse_error = "Import lesen fehlgeschlagen: %s"
+form_import_success = "Import erfolgreich: %s"
+
+s_new_child = "Neues Element"
+s_no_wordings_found = "Keine wordings gefunden"
+s_pointings_selected = "Gewählt"
+s_pointings_select = "Wählen"
+s_pointing_select = "Wählen"
+s_pointing_select_none = "Nichts wählen"
+s_save = "Speichern"
+s_sitemap = "Sitemap"
+s_check_all = "Alle auswählen"
+s_uncheck_all = "Alle abwählen"
+s_user_of_goup_only = "Nur Benutzer der folgenden Gruppe anzeigen:"
+s_username_contains = "Benutzername enthält:"
+
+s_all = "Alle"
+s_access = "Zugriff"
+s_currently_used_filename = "Momentan verwendet: "
+s_delFileDelete = "Löschen"
+s_page_view = "Seitenansicht"
+content_copy_primary = "kopieren aus"
+content_switch_language = "Sprache bearbeiten" 
+s_email = "E-Mail"
+s_file = "Datei"
+s_help_back = "Zurück"
+s_help_bold = "Fett"
+s_help_delete = "Löschen"
+s_help_edit = "Bearbeiten"
+s_help_br = "Zeilenumbruch"
+s_help_p = "Paragraph"
+s_help_invisible = "Unsichtbar"
+s_help_it = "Kursiv"
+s_help_new = "Neu"
+s_help_pic1 = "Bilder"
+s_help_pic2 = "Format: .jpg<br>Grösse:&nbsp200px&nbspmax<br>Auflösung:&nbsp72dpi"
+s_help_sort_asc = "Alphabetisch A bis Z darstellen"
+s_help_sort_desc = "Alphabetisch Z bis A darstellen"
+s_help_title = "Hilfe"
+s_help_visible = "Sichtbar"
+s_help_weight = "Nach Reihenfolge darsellen"
+s_help_weighting = "Reihenfolge"
+s_help_preview = "Vorschau zeigen"
+s_intropage = "<b>Deutsch</b> - Übersicht"
+s_language = "Sprache"
+s_languages = "Sprachen"
+s_move_dcr = "Rubrik verschieben"
+s_name = "Name"
+s_new_weight_for = "Neue Reihenfolge für: "
+s_or_browse = "oder"
+s_username = "Benutzername"
+s_password = "Passwort"
+s_new_password = "Neues Passwort"
+s_picture = "Bild"
+s_records = "Einträge:"
+s_save = "Speichern"
+s_cancel = "Abbrechen"
+s_select = "Auswahl"
+s_open = "Öffnen"
+s_close = "Schliessen"
+s_statistics = "Statistiken"
+s_xrefs = "Kreuzverbindungen"
+s_services = "Services"
+s_config = "Konfiguration"
+s_cms_users = "CMS Benutzer"
+s_cms_user_administration = "CMS-Benutzer Administration"
+s_status = "Status"
+s_admin_language = "CMS Sprache"
+s_default_language = "Sprache nach Login"
+s_permissions = "Rechte"
+s_activation_permission = "Darf Seiten aktivieren/deaktivieren"
+s_delete_permission = "Darf Seiten löschen"
+s_copy_permission = "Darf Seiten kopieren"
+s_preferences = "Einstellungen"
+s_delete_user_confirm = "Benutzer '%s' löschen?"
+s_user_language_access = "Kann diese Sprachen bearbeiten"
+s_may_edit = "Kann bearbeiten"
+s_user_module_access = "Kann diese Module benützen"
+s_wording = "Wording"
+s_modules = "Modules"
+s_new = "Neu"
+s_newcat = "Neue Kategorie"
+s_newsubcat = "Neue Sub-Kategorie"
+s_edit = "Bearbeiten"
+s_update_weights = "Reihenfolge anpassen"
+s_delete = "Löschen"
+s_activate = "Aktivieren"
+s_deactivate = "Deaktivieren"
+s_expand = "Öffnen"
+s_close = "Schliessen"
+s_expandclose = "Öffnen/Schliessen"
+s_update = "Erneuern"
+s_regenerate = "Neu generieren"
+filemanager_fix_permissions = "Berechtigungen korrigieren"
+
+s_delete_confirm_list = "Die folgenden Seiten löschen:"
+s_delete_nodes = "Seiten löschen"
+s_move = "Verschieben um Reihenfolge ändern"
+
+move_copy_selected_page = "Gewählte Seite"
+move_copy_target_location = "Zielort"
+move_copy_choose_action = "Aktion wählen"
+move_copy_select_from_all = "Rubrik auswählen"
+s_moveit = "Verschieben"
+s_copyit = "Klonen"
+s_moveorcopy_target = "Wählen Sie eine neue Rubrik"
+s_move_copy = "Klonen/Verschieben"
+s_move_copy_title = "(Kopie)"
+
+
+s_link = "Link"
+s_link_text = "Linktext"
+s_link_target = "Fenster"
+s_link_target_intern = "aktuelles"
+s_link_target_extern = "neues"
+s_link_weight = "Reihenfolge"
+s_edit_bold = "Fett <b>"
+s_edit_italic = "Kursiv <i>"
+s_edit_link = "Interner Link"
+s_edit_extlink = "Externer Link (neues Fenster)"
+s_edit_ul = "Aufzählungsliste <ul>"
+s_edit_li = "Listeneintrag <li>"
+s_edit_h2 = "Überschrift <h2>"
+
+
+
+# USER MANAGEMENT
+s_usr_user = "Benutzer"
+s_usr_error = "Fehler"
+s_usr_no_access = "Sie haben keinen Zugriff auf diese Rubrik"
+s_usr_authorized = "Autorisiert durch:"
+s_usr_active = "Benutzer aktiviert"
+s_usr_customer_id = "Kundennummer"
+s_usr_group = "Gruppe"
+s_usr_groups = "Gruppen"
+s_usr_groupname = "Gruppenname"
+s_usr_group_has_access = "Gruppe hat zugriff auf:"
+s_usr_personal_admin = "Account Manager"
+s_usr_choose = "wählen"
+s_usr_manage = "verwalten"
+s_usr_edit = "bearbeiten"
+s_usr_new = "hinzufügen"
+s_usr_nickname = "Benutzername (keine Sonderzeichen, bitte!)"
+s_usr_picture = "Bild für Benutzer"
+s_usr_retype = "Passwort bestätigen"
+s_usr_error_no_nick = "Sie haben vergessen einen Benutzernamen einzugeben."
+s_usr_error_retype = "Die Passwörter stimmen nicht überein."
+s_usr_error_empty_pw = "Sie haben vergessen ein Passwort einzugeben."
+s_usr_error_user_exists = "Der von Ihnen gewählte Benutzername existiert bereits"
+s_usr_error_invalid_email = "Sie haben eine ungältige Emailadresse angegeben"
+
+# Events & News
+s_no_events = "Keine aktuellen Events zur Zeit."
+s_no_news = "Keine aktuellen News zur Zeit."
+
+# ADDRESS BLOCK
+s_ab_name = "Nachname"
+s_ab_prename = "Vorname"
+s_ab_company = "Firma"
+s_ab_address = "Adresse"
+s_ab_zip = "PLZ"
+s_ab_city = "Ort"
+s_ab_country = "Land"
+s_ab_phone = "Telefon"
+s_ab_mobile = "Natel"
+s_ab_email = "E-Mail"
+s_ab_remarks = "Bemerkungen"
+s_ab_block_name = "Kontakt-Formular"
+s_ab_street_n_number = "Strasse / Nr."
+s_ab_plz_n_ort = "PLZ / Ort"
+s_ab_mailErrorMsg = "<b>Fehlende Felder:</b><br>"
+s_ab_fill = "* Bitte füllen"
+
+
+
+
+# DIALOGBOXES
+s_choose = "verfügbare Dateien..."
+s_choose_dir = "verfügbare Ordner..."
+s_choose_no_files = "noch keine Dateien&nbsp;"
+s_are_you_sure = "Sind Sie sicher?"
+s_delete_addon = "Addon löschen:"
+s_delete_user = "User löschen:"
+s_new_user = "Neuer User"
+s_edit_user = "User bearbeiten"
+s_set_new_pw = "Neues Passwort für User"
+s_user_has_acces_to_the_following = "Dieser User hat Zugriff auf folgende Rubriken:"
+s_add = "Hinzufügen"
+s_yes = "Ja"
+s_no = "Nein"
+s_change_category_name = "Kategorie Titel ändern:"
+s_new_name = "Neuer Titel"
+s_change_subcategory_name = "Subkategorie Titel ändern:"
+s_standard_address_block = "Standard Adressen-Block"
+s_delete_all_records_from_dynform = "Alle Einträge löschen"
+s_change_category = "Inhalt verschieben/klonen in Kategorie"
+s_change_subcategory = "Inhalt verschieben/klonen in Unterkategorie"
+s_change_category_copy = "Klonen"
+s_change_category_move = "Verschieben"
+s_close = "Schliessen"
+s_search = "Suchen"
+s_close_window = "Fenster schliessen"
+s_delete_selected = "Selektierte löschen"
+s_new_category = "Neue Kategorie"
+s_new_content = "Neue Seite"
+s_delete_content = "Seite löschen"
+s_confirm_delete_content = "Seite '%s' löschen?"
+s_confirm_delete_children = "Durch das Löschen dieser Seite werden diese Unterseiten gelöscht"
+
+
+
+# MESSAGES
+s_message_node_deleted = "'%s' gelöscht."
+s_message_no_selected_nodes = "Keine Knoten ausgewählt."
+s_message_node_activated = "'%s' wurde aktiviert."
+s_message_node_deactivated = "'%s' wurde deaktiviert."
+s_message_node_access_restriction_activated = "Zugangsbeschränkung für '%s' wurde aktiviert."
+s_message_node_access_restriction_deactivated = "Zugangsbeschränkung für '%s' wurde deaktiviert."
+s_message_node_moved = "'%s' nach '%s' verschoben."
+s_message_node_cloned = "'%s' nach '%s' kopiert."
+s_message_node_updated = "Änderungen an '%s' gespeichert."
+s_message_node_active_toggled = "Aktivierung geändert"
+s_message_nodes_activated = "Knoten aktiviert"
+s_message_nodes_deactivated = "Knoten deaktiviert"
+s_message_invalid_value = "Ungültiger Wert in Feld %s"
+s_message_form_changed = "Form geändert"
+s_message_node_changed_weights = "Neue Gewichte übernommen"
+s_message_form_deleted = "Form '%s' gelöscht."
+s_message_form_duplicated = "Form dupliziert zu '%s'"
+s_message_form_inserted_field = "Inserted form data for field %s"
+s_message_form_deleted_field = "Form Feld %s gelöscht."
+s_message_form_inserted = "Form %s erstellt"
+s_message_content_updated = "Seite '%s' gespeichert"
+s_message_content_deleted = "Seite '%s' wurde gelöscht."
+s_message_changed_active = "Aktiviert/Deaktiviert."
+s_message_uploaded = "Datei '%s' hochgeladen"
+s_message_must_save_first = "Bitte zuerst speichern"
+s_message_generated_classes = "DataObject Klassen generiert"
+s_message_node_cache_rebuilt = "Node Cache aktualisiert"
+s_message_file_deleted = "Datei %s gelöscht"
+s_message_update_thumbnails = "Thumbnails generiert"
+s_message_permissions_fixed = "Berechtigungen angepasst"
+
+# SEARCH
+s_neue_suche = "Neue Suche"
+s_freitextsuche = "Freitextsuche"
+s_results = "Gefundene Seiten"
+s_no_result = "Keinen Seiten mit diesem Text gefunden."
+s_idsuche = "Suche nach ID"
+s_suche = "Suchen"
+s_suche_dialog = "Geben Sie den Text ein, nachdem Sie suchen möchten:"
+s_suche_dialog_id = "Geben Sie den ID ein, nachdem Sie suchen möchten:"
+s_no_content_id = "Keinen Seite zur ID"
+s_found = "gefunden"
+no_title = "kein Titel"
+
+# SEARCH & REPLACE
+s_r_menu_show = "Suchen & ersetzen"
+s_r_search = "Suchen"
+s_r_replace = "Ersetzen"
+s_r_how_many = "Es werden"
+s_r_ersetzt = "Einträge ersetzt"
+s_r_no_entries = "Es wurden keine Einträge gefunden"
+s_r_search_string = "Suche nach"
+s_r_replace_string = "Ersetzen mit"
+s_r_nodetitel = "Seite"
+s_r_field_name = "Feld"
+s_r_field_value = "Inhalt"
+s_r_no_search_string = "kein sucheintrag"
+s_r_affected = "einträge geändert"
+
+# Navig
+s_contents = "Seiten"
+s_subcontents = "Sub-Seiten"
+s_users_groups = "Benutzer & Gruppen"
+s_users = "Benutzer"
+s_groups = "Gruppen"
+s_stats = "Stats"
+
+
+# NEWSLETTER
+s_newsletter = "Newsletter"
+s_nl_admin = "Administration"
+s_nl_addresses = "Adressen"
+s_nl_from = "Absender Name"
+s_nl_from_email = "Absender Email"
+s_nl_edit = "Newsletter bearbeiten"
+s_nl_send = "Newsletter verschicken"
+s_nl_delte = "Wirklich löschen?"
+s_nl_name = "Newsletter Name"
+s_nl_desc = "Newsletter description(output)"
+s_nl_subscr = "Subscription"
+s_nl_s_subject = "Subscription subject(eMail)"
+s_nl_s_text = "Subscription text(eMail)"
+s_nl_s_warning = "Subscription warning message(Output)"
+s_nl_s_error = "Subscription error message(Output)"
+s_nl_s_thanx = "Subscription thanx message(Output)"
+s_nl_unsubscr = "Unsubscription"
+s_nl_us_subject = "Unsubscription subject(eMail)"
+s_nl_us_text = "Unsubscription text(eMail)"
+s_nl_us_warning = "Unsubscription warning message(Output)"
+s_nl_us_error = "Unsubscription error message(Output)"
+s_nl_us_thanx = "Unsubscription thanx message(Output)"
+s_nl_send_info = sprintf("Der Newsletter wird nur an Adressen geschickt die unter der<br>Sprache <strong>%s</strong> registriert sind.", lg)
+s_nl_choose_template = "Wählen&nbspSie&nbspeine&nbspVorlage:"
+s_nl_no_template = "Keine Vorlage gefunden!"
+s_nl_address_contains = "Addresse enthält:"
+s_subscribtion_date = "Date of subscription"
+s_address_not_found = "Keine Adressen gefunden!"
+s_nl_add_address = "Adresse hinzufügen"
+s_nl_edit_address = "Adresse editieren"
+s_nl_show_all = "Alle anzeigen"
+s_nl_csv_file = "CSV Datei"
+s_nl_import = "Importieren"
+
+
+# FileManager
+s_no_picture = "Keine Datei"
+s_file_manager = "File Manager"
+s_file_browse = "Browser"
+s_file_upload = "Upload"
+s_files = "Datei(en)"
+s_delete_files = "Datei(en) wirklich löschen?"
+s_upload_picture = "Neue Datei laden"
+s_upload_legend = "Legende"
+s_upload_success = "Datei '%s' gespeichert"
+s_upload_error_file_too_big = "Upload fehlgeschlagen: Datei ist zu gross"
+s_upload_error_invalid_upload = "Upload fehlgeschlagen: Unvollständiger Upload"
+s_upload_error_cant_write = "Upload fehlgeschlagen: Kann Datei nicht speichern"
+s_upload_error_unknown = "Upload fehlgeschlagen: Unbekannter Grund"
+s_upload_error_failed_moving = "Upload fehlgeschlagen: Konnte Datei '%s' nicht in Zielordner '%s' verschieben"
+is_zip_file = "Dies ist eine Zip-File und soll extrahiert werden"
+s_zip_upload_success = "Zip Datei '%s' erfolgreich extrahiert"
+
+cancel = "abbrechen"
+upload_file = "Upload file"
+upload_starten = "Upload starten"
+s_upload_in_progress = "Fileupload is in progress"
+s_view = "Anzeige"
+s_view_th = "Kleinbild"
+s_view_list = "Liste"
+s_directory = "Verzeichniss"
+s_filesquantity = "Anzahl Datei"
+s_select_file = "Datei auswählen"
+s_forselection = "Ausgewählte Dateien"
+s_close_window = "Fenster schliessen"
+s_show_file = "Datei anzeigen"
+s_file_browser = "Vorhandene Dateien anzeigen"
+s_preview = "Vorschau"
+s_filename = "Dateiname"
+s_dimensions = "Dimensionen"
+s_filesize = "Grösse"
+s_references = "Referenzen"
+s_overwrite_warn = "Eine gleichnamige Datei liegt bereits auf dem Server!\\n Wenn Sie fortfahren wird diese Datei überschrieben!"
+s_filter = "Filter"
+s_filter_it = "Ok"
+s_filter_reset = "Alle&nbsp;anzeigen"
+s_spiner_pages = "Seiten"
+s_no_files_found = "Keine Dateien gefunden!"
+s_user_settings = "Einstellungen"
+s_user_updated = "Benutzer gespeichert"
+month_names = "Januar,Februar,März,April,Mai,Juni,Juli,August,September,Oktober,November,Dezember"
+day_names = "Montag,Dienstag,Mittwoch,Donnerstag,Freitag,Samstag,Sonntag"
+s_export = "Exportieren" 
+
+s_please_login = "Bitte anmelden"
+
+createcontent_select_node = "Startseite wählen"
+createcontent_src_lang = "Quellsprache"
+createcontent_target_lang = "Zielsprache(n)"
+createcontent_src_target_lang = "Quell- und Zielsprache wählen"
+createcontent_recursive = "mit Unterseiten"
+createcontent_overwrite_content = "alle Inhalte überschreiben"
+createcontent_merge_content = "nur für leere Felder übernehmen"
+createcontent_ignore_existing = "existierende Inhalte nicht verändern"
+createcontent_create_new_content = "neue leere Inhalte in der Quellsprache generieren"
+create_content_done_n_nodes = 'Fertig kopiert, %u Orte untersucht'
+create_content_done_n_overwrites = '%u Seiten überschrieben'
+create_content_done_n_merges = '%u Seiten ergänzt'
+create_content_done_n_creates = '%u Seiten erstellt'
+create_content_no_node_selected = 'Startseite nicht gewählt'
+create_content_no_source_lg_selected = 'Quellsprache nicht gewählt'
+
+dircopy = "Verzeichnisse kopieren"
+dircopy_source = "Quellverzeichnis"
+dircopy_dest = "Zielverzeichnis"
+dircopy_missing_source = "Quellverzeichnis nicht gefunden"
+dircopy_n_files = "%n Dateien kopiert"
+
+message_edit_save = "Nachrichten speichern"
+message_edit_list = "Admin Nachrichten"
+message_removed = "Nachricht '%s' entfernt"
+message_added = "Nachricht '%s' hinzugefügt"
+message_saved = "Nachricht '%s' gespeichert"
+
+choose_form = "Template"
+
+?>

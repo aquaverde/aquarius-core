@@ -1,0 +1,11 @@
+#browse { height: 1%; }
+
+img.label_img { margin-top: -15px; margin-right: -5px; }
+
+.permission_level1 { background: url(../buttons/permission_siteadmin.gif) right 6px no-repeat; margin-right: 5px; padding-right: 3px;}
+
+.permission_level0 { background: url(../buttons/permission_superadmin.gif) right 6px no-repeat; margin-right: 5px;}
+
+.contentedit_checkbox { margin-bottom: 0px; }
+
+.contentedit_link td { vertical-align:middle; } 

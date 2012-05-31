@@ -1,0 +1,113 @@
+
+/*  
+
+	form.css for dynform module
+
+	cms aquarius 3.x, aquaverde 2011
+	
+	
+	note: "jquery.browser.min.js" is required for best cross-platfrom results.
+
+*/
+
+
+/* --------------------- DEFAULTS: for fast css config, change this section only */
+
+/* form width & offset */
+#form { width: 490px; margin: 20px 0; }
+
+/* title font & offset */
+#form div.blockTitle { font-family: inherit; font-size: 18px; line-height: 18px; font-weight: normal; color: #000; margin-bottom: 1em !important; }
+
+/* form font */
+#form div, #form span, #form label, #form input, #form select, #form textarea { font-family: inherit; font-size: 14px; line-height: 18px; font-weight: normal; color: #000; }
+
+/* form rows offset */
+#form div.blockTitle, #form div.blockRow { margin: 8px 0; } 
+
+/* form elements colors */
+#form input[type=text], #form textarea, #form select { color: #000; border-color: #fff; background: #fff; }
+
+/* error colors */
+#form .checkerror, #form span.errorVisible { border-color: #f00 !important; }
+#form label.checkerror, #form span.errorVisible { color: #f00 !important; }
+
+/* submit button */
+#form input[type=submit] { color: #000; border-color: #f90; background: #f90; }
+#form input[type=submit]:hover { color: #fff; border-color: #000; background: #000; }
+
+
+/* --------------------- LAYOUT: label & form elements FLOATED (without break line) */
+
+#form div.formBlock, #form div.formBlock div.blockTitle, #form div.formBlock div.blockRow { width: 100%; vertical-align: top; }
+
+#form div.formBlock div.blockRow + div.blockTitle { margin-top: 2em; }
+
+#form div.formBlock div.blockRow label { width: 28%; padding: 2px 2% 2px 0; display: inline-block; float: left; }
+
+#form div.formBlock div.blockRow div.formInput { width: 70%; float: right; }
+
+#form div.formBlock div.blockRow div.formInput label { width: 100% !important; padding: 2px 0; }
+
+#form div.formBlock div.blockRow div.formInput .checkerror { border-width: 1px; border-style: solid; }
+ 
+#form div.formBlock div.blockRow div.formInput input[type=text] { width: 100%; padding: 1px 0; border-width: 1px; border-style: solid; }
+
+#form div.formBlock div.blockRow div.formInput input[type=checkbox] { position: relative; top: 2px; float: left; border: none; }
+
+#form div.formBlock div.blockRow div.formInput input[type=radio] { position: relative; top: 2px; float: left; border: none;}
+
+#form div.formBlock div.blockRow div.formInput select { width: 100%; padding: 1px 0; border-width: 1px; border-style: solid; }
+
+#form div.formBlock div.blockRow div.formInput textarea { width: 100%; min-width: 100%; max-width: 100%; height: 96px; min-height: 96px; padding: 1px 0; border-width: 1px; border-style: solid; }
+
+#form div.formBlock div.blockRow div.formInput span.formText { padding: 2px 0; display: block; }
+
+#form div.formBlock div.blockRow div.formInput span.formText + input { margin-top: 8px; }
+
+#form div.formBlock div.formSubmit { padding-left: 30%; }
+
+#form div.formBlock div.formSubmit input[type=submit] { padding: 2px 7px; cursor: pointer; border-width: 1px; border-style: solid; }
+
+#form div.formBlock #validateEmail, #form div.formBlock span.errorInvisible { display: none !important; }
+
+#form div.formBlock #errorMessage { width: 70%; display: block; margin: 0 0 2em 30%; padding: 10px 0; border-width: 1px; border-style: solid; text-align: center; }
+
+#form div.formBlock span.pleaseFill { width: 70%; display: block; margin: 0 0 2em 30%; }
+
+/* clear objects */
+
+.clear:after { content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0; }
+ 
+.clear { display: inline-block; } html[xmlns] .clear { display: block; } * html .clear { height: 1%; }
+
+/* browser dependent styles */
+
+html.webkit #form div.formBlock div.blockRow div.formInput input[type=radio], html.webkit #form div.formBlock div.blockRow div.formInput input[type=checkbox] { top: 4px; }
+
+html.msie7 #form div.formBlock div.blockRow div.formInput input[type=radio], html.msie7 #form div.formBlock div.blockRow div.formInput input[type=checkbox] { top: -2px; }
+
+
+/* --------------------- OPTIONS: uncomment following snippets for... */
+
+
+/* ...label & form elements BREAKED (with break line) 
+
+#form div.formBlock div.blockRow label { width: 100%; padding: 2px 0; display: block; }
+
+#form div.formBlock div.blockRow div.formInput { width: 100%; display: block }
+
+#form div.formBlock div.formSubmit { padding-left: 0; }
+
+#form div.formBlock #errorMessage { width: 100%; display: block; margin: 0 0 2em 0; padding: 10px 0; border-width: 1px; border-style: solid; text-align: center; }
+
+#form div.formBlock span.pleaseFill { width: 100%; display: block; margin: 0 0 2em 0; }
+
+*/
+
+
+/* ...checkboxes and radios FLOATED (without break line) 
+
+#form div.formBlock div.blockRow div.formInput label { width: auto !important; float: left; padding: 2px 10px 2px 0; }
+
+*/

@@ -1,0 +1,35 @@
+<?
+
+	//MODULE
+    maps_menu						= "Google Maps"
+    maps_edit						= "Map"
+    
+	//FORMTYPE
+    formtype_gmap					= "Google Maps"
+	search_by_address				= "search for address"
+	search							= "suche"
+	way								= "Line"
+	point							= "Point"
+	is_on_way						= "point is on line"
+	edit_poly						= "Edit line"
+	titel							= "Title:"
+	beschreibung					= "Text:"
+	kategorie						= "Type of point:"
+	link							= "Link:"
+	delete_instance					= "Delete"
+	load_external_xml				= "Load external XML-File"
+	
+	//MAPS EDIT
+	points							= "Points"
+	title							= "Title"
+	description						= "Text"
+	picture							= "Picture"
+	category						= "Type of point"
+	polylines						= "Lines"
+	map								= "Map"
+	no_categorised                  = "No categorised"
+
+
+    help_delete_point               = "Right-clic to remove point"
+
+?>

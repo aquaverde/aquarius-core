@@ -1,0 +1,19 @@
+<?
+	//MODULE
+    agenda_menu						= "Agenda"
+    agenda_edit						= "Agenda bearbeiten"
+	agenda_overview					= "Übersicht"
+	agenda_day						= "Übersicht nach Tag"
+
+	//AGENDA OVERVIEW
+	agenda							= "Agenda"
+	time							= "Zeit"
+	title							= "Titel"
+	
+	//AGENDA DAYOVERVIEW
+	day_overview					= "Übersicht nach Tag"
+	anzeigen						= "Anzeigen"
+	was_laeuft						= "Was läuft am"
+	tag_vorher						= "<"
+	tag_nachher						= ">"
+?>

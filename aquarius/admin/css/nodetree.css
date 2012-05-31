@@ -1,0 +1,56 @@
+
+#nodetree {
+    width: 100%;
+}
+
+#nodetree input {
+    padding: 0;
+    margin: 0;
+}
+
+#nodetree ul {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+li.nodetree_entry {
+    width: 100%;
+    display: block;
+    position: relative;
+    
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+li.nodetree_connection {
+    background: url(../picts/line_nav.gif) repeat-y;
+}
+
+.nodetree_container {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    padding-left: 15px;
+}
+
+.nodetree_container table {
+    width: 100%;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+img.nodetree_connection {
+    position: absolute;
+    left: 0;
+}
+
+img.nodetree_toggle {
+    position: absolute;
+    left: 0;
+    cursor: pointer;
+    cursor: hand;
+}
+

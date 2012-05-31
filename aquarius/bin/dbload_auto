@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# Load SQL from file into DB
+# The last file in dbdumps dir is loaded.
+
+set -e
+
+scriptdir=`dirname $0`
+
+dumpdir=`readlink -f $scriptdir/../../dbdump/`
+
+file=`ls $dumpdir/*.sql |tail -n1`
+
+echo "Execute file '$file' on DB? Confirm with 'yes' please."
+read confirmation
+if [ "$confirmation" = 'yes' ] 
+then	$scriptdir/dbload < "$file"
+	echo "loaded $file" 
+else	echo "aborted"
+fi

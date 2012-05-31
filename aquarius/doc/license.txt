@@ -1,0 +1,67 @@
+Aquarius copyright
+------------------
+
+Aquaverde GmbH, Biel. 
+All rights reserved.
+
+
+Contributed code
+----------------
+
+Swift Mailer library
+    Location: core/lib/swift
+    Source:   http://swiftmailer.org/
+    License:  LGPL
+
+PEAR
+    Location: core/pear
+    Source:   http://pear.php.net
+    License:  http://pear.php.net/group/docs/20040402-la.php
+
+Smarty
+    Location: core/smarty
+    Source: http://smarty.php.net
+    License: LGPL, http://www.smarty.net/copyright.php
+
+CKEditor
+    Location: admin/ckeditor
+    Source:   http://ckeditor.com/
+    License:  GPL, LGPL, MPL, http://ckeditor.com/license
+
+MD5 Javascript library
+    Location: public_html/js/md5.js
+    Authors:  Henri Torgemane, Ralf Mieke
+    License:  BSD style
+    
+PclZip library
+    Location: core/lib/pclzip.lib.php
+    Source:   http://www.phpconcept.net
+    License:  LGPL
+
+FirePHP class
+    Location: core/lib/FirePHP.class.php
+    Source:   http://www.firephp.org
+    License:  New BSD License
+
+jQuery library
+    Location: core/templates/js/lib
+    Source: http://jquery.com/
+    License: MIT / GPL
+    
+SLIR Smart Lencioni Image Resizer
+    Location: /slir/
+    Source: http://code.google.com/p/smart-lencioni-image-resizer/
+    License: GPL
+    
+SimplePie RSS/Atom library
+    Location: core/modules/pull_rss/lib
+    Source: http://simplepie.org
+    License: BSD
+
+Minor contributions
+-------------------
+
+Progress icon
+    Location: public_html/admin/buttons/bigrotation2.gif
+    Source:   sanbaldo, http://www.sanbaldo.com
+    License:  Creative Commons Attribution, http://creativecommons.org/licenses/by/3.0/

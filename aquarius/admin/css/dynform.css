@@ -1,0 +1,116 @@
+
+/* pimp this for you forms */
+
+.form-block {
+	margin-top: 15px ; 
+	width: 414px ; 
+	color: white ; 
+}
+
+.form-block table.talon { 
+	border-style: none ;
+	width: 450px ; 
+}
+
+.form-block col.talon-left { 
+	width: 30% ; 	
+}
+
+.form-block col.talon-right { 
+	width: 70% ; 
+}
+
+.form-block tr {
+	vertical-align: top ; 
+}
+
+.form-block input, textarea {
+	border: 1px solid black ; 
+}
+
+.form-block td {
+	padding-bottom: 5px ; 
+}
+
+.form-block .checkfield {
+	width: 325px;
+	height: 15px;
+	padding: 1px;
+}
+
+.form-block .errorInvisible {
+    visibility: hidden;    
+}
+
+.form-block .errorVisible {
+    color: #c00 ;
+    visibility: visible ; 
+}
+
+.form-block label.errorlabel {
+	color: #c00  ;
+}
+
+.form-block input.checkerror {
+    border: 1px solid #c00;
+}
+
+.form-block textarea.checkerror {
+    border: 1px solid #c00;
+}
+
+.form-block label.checkerror {
+    color: #c00;
+}
+
+.form-block textarea {
+	/*font-size: 10px ; */
+	width: 325px;
+}
+
+.form-block textarea.checkfield {
+	height: 100px;
+}
+
+.form-block input.button {
+	display: block;
+	background-color: green ;
+	color: white ;	
+	padding: 2px ; 
+	padding-left: 20px ; 
+	padding-right: 20px ; 
+}
+
+.form-block .selecterField {
+	width: 250px;
+}
+/* not used at beges */
+.form-block .checkbox {
+	border: none;
+	margin-right: 9px;
+	width: 12px;
+	height: 12px;
+}
+
+.form-block .checkbox .checkerror {
+	border: none;
+	margin-right: 9px;
+	width: 12px;
+	height: 12px;
+}
+/* end not used */
+
+
+.blockTitle {
+	padding-top: 20px ; 
+	border-bottom: 1px solid white ; 
+}
+
+.formLabel, .formInput {
+	padding-top: 10px ; 
+}
+
+.blockTitle {
+	padding-top: 20px ; 
+	font-weight: bold ; 
+}

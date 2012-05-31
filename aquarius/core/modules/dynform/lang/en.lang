@@ -1,0 +1,82 @@
+<?  
+    // Menu
+    
+    dynform				= "Dynform"  
+    dynform_forms		= "Forms"
+    dynform_data		= "Data" 
+    
+    
+    // Field and Blocks
+    
+    Singleline			= "Singleline"
+    Multiline			= "Multiline"
+    Checkbox			= "Checkbox"
+    Pulldown			= "Pulldown Menu"
+    Radiobutton			= "Radiobutton"
+    Text				= "Text"
+    Email				= "E-Mail"
+    Number				= "Number"
+    Option				= "Option"
+    TargetEmail			= "Target E-Mail"
+    Nodelist            = "content list"
+    
+    new_block			= "New block"
+    new_field			= "New line" 
+    change_type			= "Change type"
+	additional_text		= "Additional text (optional)"
+	required			= "Required field"
+	width				= "Width (number of characters)"
+	options				= "Options (separate with newline)" 
+	num_lines			= "Number of lines"
+	add					= "Add"
+   	edit				= "Edit"
+    cancel				= "Cancel"
+    name				= "Name"
+    edit_block_name		= "Edit block name"
+    save				= "Save"
+    delete_block		= "Delete block?"
+    delete_field		= "Delete line?"
+    yes					= "Yes" 
+    no					= "No" 
+    delete				= "Delete"
+    delete_block_msg	= "All attached lines will be deleted."
+    delete_field_msg	= "This line will be removed for all languages."
+    
+    // Backend
+    
+    forms_overview		= "Forms overview"
+    forms_manager		= "Forms manager"
+    export_data			= "Export data"
+    data_manager		= "Data manager"
+    
+    delete_all_data		= "Delete all data"
+	delete_marked		= "Delete marked entries"
+    delete_all_data_confirm = "All entires in all languages of the form <b>'%s'</b> will be deleted. Are you sure?" 
+    delete_entries		= "Delete entries"
+    delete_entries_and_form = "Delete entries and Form (!)"
+    delete_lg_entries	= "Delete entries of one language"
+    delete_lg_entries_confirm = "All entries of the language<b>'%s'</b> will be deleted. Are you sure?"
+    delete_entry		= "Delete entry"
+    delete_entry_confirm = "Are you sure that you want to delete the entry from %s ?"
+
+    all_languages		= "All languages"
+    csv_export			= "CSV export (Excel)"
+    language			= "Language" 
+    date				= "Date" 
+    edit_entry			= "Edit entry" 
+    entry_of			= "Entry of"   
+    submit_node			= "Sent from"
+    
+    
+    settings			= "Settings"
+    dynform_settings	= "Settings" 
+    possible_options_fields = "<b>Possible option fields</b>, separated with ;. Format: exact fieldname, description (dates, Eventdates; notes, Notes)" 
+    
+    target_email		= "Possible target-e-mails for the form. Format: Name, E-Mail. One entry per line."
+
+	// Export
+	export				= "export"
+	welche_felder		= "please select the fields you want to export"
+	
+    message_clipped_output = "Only %d entries out of %d will be displayed."
+?>

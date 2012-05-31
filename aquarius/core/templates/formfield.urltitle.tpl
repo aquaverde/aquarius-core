@@ -1,0 +1,1 @@
+<input class="inputsmall" type="text" name="{$field.formname}" value="{$field.value|escape}" id="{$field.htmlid}"/>

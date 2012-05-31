@@ -1,0 +1,73 @@
+{literal}
+<style type="text/css">
+.shop_pref_box {
+    margin-left: 20px;
+    background-color: white;
+    border: solid #a0a0a0 0.5pt;
+    display: block;
+}
+
+.shop_p_label {
+    font-weight: bold;
+}
+
+.prefRow {
+    line-height: 14px;
+    padding: 5px;
+}
+
+.prefRow input {
+    padding-right: 7px;
+}
+
+.shop_pref {
+    margin-bottom: 5px;
+}
+
+</style>
+{/literal}
+<div class="shop_pref">
+<span class="shop_p_label">Farbe:</span> <input type="button" name="" value="{#s_select#}" class="button" onclick="
+        var div=document.getElementById('shop_p_div1');
+        if (div.style.display == 'none')
+            div.style.display='block';
+        else
+            div.style.display='none';
+        return false;"/>
+<div id="shop_p_div1" class="shop_pref_box" style="display:none">
+    <div class="prefRow"><input type="checkbox"><span class="shop_p_label">&nbsp;Gelb</span> {include file=formfield.file.tpl}</div>
+    <div class="prefRow"><input type="checkbox"><span class="shop_p_label">&nbsp;Grün</span> {include file=formfield.file.tpl}</div>
+    <div class="prefRow"><input type="checkbox"><span class="shop_p_label">&nbsp;Rot</span> {include file=formfield.file.tpl}</div>
+    <div class="prefRow"><input type="checkbox"><span class="shop_p_label">&nbsp;Violett</span> {include file=formfield.file.tpl}</div>
+</div>
+</div>
+
+<div class="shop_pref">
+<span class="shop_p_label">Grösse:</span> <input type="button" name="" value="{#s_select#}" class="button" onclick="
+        var div=document.getElementById('shop_p_div2');
+        if (div.style.display == 'none')
+            div.style.display='block';
+        else
+            div.style.display='none';
+        return false;"/>
+<div id="shop_p_div2" class="shop_pref_box" style="display:none">
+    <div class="prefRow"><input type="radio" name="t1"><span class="shop_p_label">&nbsp;3px</span> </div>
+    <div class="prefRow"><input type="radio" name="t1"><span class="shop_p_label">&nbsp;6px</span> </div>
+    <div class="prefRow"><input type="radio" name="t1"><span class="shop_p_label">&nbsp;9px</span> </div>
+    <div class="prefRow"><input type="radio" name="t1"><span class="shop_p_label">&nbsp;10px</span> </div>
+</div>
+</div>
+
+<div class="shop_pref">
+<span class="shop_p_label">Form:</span> <input type="button" name="" value="{#s_select#}" class="button" onclick="
+        var div=document.getElementById('shop_p_div3');
+        if (div.style.display == 'none')
+            div.style.display='block';
+        else
+            div.style.display='none';
+        return false;"/>
+<div id="shop_p_div3" class="shop_pref_box" style="display:none">
+    <div class="prefRow"><input type="radio"><span class="shop_p_label">&nbsp;Rund</span> {include file=formfield.file.tpl}</div>
+    <div class="prefRow"><input type="radio"><span class="shop_p_label">&nbsp;Quadratisch</span> {include file=formfield.file.tpl}</div>
+</div>
+</div>

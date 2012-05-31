@@ -1,0 +1,12 @@
+<?php
+
+Shorturi					= "Redirections"
+shorturi_menu				= "Redirections"
+
+shorturi_manage				= "Éditer les redirections"
+
+from_domain					= "Domaine"
+keyword						= "Terme"
+to_url						= "Lien"
+
+save						= "Enregistrer"

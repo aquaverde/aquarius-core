@@ -1,0 +1,2 @@
+<input type="hidden" name="{$field.formname}" value="0" />{* default field, otherwise there wouldn't be a value returned if the checkbox isn't checked *}
+<input type="checkbox" name="{$field.formname}" value="1" id="{$field.htmlid}" {if $field.value == "1"}checked="checked"{/if} />

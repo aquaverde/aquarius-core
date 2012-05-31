@@ -1,0 +1,64 @@
+<?
+    
+    newsletter_menu                 = "Newsletter"
+    newsletter                      = "Newsletter"
+    newsletters                     = "Newsletters"
+    newsletter_preview              = "Vorschau"
+    newsletter_send                 = "Newsletter versenden"
+    newsletter_send_confirm         = "Wollen Sie diesen Newsletter wirklich versenden ?"
+    newsletter_sent_to_addresses    = "Newsletter wurde an folgende Adressen versendet"
+    newsletter_edit                 = "Newsletter editieren"
+    newsletter_subscriptions        = "Adressen pro Newsletter"
+    newsletter_address              = "Adresse"
+    newsletter_addresses            = "Adressen"
+    newsletter_add_address          = "Adressen hinzufügen"
+    newsletter_add_address_field    = "E-Mails (mit ; trennen)"    
+    newsletter_del_addresses        = "löschen"
+    newsletter_save_address         = "Adresse speichern"
+    newsletter_edit_address         = "Adresse editieren"
+    newsletter_all_addresses        = "Alle Adressen"
+    newsletter_language             = "Sprache"
+    newsletter_subscription_date    = "Eintragungs Datum"
+    newsletter_subscription_active  = "Abonnement aktiv"
+    newsletter_subscribed_nls       = "Abonnierte Newsletter"
+    
+    newsletter_export_addresses     = "Alle Adressen exportieren"
+    newsletter_exported             = "Export"
+    
+    newsletter_choose               = "Wählen Sie einen Newsletter"
+    newsletter_nonsent              = "Die folgende Newsletter-Ausgabe konnte nicht an alle Adressen versendet werden"
+    newsletter_of                   = "von"
+    newsletter_addresses_notsent    = "Adressen <b>nicht</b> versendet"
+    newsletter_sent_to              = "Die Ausgabe wurde an"
+    newsletter_send_partial         = "Newsletter-Ausgabe an diese Adressen versenden"
+    
+    
+    newsletter_forselection         = "Für selektierte Adressen"
+    newsletter_addresses_subscribed = "Adressen sind für diesen Newsletter eingeschrieben"
+    
+    newsletter_subscriptions_cleanup= "Abonnemente aufräumen"
+    newsletter_old_inactive_subscriptions    = "Alte und inaktive Abonnemente"
+    newsletter_cleanup              = "Aufräumen"
+    newsletter_cleanup_confirm              = "Wollen sie die Abonnemente wirklich aufräumen?"
+    newsletter_cleaned_up           = "Abonnemente aufgeäumt"
+
+    newsletter_added_address       = "Adresse hinzugefügt"
+    newsletter_added_addresses     = "%d Adressen hinzugefügt"
+    newsletter_added_addresses_ignored = "%d Adressen hinzugefügt, %d ignoriert (%s)"
+    newsletter_added_subscriptions     = "%d Abonnemente angefügt"
+
+	newsletter_chose_language		= "Newsletter in folgenden Sprachen versenden"
+	newsletter_enter_testmail		= "Newsletter einmalig an folgende Test-Adressen versenden (separiert mit Komma)"
+	newsletter_bereits_gesendet		= "Bereits gesendet"
+	newsletter_noch_zu_senden		= "Noch zu senden"
+	newsletter_versenden			= "Versand bestätigen"
+	newsletter_uebersicht			= "Übersicht"
+	
+	newsletter_testmail_b			= "Newsletter wurde an Test-Email-Adresse(n) versendet"
+	
+    newsletter_send_test            = "Test versenden"
+	newsletter_send_to_n_recipients = "Newsletter "%s" an %d Empfänger schicken?"
+	newsletter_invalid_addresses    = "Ungültige Adressen: %s"
+	newsletter_sent_n_lg            = "Newsletter an %d Empfänger (%s) verschickt."
+	newsletter_sent_to_n            = "Newsletter an total %d Empfänger verschickt."
+?>

@@ -1,0 +1,83 @@
+<?   
+   	// Menu
+    
+    dynform				= "Dynform"  
+    dynform_forms		= "Formulare"
+    dynform_data		= "Daten" 
+    
+    
+    // Field and Blocks
+    
+    Singleline			= "Einzeiler"
+    Multiline			= "Mehrzeiler"
+    Checkbox			= "Checkbox"
+    Pulldown			= "Pulldown Menu"
+    Radiobutton			= "Auswahl"
+    Text				= "Text"
+    Email				= "E-Mail"
+    Number				= "Zahl"
+    Option				= "Option aus Formularfeld"
+    TargetEmail			= "Ziel-E-Mail"
+    Nodelist            = "Inhaltsliste"
+    
+    new_block			= "Neuer Block"
+    new_field			= "Neue Zeile" 
+    change_type			= "Typ ändern"
+	additional_text		= "Zusatztext (optional)"
+	required			= "Pflichtfeld"
+	width				= "Breite (Anzahl Zeichen)"
+	options				= "Optionen (mit neuer Zeile trennen)" 
+	options_from_form	= "Optionen aus dem Formular beziehen. Feld:" 
+	num_lines			= "Anzahl Zeilen"
+	add					= "Anfügen"
+   	edit				= "Bearbeiten"
+    cancel				= "Abbrechen"
+    name				= "Name"
+    edit_block_name		= "Block Name bearbeiten"
+    save				= "Speichern"
+    delete_block		= "Block löschen?"
+    delete_field		= "Zeile löschen?"
+    yes					= "Ja" 
+    no					= "Nein" 
+    delete				= "Löschen"
+    delete_block_msg	= "Alle angehängten Felder werden auch gelöscht."
+    delete_field_msg	= "Diese Zeile wird in allen Sprachen gelöscht."
+    
+    // Backend
+    
+    forms_overview		= "Übersicht Formulare"
+    forms_manager		= "Formulare Manager"
+    export_data			= "Daten exportieren"
+    data_manager		= "Daten manager"
+    
+    delete_all_data		= "Alle Datensätze löschen"
+	delete_marked		= "Markierte Einträge löschen"
+    delete_all_data_confirm = "Alle Einträge aller Sprachen des Formulars <b>'%s'</b> werden gelöscht. Sind Sie sicher?" 
+    delete_entries          = "Einträge löschen"
+    delete_entries_and_form = "Einträge und Formular löschen (!)"
+    delete_lg_entries	= "Einträge einer Sprache löschen"
+    delete_lg_entries_confirm = "Alle Einträge der Sprache <b>'%s'</b> werden gelöscht. Sind sie sicher?"
+    delete_entry		= "Eintrag löschen"
+    delete_entry_confirm = "Sind sie sicher, dass sie diesen Eintrag vom %s löschen wollen?"
+
+    all_languages		= "alle Sprachen"
+    csv_export			= "CSV Export (Excel)"
+    language			= "Sprache" 
+    date				= "Datum" 
+    edit_entry			= "Eintrag bearbeiten" 
+    entry_of			= "Eintrag vom" 	
+    
+    submit_node			= "Gesandt von"
+    
+    settings			= "Einstellungen"
+    dynform_settings	= "Einstellungen" 
+    possible_options_fields = "<b>Mögliche Optionen-Felder</b>, mit ; getrennt. Format: exakter Formularfeld Name, Beschreibung (dates, Anmeldedaten; notes, Notizen)" 
+    target_email		= "Mögliche Zieladressen fürs Formular. Format: Name, Emailadresse. Ein Eintrag pro Zeile."
+    
+    // Export
+	export				= "exportieren"
+	welche_felder		= "Welche Felder wollen sie für den Export verwenden?"
+    
+    
+    message_clipped_output = "Nur %d Einträge von %d werden angezeigt."
+?>

@@ -1,0 +1,81 @@
+<?   
+   	// Menu
+    
+    dynform				= "Dynform"  
+    dynform_forms		= "Formulaires"
+    dynform_data		= "Données" 
+    
+    
+    // Field and Blocks
+    
+    Singleline			= "Champ simple"
+    Multiline			= "Champ multiligne"
+    Checkbox			= "Case à cocher"
+    Pulldown			= "Menu déroulant"
+    Radiobutton			= "Bouton radio"
+    Text				= "Texte"
+    Email				= "E-Mail"
+    Number				= "Nombre"
+    Option				= "Option"
+    TargetEmail			= "E-Mail cible"
+    Nodelist                   = "Liste contenu"
+    
+    new_block			= "Nouveau bloc"
+    new_field			= "Nouveau champ" 
+    change_type			= "Changer le type"
+	additional_text		= "Text additionel (optionel)"
+	required			= "Champ obligatoire"
+	width				= "Largeur (nb. charactères)"
+	options				= "Options (séparer avec saut à la ligne)" 
+	num_lines			= "Nombre de lignes"
+	add					= "Insérer"
+   	edit				= "Editer"
+    cancel				= "Annuler"
+    name				= "Nom"
+    edit_block_name		= "Editer le nom du bloc"
+    save				= "Sauvgarder"
+    delete_block		= "Effacer le bloc?"
+    delete_field		= "Effacer le champ?"
+    yes					= "Oui" 
+    no					= "No" 
+    delete				= "Effacer"
+    delete_block_msg	= "Tous les champs du bloc vont être effacés."
+    delete_field_msg	= "Ce champ sera effacé dans toutes les langues."
+    
+    // Backend
+    
+    forms_overview		= "Formulaires"
+    forms_manager		= "Gestion des formulaires"
+    export_data			= "Exporter les données"
+    data_manager		= "Gestion des données"
+    
+    delete_all_data		= "Effacer toutes les données"
+	delete_marked		= "Effacer les données sélectionnées"
+    delete_all_data_confirm = "Toutes les entrées du formulaire <b>'%s'</b> seront effacées. Êtes-vous sûr?" 
+    delete_entries		= "Effacer les entrées"
+    delete_entries_and_form = "Effacer les entrées et le formulaire (!)"
+    delete_lg_entries	= "Effacer les entrées de cette langue"
+    delete_lg_entries_confirm = "Toutes les entrées de la langue <b>'%s'</b> seront effacées. Êtes-vous sûr?"
+    delete_entry		= "Effacer l'entrée"
+    delete_entry_confirm = "Êtes-vous sûr de vouloir effacer l'entrée du %s?"
+
+    all_languages		= "toutes les langues"
+    csv_export			= "Export CSV (Excel)"
+    language			= "Langue" 
+    date				= "Date" 
+    edit_entry			= "Editer l'entrée" 
+    entry_of			= "Entrée du" 	
+    
+    submit_node			= "Envoyé par"
+    
+    settings			= "Paramètres"
+    dynform_settings	= "Paramètres" 
+    possible_options_fields = "<b>Champs optionels possibles</b>, séparer avec ;. Format nom, description (dates, Dates; couleurs, Couleurs)" 
+    
+    target_email		= "Adresses cibles possibles. Format: Nom, E-Mail. Nouvelle ligne pour chaque entrée."
+
+	// Export
+	export				= "Exporter"
+	welche_felder		= "Veuillez sélectionner les champs à exporter"
+	
+	message_clipped_output = "Uniquement %d entrées sur %d seront affichées."

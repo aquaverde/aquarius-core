@@ -1,0 +1,8 @@
+<?
+    menu_archiver             = "Archivage"
+    archiver_archive          = "Archiver les pages"
+    archiver_question         = "Archiver les pages maintenant ?"
+    archiver_ok               = "Ok"
+    formtype_archiver_archive_date = "Archive Date"
+    formtype_archiver_publish_date = "Publish Date"
+?>

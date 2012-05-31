@@ -1,0 +1,55 @@
+/* --------------------- reset */
+
+* { padding: 0; margin: 0; outline: none; }
+
+body { 	font-family: Arial, Helvetica, sans-serif; font-size: 12px; background-color: #000; }
+
+#header { height: 58px; height: 58px;}
+
+#logo { padding-left: 10px; padding-top: 12px; float: left;}
+
+.title { float: right; font-size: 21px; color: #FFFFFF; padding-right: 10px; margin-top: 15px;}
+
+.title a:hover { text-decoration: none; color: #FF9900; } 	
+
+a {	color: #FFFFFF; text-decoration: none; }
+		
+a:hover { color: #FF9900; text-decoration: none; }
+
+
+/* --------------------- navig */
+
+#navig { min-width: 940px; }
+
+ul#mainNavig  { list-style: none; margin-left: 10px; clear:both;} 
+
+#mainNavig li { display: inline; }
+
+#mainNavig li a { float: left; margin-right: 6px; height: 28px; background-color: #333; line-height: 28px; font-size: 13px; padding:0 10px; -webkit-border-radius: 6px 6px 0 0; -moz-border-radius: 6px 6px 0 0; border-radius: 6px 6px 0 0; behavior: url(css/PIE.htc); } 
+
+#mainNavig li a:hover { background-color: #515151; } 
+
+#mainNavig li.on a, #mainNavig li.on a:hover  { background-color: #E0E7EC; color: #253752; font-weight: bold;} 
+
+#mainNavig li.on a  { color: #253752} 
+
+#mainNavig li a:hover { text-decoration: none; color: #fff;} 
+
+#subNavig { list-style: none; height: 28px; background-color: #E0E7EC; color: #253752; clear:both;} 
+
+#serviceNavig { float: right; color: #666; padding-top: 5px; margin-right: 10px;}
+
+#serviceNavig #lang { float: left; margin-right: 6px; }
+
+
+/* --------------------- forms */
+
+form { display: inline; }
+
+input { font-family: Arial, Helvetica, sans-serif; font-size: 11px; vertical-align: middle; color: #666; border: 1px solid #5F5F5F; background-color: transparent; margin: 0; margin-top: -2px; padding: 1px;}
+
+input.logout { border: 0; color: white; font-size: 12px;}
+
+input.logout:hover { color: #FF9900; cursor: pointer;}
+
+select {font-size: 11px; margin-top: -2px;}

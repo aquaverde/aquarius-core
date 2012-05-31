@@ -1,0 +1,9 @@
+$config['mailform']['forms'][] = array(
+    'form_name'            => 'contactform',
+    'node'                 => 'contact',
+    'target_address_field' => 'form_email',
+    'replyto_formfield'    => 'email',
+    'sender_address'       => '"Kontaktformular" <>',
+    'text_template'        => 'contactform.mail.txt.tpl',
+    'html_template'        => 'contactform.mail.html.tpl'
+);

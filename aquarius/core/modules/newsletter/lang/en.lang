@@ -1,0 +1,54 @@
+<?
+    
+    newsletter_menu                 = "Newsletter"
+    newsletter                      = "Newsletter"
+    newsletters                     = "Newsletters"
+    newsletter_preview              = "Preview"
+    newsletter_send                 = "Send newsletter"
+    newsletter_send_confirm         = "Do you really want to send this newsletter ?"
+    newsletter_sent_to_addresses    = "The Newsletter has been sent to the following addresses"
+    newsletter_edit                 = "Edit newsletter"
+    newsletter_subscriptions        = "Addresses per newsletter"
+    newsletter_address              = "Address"
+    newsletter_addresses            = "Addresses"
+    newsletter_add_address_field    = "E-Mails (sep. with ;)"    
+    newsletter_add_address          = "Add addresses"
+    newsletter_del_addresses        = "delete"
+    newsletter_save_address         = "Save address"
+    newsletter_edit_address         = "Edit address"
+    newsletter_all_addresses        = "All addresses"
+    newsletter_language             = "Language"
+    newsletter_subscription_date    = "Subscription data"
+    newsletter_subscription_active  = "Subscription active"
+    
+    newsletter_export_addresses     = "Export all addresses"
+    newsletter_exported             = "Export"
+    
+    newsletter_choose               = "Choose a newsletter"
+    
+    newsletter_forselection         = "For selected addresses"
+    newsletter_addresses_subscribed = "Addresses are subscribed to this newsletter"
+
+    newsletter_added_address       = "Adress added"
+    newsletter_added_addresses     = "%d adresses added"
+    newsletter_added_addresses_ignored = "%d adresses added, %d ignored (%s)"
+    newsletter_added_subscriptions = "%d subscriptions added"
+
+	newsletter_chose_language		= "Send in language(s)"
+	newsletter_enter_testmail		= "Send once to test-addresse(s) (separated by comma)"
+	
+	newsletter_bereits_gesendet		= "Bereits gesendet"
+	newsletter_noch_zu_senden		= "Noch zu senden"
+	newsletter_versenden			= "versenden"
+	newsletter_uebersicht			= "Übersicht"
+	newsletter_testmail_b			= "Newsletter wurde an Test-Email-Adresse(n) versendet"
+	
+	
+	
+    newsletter_send_test            = "Send test"
+    newsletter_send_to_n_recipients = "Send newsletter "%s" to %d recipients?"
+    newsletter_invalid_addresses    = "Inalid addresses: %s"
+    newsletter_sent_n_lg            = "Newsletter sent to %d recipients (%s)."
+    newsletter_sent_to_n            = "Newsletter sent to %d recipients in total."
+    
+?>

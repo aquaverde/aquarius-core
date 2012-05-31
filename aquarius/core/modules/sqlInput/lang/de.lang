@@ -1,0 +1,10 @@
+<?
+	//MODULE
+    sqlInput_menu					= "Sql Input"
+    sql_input						= "Sql-File upload"
+    
+    einl_text                       = "Bitte wählen sie Ihre Sql-File aus die Sie ausführen möchten"
+    senden                          = "Senden"
+    
+    sqlFile_succes                  = "Der Sql-File import wurde erfolgreich ausgeführt."
+?>

@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /aquarius/slir
+RewriteRule . index.php [L]
+
+
+Order Deny,Allow
+Allow from All

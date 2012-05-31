@@ -1,0 +1,214 @@
+=============
+aquarius3 doc
+=============
+
+aquarius3 is a content management system (CMS) developed by aquaverde GmbH. This text is an introduction to the aquarius3 architecture. Implementation details that change quite often are not documented here but you should find docmuentation on this in the phpdoc comment headers or the documentation generated from it. In general the only reference you have is the code itself plus some comments if you are lucky.
+
+First of all, the data model used to store site data will be introduced.
+
+
+Basic Data Model
+================
+All websites that go beyond a few pages require some sort of structure. Hierarchical organization is a very common way to do this and aquarius3 uses this approach to order the pages. 
+
+
+Nodes
+-----
+The structure of the site is built as a tree of nodes. There is always a root node, all other nodes are either attached to the root or another node. On a standard site, each node represents a page of the site. The 'node tree' usually closely resembles the sitemap. For example, the node tree of the Aquaverde website looks like this:
+
+ Aquaverde
+ |-Aktuell
+ |-Produkte	
+ |-aquaverde
+ | |-Team	
+ | |-Referenzen
+ | \-History
+ |-Kontakt
+ | |-Adresse
+ | \-Newsletter
+ |-Inside
+ \-Arbeiten
+
+These are of course only the top few nodes of the tree. There are more nodes attached to many of them.
+
+Since the nodes usually are pages of the website, the content of these pages must be attached to the nodes. But content for a page may be available in multiple languages, whereas the nodes themselves are used exclusively to build structure. Thus there may be attached to a node content for each defined language; in fact, this is the expected normal case.
+
+
+Content
+-------
+'content' as it is attached to nodes is basically a bunch of name=value pairs, called fields. For example, the german content of the root node of the aquarius site might contain these content fields:
+
+  title       = "Home"
+  title1      = "willkommen !"
+  title2      = "aquaverde, webagentur"
+  text1       = "Das Ausarbeiten individueller und kundenspezifischer Weblösungen zählt den Kernkompetenzen von aquaverde. Vorallem in den Segmenten Tourismus, Reisen und KMUs verfügen wir über umfangreiche Erfahrungen."
+  text2       = "Beratung, Konzeption, Design, Publishing, Programmierung, Content-Management sowie die Entwicklung von Webapplikationen gehören zum Leistungspacket von aquaverde."
+  urltitle    = "home"
+
+Whereas the french content might look like this:
+
+  title       = "Acceuil"
+  title1      = "bienvenue !"
+  title2      = "aquaverde, agence web"
+  text1       = "Spécialisé dans la réalisation de sites web fonctionnels, esthétiques et efficaces, l'agence web aquaverde propose à ses clients des solutions individuelles basées sur leurs besoins."
+  text2       = "Notre grande expérience dans les domaines du tourisme, du voyage ainsi que les petites et moyennes entreprises est mise à votre disposition. Conseils, conception, création, programmation, CMS, gestion des contenus font partie intégrante de nos compétences."
+  urltitle    = "acceuil"
+  
+In Database terms, what you have is a one-to-many mapping between nodes and content, as well as between content and content fields:
+      
+       --------     -----------     -----------------
+       | Node 1 --- n Content 1 --- n Content Field |
+       --------     -----------     -----------------
+       
+A node may have content in many languages, content consists of many content fields.
+
+
+Forms
+-----
+The content fields are not defined free-form whenever content is created. Instead, they are derived from a predefined form (content type). Forms define a list of fields, with each field having a name and a type. For example, a typical form would contain these fields:
+
+   name           type  
+   ---------------------
+   title          ef
+   urltitle       ef
+   text           rte
+   picture        file
+   
+Where the type 'ef' is an 'entry field', 'rte' stands for 'rich text edit', and 'file' should be self explanatory. Content for this form might be:
+
+	title      = "Aquarius documentation"
+	urltitle   = "doc"
+	text       = "aquarius3 is a content management system... <h2>Basic Data Model</h2>..."
+	picture    = "aquarius-logo.jpg"
+
+
+The basic data model with its three main components: nodes, content, and forms allows for arbitrarly deep trees with variable content types. But this is only the underlying data model, the CMS contains many automatisms and imposes many constraints on the tree structure an where which content type is used.
+
+The next section will give some details on how this data model is used and changed.
+
+
+Working with the Data Model
+===========================
+There are two different parts of the CMS: the administration interface (backend) and the website interface (frontend). The administration interface is used by the site operators to change the content of the site; the frontend is the managed website generated from the content.
+
+Frontend
+--------
+The frontend displays the web pages. It offers a read only view of the site, customized by template files.
+
+All requests to the frontend are received through the index.php file. The frontend's function is to determine which node and content to display and which template to use. See phpdoc of frontend.php for details on this process.
+
+
+Backend
+-------
+The backend supports creation, deletion and alteration of nodes, content, forms, and attached fields. Administrative tasks such as user management are performed from there as well. With the exceptions of modules, the backend is not customized for a site.
+
+Backend queries consist of actions which will be loaded, executed and their results displayed. A typical request looks like this:
+  http://admin.aquarius.example/admin/admin.php?
+    lg=de&
+    action[contentedit][edit][2][de]&
+    action[formedit][edit][101]
+(linebreaks inserted for better readability)
+
+The request is translated into action instances, we thus receive a a list of actions to execute. The above request translates into this list of actions:
+     Array
+     (
+         [0] => action_formedit Object
+             (
+                 [props] => Array
+                     (
+                         [0] => class
+                         [1] => command
+                         [2] => id
+                     )
+
+                 [priority] => 60
+                 [type] => action
+                 [class] => formedit
+                 [command] => edit
+                 [id] => 101
+                 [params] => Array
+                     (
+                     )
+             )
+
+         [1] => action_contentedit Object
+             (
+                 [props] => Array
+                     (
+                         [0] => class
+                         [1] => command
+                         [2] => node_id
+                         [3] => lg
+                     )
+                 [priority] => 0
+                 [type] => action
+                 [class] => contentedit
+                 [command] => edit
+                 [node_id] => 2
+                 [lg] => de
+                 [params] => Array
+                     (
+                     )
+             )
+     )
+ 
+Note how the action parameters have been mapped onto object properties. For example, the action string "action[formedit][edit][101]" would be translated as follows:
+  0. Parse the parameters into a list, as in $params = array(0=>"formedit", 1=>"edit", 2=>"101")
+  1. Load the action_formedit class from aquarius/lib/action/formedit.php
+  2. Create a new action_formedit instance, say $action = new action_formedit($params)
+  3. The constructor of the instance (static method Action::make) maps the received parameters ($params) to the corresponding properties of this class (array(0=>"class", 1=>"command", 2=>"id")) which translates to the commands
+    $action->class   = "formedit";
+    $action->command = "edit";
+    $action->id      = "101";
+  4. The constructor checks for a logged-in user and asks for permission to return this action.
+
+Point four ensures that only actions permitted by the user object are used. Since the same method is used to create action request urls, this ensures that the backend interface neither exposes nor accepts actions not permitted for that user. It is important to always use the factory method Action::make() to create a new action, instead of directly calling the action's constructor, as the latter omits autoloading of the action class and permission checking. We're looking for a better place of the permission checking which is currently located in aquarius/lib/db/Users.php.
+
+Note on writing backend templates:
+The {action} smarty block automatically builds action and displays the block's content if the action can be built. An example from aquarius/templates/contentedit.tpl:
+    {action action="formedit:edit:`$form->id`"}
+        <a href="{url action0=$lastaction action1=$action}" title="edit form [{$form->title}]"><img src="picts/form2.gif" alt="form"/></a>
+    {/action}
+This will display a link to edit the associated node, but only if the action "formedit:edit:`$form->id`" can be built (the action must be permitted for the user). This way, it is easy to build templates that include all useful actions, only those the user has permission to use will be shown.
+
+
+The file system
+===============
+The general structure of an aquarius-installation has these directories:
+    aquarius: contains the code of the CMS
+    cache: for files generated at runtime (compiled smarty templates and smarty cache)
+    templates: contains the site specific templates used to render a website
+    public_html: the files that are published by the webserver
+    config.php:  contains the configuration parameters of the CMS
+    config.local.php:  contains the host-specific configuration parameters
+
+This structure is not imperative, there might be installations where the aquarius and templates directory are placed in the public_html directory; for instance if that is the only directory with write access. In that case you must make sure to use strict .htaccess rules to prevent people from nosing around in internal files. Some paths must be changed as well.
+
+To facilitate the switch to newer versions of the CMS, the contents of the aquarius directory should not be changed in deployed copies. The changes to public_html should be limited as well, but at the moment files in the public_html directory are not strictly separated into site specific and general files; improvements welcome here.
+
+Details on the directory structure:
+
+aquarius/lang/               translation files for the admin-interface
+aquarius/lib/                libraries
+aquarius/lib/action/         actions that are loaded on demand by the admin-interface
+aquarius/lib/db/             Classes generated by PEAR's DB_DataObject
+aquarius/lib/smarty_plugins/ custom extension plugins for smarty
+aquarius/pear/               PEAR libraries
+aquarius/smarty/             Smarty libraries
+aquarius/templates/          Smarty-templates for the admin-interface (backend)
+templates/                   Site-specific smarty-templates (frontend)
+templates/smarty-plugins/    Site-specific smarty-plugins
+public_html/admin/           Files for the administration interface
+
+Processing of queries:
+----------------------
+The usual starting points of queries are the following files in public_html:
+
+	index.php           Processes front-end queries
+
+	admin/admin.php     Process backend queries (It's a frameset)
+	admin/top.php
+	admin/navig.php
+	admin/index.php
+
+All the above files include the file aquarius/init.inc.php which sets up the basic environment.

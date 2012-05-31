@@ -1,0 +1,5 @@
+Regenerate the documentation with:
+phpdoc --directory aquarius/lib,aquarius/smarty --filename aquarius/*.php --target aquarius/doc/aquadoc --title aquadoc --javadocdesc
+
+You need PHPDocumentor for this.
+

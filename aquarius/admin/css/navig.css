@@ -1,0 +1,195 @@
+/****************************** G L O B A L */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    background-color: #E0E7EC;
+}
+
+
+body {
+    margin-bottom: 40px;
+}
+
+
+a {
+    text-decoration: none;
+    
+}
+
+img {
+    border: none;
+    vertical-align:middle;
+}
+
+/****************************** L I S T I N G */
+
+ul
+{
+	padding: 0px;
+	margin: 0px;
+	list-style-position: inherit;
+	list-style-type: none;
+	background-color: #E0E7EC;
+}
+
+ul.level0 {
+    margin-bottom: 15px; /* Covered by footer */
+	width: auto !important;
+	min-width: 250px;
+	_width: 250px; /* underscore hack uniquement interprété par IE Win */
+	border-top: #C1C9CE 1px solid;
+	padding-top: 4px;
+}
+
+li {
+    padding: 0px;
+    margin: 0;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.menu_entry {
+    border-bottom: #E0E7EC 2px solid;
+    /*padding: 3px 3px 3px 10px;*/
+}
+
+.menu_entry a {
+    padding: 3px 0 3px 10px;
+    display: block;
+}
+
+.menu_entry a:hover { color: #000; }
+
+li.level0  {
+    margin-bottom: 4px;
+    padding-bottom: 2px;
+    border-bottom: #C1C9CE 1px solid;
+}
+
+li.level1  .menu_entry a { padding: 0; }
+
+.level0:hover { color: #6286A0; }
+
+li.level1  {
+    color: #000;
+    font-weight: normal;
+    text-transform: none;
+    padding-left: 20px;
+    margin-bottom: 3px;
+}
+
+li.level1:hover {}
+
+.level0 a { color: #000; }
+
+.level1 a { color: #000 }
+
+.level0 .menu_entry a:hover { color: #6286A0; }
+
+.level1 .menu_entry a:hover { color: #6286A0; }
+
+
+/* Special layout for the inventory menu entries */
+
+#menu_sitemap {
+    margin-top: 3px;
+}
+
+#menu_sitemap, #menu_lastsearches, #lastchanges_menu, #menu_reload {
+    background-color: #E0E7EC;
+    color: #000;
+    font-weight: normal;
+}
+
+#nodetree a, #menu_sitemap a, #menu_lastsearches a, #lastchanges_menu a, #menu_reload a {
+    color: #000;
+}
+
+#nodetree a:hover, #menu_sitemap a:hover, #menu_lastsearches a:hover, #lastchanges_menu a:hover, #menu_reload a:hover
+{
+	/*text-decoration: underline;*/
+	color: #4D6B7F;
+}
+
+
+#nodetree {
+    background-color: #E0E7EC;
+    font-weight: normal;
+    color: #000;
+}
+
+li.nodetree_entry {
+    list-style-type: none;
+    font-weight: normal;
+    width: 100px;
+}
+
+/* Make titles of first two levels bold */
+.nodetree_title {
+    font-weight: bold;
+}
+/* Ensure the rest of the titles have normal font-weight */
+.nodetree_container .nodetree_container .nodetree_container .nodetree_title {
+    font-weight: normal;
+}
+
+
+span.top {
+    font-weight: bold;
+}
+
+
+.separator hr {
+    display: none;
+}
+
+li.separator {
+   height: 5px;
+   border-top: #C1C9CE 1px solid;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0px;
+    background-color: #E0E7EC;
+    color: #6286A0;
+    padding: 5px;
+    width: 190px;
+}
+#footer a {
+    color: #6286A0;
+}
+
+.topnode {
+    font-weight: bold;
+}
+
+.dim {
+    color: #6286a0;
+    font-style: italic;
+}
+
+.imgLayer {
+    position: relative;
+    z-index: -1;
+}
+
+
+#footer {
+    color: #6286A0;
+    padding: 5px;
+    width: 96%;
+}
+
+
+#footer a {
+    color: #6286A0;
+}

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# Write DB contents to file in dbdump dir
+# Use current UTC time as filename 
+
+set -e
+
+scriptdir=`dirname $0`
+dumpdir=$scriptdir/../dbdump
+datestr=`date -u +%FT%TZ`
+dumpname=$dumpdir/$datestr.sql
+latestname=$dumpdir/latest.sql
+
+"$scriptdir/dbdump" > "$dumpname" &&
+rm -f "$latestname" && 
+cp -l "$dumpname" "$latestname"
+
+
+
+

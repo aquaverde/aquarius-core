@@ -1,0 +1,55 @@
+<?
+shop_menu = "Shop"
+shop_orders = "Bestellungen"
+shop_users = "Kunden"
+shop_groups = "Gruppen"
+shop_products = "Produkte"
+shop_charges = "Spesen"
+shop_orders_print = "Bestellungen drucken"
+shop_orders_export = "Bestellungen exportieren"
+shop_checkfiles = "Datei Kontrolle"
+shop_structure = "Struktur"
+shop_admin = "Administration"
+shop_admin_paymethod = "Zahlungsmethoden"
+shop_admin_charges = "Versandspesen"
+
+shop_date_range = "Zeitbereich"
+shop_payment = "Zahlung"
+shop_status = "Status"
+shop_all = "alle"
+shop_open = "offen"
+shop_paid = "bezahlt"
+shop_temporary = "provisorisch"
+shop_confirmed = "Bestätigt"
+shop_confirm = "Bestätigen"
+shop_delete = "löschen"
+shop_change = "Ändern"
+
+
+shop_confirm_status_change = "Bestellung bestätigen und Bestätigungsmails verschicken"
+
+shop_address = "Adresse"
+order_date = "Bestelldatum"
+pay_date = "Bezahldatum"
+user = "Kunde"
+order_count_products = "Anzahl"
+order_discount = "Rabatt"
+order_total_price = "Gesamtpreis"
+order_delivermethod = "Lieferart"
+order_paymethod = "Bezahlart"
+order_paid = "Bezahlt"
+order_done = "Erledigt"
+
+
+product_name = "Name"
+product_code = "Code"
+product_count = "Anzahl"
+product_price = "Preis"
+product_discount = "Rabatt"
+product_total_price = "Gesamtpreis"
+product_attributes = "Attribute"
+
+charge_name = "Name"
+charge_price = "Kosten"
+
+?>

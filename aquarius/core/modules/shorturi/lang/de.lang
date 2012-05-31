@@ -1,0 +1,12 @@
+<?php
+
+Shorturi					= "Weiterleitungen"
+shorturi_menu				= "Weiterleitungen"
+
+shorturi_manage				= "Weiterleitungen bearbeiten"
+
+from_domain					= "Domain"
+keyword						= "Begriff"
+to_url						= "Link"
+
+save						= "Speichern"

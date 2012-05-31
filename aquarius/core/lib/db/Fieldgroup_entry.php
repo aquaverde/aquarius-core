@@ -1,0 +1,22 @@
+<?php
+/**
+ * Table Definition for fieldgroup_entry
+ */
+require_once 'DB/DataObject.php';
+
+class db_Fieldgroup_entry extends DB_DataObject 
+{
+    ###START_AUTOCODE
+    /* the code below is auto generated do not remove the above tag */
+
+    public $__table = 'fieldgroup_entry';                // table name
+    public $fieldgroup_entry_id;             // int(11)  not_null primary_key auto_increment
+    public $fieldgroup_id;                   // int(11)  not_null
+    public $selector;                        // string(765)  not_null
+
+    /* Static get */
+    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Fieldgroup_entry',$k,$v); }
+
+    /* the code above is auto generated do not remove the tag below */
+    ###END_AUTOCODE
+}

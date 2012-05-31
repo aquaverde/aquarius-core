@@ -1,0 +1,120 @@
+Aquarius node filters
+=====================
+
+Introduction
+------------
+Node filters select nodes from a set of nodes. Filters are defined by writing a 'filter sentence' which is supposed to be easy to read, write and parse. As an example:
+
+  is active and has menu_position top
+
+would select only nodes that are active and have value 'top' in the field 'menu_position'. In this case, 'active' and 'has' are predicates defined by the system, 'and' is a logical operator, and 'menu_position' as well as 'top' are arguments to 'has'. 'is' is just syntax sugar. The sentence
+
+  active and has menu_position top
+
+has the same meaning. Reversing the statement by writing
+
+  has menu_position top and is active
+
+would select the same nodes. To select nodes that have the value 'green' in field 'colour' or have the title 'BORG', you would write
+
+  has colour green or has title BORG
+
+and if you wanted to select inactive nodes instead, you'd write
+
+  is not active and has title BORG
+
+Predicates
+----------
+Predicates are the building blocks of the filter language. A predicate either selects or rejects a given node. The rather generic 'has' predicate allows selecting nodes based on their content fields. The filter 'has title BORG' matches all nodes that have a content field 'title' with value 'BORG'.
+
+Consult the the folder aquarius/lib/predicates for a list of available predicates.
+
+Three logical operators are supported: 'and', 'or' and 'not'. While 'and' and 'or' are both binary infix operators, 'not' is an unary prefix operator. That means that 'and' requires a predicate both before and after it; as does 'or'. 'not' on the other hand requires only a predicate after it. So you could write
+
+  not has colour green
+  is active and not has colour green
+
+as a valid filter sentences, whereas the sentences
+
+  and has colour green
+
+and
+
+  has colour green or
+
+are invalid on their own.
+
+There are additional operators that can be used as readability aid:
+* is   (just syntax sugar)
+* isnt (alias for 'not')
+* does (just syntax sugar)
+* doesnt (alias for 'not')
+* hasgot (just joking, 'hasgot' is not defined)
+* hasnt (alias for 'has not')
+
+Example:
+
+  isnt active and hasnt menu_position bottom
+
+is equivalent to
+
+  not is active and not has menu_position bottom
+
+Operator associativity
+----------------------
+The logicians will be wondering how operators associate. Say if you wrote
+
+  is active and has title BORG or has colour green
+
+it is not clear from looking at the sentence whether nodes must always be active to pass the filter or whether it suffices for them to have the green colour. However, the filter language is defined to be right-associative, and knowing this, the sentence must be read as
+
+  is active and (has title BORG or has colour green)
+
+and if you added a predicate as follows
+
+  is active and has title BORG or has colour green and is root
+
+this would specifically mean
+
+  is active and (has title BORG or (has colour green and is root))
+
+which hopefully is close to the expected meaning for most people.
+
+Using parentheses to group predicates is not supported. It is assumed that cases of more than two predicates are rare, and that in such cases it is better to write custom predicates. Readability is first priority here (never mind that we're lazy and don't want to deal with the complexity of adding parentheses to the language).
+
+Defining new predicates
+-----------------------
+All predicates are defined as separate files in aquarius/lib/predicates. Consult that folder for examples, in this section we will use the 'below' predicate as an example. It is defined by creating a file named 'aquarius/lib/predicates/below.php' and could have the following contents:
+
+    /** Select only nodes descending from given argument
+      * Synopsis: below <node>
+      */
+    $nodespec = $parser->consume_word();
+    $node     = Node::loadNode($nodespec);
+    if ($parent_node !instanceof db_Node) {
+    $parser->fail("Unable to load node $nodespec");
+    return NodeFilter::create('descendant_of', $node);
+
+When the parser encounters the predicate 'below', it tries to load the file 'below.php' from aquarius/lib/predicates. This function may consume as many words as it requires and is expected to return a filter object.
+
+Operators are also defined as predicates. Let's have a look at the 'not' operator:
+
+    /** Negate a predicate expression
+      * Synopsis: not <predicate>
+      */
+    $negated_statement = $parser->parse_predicate();
+    return new Filter::create('not', $negated_statement);
+
+The 'not' operator reads an entire predicate and then wraps the returned statement into a 'not' filter. Next we take the 'and' operator as a final example:
+
+    /** Join two filters so that both must be passed
+      * Synopsis: <predicate> and <predicate>
+      */
+    $left = $parser->consume_statement();
+    $right = $parser->parse(); // If we did parse_predicate() instead this operator would be left associative
+    return new Filter::create('and', array($left, $right));
+
+
+New languages
+-------------
+While the document above explained how to create node filters and defining new predicates that construct node filters, the filter parser can parse arbitrary words, as long as the grammar stays the same (you can influence right/left associatvity when definig your operators). All that is required is pointing the parser to a bunch of predicates in a directory.

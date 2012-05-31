@@ -1,0 +1,1 @@
+<textarea name="messages[{$message->message_id}]"  class="mle" rows="5" cols="80">{$message->text|escape:html}</textarea>
