@@ -24,7 +24,7 @@ class Lang_Fallback extends Module {
 
     /** Node detection is extended to check for content availability */
     function frontend_extend_node_detection($node_detection) {
-        $node_detection->add_step('lang_fallback', array($this, 'lang_fallback_step'), 'before', 'use_current_node');
+        $node_detection->add_step('lang_fallback', array($this, 'lang_fallback_step'), 'before', 'fallthrough');
     }
 
 
@@ -34,7 +34,6 @@ class Lang_Fallback extends Module {
         $lg = $params['lg'];
         $node = $params['current_node'];
         $content = $node->get_content($lg);
-
         if ($content && (!$params['require_active'] || $content->active)) {
             // We're good
         } else {
