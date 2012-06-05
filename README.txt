@@ -1,6 +1,8 @@
 aquarius cms
 ------------
+
 aquarius3 is a content management system (CMS) developed by aquaverde GmbH (aquaverde.ch).
+
 
 REQUIREMENTS
 see aquarius/doc/requirements.txt
