@@ -1,7 +1,6 @@
-<?
+<?php
 
 require_once dirname(__FILE__)."/../lib/FilterParser.php";
-require_once dirname(__FILE__)."/../lib/FilterLanguage.php";
 
 class FilterParserTest_PredicateTrue {
     function pass($_) {
@@ -134,4 +133,3 @@ class FilterParserTest extends PHPUnit_Framework_TestCase {
         } catch (FilterParsingException $expected) {}
     }
 }
-?>
