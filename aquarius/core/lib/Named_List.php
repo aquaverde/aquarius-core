@@ -1,4 +1,4 @@
-<?
+<?php
 /** Manage an ordered list of named items
   * This is in many ways the same as a PHP array when used as dictionary. Its strength is adding items anywhere in the list next to known names. */
 class Named_List implements IteratorAggregate {
@@ -16,6 +16,7 @@ class Named_List implements IteratorAggregate {
     function add($name, $item, $location='after', $relative_to=null) {
         $insert_position = null;
         $before = $location == 'before';
+
         if ($relative_to) {
             foreach($this->ordering as $position=>$position_name) {
                 if ($position_name == $relative_to) {
@@ -24,20 +25,31 @@ class Named_List implements IteratorAggregate {
 
                 // Mark for removal all entries with same name
                 if ($position_name == $name) {
-                    $this->ordering[$position] = false;
+                    $this->ordering[$position] = null;
+                    $this->items[$name] = null;
                 }
             }
+            
+            if ($insert_position !== null) {
+                array_splice($this->ordering, $insert_position, 0, array($name));
+                $this->items[$name] = $item;
+            }
         } else {
-            $insert_position = $before ? 0 : count($this->ordering);
-        }
-
-        if ($insert_position !== null) {
-            array_splice($this->ordering, $insert_position, 0, array($name));
-
-            $this->ordering = array_filter($this->ordering);
-
+            if (isset($this->items[$name])) {
+                $insert_position = array_search($name, $this->ordering);
+                $this->items[$name] = $item;
+            } else {
+                $insert_position = $before ? 0 : count($this->ordering);
+                array_splice($this->ordering, $insert_position, 0, array($name));
+            }
             $this->items[$name] = $item;
         }
+        
+        // Purge deleted
+        $this->ordering = array_filter($this->ordering);
+        $this->items = array_filter($this->items);
+        
+        return $insert_position;
     }
 
     /** Get the item associated with given name */
@@ -58,5 +70,3 @@ class Named_List implements IteratorAggregate {
         return new ArrayIterator($this->items());
     }
 }
-
-?>
