@@ -93,13 +93,21 @@ try {
     $lg = $language_detection->detect($detection_params);
     assert('strlen($lg) == 2');
 
-    header('Content-Language: '.$lg);
-
     $detection_params['lg'] = $lg;
+    
+    // Usually, display node only if it is active
+    $require_active = true;
 
-    // Q&D locale hack
-    $long_lg = $lg.'_'.strtoupper($lg).'.UTF-8';
-    setlocale(LC_TIME, $long_lg, $lg);
+    // Allow display of inactive content for preview
+    $preview = requestvar('preview');
+    $carry_preview = false;
+    if ($preview && $preview == preview_hash(ECHOKEY)) {
+        $require_active = false;
+        $carry_preview = $preview;
+        Log::debug('Enabling preview of disabled content');
+    }
+    $detection_params['require_active'] = $lg;
+
 
 /* Find node from URI */
     require_once "lib/Node_Detection.php";
@@ -118,6 +126,14 @@ try {
     $aquarius->execute_hooks('frontend_extend_node_detection', $node_detection);
 
     $node_params = $node_detection->process($detection_params);
+    $lg = $node_params['lg'];
+    assert('strlen($lg) == 2');
+    
+    header('Content-Language: '.$lg);
+
+    // Q&D locale hack
+    $long_lg = $lg.'_'.strtoupper($lg).'.UTF-8';
+    setlocale(LC_TIME, $long_lg, $lg);
 
     // Instead of rewriting this part we currently keep using NotFoundException even though it's not needed anymore.
     class NotFoundException extends Exception {}
@@ -135,17 +151,6 @@ try {
         $node = $node_params['found'];
 
     /* Ensure we have a node fit for display */
-        // Usually, display node only if it is active
-        $require_active = true;
-
-        // Allow display of inactive content for preview
-        $preview = requestvar('preview');
-        $carry_preview = false;
-        if ($preview && $preview == preview_hash(ECHOKEY)) {
-            $require_active = false;
-            $carry_preview = $preview;
-            Log::debug('Enabling preview of disabled content');
-        }
 
         // Check that node is active
         if ($require_active && !$node->active()) {
