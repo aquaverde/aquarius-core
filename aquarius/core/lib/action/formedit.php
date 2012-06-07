@@ -67,13 +67,28 @@ class action_formedit_save extends action_formedit implements ChangeAction {
                     if ($val === false) throw new Exception("Expected val '$prop' for field $id not in REQUEST");
                     $field->$prop = $val;
                 }
-
+                
+                
+                
                 // Special handling for checkboxes
                 $field->multi                = get($data, 'multi', 0);
                 $field->language_independent = get($data, 'language_independent', 0);
                 $field->add_to_title         = get($data, 'add_to_title', 0);
                 $active                      = get($data, 'active');
+                
+                // Field names must conform to PHP variable naming standards
+                if ($active && !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $field->name)) {
+                    // Remove invalid characters from field name, we presume they were accidentally entered and undesired.
+                    $clean_name = preg_replace('/[^a-zA-Z0-9_\x7f-\xff]+/', '', $field->name);
 
+                    // First character of field name may not be a number
+                    if (preg_match('/^[0-9]/', $clean_name)) {
+                        $clean_name = 'n'.$clean_name;
+                    }
+                    $result->add_message(new FixedTranslation("Invalid field name '$field->name' changed to '$clean_name'"));
+                    $field->name = $clean_name;
+                }
+                
                 // save new permission_level
                 $field->permission_level = get($data, 'permission_level', 2);
 
