@@ -109,7 +109,7 @@ class db_Content extends DB_DataObject
                 if (!is_object($formtype)) throw new Exception("Formtype '$form_field->type' does not exist");
                 
                 $field_values = get($content_field_values, $field_name, array());
-                $this->$field_name = $formtype->db_get_field($field_values, $form_field);
+                $this->$field_name = $formtype->db_get_field($field_values, $form_field, $this->lg);
             }
             $this->_loaded_fields = true;
         }
@@ -179,7 +179,7 @@ class db_Content extends DB_DataObject
 
             // Let the formtype process the value before writing
             $formtype = $formtypes->get_formtype($formfield->type);
-            $val = $formtype->db_set_field($val, $formfield);
+            $val = $formtype->db_set_field($val, $formfield, $this->lg);
 
             // Write the fields to the DB
             $weight = 0;
