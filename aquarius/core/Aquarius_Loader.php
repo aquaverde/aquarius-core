@@ -115,11 +115,9 @@ class Aquarius_Loader {
             'class_prefix'         => 'db_',
             'debug'                => PEARLOGLEVEL
         );
-
-        // Force PEAR to initialize the DB connection, we want to use it seperately as well
-        $node = DB_DataObject::factory('node');
-        $this->db = new SQLwrap($node->getDatabaseConnection()->connection);
-        $this->db->use_db_charset(); // Just use whatever encoding the DB uses for the connection as well
+        
+        // Legacy DB connection
+        $this->db = new SQLwrap($dbconf['host'], $dbconf['user'], DB_PASSWORD, $dbconf['name']);
     }
     
     function modules() {
