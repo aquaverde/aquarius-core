@@ -107,7 +107,7 @@ class Aquarius_Loader {
         $pear_options = &PEAR::getStaticProperty('DB_DataObject','options');
         $dbconf = $this->aquarius->conf('db');
         $pear_options = array(
-            'database'         => 'mysql://'.$dbconf['user'].':'.DB_PASSWORD.'@'.$dbconf['host'].'/'.$dbconf['name'],
+            'database'         => 'mysqli://'.$dbconf['user'].':'.DB_PASSWORD.'@'.$dbconf['host'].'/'.$dbconf['name'],
         //  'database_global'  => 'mysql://'.GLOBALDB_USERNAME.':'.GLOBALDB_PASSWORD.'@'.DB_HOST.'/'.GLOBALDB_DBNAME,
         //  'schema_location'  => PROJECT_INCLUDE_PATH.'lib/db/',
             'ini_'.$dbconf['name'] => $this->core_path.'lib/db/schema.merged.ini', // Explicit schema location
