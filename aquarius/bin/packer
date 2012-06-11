@@ -107,14 +107,15 @@ echo "Creating export in $export_dir\n";
 
 $export_names []= $export_tag;
 
+echo "Exporting: ";
 $file_list = array();
-foreach($exports as $base) {
+foreach($exports as $i => $base) {
+    echo ($i==0?'':', ').$base;
     $new = "$base.$export_tag.new";
     $old = "$base.$export_tag.old";
     $file_list []= compact('base', 'new', 'old');
     $export_files []= $new;
 
-    echo "Exporting $base: ";
     $export_parent_dir = $export_dir.DIRECTORY_SEPARATOR.dirname($base);
     if (!is_dir($export_parent_dir)) {
         mkdir($export_parent_dir, 0700, true);
@@ -124,6 +125,7 @@ foreach($exports as $base) {
 
     if ($error !== 0) fail("failed exporting $base");
 }
+echo ".\n";
 
 
 // Load the tar library
@@ -183,7 +185,7 @@ file_put_contents($export_pack_instname, "<?php
  * Date: $build_date
  * Host: $build_host
  * Tag: $export_tag
- * Revision: $revision
+ * Version: $version
  * Content: $content_list
  */
 ".'
