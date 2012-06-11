@@ -1,6 +1,12 @@
+# installation packs
+aquarius_*-*
+
 ## OS generated files
 
 .DS_Store*
 ehthumbs.db
 Icon?
 Thumbs.db
+
+# Generated adminer files 
+aquarius/dbadmin/

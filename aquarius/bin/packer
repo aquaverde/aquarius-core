@@ -19,13 +19,18 @@
   * at the end of the installer file. This works most of the time, but some
   * versions of PHP choke on the binary string (see PHP bug #42396).
   */
-  
+
 $export_aliases = array(
     'bare' => array('aquarius/core', 'aquarius/admin', 'aquarius/.htaccess', 'aquarius/slir', 'download.php', 'index.php', 'sitemap.php', 'generate_pdf.php'),
-    'full' => array('bare', 'aquarius/myadmin', 'aquarius/bin', 'aquarius/doc', 'aquarius/config.php', 'aquarius/ckconfig.js'),
+    'full' => array('bare', 'aquarius/dbadmin', 'aquarius/bin', 'aquarius/doc', 'aquarius/config.php', 'aquarius/ckconfig.js'),
     'site' => array('interface', 'lib', 'css', 'download', 'pictures/content', 'pictures/richtext', 'pictures/header', 'aquarius/templates', 'robots.txt', '.htaccess', 'favicon.ico'),
     'all'  => array('full', 'site'),
 );
+
+function fail($msg) {
+    echo $msg;
+    exit(1);
+}
 
 array_shift($argv);
 if (empty($argv)) {
@@ -38,14 +43,14 @@ $export_names = array('aquarius');
 
 date_default_timezone_set('UTC');
 $export_names []= date("Ymd-Hi");
-$revision = system('svnversion', $svnversion_error);
+$version = system('git describe', $svnversion_error);
 if ($svnversion_error === 0) {
-    echo "Rev: $revision\n";
-    file_put_contents('aquarius/core/revision', $revision);
-    $export_names []= 'r'.$revision;
+    echo "Description: $version\n";
+    file_put_contents('aquarius/core/revision', $version);
 } else {
-    echo "Rev: Unable to determine SVN revision\n";
+    $version = @file_get_contents('aquarius/core/revision');
 }
+$export_names []= $version;
 
 $options = array(
     'inline' => false,
@@ -80,6 +85,7 @@ while($desired_export = array_shift($desired_exports)) {
         if (substr($desired_export, -1) == DIRECTORY_SEPARATOR) {
             $desired_export = substr($desired_export, 0, -1);
         }
+        if (!file_exists($desired_export)) exit("Path does not exist: $desired_export\n");
         $exports []= $desired_export;
     }
 }
@@ -114,11 +120,9 @@ foreach($exports as $base) {
         mkdir($export_parent_dir, 0700, true);
     }
     $export_new_dir = $export_dir.DIRECTORY_SEPARATOR.$new;
-    system('svn export "'.escapeshellcmd($base).'" "'.escapeshellcmd($export_new_dir).'"', $svn_error);
-    if ($base=='aquarius/core') {
-        file_put_contents($export_new_dir.DIRECTORY_SEPARATOR.'revision', $revision);
-    }
-    if ($svn_error !== 0) die("SVN failed exporting $base");
+    system('cp -r "'.escapeshellcmd($base).'" "'.escapeshellcmd($export_new_dir).'"', $error);
+
+    if ($error !== 0) fail("failed exporting $base");
 }
 
 
