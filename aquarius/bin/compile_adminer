@@ -1,6 +1,12 @@
 #!/bin/sh
 set -e
-cd `dirname $0`/../dbadmin
+
+cd `dirname $0`/../../
+git submodule init
+git submodule update
+
+cd aquarius/dbadmin
+
 php ../adminer/compile.php
 mv adminer.php index.php
 rm editor.php
