@@ -102,7 +102,7 @@ $config['admin']['user']['edit_permission_tree_depth'] = 2; // How many levels o
 $config['admin']['menu_links'] = array(
     array( 'parent' => 'menu_super_links', 'title' => 'Statistics', 'url' => '/stats/'),
     array( 'parent' => 'menu_super_links', 'title' => 'Aquarius manual', 'url' => 'http://wiki.aquarius3.ch/', 'target' => '_new'),
-    array( 'parent' => 'menu_super_links', 'title' => 'phpMyAdmin', 'url' => '/aquarius/myadmin', 'target' => '_new', 'allow' => 0)
+    array( 'parent' => 'menu_super_links', 'title' => 'Database admin', 'url' => '/aquarius/dbadmin', 'target' => '_new', 'allow' => 0)
 );
 
 $config['admin']['rte']['browse_path_img'] = 'pictures/richtext';
