@@ -55,24 +55,24 @@ class Formtype {
       *   $val = $content->somevalue;
       *   $formtype = new Formtype_date();
       *   $val == $formtype->db_get($formtype->db_set($val)); // Should be true for normal values (the meaning of normal depends on the field type). */
-    function db_get($values, $form_field) {
+    function db_get($values, $form_field, $lg) {
         return implode(" ", $values);
     }
 
     /** Process field to store it in the DB.
       * @param $value The value from the content object, should have the same format as it was returned by db_get()
       * @return key/value pairs as assoc array */
-    function db_set($value, $form_field) {
+    function db_set($value, $form_field, $lg) {
         return array($value);
     }
 
-    function db_set_field($vals, $formfield) {
+    function db_set_field($vals, $formfield, $lg) {
         if (!$formfield->multi) {
             $vals = array($vals); // Just so we can handle both the same way
         }
         $processed_vals = array();
         foreach ($vals as $fieldvalues) {
-            $processed_vals[] = $this->db_set($fieldvalues, $formfield);
+            $processed_vals[] = $this->db_set($fieldvalues, $formfield, $lg);
         }
         return $processed_vals;
     }
@@ -81,14 +81,14 @@ class Formtype {
       * This handles single and multi-value fields. Every value for the field is run through db_get(). For multi-value fields, the list of non-null return values from db_get() is returned, for single-value fields, the last non-null field as returned by db_get() is passed on. (While it is not much use to have multiple values for a single-value field, it happens, for example if fields are changed from multi to single value.)
       *
       * Formtype implementations should not override this method, and change db_get() instead. This makes migrating to a different DB model easier. */
-    function db_get_field($vals, $formfield) {
+    function db_get_field($vals, $formfield, $lg) {
         $ret = null;
         if ($formfield->multi) {
             $ret = array();
         }
         
         foreach($vals as $fieldvalue) {
-            $value = $this->db_get($fieldvalue, $formfield);
+            $value = $this->db_get($fieldvalue, $formfield, $lg);
             if ($value !== null) {
                 if ($formfield->multi) {
                    $ret[] = $value;
