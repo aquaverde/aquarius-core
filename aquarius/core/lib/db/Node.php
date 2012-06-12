@@ -441,13 +441,31 @@ class db_Node extends DB_DataObject
     
     /** Insert this node (DB_DataObject::insert override) */
     function insert() {
+        
         // Calculate a sensible weight if none has been specified
         if (!$this->weight) {
             $maxweight = array_shift($GLOBALS['DB']->listquery('SELECT max(weight) FROM node WHERE parent_id = '.$this->parent_id)); // May be NULL if the node table is empty or parent_id is invalid
             $this->weight = ($maxweight + 10) - ($maxweight % 10); // Round off to ten
         }
 
-        parent::insert();
+        $result = parent::insert();
+        
+        global $aquarius;
+        $aquarius->execute_hooks('node_insert', $this);
+    
+        return $result;
+    }
+    
+    function move($new_parent) {
+        if ($this->id == $new_parent->id || $this->ancestor_of($new_parent)) {
+            throw new Exception("Node ".$this->idstr()." cannot be parent unto itself.");
+        }
+        $this->parent_id = $new_parent->id;
+        $this->update();
+        
+        global $aquarius;
+        $aquarius->execute_hooks('node_move', $this);
+
     }
     
     /** Copy a node and all its children

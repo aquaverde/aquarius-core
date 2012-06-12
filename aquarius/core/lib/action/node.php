@@ -228,15 +228,9 @@ class action_node_move extends action_node implements ChangeAction {
             if (!$user->isSiteadmin() && !in_array($new_parent->id, $this->_possible_parents($node, true))) {
                 throw new Exception("Parent ".$node->idstr()." not permitted for ".$node->idstr());
             }
-
-            if ($node->id == $new_parent->id || $node->ancestor_of($new_parent)) {
-                throw new Exception("Node ".$node->idstr()." cannot be parent unto itself.");
-            }
-
-            // Move
+            
             $old_parent = $node->get_parent();
-            $node->parent_id = $new_parent_id;
-            $node->update();
+            $node->move($new_parent);
 
             $result->touch_region(Node_Change_Notice::structural_change_to($old_parent));
             $result->touch_region(Node_Change_Notice::structural_change_to($node));
