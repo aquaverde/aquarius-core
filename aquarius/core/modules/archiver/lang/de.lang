@@ -1,8 +1,8 @@
 <?
     
-    menu_archiver             = "Archivierung"
-    archiver_archive          = "Seiten archivieren"
-    archiver_question         = "Seiten jetzt archivieren ?"
+    menu_archiver             = "Automatische Publikation"
+    archiver_archive          = "Automatische Publikation"
+    archiver_question         = "Seiten jetzt publizieren ?"
     archiver_ok               = "Ok"
 
     formtype_archiver_archive_date = "Archivierungsdatum"
