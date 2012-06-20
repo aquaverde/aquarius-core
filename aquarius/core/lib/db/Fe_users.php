@@ -102,10 +102,12 @@ class db_Fe_users extends DB_DataObject
             $userproto = DB_DataObject::factory('fe_users');
             $userproto->name = $fe_username;
             $userproto->active = 1;
+            
+            $db = $userproto->getDatabaseConnection();
             if (strlen($fe_passwordhash) > 0)
-                $userproto->whereAdd("MD5(CONCAT(password, '".session_id()."')) = '".mysql_real_escape_string($fe_passwordhash)."'"); // Obscured passwords
+                $userproto->whereAdd("MD5(CONCAT(password, '".session_id()."')) = '".$db->escapeSimple($fe_passwordhash)."'"); // Obscured passwords
             else
-                $userproto->whereAdd("password = MD5('".mysql_real_escape_string($fe_password)."')"); // clear-text transmitted passwords
+                $userproto->whereAdd("password = MD5('".$db->escapeSimple($fe_password)."')"); // clear-text transmitted passwords
             $found = $userproto->find();
             if ($found == 1) {
                 $userproto->fetch();
