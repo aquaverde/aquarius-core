@@ -81,9 +81,9 @@ class DBwrap {
     
     /** Get a single value from query
       * @return first field of first row or false if there were no rows */
-    function singlequery($query, $data) {
+    function singlequery($query, $data=array()) {
         $result = $this->query($query, $data);
-        if ($result->nunmRows() < 1 || $result->numCols() < 1) return false;
+        if ($result->numRows() < 1 || $result->numCols() < 1) return false;
         $firstrow = $result->fetchRow(DB_FETCHMODE_ORDERED);
         return $firstrow[0];
     }

@@ -14,8 +14,8 @@ class Cron {
 
     /** Call the hooks registered under 'daily', but only once a day. */
     function run() {
-        global $DB;
         global $aquarius;
+        $DB = $aquarius->db;
 
         // Proceed only if there are hooks to be run
         if (isset($aquarius->hooks['daily']) && count($aquarius->hooks['daily']) > 0) {
