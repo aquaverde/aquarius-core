@@ -55,7 +55,7 @@ class Aquarius_Loader {
     function create_aquarius() {
         $this->init('set_include_paths', 'basic_settings');
         require_once("lib/aquarius.php");
-        $this->aquarius = new Aquarius($this->root_path, $this->core_path, $this->db_bear);
+        $this->aquarius = new Aquarius($this->root_path, $this->core_path);
         $this->aquarius->load_configs();
     }
     
@@ -119,7 +119,7 @@ class Aquarius_Loader {
         
         // Force PEAR to initialize the DB connection, we want to use it seperately as well
         $node = DB_DataObject::factory('node');
-        $this->db_pear = $node->getDatabaseConnection();
+        $this->aquarius->db = new DBwrap($node->getDatabaseConnection());
         
         // Legacy DB connection
         $this->db_legacy = new SQLwrap($dbconf['host'], $dbconf['user'], DB_PASSWORD, $dbconf['name']);

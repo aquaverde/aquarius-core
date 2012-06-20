@@ -20,9 +20,7 @@ class Aquarius {
       * Usually this is $install_path.'core/'
       */
     var $core_path;
-    
-    /** Database interface */
-    var $db;
+
 
     /** Dictionary with config values */
     var $config = array();
@@ -48,12 +46,10 @@ class Aquarius {
       * directory from the core_path.
       *
       */
-    function __construct($root_path, $core_path, $db) {
+    function __construct($root_path, $core_path) {
         $this->root_path = $root_path;
         $this->core_path = $core_path;
         $this->install_path = realpath($core_path.'..').DIRECTORY_SEPARATOR;
-        
-        $this->db = $db;
     }
     
     /** Return the installed aquarius revision as string
