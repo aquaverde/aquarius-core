@@ -302,17 +302,19 @@ class db_Node extends DB_DataObject
     /** Load a child with given url title, returns false if there's no such child. */
     function get_urlchild($urltitle, $lg=false) {
         if (!$lg) $lg = $GLOBALS['lg'];
-        $urlchilds = $GLOBALS['DB']->listquery("
-                SELECT n.id 
-                FROM node n 
-                  JOIN content c ON n.id = c.node_id
-                  JOIN content_field f ON c.id = f.content_id
-                  JOIN content_field_value ON content_field_value.content_field_id = f.id
-                WHERE n.parent_id = $this->id 
-                  AND c.lg = '".mysql_real_escape_string(str($lg))."'
-                  AND f.name = 'urltitle'
-                  AND content_field_value.value = '".mysql_real_escape_string($urltitle)."'");
-        switch(count($urlchilds)) {
+        $urlchildren = $GLOBALS['aquarius']->db->listquery("
+            SELECT n.id 
+            FROM node n 
+                JOIN content c ON n.id = c.node_id
+                JOIN content_field f ON c.id = f.content_id
+                JOIN content_field_value ON content_field_value.content_field_id = f.id
+            WHERE n.parent_id = ? 
+                AND c.lg = ?
+                AND f.name = 'urltitle'
+                AND content_field_value.value = ?", 
+            array($this->id, $lg, $urltitle)
+        );
+        switch(count($urlchildren)) {
             case 0:
                 return false;
             case 1:
@@ -441,13 +443,31 @@ class db_Node extends DB_DataObject
     
     /** Insert this node (DB_DataObject::insert override) */
     function insert() {
+        
         // Calculate a sensible weight if none has been specified
         if (!$this->weight) {
             $maxweight = array_shift($GLOBALS['DB']->listquery('SELECT max(weight) FROM node WHERE parent_id = '.$this->parent_id)); // May be NULL if the node table is empty or parent_id is invalid
             $this->weight = ($maxweight + 10) - ($maxweight % 10); // Round off to ten
         }
 
-        parent::insert();
+        $result = parent::insert();
+        
+        global $aquarius;
+        $aquarius->execute_hooks('node_insert', $this);
+    
+        return $result;
+    }
+    
+    function move($new_parent) {
+        if ($this->id == $new_parent->id || $this->ancestor_of($new_parent)) {
+            throw new Exception("Node ".$this->idstr()." cannot be parent unto itself.");
+        }
+        $this->parent_id = $new_parent->id;
+        $this->update();
+        
+        global $aquarius;
+        $aquarius->execute_hooks('node_move', $this);
+
     }
     
     /** Copy a node and all its children

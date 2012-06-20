@@ -72,11 +72,10 @@ class db_Content extends DB_DataObject
     function load_fields() {
         if ($this->id == null) return false;
         if (!isset($this->_loaded_fields)) {
-            global $DB;
             global $aquarius;
         
             // Get all content fields for this content (including language_independent fields)
-            $fieldvals = $DB->query('
+            $fieldvals = $aquarius->db->query('
                 SELECT
                     cf.id,
                     cf.name,
@@ -85,12 +84,12 @@ class db_Content extends DB_DataObject
                 FROM content c
                 JOIN content_field cf ON c.id = cf.content_id
                 JOIN content_field_value cfv ON cf.id = cfv.content_field_id
-                WHERE c.id = '.intval($this->id).'
+                WHERE c.id = ?
                 ORDER BY cf.weight
-            ');
+            ', array($this->id));
 
             $content_field_values = array();
-            while($field = mysql_fetch_row($fieldvals)) {
+            while($field = $fieldvals->fetchRow()) {
                 list($field_id, $field_name, $value_name, $value) = $field;
 
                 if ($value_name) {
