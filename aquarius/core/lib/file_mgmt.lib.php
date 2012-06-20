@@ -160,13 +160,20 @@ function get_cached_dirs($prefix = false) {
     static $cached_dirs = array();
     if (isset($cached_dirs[$prefix])) return $cached_dirs[$prefix];
     
-    global $DB;
-    $dirs = $DB->listquery("
+    $query_params = array();
+    $where_prefix = '';
+    if ($prefix) {
+        $where_prefix = "WHERE path LIKE ?";
+        $query_params []= $prefix.'%';
+    }
+    
+    global $aquarius;
+    $dirs = $aquarius->db->listquery("
         SELECT path
         FROM cache_dirs
-        ".($prefix?"WHERE path LIKE '".mysql_real_escape_string($prefix)."%'":"")."
+        $where_prefix
         ORDER BY path
-    ");
+    ", $query_params);
     $cached_dirs[$prefix] = $dirs;
     return $dirs;
 }
