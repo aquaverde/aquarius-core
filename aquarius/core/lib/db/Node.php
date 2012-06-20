@@ -302,17 +302,19 @@ class db_Node extends DB_DataObject
     /** Load a child with given url title, returns false if there's no such child. */
     function get_urlchild($urltitle, $lg=false) {
         if (!$lg) $lg = $GLOBALS['lg'];
-        $urlchilds = $GLOBALS['DB']->listquery("
-                SELECT n.id 
-                FROM node n 
-                  JOIN content c ON n.id = c.node_id
-                  JOIN content_field f ON c.id = f.content_id
-                  JOIN content_field_value ON content_field_value.content_field_id = f.id
-                WHERE n.parent_id = $this->id 
-                  AND c.lg = '".mysql_real_escape_string(str($lg))."'
-                  AND f.name = 'urltitle'
-                  AND content_field_value.value = '".mysql_real_escape_string($urltitle)."'");
-        switch(count($urlchilds)) {
+        $urlchildren = $GLOBALS['aquarius']->db->listquery("
+            SELECT n.id 
+            FROM node n 
+                JOIN content c ON n.id = c.node_id
+                JOIN content_field f ON c.id = f.content_id
+                JOIN content_field_value ON content_field_value.content_field_id = f.id
+            WHERE n.parent_id = ? 
+                AND c.lg = ?
+                AND f.name = 'urltitle'
+                AND content_field_value.value = ?", 
+            array($this->id, $lg, $urltitle)
+        );
+        switch(count($urlchildren)) {
             case 0:
                 return false;
             case 1:

@@ -72,11 +72,10 @@ class db_Content extends DB_DataObject
     function load_fields() {
         if ($this->id == null) return false;
         if (!isset($this->_loaded_fields)) {
-            global $DB;
             global $aquarius;
         
             // Get all content fields for this content (including language_independent fields)
-            $fieldvals = $DB->query('
+            $fieldvals = $aquarius->db->query('
                 SELECT
                     cf.id,
                     cf.name,
@@ -85,12 +84,12 @@ class db_Content extends DB_DataObject
                 FROM content c
                 JOIN content_field cf ON c.id = cf.content_id
                 JOIN content_field_value cfv ON cf.id = cfv.content_field_id
-                WHERE c.id = '.intval($this->id).'
+                WHERE c.id = ?
                 ORDER BY cf.weight
-            ');
+            ', array($this->id));
 
             $content_field_values = array();
-            while($field = mysql_fetch_row($fieldvals)) {
+            while($field = $fieldvals->fetchRow()) {
                 list($field_id, $field_name, $value_name, $value) = $field;
 
                 if ($value_name) {
@@ -146,7 +145,6 @@ class db_Content extends DB_DataObject
     
     /** Write content fields from properties to DB */
     function save_content() {
-        global $DB;
         global $aquarius;
         if (!is_numeric($this->id)) throw new Exception("Trying to save_content() on non persistent content (invalid id '$this->id')");
 
@@ -267,28 +265,28 @@ class db_Content extends DB_DataObject
 
     /** Remove all attached content fields */
     private function delete_contentfields() {
-        global $DB;
-        $DB->query('
+        global $aquarius;
+        $aquarius->db->query('
             DELETE FROM cf, cfv
             USING content_field AS cf
                 JOIN content_field_value AS cfv ON cf.id = cfv.content_field_id
-            WHERE cf.content_id = '.intval($this->id)
-        );
+            WHERE cf.content_id = ?
+        ', array($this->id));
     }
     
     /** Remove a content field for all languages
       * @param node_id id of the node to delete content field from
       * @param field_name the field to remove */
     static function delete_contentfield($node_id, $field_name=null) {
-        global $DB;
-        $DB->query( '
+        global $aquarius;
+        $aquarius->db->query( '
             DELETE FROM cf, cfv
             USING content c
                 JOIN content_field cf ON c.id = cf.content_id
                 JOIN content_field_value cfv ON cf.id = cfv.content_field_id
-            WHERE c.node_id = '.intval($node_id).'
-                  AND cf.name = "'.mysql_real_escape_string($field_name).'"
-        ');
+            WHERE c.node_id = ?
+                  AND cf.name = ?
+        ', array($node_id, $field_name));
     }
     
     /** Delete this content from the DB */
