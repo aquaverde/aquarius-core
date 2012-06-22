@@ -8,7 +8,7 @@ class Formtype_global_legend_file extends Formtype_File {
 
         // The bad and the ugly
         $valobject->extra_js_includes []= 'formfield.global_legend_file.js.tpl';
-        $valobject->legend_load_action = Action::make('file_ajax_legend');
+        $valobject->legend_load_action = Action::make('file_ajax_legend', $content->lg);
     }
 
     /** Save legend into 'file_legend' table and do not pass through to DB */
