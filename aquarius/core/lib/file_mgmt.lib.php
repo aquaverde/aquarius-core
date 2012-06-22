@@ -160,13 +160,20 @@ function get_cached_dirs($prefix = false) {
     static $cached_dirs = array();
     if (isset($cached_dirs[$prefix])) return $cached_dirs[$prefix];
     
-    global $DB;
-    $dirs = $DB->listquery("
+    $query_params = array();
+    $where_prefix = '';
+    if ($prefix) {
+        $where_prefix = "WHERE path LIKE ?";
+        $query_params []= $prefix.'%';
+    }
+    
+    global $aquarius;
+    $dirs = $aquarius->db->listquery("
         SELECT path
         FROM cache_dirs
-        ".($prefix?"WHERE path LIKE '".mysql_real_escape_string($prefix)."%'":"")."
+        $where_prefix
         ORDER BY path
-    ");
+    ", $query_params);
     $cached_dirs[$prefix] = $dirs;
     return $dirs;
 }
@@ -582,10 +589,7 @@ function properName($name,$image_type) {
   * @param $file fileinfo object
   * @return list of content IDs that reference the file */
 function references($file) {
-    global $DB;
     global $aquarius;
-    
-    
 
     /* Digging through all RTE fields to check for a filename is slow, we do it
      * for files in locations where the richtext is configured to take files. */
@@ -600,21 +604,23 @@ function references($file) {
         }
     }
     
-    $relative_name = mysql_real_escape_string($file->publicpath());
+    $relative_name = $file->publicpath();
+    $query_params = array($relative_name, $relative_name);
     
     $check_rte_sql = '';
     if ($check_rte) {
         $check_rte_sql = " OR (
                 form_field.type = 'rte'
             AND form_field.name = content_field.name
-            AND content_field_value.value LIKE  '%".$relative_name."%'
+            AND content_field_value.value LIKE  ?
           )";
+        $query_params []= '%'.$relative_name.'%';
     }
 
     // Find all content that references the file
     // The form_field that is joined in provides the base directory, the path must start with this
     // Note the "BINARY" to make comparison case-sensitive
-    return $DB->listquery("
+    return $aquarius->db->listquery("
         SELECT DISTINCT content.id
         FROM form_field
         JOIN node ON form_field.form_id = node.cache_form_id
@@ -623,13 +629,13 @@ function references($file) {
         JOIN content_field_value ON content_field.id = content_field_value.content_field_id
         WHERE (
                 form_field.type = 'file'
-            AND BINARY '".$relative_name."' LIKE CONCAT(form_field.sup3, '%')
+            AND BINARY ? LIKE CONCAT(form_field.sup3, '%')
             AND form_field.name = content_field.name
             AND content_field_value.name = 'file'
-            AND BINARY CONCAT(form_field.sup3, '/', content_field_value.value) = '".$relative_name."'
+            AND BINARY CONCAT(form_field.sup3, '/', content_field_value.value) = ?
           ) $check_rte_sql
         ORDER BY content.cache_title, content.lg
-    ");
+    ", $query_params);
 }
 
 class FileInfo {

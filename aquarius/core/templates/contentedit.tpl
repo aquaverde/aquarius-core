@@ -12,12 +12,15 @@
 
 {assign var=title value=$node->get_contenttitle($content->lg)}
 {if $title}
-<h1 title="Node-ID: {$node->id} | Content-ID: {$content->id}">{$title|strip_tags|truncate:38}</h1>
+    <h1 title="Node-ID: {$node->id} | Content-ID: {$content->id}">{$title|strip_tags|truncate:38}
 {else}
-<h1 title="Node-ID: {$node->id} | Content-ID: {$content->id}">{#s_new_child#}</h1>
+    <h1 title="Node-ID: {$node->id} | Content-ID: {$content->id}">{#s_new_child#}
 {/if}
-
-
+    
+{if $node->access_restricted == 1} 
+    <img src="buttons/lock_on.gif" alt="{#s_access_restricted#}" title="{#s_access_restricted#}" />
+{/if}
+</h1>
 
 
 <div class="clear"></div>
@@ -63,7 +66,7 @@
 
     {foreach from=$fields key=field_id item=field}
             <div class='contentedit contentedit_{$field.template_name}' id='box{$field.formfield->name}' style="display: {if !$active_fields || $field.formfield->name|@in_array:$active_fields}block{else}none{/if}">
-                <label for="{$field.htmlid}" title="{$field.formfield->name}" class="permission_level{$field.formfield->permission_level}{if $langlinks|@count > 1}{if $field.formfield->language_independent} language_independent{/if}{/if}">{formfield_title f=$field.formfield}
+                <label for="{$field.htmlid}" title="{$field.formfield->name}" class="permission_level{$field.formfield->permission_level}{if $langlinks|@count > 1}{if $field.formfield->language_independent} language_independent{/if}{/if}">{$field.formfield->description}
                     {if $langlinks|@count > 1}{if $field.formfield->language_independent} <img src="buttons/multilang.gif" alt="{#multi_language#}" title="{#multi_language#}" class="label_img" />{/if}{/if}
                 </label>
 

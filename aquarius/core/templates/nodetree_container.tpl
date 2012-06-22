@@ -86,6 +86,11 @@
             <img src="picts/{$entry.node->icon()}.gif" alt="alttitle"/>
             {$entry.title|truncate:50}&nbsp;
         {/if}
+
+        {if $entry.node->access_restricted == 1} 
+            &nbsp;<img src="buttons/lock_on.gif" alt="{#s_access_restricted#}" title="{#s_access_restricted#}" />
+        {/if}
+
         </span>
     {/if}
 </div>

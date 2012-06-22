@@ -15,7 +15,8 @@ class Aquarius_Loader {
     var $stages_loaded = array();
 
     var $aquarius;
-    var $db;
+    var $db_legacy;
+    var $db_pear;
     
     
     /** Load aquarius stages by name */
@@ -107,7 +108,7 @@ class Aquarius_Loader {
         $pear_options = &PEAR::getStaticProperty('DB_DataObject','options');
         $dbconf = $this->aquarius->conf('db');
         $pear_options = array(
-            'database'         => 'mysql://'.$dbconf['user'].':'.DB_PASSWORD.'@'.$dbconf['host'].'/'.$dbconf['name'],
+            'database'         => 'mysqli://'.$dbconf['user'].':'.DB_PASSWORD.'@'.$dbconf['host'].'/'.$dbconf['name'],
         //  'database_global'  => 'mysql://'.GLOBALDB_USERNAME.':'.GLOBALDB_PASSWORD.'@'.DB_HOST.'/'.GLOBALDB_DBNAME,
         //  'schema_location'  => PROJECT_INCLUDE_PATH.'lib/db/',
             'ini_'.$dbconf['name'] => $this->core_path.'lib/db/schema.merged.ini', // Explicit schema location
@@ -115,11 +116,13 @@ class Aquarius_Loader {
             'class_prefix'         => 'db_',
             'debug'                => PEARLOGLEVEL
         );
-
+        
         // Force PEAR to initialize the DB connection, we want to use it seperately as well
         $node = DB_DataObject::factory('node');
-        $this->db = new SQLwrap($node->getDatabaseConnection()->connection);
-        $this->db->use_db_charset(); // Just use whatever encoding the DB uses for the connection as well
+        $this->aquarius->db = new DBwrap($node->getDatabaseConnection());
+        
+        // Legacy DB connection
+        $this->db_legacy = new SQLwrap($dbconf['host'], $dbconf['user'], DB_PASSWORD, $dbconf['name']);
     }
     
     function modules() {
@@ -202,7 +205,7 @@ class Aquarius_Loader {
     
     function GLOBALS() {
         $GLOBALS['aquarius'] = $this->aquarius;
-        $GLOBALS['DB'] = $this->db;
+        $GLOBALS['DB'] = $this->db_legacy;
     }
     
     

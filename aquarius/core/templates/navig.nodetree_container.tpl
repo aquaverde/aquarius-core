@@ -9,6 +9,9 @@
     <img src="picts/{$tree.node->icon()}_nav.gif" alt=""/>
     <span class="nodetree_title{if !$tree.node->get_content($lg)} dim{/if}">
         {$nodetitle|truncate:30}
+        {if $tree.node->access_restricted == 1} 
+            &nbsp;<img src="buttons/lock_on.gif" alt="{#s_access_restricted#}" title="{#s_access_restricted#}" style="margin-top:-4px;" />
+        {/if}
     </span>
     {if $action}</a>{/if}
 {if $tree.children|@count > 0}
