@@ -1,3 +1,0 @@
-[submodule "aquarius/adminer"]
-	path = aquarius/adminer
-	url = https://github.com/vrana/adminer.git
