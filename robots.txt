@@ -1,6 +1,0 @@
-User-agent: *
-Disallow: /aquarius/
-Disallow: /cgi-bin/
-Disallow: /lib/
-Disallow: /css/
-
