@@ -6,11 +6,11 @@ Before you commit your changes, please make sure your commit conforms to these r
 Proper commits:
 1. Always add messages to your commits. Example: "remove obsolete method". Commit messages document the reason for the change and what was done. If I write "remove method" you will ask "why?", if I write "obsolete method" you will ask "what's changed?". The why is more important than the what.
 2. Commit separate changes separately. Many small commits are preferred over one big 'fixes everything' commit.
-3. Commits should leave the code in a functional state, if they are work in progress, clearly label them as such. But usually you should not commit incomplete code.
+3. Commits of incomplete code must be kept in a branch
 
 Keep the code clean:
 1. Indent style:
-   - four spaces per level, no tab characters
+   - four spaces per level, no tab characters (sorry)
    - opening brace on same line as control statement:
       function example() {
           if (OTBS) {
@@ -24,6 +24,8 @@ Keep the code clean:
 
 Commenting:
 1. Functions, methods and classes should have a head comment documenting their purpose, parameters and effects. Private methods sometimes do not need this.
-2. Good variable names are preferred over statement comments, and usually sufficient. Superfluous: comments describing what the code does; Sometimes necessary: comments documenting the purpose of a statement.
+2. Good variable names are preferred over statement comments, and usually sufficient. 
+    Superfluous: comments describing what the code does; 
+    Sometimes necessary: comments documenting the purpose of a statement.
 3. If a comment is incorrect or confusing, fix it or remove it. Wrong is worse than none.
 
