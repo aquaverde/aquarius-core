@@ -26,6 +26,7 @@ class action_search extends AdminAction implements DisplayAction {
             // Query the DB
             $searchlike = "'%".mysql_real_escape_string($searchstring)."%'";
             $searchagainst = "AGAINST ('".mysql_real_escape_string($searchstring)."')";
+            $searchname = "'".mysql_real_escape_string($searchstring)."'";
             $node_ids = $DB->listquery("
                 SELECT node_id FROM (
                     SELECT
