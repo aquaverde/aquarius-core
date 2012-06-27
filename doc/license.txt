@@ -71,7 +71,7 @@ SimplePie RSS/Atom library
 Adminer - Database management
     Location: components/adminer
     Source: http://www.adminer.org/
-    Apache License 2.0 or GPL 2
+    Licence: Apache License 2.0 or GPL 2
 
 Minor contributions
 -------------------
