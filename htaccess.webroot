@@ -1,0 +1,11 @@
+RewriteEngine on
+
+RewriteRule ^aquarius(/.*) /aquarius/core/backend$1 [qsappend,last]
+
+RewriteRule / aquarius/core/frontend/index.php [qsappend]
+
+RewriteCond %{DOCUMENT_ROOT}/$1 !-f
+RewriteCond %{DOCUMENT_ROOT}/$1 !-d  
+RewriteRule ^([^/]*)(.*) aquarius/core/frontend/index.php [qsappend]
+
+AddDefaultCharset   utf-8
