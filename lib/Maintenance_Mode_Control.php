@@ -37,7 +37,7 @@ class Maintenance_Mode_Control {
     const auth_file_name = 'AQUARIUS_MAINTENANCE';
 
     static private function auth_file() {
-        $dir = realpath(dirname(__FILE__).'/../..').'/';
+        $dir = realpath(dirname(__FILE__).'/../../cache').'/';
         $file = $dir.self::auth_file_name;
         return $file;
     }
