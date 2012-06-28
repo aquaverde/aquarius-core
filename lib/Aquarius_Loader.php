@@ -40,14 +40,15 @@ class Aquarius_Loader {
     
     /** Find filesystem paths based on the location of this file */
     function find_paths() {
-        $this->core_path = realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR;
-        $this->root_path = realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
+        $this->core_path = realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
+        $this->aquarius_path = realpath($this->core_path.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
+        $this->root_path = realpath($this->core_path.'..'.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
     }
     
     
     function set_include_paths() {
         $this->init('find_paths');
-        $result = set_include_path($this->core_path.PATH_SEPARATOR.$this->core_path.'pear/'.PATH_SEPARATOR.get_include_path());
+        $result = set_include_path($this->core_path.PATH_SEPARATOR.$this->core_path.'lib/pear/'.PATH_SEPARATOR.get_include_path());
         if ($result === false) throw new Exception("Unable to set include path.");
     }
     
@@ -97,6 +98,7 @@ class Aquarius_Loader {
     
 
     function establish_db_connection() {
+        $this->init('class_autoloader'); 
         require 'lib/sql.lib.php';
         require 'DB/DataObject.php';
         
@@ -111,7 +113,7 @@ class Aquarius_Loader {
             'database'         => 'mysqli://'.$dbconf['user'].':'.DB_PASSWORD.'@'.$dbconf['host'].'/'.$dbconf['name'],
         //  'database_global'  => 'mysql://'.GLOBALDB_USERNAME.':'.GLOBALDB_PASSWORD.'@'.DB_HOST.'/'.GLOBALDB_DBNAME,
         //  'schema_location'  => PROJECT_INCLUDE_PATH.'lib/db/',
-            'ini_'.$dbconf['name'] => $this->core_path.'lib/db/schema.merged.ini', // Explicit schema location
+            'ini_'.$dbconf['name'] => $this->aquarius->cache_path().'schema.ini', // Explicit schema location
             'class_location'       => 'lib/db/',
             'class_prefix'         => 'db_',
             'debug'                => PEARLOGLEVEL
@@ -160,7 +162,7 @@ class Aquarius_Loader {
         require_once ('lib/log.php');
 
         Log::$usuallogger = new Logger(
-            $this->core_path.'../cache/log.txt',
+            false,
             Log::INFO,
             Log::NEVER,
             Log::NEVER

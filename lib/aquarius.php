@@ -321,7 +321,7 @@ class Aquarius {
 
     /** Prepare a smarty container */
     function get_smarty_container() {
-        require_once(SMARTY_DIR.'Smarty.class.php');
+        require_once('lib/smarty/Smarty.class.php');
         $smarty = new Smarty();
         $smarty->assign('config', $this->config);
 

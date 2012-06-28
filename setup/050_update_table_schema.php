@@ -20,7 +20,7 @@ $aquarius_loader->init('modules');
 $modules = array_merge($modules, $aquarius->modules);
 
 $current_schema = "";
-$schema_path = $aquarius->core_path."lib/db/schema.merged.ini";
+$schema_path = $aquarius->cache_path()."schema.ini";
 if (file_exists($schema_path)) {
     $current_schema = file_get_contents($schema_path);
 }

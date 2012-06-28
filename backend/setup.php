@@ -10,7 +10,7 @@ ini_set('display_errors', 1);
 
 date_default_timezone_set('UTC');
 
-$install_dir = realpath(dirname(__FILE__).'/..').'/';
+$install_dir = realpath(dirname(__FILE__).'/../..').'/';
 require_once $install_dir.'core/lib/log.php';
 require_once $install_dir.'core/lib/utility.lib.php';
 require_once $install_dir.'core/lib/Maintenance_Mode_Control.php';

@@ -170,8 +170,7 @@ Class Aqua_Update_SQL {
         set_time_limit(0);
         
         // Hack: Make sure all created tables are in UTF8
-        $DB->query("ALTER DATABASE ".$aquarius->conf('db/name')." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
-        $DB->use_db_charset();
+        $DB->query("ALTER DATABASE `".$aquarius->conf('db/name')."` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
         
         // There's a lot that can go wrong when splitting SQL into statements
         // without parsing it properly. We went for simplicity.

@@ -54,7 +54,6 @@ function check_admin() {
 <?
 $paths = array(
     $aquarius->install_path."cache"                         => array('req'=>'must'),
-    $aquarius->install_path."core/lib/db"                   => array('req'=>'should'),
     $aquarius->root_path."download"                         => array('req'=>'should'),
     $aquarius->root_path."pictures"                         => array('req'=>'should'),
     $aquarius->root_path."pictures/content"                 => array('req'=>'should'),
@@ -73,7 +72,7 @@ foreach($paths as $path=>$info) {
             $success = @fclose(@fopen($path."/test.write.permissions", 'a')) && unlink($path."/test.write.permissions");
             if (!$success) {
                 echo "(relaxing permissions) ";
-                $success = chmod($path, 0777);
+                $success = @chmod($path, 0777);
             }
         }
         if ($success) echo "<span style=\"color:green;\">done</span>.";

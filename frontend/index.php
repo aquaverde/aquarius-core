@@ -57,6 +57,8 @@
   * The smarty caching facility is used to cache pages. Pages with identical request variables are served from the smarty cache. Only GET requests are cached, and caching is disabled for users logged into the backend.
   */
 
+require '../lib/init.php';
+  
 try {
     // Start session if needed
     $aquarius->session_start($aquarius->conf('frontend/use_session', false));
