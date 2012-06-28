@@ -38,17 +38,26 @@ class Aquarius_Loader {
     }
     
     
-    /** Find filesystem paths based on the location of this file */
+    /** Find filesystem paths based on the location of this file
+      * 
+      * Note that directory paths are always terminated by a slash, to make
+      * concatenation easier.
+      */
     function find_paths() {
-        $this->core_path = realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
-        $this->aquarius_path = realpath($this->core_path.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
+        $this->core_path = realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
+        $this->aquarius_path = realpath($this->core_path.'..').DIRECTORY_SEPARATOR;
         $this->root_path = realpath($this->core_path.'..'.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
     }
     
     
     function set_include_paths() {
         $this->init('find_paths');
-        $result = set_include_path($this->core_path.PATH_SEPARATOR.$this->core_path.'lib/pear/'.PATH_SEPARATOR.get_include_path());
+        $lib_path = $this->core_path.'lib/';
+        $include_path =     $lib_path
+            .PATH_SEPARATOR.$lib_path.'pear/'
+            .PATH_SEPARATOR.$this->core_path // legacy
+            .PATH_SEPARATOR.get_include_path();
+        $result = set_include_path($include_path);
         if ($result === false) throw new Exception("Unable to set include path.");
     }
     

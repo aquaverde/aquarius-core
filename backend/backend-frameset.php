@@ -1,8 +1,9 @@
-<?
+<?php
 /** Backend frameset
   * @package Aquarius.backend
   */
 
+require '../lib/init.php';
 require 'backend.php';
 
 // We do not need sessions around here, unblock it.
@@ -57,4 +58,3 @@ require_once 'lib/cron.php';
 Cron::run_on_shutdown();
 
 flush_exit();
-?>

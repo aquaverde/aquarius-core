@@ -3,6 +3,7 @@
   * @package Aquarius.backend
   */
 
+require '../lib/init.php';
 require 'backend.php';
 
 // We do not need sessions around here, unblock it.
@@ -55,4 +56,3 @@ $smarty->assign('menu', $menu_entry);
 $smarty->assign('display', $display);
 $smarty->assign('revision', $aquarius->revision());
 $smarty->display('navig.tpl');
-?>

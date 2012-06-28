@@ -1,4 +1,4 @@
-<?
+<?php
 /** Initialization operations for the backend
   * Ensures a logged-in user and initializes some globals.
   * @package Aquarius.backend
@@ -98,4 +98,3 @@ Log::backtrace('backend');
     require_once "lib/db/Users2languages.php";
     require_once "lib/adminaction.php";
     require_once "lib/moduleaction.php";
-?>

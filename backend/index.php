@@ -1,4 +1,2 @@
-<?
-include "../core/init.php";
+<?php
 require "backend-frameset.php";
-?>

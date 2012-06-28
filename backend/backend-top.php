@@ -3,6 +3,7 @@
   * @package Aquarius.backend
   */
 
+require '../lib/init.php';
 require 'backend.php';
 
 // We do not need sessions around here, unblock it.
@@ -25,4 +26,3 @@ $smarty->assign("lg", $lg);
 $smarty->assign("frameset_url", $frameset_url);
 $smarty->assign("languages", db_Users2languages::getLanguagesForUser($user));
 $smarty->display('top.tpl');
-?>

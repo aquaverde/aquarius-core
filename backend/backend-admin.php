@@ -4,6 +4,7 @@
   */
 
 
+require '../lib/init.php';
 require 'backend.php';
 
 require 'lib/AdminMessage.php';
@@ -243,4 +244,3 @@ try {
 }
 
 flush_exit();
-?>

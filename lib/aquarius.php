@@ -55,7 +55,7 @@ class Aquarius {
     /** Return the installed aquarius revision as string
       * Currently, the revision string is read from the file 'revision' in the core path. */
     function revision() {
-        return file_get_contents($this->core_path.'revision');
+        return @file_get_contents($this->core_path.'revision');
     }
 
     /** Load the configuration files into $config
