@@ -12,11 +12,11 @@ class db_Content extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'content';                         // table name
-    public $node_id;                         // int(11)  not_null multiple_key
-    public $id;                              // int(10)  not_null primary_key unsigned auto_increment
-    public $lg;                              // string(6)  
-    public $cache_title;                     // string(750)  multiple_key
-    public $active;                          // int(1)  not_null multiple_key
+    public $node_id;                         // int(11)  not_null multiple_key group_by
+    public $id;                              // int(10)  not_null primary_key unsigned auto_increment group_by
+    public $lg;                              // char(2)  
+    public $cache_title;                     // varchar(250)  multiple_key
+    public $active;                          // tinyint(1)  not_null multiple_key group_by
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Content',$k,$v); }

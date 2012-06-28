@@ -9,20 +9,20 @@ class db_Form_field extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'form_field';                      // table name
-    public $id;                              // int(10)  not_null primary_key unsigned auto_increment
-    public $name;                            // string(750)  not_null multiple_key
-    public $description;                     // string(750)  not_null
-    public $sup1;                            // int(11)  not_null
-    public $sup2;                            // int(11)  not_null
-    public $sup3;                            // string(750)  not_null
-    public $sup4;                            // string(750)  not_null
-    public $weight;                          // int(10)  not_null multiple_key unsigned
-    public $type;                            // string(765)  multiple_key
-    public $form_id;                         // int(10)  not_null multiple_key unsigned
-    public $multi;                           // int(1)  not_null
-    public $language_independent;            // int(1)  not_null multiple_key
-    public $add_to_title;                    // int(1)  not_null
-    public $permission_level;                // int(11)  not_null
+    public $id;                              // int(10)  not_null primary_key unsigned auto_increment group_by
+    public $name;                            // varchar(250)  not_null multiple_key
+    public $description;                     // varchar(250)  not_null
+    public $sup1;                            // int(11)  not_null group_by
+    public $sup2;                            // int(11)  not_null group_by
+    public $sup3;                            // varchar(250)  not_null
+    public $sup4;                            // varchar(250)  not_null
+    public $weight;                          // int(10)  not_null multiple_key unsigned group_by
+    public $type;                            // varchar(255)  multiple_key
+    public $form_id;                         // int(10)  not_null multiple_key unsigned group_by
+    public $multi;                           // tinyint(1)  not_null group_by
+    public $language_independent;            // tinyint(1)  not_null multiple_key group_by
+    public $add_to_title;                    // tinyint(1)  not_null group_by
+    public $permission_level;                // int(11)  not_null group_by
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Form_field',$k,$v); }

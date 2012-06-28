@@ -4,16 +4,16 @@
 /** Frontend users
   * mainly used for access_restricted nodes
   */
-class db_Fe_users extends DB_DataObject
+class db_Fe_users extends DB_DataObject 
 {
     ###START_AUTOCODE
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'fe_users';                        // table name
-    public $id;                              // int(11)  not_null primary_key auto_increment
-    public $password;                        // string(765)  not_null
-    public $name;                            // string(300)  not_null
-    public $active;                          // int(1)  not_null
+    public $id;                              // int(11)  not_null primary_key auto_increment group_by
+    public $password;                        // varchar(255)  not_null
+    public $name;                            // varchar(100)  not_null
+    public $active;                          // tinyint(1)  not_null group_by
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Fe_users',$k,$v); }

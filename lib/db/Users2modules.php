@@ -8,8 +8,8 @@ class db_Users2modules extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'users2modules';                   // table name
-    public $userId;                          // int(11)  not_null primary_key
-    public $moduleId;                        // int(11)  not_null primary_key
+    public $userId;                          // int(11)  not_null primary_key group_by
+    public $moduleId;                        // int(11)  not_null primary_key group_by
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Users2modules',$k,$v); }

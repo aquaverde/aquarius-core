@@ -10,8 +10,8 @@ class db_Message extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'message';                         // table name
-    public $message_id;                      // int(11)  not_null primary_key auto_increment
-    public $text;                            // blob(196605)  not_null blob
+    public $message_id;                      // int(11)  not_null primary_key auto_increment group_by
+    public $text;                            // blob(65535)  not_null blob
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Message',$k,$v); }

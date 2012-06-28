@@ -11,10 +11,10 @@ class db_Languages extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'languages';                       // table name
-    public $lg;                              // string(6)  not_null primary_key
-    public $name;                            // string(150)  not_null
-    public $weight;                          // int(10)  not_null multiple_key unsigned
-    public $active;                          // int(1)  not_null multiple_key
+    public $lg;                              // char(2)  not_null primary_key
+    public $name;                            // varchar(50)  not_null
+    public $weight;                          // int(10)  not_null multiple_key unsigned group_by
+    public $active;                          // tinyint(1)  not_null multiple_key group_by
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Languages',$k,$v); }

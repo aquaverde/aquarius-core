@@ -9,10 +9,10 @@ class db_Journal extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'journal';                         // table name
-    public $id;                              // int(11)  not_null primary_key auto_increment
-    public $content_id;                      // int(11)  not_null
-    public $user_id;                         // int(11)  not_null
-    public $last_change;                     // int(11)  not_null
+    public $id;                              // int(11)  not_null primary_key auto_increment group_by
+    public $content_id;                      // int(11)  not_null multiple_key group_by
+    public $user_id;                         // int(11)  not_null multiple_key group_by
+    public $last_change;                     // int(11)  not_null multiple_key group_by
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Journal',$k,$v); }

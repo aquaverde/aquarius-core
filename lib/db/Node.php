@@ -21,28 +21,28 @@ class db_Node extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'node';                            // table name
-    public $id;                              // int(10)  not_null primary_key unsigned auto_increment
-    public $name;                            // string(750)  multiple_key
-    public $parent_id;                       // int(10)  not_null multiple_key unsigned
-    public $form_id;                         // int(10)  multiple_key unsigned
-    public $childform_id;                    // int(10)  multiple_key unsigned
-    public $contentform_id;                  // int(10)  multiple_key unsigned
-    public $box_depth;                       // int(10)  not_null multiple_key unsigned
-    public $weight;                          // int(10)  not_null multiple_key unsigned
-    public $access_restricted;               // int(1)  not_null multiple_key
-    public $created;                         // timestamp(19)  not_null unsigned zerofill binary
-    public $last_change;                     // int(10)  unsigned
-    public $active;                          // int(1)  not_null multiple_key
-    public $title;                           // string(750)  
-    public $cache_active;                    // int(1)  multiple_key
-    public $cache_childform_id;              // int(11)  multiple_key
-    public $cache_contentform_id;            // int(11)  multiple_key
-    public $cache_form_id;                   // int(11)  multiple_key
-    public $cache_depth;                     // int(11)  multiple_key
-    public $cache_box_depth;                 // int(11)  multiple_key
-    public $cache_access_restricted_node_id;    // int(11)  multiple_key
-    public $cache_left_index;                // int(11)  multiple_key
-    public $cache_right_index;               // int(11)  multiple_key
+    public $id;                              // int(10)  not_null primary_key unsigned auto_increment group_by
+    public $name;                            // varchar(250)  multiple_key
+    public $parent_id;                       // int(10)  not_null multiple_key unsigned group_by
+    public $form_id;                         // int(10)  multiple_key unsigned group_by
+    public $childform_id;                    // int(10)  multiple_key unsigned group_by
+    public $contentform_id;                  // int(10)  multiple_key unsigned group_by
+    public $box_depth;                       // int(10)  not_null multiple_key unsigned group_by
+    public $weight;                          // int(10)  not_null multiple_key unsigned group_by
+    public $access_restricted;               // tinyint(1)  not_null multiple_key group_by
+    public $created;                         // timestamp(19)  not_null unsigned zerofill
+    public $last_change;                     // int(10)  unsigned group_by
+    public $active;                          // tinyint(1)  not_null multiple_key group_by
+    public $title;                           // varchar(250)  
+    public $cache_active;                    // tinyint(1)  multiple_key group_by
+    public $cache_childform_id;              // int(11)  multiple_key group_by
+    public $cache_contentform_id;            // int(11)  multiple_key group_by
+    public $cache_form_id;                   // int(11)  multiple_key group_by
+    public $cache_depth;                     // int(11)  multiple_key group_by
+    public $cache_box_depth;                 // int(11)  multiple_key group_by
+    public $cache_access_restricted_node_id;    // int(11)  multiple_key group_by
+    public $cache_left_index;                // int(11)  multiple_key group_by
+    public $cache_right_index;               // int(11)  multiple_key group_by
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Node',$k,$v); }

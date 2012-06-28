@@ -9,10 +9,10 @@ class db_Content_field_value extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'content_field_value';             // table name
-    public $id;                              // int(11)  not_null primary_key auto_increment
-    public $content_field_id;                // int(11)  not_null multiple_key
-    public $name;                            // string(750)  multiple_key
-    public $value;                           // blob(196605)  not_null multiple_key blob
+    public $id;                              // int(11)  not_null primary_key auto_increment group_by
+    public $content_field_id;                // int(11)  not_null multiple_key group_by
+    public $name;                            // varchar(250)  multiple_key
+    public $value;                           // blob(65535)  not_null multiple_key blob
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Content_field_value',$k,$v); }

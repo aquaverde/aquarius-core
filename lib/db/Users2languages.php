@@ -9,9 +9,9 @@ class db_Users2languages extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'users2languages';                 // table name
-    public $id;                              // int(11)  not_null primary_key auto_increment
-    public $userId;                          // int(11)  not_null multiple_key
-    public $lg;                              // string(6)  not_null
+    public $id;                              // int(11)  not_null primary_key auto_increment group_by
+    public $userId;                          // int(11)  not_null multiple_key group_by
+    public $lg;                              // char(2)  not_null
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Users2languages',$k,$v); }

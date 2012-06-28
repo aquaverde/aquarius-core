@@ -10,10 +10,10 @@ class db_Modules extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'modules';                         // table name
-    public $id;                              // int(11)  not_null primary_key auto_increment
-    public $short;                           // string(750)  not_null
-    public $name;                            // string(750)  not_null
-    public $active;                          // int(1)  not_null
+    public $id;                              // int(11)  not_null primary_key auto_increment group_by
+    public $short;                           // varchar(250)  not_null
+    public $name;                            // varchar(250)  not_null
+    public $active;                          // tinyint(1)  not_null group_by
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Modules',$k,$v); }

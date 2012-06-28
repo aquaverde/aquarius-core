@@ -8,15 +8,15 @@ class db_Form extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'form';                            // table name
-    public $id;                              // int(11)  not_null primary_key unsigned auto_increment
-    public $title;                           // string(450)  not_null
-    public $template;                        // string(450)  
-    public $sort_by;                         // string(90)  
-    public $sort_reverse;                    // int(1)  not_null
-    public $fall_through;                    // string(24)  not_null enum
-    public $show_in_menu;                    // int(1)  not_null multiple_key
-    public $fieldgroup_selection_id;         // int(11)  multiple_key
-    public $permission_level;                // int(11)  not_null
+    public $id;                              // int(11)  not_null primary_key unsigned auto_increment group_by
+    public $title;                           // varchar(150)  not_null
+    public $template;                        // varchar(150)  
+    public $sort_by;                         // varchar(30)  
+    public $sort_reverse;                    // tinyint(1)  not_null group_by
+    public $fall_through;                    // char(8)  not_null
+    public $show_in_menu;                    // tinyint(1)  not_null multiple_key group_by
+    public $fieldgroup_selection_id;         // int(11)  multiple_key group_by
+    public $permission_level;                // int(11)  not_null group_by
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Form',$k,$v); }

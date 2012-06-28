@@ -9,8 +9,8 @@ class db_Fe_groups2user extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'fe_groups2user';                  // table name
-    public $user_id;                         // int(11)  not_null primary_key
-    public $group_id;                        // int(11)  not_null primary_key
+    public $user_id;                         // int(11)  not_null primary_key group_by
+    public $group_id;                        // int(11)  not_null primary_key group_by
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Fe_groups2user',$k,$v); }

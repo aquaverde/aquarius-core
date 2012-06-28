@@ -10,9 +10,9 @@ class db_Fieldgroup_selection extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'fieldgroup_selection';            // table name
-    public $fieldgroup_selection_id;         // int(11)  not_null primary_key auto_increment
-    public $name;                            // string(765)  not_null
-    public $is_standard;                     // int(1)  not_null
+    public $fieldgroup_selection_id;         // int(11)  not_null primary_key auto_increment group_by
+    public $name;                            // varchar(255)  not_null
+    public $is_standard;                     // tinyint(1)  not_null group_by
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Fieldgroup_selection',$k,$v); }

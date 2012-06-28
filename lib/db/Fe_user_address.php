@@ -9,8 +9,8 @@ class db_Fe_user_address extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'fe_user_address';                 // table name
-    public $fe_user_id;                      // int(11)  not_null primary_key
-    public $fe_address_id;                   // int(11)  not_null primary_key
+    public $fe_user_id;                      // int(11)  not_null primary_key group_by
+    public $fe_address_id;                   // int(11)  not_null primary_key group_by
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Fe_user_address',$k,$v); }
