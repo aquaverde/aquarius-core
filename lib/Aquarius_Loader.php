@@ -123,7 +123,7 @@ class Aquarius_Loader {
         //  'database_global'  => 'mysql://'.GLOBALDB_USERNAME.':'.GLOBALDB_PASSWORD.'@'.DB_HOST.'/'.GLOBALDB_DBNAME,
         //  'schema_location'  => PROJECT_INCLUDE_PATH.'lib/db/',
             'ini_'.$dbconf['name'] => $this->aquarius->cache_path().'schema.ini', // Explicit schema location
-            'class_location'       => $this->core_path.'lib/db/',
+            'class_location'       => 'db/',
             'class_prefix'         => 'db_',
             'debug'                => PEARLOGLEVEL
         );

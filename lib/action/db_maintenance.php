@@ -57,6 +57,12 @@ class action_db_maintenance_generate_classes extends action_db_maintenance imple
     function process($aquarius, $post, $result) {
         // Load the Generator
         require_once ("DB/DataObject/Generator.php");
+        
+        // Because the generator can't deal with a path relative to the include
+        // paths, we have to give it an explicite path.
+        $pear_options = &PEAR::getStaticProperty('DB_DataObject','options');
+        $pear_options['class_location'] = $aquarius->core_path.'lib/db/';
+        
         $generator = new DB_DataObject_Generator;
         $generator->start();
         Log::info('Updated DB_DataObject classes.');
