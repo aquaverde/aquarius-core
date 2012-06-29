@@ -1,20 +1,17 @@
 #!/usr/bin/env php5
-<?
+<?php
 /*
 
 Wrapper to execute SQL statements on DB configured in config.local.php
 
 */
-
-require_once "../../config.local.php";
+require_once dirname(__FILE__)."/../../config.local.php";
 
 $options = array(
-	'--host='.DB_HOST,
-	'--password='.DB_PASSWORD,
-	'--user='.DB_USERNAME,
-	DB_NAME
+	'--host='.$config['db']['host'],
+	'--password='.$config['db']['pass'],
+	'--user='.$config['db']['user'],
+	$config['db']['name']
 );
 
 system('mysql '.join(' ', $options));
-
-?>

@@ -1,5 +1,5 @@
 #!/usr/bin/env php5
-<?
+<?php
 /*
 
 Wrapper to dump all data from database configured in config.local.php
