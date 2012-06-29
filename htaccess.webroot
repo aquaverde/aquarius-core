@@ -1,11 +1,20 @@
+# Aquarius rules AUTOREPLACE
+# These lines are added automatically by Aquarius setup to the .htaccess file
+# in the webroot. If you want to customize them, edit the .htaccess and remove
+# the AUTOREPLACE word. (Keep the "Aquarius rules" comment or the rules will be
+# added a second time on the next update.)
 RewriteEngine on
 
-RewriteRule ^aquarius(/.*) /aquarius/core/backend$1 [qsappend,last]
+RewriteRule ^aquarius/admin(/?.*) /aquarius/core/backend$1 [qsappend,last]
+RewriteRule ^admin/? /aquarius/admin/ [R,last]
 
-RewriteRule / aquarius/core/frontend/index.php [qsappend]
+RewriteRule ^slir(/.*) /aquarius/core/components/slir$1 [qsappend,last]
+
+RewriteRule ^$ aquarius/core/frontend/index.php [qsappend,last]
 
 RewriteCond %{DOCUMENT_ROOT}/$1 !-f
 RewriteCond %{DOCUMENT_ROOT}/$1 !-d  
-RewriteRule ^([^/]*)(.*) aquarius/core/frontend/index.php [qsappend]
+RewriteRule ([^/]*)(.*) aquarius/core/frontend/index.php [qsappend,last]
 
-AddDefaultCharset   utf-8
+AddDefaultCharset utf-8
+# End of Aquarius rules

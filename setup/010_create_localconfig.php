@@ -1,4 +1,4 @@
-<?
+<?php
 /** Add site-specific keys to local config */
 
 $localconf_file = $install_dir.'config.local.php';
