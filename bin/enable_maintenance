@@ -1,6 +1,11 @@
 #!/bin/sh
 # enable maintenance mode
 # Optional argument is an IP-Address to restrict to.
+
+# Find date 2 hours from now. First try GNU date, then try BSD (for the iCrowd)
+expiration_date=`date --date='+2 hours' +"%Y.%m.%d %H:%M"`||`date -v+2H +"%Y.%m.%d %H:%M"`
+
 set -e
-cd `dirname $0`/../../cache/
-date --date='+2 hours' +"%Y.%m.%d %H:%M, ${1:-*}, *" > AQUARIUS_MAINTENANCE
+dir=`dirname $0`/../../cache/
+mkdir -p "$dir"
+echo "$expiration_date, ${1:-*}, *" > "$dir/AQUARIUS_MAINTENANCE"
