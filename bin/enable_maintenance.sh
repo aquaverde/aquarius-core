@@ -1,5 +1,6 @@
 #!/bin/sh
-# enable maintenance for all hosts for two hours
+# enable maintenance mode
+# Optional argument is an IP-Address to restrict to.
 set -e
 cd `dirname $0`/../../cache/
-date --date='+2 hours' +"%Y.%m.%d %H:%M, *, *" > AQUARIUS_MAINTENANCE
+date --date='+2 hours' +"%Y.%m.%d %H:%M, ${1:-*}, *" > AQUARIUS_MAINTENANCE
