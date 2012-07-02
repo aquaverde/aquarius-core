@@ -322,7 +322,7 @@ class db_Node extends DB_DataObject
             default:
                 Log::warn("Found ".count($urlchilds)." childs for node $this->id that have urltitle '$urltitle'; picking one.");
         }
-        return self::staticGet(array_shift($urlchilds));
+        return self::staticGet(array_shift($urlchildren));
     }
     
     /** Builds an identifier for this node suitable for URLs. Uses the node's urltitle if defined, else it's built from the node's id and title. */
