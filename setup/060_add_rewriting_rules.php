@@ -12,10 +12,15 @@ if (file_exists($htf)) {
 $replace_contents = $contents;
 if (preg_match('/# Aquarius rules/', $contents)) {
     $message = 'Replaced rewriting rules in .htaccess in webroot';
-    $replace_contents = preg_replace('/# Aquarius rules AUTOREPLACE.*# End of Aquarius rules\s?/s', $template_contents, $contents);
+    $pieces = preg_split('/# Aquarius rules AUTOREPLACE.*# End of Aquarius rules\s?/s', $contents, 2);
+    if (count($pieces) == 2) {
+        $replace_contents = $pieces[0].$template_contents.$pieces[1];
+    } else {
+        // Do not replace because the AUTOREPLACE keyword was missing
+    }
 } else {
     $message = 'Added Aquarius rewriting rules to .htaccess-file in webroot';
-    $replace_contents = $template_contents;
+    $replace_contents = "$contents\n$template_contents";
 }
 
 if ($replace_contents !== $contents) {
