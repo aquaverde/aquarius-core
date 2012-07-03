@@ -41,7 +41,8 @@ class Module {
         }
 
         // Add the module dir to PHP's path
-        set_include_path(get_include_path().PATH_SEPARATOR.$this->path);
+        set_include_path(get_include_path().PATH_SEPARATOR.$this->path); // Deprecated
+        set_include_path(get_include_path().PATH_SEPARATOR.$this->path.'lib/');
 
         // Register the specified hooks
         foreach($this->register_hooks as $hook_name) {
