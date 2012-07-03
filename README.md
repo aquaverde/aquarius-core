@@ -8,7 +8,8 @@ see doc/requirements.txt
 
 
 # Installation
-see doc/aquadoc.txt
+Have a look at the [blank aquarius template](http://github.com/aquaverde/aquarius-blank)
+repository. Installing from scratch is not documented.
 
 
 # Documentation
