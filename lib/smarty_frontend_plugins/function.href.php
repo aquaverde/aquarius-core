@@ -1,4 +1,4 @@
-<?
+<?php
 /** Make a reference to a node.
   * Parameters:
   *     node: Node to be referenced, can be a node object or a node id
@@ -9,6 +9,10 @@
   *     escape: whether returned URL should be escaped (&amp;), default true
                 if this is the string 'url', urlencode() is used
   *     var: assign URL to var
+  *     asobject: Flag to Pass the URL as object, not string. This allows
+  *               accessing individual properties like 'anchor'. This is not
+  *               preset because PHP toString()-support is shaky. It also
+  *               requires that escape=false.
   *
   * If there's no content for the desired language, this function returns a reference to the next parent that has content in this language.
   *
@@ -57,7 +61,12 @@ function smarty_function_href($params, $smarty) {
         }
     }
 
-    $urlstr = $url->str(false);
+    $asobject = (bool)get($params, 'asobject', false);
+    if ($asobject) {
+        $urlstr = $url;
+    } else {
+        $urlstr = $url->str(false);
+    }
     $escape = get($params, 'escape', true);
     if ($escape === 'url') {
         $urlstr = urlencode($urlstr);
@@ -70,4 +79,3 @@ function smarty_function_href($params, $smarty) {
         return $urlstr;
     }
 }
-?>
