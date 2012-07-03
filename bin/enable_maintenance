@@ -6,6 +6,5 @@
 expiration_date=`date --date='+2 hours' +"%Y.%m.%d %H:%M"`||`date -v+2H +"%Y.%m.%d %H:%M"`
 
 set -e
-dir=`dirname $0`/../../cache/
-mkdir -p "$dir"
+dir=`dirname $0`/../..
 echo "$expiration_date, ${1:-*}, *" > "$dir/AQUARIUS_MAINTENANCE"
