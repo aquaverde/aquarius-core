@@ -4,9 +4,15 @@
 class DBwrap {
     var $connection;
 
-    /** The connection will be opened as soon as it is actually used. */
+    /** Create a connection wrapper for the given PEAR DB connection */
     function __construct($connection) {
         $this->connection = $connection;
+    }
+    
+    /** No arguing, just use utf8 on the connection */
+    function reset_charset() {
+        $this->query("SET CHARACTER SET utf8");
+        $this->query("SET NAMES utf8");
     }
 
     /** Run a plain SQL query

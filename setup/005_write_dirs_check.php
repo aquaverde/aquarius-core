@@ -5,7 +5,7 @@ foreach($require_writable as $dir) {
     $fulldir = $install_dir.$dir;
     if (!is_dir($fulldir)) {
         $success = mkdir($fulldir);
-        if ($success) message("Aquarius ".($dir?"'$dir'":"")." directory created. ($fulldir)");
+        if ($success) message('', "Aquarius ".($dir?"'$dir'":"")." directory created. ($fulldir)");
         else {
             message('warn', "Unable to create Aquarius directory ".($dir?"'$dir'":"").", full path $fulldir.");
             $halt = true;
