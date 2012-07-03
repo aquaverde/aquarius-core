@@ -1,4 +1,4 @@
-<?
+<?php
 /** Enable, disable, and check for maintenance mode.
   *
   * Some operations (installation/updates) cannot rely on the authentiaction 
@@ -7,11 +7,15 @@
   * security on otherwise public scripts, these operations rely on maintenance-
   * mode.
   *
-  * Maintenance mode depends on the following:
+  * Maintenance mode may be enabled by creating a special file. There is a
+  * relatively secure method, and a casual method for occasions where you are
+  * developing on a local system (or you don't care).
+  * 
+  * The quite secure way requires that:
   *   - the file 'AQUARIUS_MAINTENANCE' exists in the install-directory and contains
   *     three strings separated by comma
   *
-  *   - time limit: the first string is a UTC timestamp of the form YY.mm.dd hh:mm.
+  *   - time limit: the first string is an UTC timestamp of the form YY.mm.dd hh:mm.
   *     The specified timestamp lies in the future, but no more than 24h.
   *
   *   - host: the second value must match the string '*' or PHP's 
@@ -19,10 +23,15 @@
   *
   *   - cookie: the third value must match the string '*' or the request
   *     variable 'aquarius_maintenance'
-  *
+  * 
   * The timestamp is mandatory to avoid unlimited open doors. Whitespace is
   * trimmed.
-  *
+  * 
+  * The casual way requires that:
+  *   - a file 'AQUARIUS_MAINTENANCE.CASUAL' exists in the install directory
+  * 
+  *   - the file's change-date is less than two hours old.
+  * 
   * Example contents for AQUARIUS_MAINTENANCE:
   *   Permit all clients between the 2010.05.11 13:14 and 2010.05.12 13:14:
   *     2010.05.12 13:14, *, *
@@ -35,10 +44,11 @@
   */
 class Maintenance_Mode_Control {
     const auth_file_name = 'AQUARIUS_MAINTENANCE';
+    const casual_file_name = 'AQUARIUS_MAINTENANCE.CASUAL';
 
-    static private function auth_file() {
-        $dir = realpath(dirname(__FILE__).'/../../cache').'/';
-        $file = $dir.self::auth_file_name;
+    static private function auth_file($casual=false) {
+        $dir = realpath(dirname(__FILE__).'/../..').'/';
+        $file = $dir.($casual ? self::casual_file_name : self::auth_file_name);
         return $file;
     }
 
@@ -47,7 +57,13 @@ class Maintenance_Mode_Control {
       * The returned status code is one of -1 (mode not active), 0 (mode active but not for this request), and 1 (mode active for this request).
       * Only status 1 indicates that the user agent should be allowed to start maintenance operations. */
     static function validate() {
-        
+        $casual_file = self::auth_file(true);
+        if (file_exists($casual_file)) {
+            $cdate   = filemtime($casual_file);
+            if (is_numeric($cdate) && $cdate > strtotime('-2 hours')) {
+                return array(1, "Casual maintenance mode active.");
+            }
+        }
     
         $auth_file = self::auth_file();
         if (!file_exists($auth_file)) {
