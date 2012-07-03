@@ -1,10 +1,17 @@
-#!/bin/sh
+#!/usr/bin/env php5
+<?php
+
 # enable maintenance mode
 # Optional argument is an IP-Address to restrict to.
 
-# Find date 2 hours from now. First try GNU date, then try BSD (for the iCrowd)
-expiration_date=`date --date='+2 hours' +"%Y.%m.%d %H:%M"`||`date -v+2H +"%Y.%m.%d %H:%M"`
+require_once dirname(__FILE__)."/../lib/Maintenance_Mode_Control.php";
 
-set -e
-dir=`dirname $0`/../..
-echo "$expiration_date, ${1:-*}, *" > "$dir/AQUARIUS_MAINTENANCE"
+$host = false;
+if ($argc > 1) {
+    $host = $argv[1];
+}
+
+date_default_timezone_set('UTC');
+$result = Maintenance_Mode_Control::enable(2, $host, false);
+
+echo "Maintenance mode active until ".$result['datestr']."\n";

@@ -41,6 +41,9 @@
   *
   *   Permit for clients providing key '45wyrthfgcbv'
   *     2010.05.12 13:14, *, 45wyrthfgcbv
+  * 
+  * All timestamps read and written by this class are UTC, to avoid any
+  * confusion regarding DST or reconfiguration of timezone.
   */
 class Maintenance_Mode_Control {
     const auth_file_name = 'AQUARIUS_MAINTENANCE';
@@ -51,6 +54,7 @@ class Maintenance_Mode_Control {
         $file = $dir.($casual ? self::casual_file_name : self::auth_file_name);
         return $file;
     }
+
 
     /** Determine whether maintenance mode is active.
       * @return an array with status code and reason string
@@ -79,11 +83,16 @@ class Maintenance_Mode_Control {
         if (count($secrecs) != 3) {
             return array(-1, self::auth_file_name." format error");
         }
-
+    
+        // Is there a better way? There should be.
+        $orig_zone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
         $date = parse_date($secrecs[0], '%Y.%m.%d %H:%M');
+        date_default_timezone_set($orig_zone);
+        
         if (!$date)                      return array(-1, "Date format error.");
         if ($date < time())              return array(-1, "Setup time is over.");
-        if (strtotime('+1 day', gmdate('U')) < $date) return array( 0, "Setup time is not here yet.");
+        if (time()+24*3600 < $date) return array( 0, "Setup time is not here yet.");
 
         if ($secrecs[1] !== '*' && $secrecs[1] !== $_SERVER['REMOTE_ADDR']) {
             return array(0, 'Host '.$_SERVER['REMOTE_ADDR'].' not permitted.');
@@ -106,22 +115,49 @@ class Maintenance_Mode_Control {
     }
 
 
-    /** Start maintenance mode for this client */
-    static function enable($hours) {
-        $host = $_SERVER['REMOTE_ADDR'];
-        $key  = base_convert(mt_rand(0x1679616, 0x39AA3FF), 10, 36);
-
+    /** Start maintenance mode for this client
+      * @param $hours for how long to activate maintenance mode
+      * @param $host  to what host to restrict to, the connecting host is used
+      *               when left unspecified. Set to false to allow all hosts.
+      * @param $key   the key to set in the cookie, generated randomly when left
+      *               unspecified. Set to false to leave unset. */
+    static function enable($hours, $host=null, $key=null) {
+        if ($host === false) {
+            $host = '*';
+        } else {
+            if ($host === null) {
+                $host = $_SERVER['REMOTE_ADDR'];
+            }
+        }
+        
+        $setcookie = $key !== false;
+        if (!$setcookie) {
+            $key = '*';
+        } else {
+            if ($key === null) {
+                $key = base_convert(mt_rand(0x1679616, 0x39AA3FF), 10, 36);
+            }   
+        }
+        
         $hours = min(24, max(1, intval($hours)));
-        $end_date = strtotime("+$hours hours", gmdate('U'));
+        
+        // Is there a better way? There should be.
+        $orig_zone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+        $end_date = strtotime("+$hours hours");
         $datestr = strftime('%Y.%m.%d %H:%M', $end_date);
+        date_default_timezone_set($orig_zone);
 
-        setcookie('AQUARIUS_MAINTENANCE', $key, $end_date, '/');
+        if ($setcookie) {
+            setcookie('AQUARIUS_MAINTENANCE', $key, $end_date, '/');
+        }
 
         $auth_file = self::auth_file();
         $auth_string = "$datestr, $host, $key";
         $result = file_put_contents($auth_file, $auth_string);
         if (!$result) throw new Exception("Unable to write '$auth_string' to $auth_file");
 
+        $datestr = $datestr.' UTC';
         return compact('host', 'key', 'end_date', 'datestr');
     }
 
