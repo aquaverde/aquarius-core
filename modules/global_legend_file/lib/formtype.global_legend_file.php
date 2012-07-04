@@ -5,10 +5,24 @@ class Formtype_global_legend_file extends Formtype_File {
     /** Add js code to dynamically load legend when picture changes */
     function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
         parent::pre_contentedit($node, $content, $formtype, $formfield, $valobject);
-
-        // The bad and the ugly
-        $valobject->extra_js_includes []= 'formfield.global_legend_file.js.tpl';
-        $valobject->legend_load_action = Action::make('file_ajax_legend', $content->lg);
+        // Only add the JS when the full field is being loaded.
+        if ($content) {
+            /* Background to this hack: The legend is loaded dynamically, when a
+               file is selected. Now this must not be done when an additional
+               row is loaded with action_file_ajax_empty_row. So... how do we
+               know who's asking? If only PHP had a COMEFROM statement. (Sorry,
+               that was in bad taste.)
+            
+               It's actually easy. Since the empty_row action does not know what
+               content it's rendering for, the $content parameter is empty, and
+               we act on this by only adding the JS when $content is passed,
+               meaning the full field is being rendered. This is bad on many
+               levels and it is set up to fail.
+            */
+            // The bad and the ugly
+            $valobject->extra_js_includes []= 'formfield.global_legend_file.js.tpl';
+            $valobject->legend_load_action = Action::make('file_ajax_legend', $content->lg);
+        }
     }
 
     /** Save legend into 'file_legend' table and do not pass through to DB */
