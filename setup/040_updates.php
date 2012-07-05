@@ -45,9 +45,15 @@ $available_updates = array();
 
 foreach(array('init', 'update') as $step) {
     // Hack: make $aquarius look like a module for our purposes
-    $aquarius->path = $aquarius->core_path;
     $aquarius->short = 'core';
-    $found_updates = find_and_apply($step, $aquarius, $requested_updates);
+    
+    // Now init scripts may also come with the template repository, so we
+    // search both locations and merge the found updates
+    $found_updates = array();
+    foreach(array($aquarius->install_path, $aquarius->core_path) as $path) {
+        $aquarius->path = $path;
+        $found_updates = array_merge_recursive($found_updates, find_and_apply($step, $aquarius, $requested_updates));
+    }
     if ($found_updates) {
         $available_updates[$step] = $found_updates;
         $halt = true;
