@@ -87,8 +87,7 @@ function find_and_apply($step, $module, $requested_updates) {
     
     $update_candidates = Aqua_Update::load_updates($updates_path);
         
-    global $aquarius; 
-    global $DB;
+    global $aquarius;
         
     if (count($update_candidates) > 0) {
         // Check whether running initialization was requested
@@ -103,7 +102,7 @@ function find_and_apply($step, $module, $requested_updates) {
                 $update_log_entry->name   = ($step=='init'? '*** ' : '').$update_name;
                 
                 try {
-                    $update->apply($aquarius, $DB, $module);
+                    $update->apply($aquarius, $module);
                 } catch(Exception $e) {
                     $update_log_entry->success = false;
                     message('warn', "Failed applying update '$update_name' for $short. Message: ".$e->getMessage());
@@ -118,7 +117,7 @@ function find_and_apply($step, $module, $requested_updates) {
             }
         }
 
-        $have_log_table = $DB->singlequery("
+        $have_log_table = $aquarius->db->singlequery("
             SELECT COUNT(*) AS count 
             FROM information_schema.tables 
             WHERE table_schema = DATABASE() 
@@ -171,12 +170,12 @@ Class Aqua_Update_SQL {
         $this->update_file = $path;
     }
 
-    function apply($aquarius, $DB, $module) {
+    function apply($aquarius, $module) {
         // This could take a while...
         set_time_limit(0);
         
         // Hack: Make sure all created tables are in UTF8
-        $DB->query("ALTER DATABASE `".$aquarius->conf('db/name')."` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
+        $aquarius->db->query("ALTER DATABASE `".$aquarius->conf('db/name')."` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
         
         // There's a lot that can go wrong when splitting SQL into statements
         // without parsing it properly. We went for simplicity.
@@ -192,7 +191,7 @@ Class Aqua_Update_SQL {
                 // The file is split where semicolons terminate a line (ignoring
                 // comments)
                 if (preg_match("/;\s*(--.*)?\$/", $sql_line)) {
-                    $DB->query($query);
+                    $aquarius->db->query($query);
                     $query = "";
                 }
             }
@@ -206,7 +205,7 @@ Class Aqua_Update_PHP {
         $this->update_file = $path;
     }
 
-    function apply($aquarius, $DB, $module) {
+    function apply($aquarius, $module) {
         include $this->update_file;
     }
 }
