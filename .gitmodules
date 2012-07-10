@@ -1,3 +1,6 @@
 [submodule "components/adminer"]
 	path = components/adminer
 	url = https://github.com/vrana/adminer.git
+[submodule "components/minify"]
+	path = components/minify
+	url = git://github.com/mrclay/minify.git
