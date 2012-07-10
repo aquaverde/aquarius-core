@@ -60,7 +60,7 @@ foreach(array('init', 'update') as $step) {
     }
 }
     
-$have_modules_table = $DB->singlequery("
+$have_modules_table = $aquarius->db->singlequery("
     SELECT COUNT(*) AS count 
     FROM information_schema.tables 
     WHERE table_schema = DATABASE() 
@@ -126,7 +126,7 @@ function find_and_apply($step, $module, $requested_updates) {
         
 
         if ($have_log_table) {
-            $last_update = $DB->singlequery("SELECT name FROM update_log WHERE module = '$short' ORDER BY name DESC LIMIT 1");
+            $last_update = $aquarius->db->singlequery("SELECT name FROM update_log WHERE module = '$short' ORDER BY name DESC LIMIT 1");
             if ($step == 'init') {
                 if (!$last_update) {
                     $available_updates[$short] = $update_candidates;
