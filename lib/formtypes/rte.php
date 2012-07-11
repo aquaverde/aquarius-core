@@ -40,7 +40,7 @@ class Formtype_RTE extends Formtype {
         $empty = $empty && stripos($val, '<object') === FALSE;
         $empty = $empty && stripos($val, '<iframe') === FALSE;
         
-        return $empty ? '' : array($val);
+        return $empty ? array() : array($val);
     }
 
 	function db_get($values, $form_field) {
