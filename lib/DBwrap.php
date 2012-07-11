@@ -26,7 +26,7 @@ class DBwrap {
         $result = $this->connection->execute($this->connection->prepare($query), $data);
 
         // Log resulting rows, or affected rows for non-selects
-        if (stripos($query[0], 'select') === 0) {
+        if (stripos($query, 'select') === 0) {
             Log::sql($result->numRows()." rows in result.");
         } else {
             Log::sql($this->connection->affectedRows()." rows affected.");
