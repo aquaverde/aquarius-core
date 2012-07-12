@@ -11,13 +11,19 @@ class SQLwrap {
     /** The connection will be opened as soon as it is actually used. */
     function __construct($server, $user, $pass, $dbname) {
         $this->connection_params = func_get_args();
+        
+        // Set these defaults because legacy code uses mysql_real_string_escape()
+        // which depends on having a DB connection and opens one with the defaults
+        ini_set('mysql.default_host', $server);
+        ini_set('mysql.default_user', $user);
+        ini_set('mysql.default_password', $pass);
     }
 
     function connect_now() {
         list($server, $user, $pass, $dbname) = $this->connection_params;
         
         Log::debug("Opening legacy DB connection to $server, DB $dbname");
-        $this->connection = mysql_connect($server, $user, $pass, true);
+        $this->connection = mysql_connect($server, $user, $pass);
         if (!$this->connection) {
             Log::fail("Failed opening database connection");
             throw new Exception("Failed opening DB connection");
