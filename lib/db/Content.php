@@ -182,7 +182,10 @@ class db_Content extends DB_DataObject
             // Write the fields to the DB
             $weight = 0;
             foreach($val as $fieldvals) {
-                if (!empty($fieldvals)) {
+                // Remove empty fields
+                $fieldvals = array_filter($fieldvals, 'strlen');
+                
+                if (count($fieldvals) > 0) {
                     foreach($save_to_contents as $content) {
                         db_Content_field::write($content->id, $formfield->name, $weight, $fieldvals);
                     }
@@ -267,9 +270,9 @@ class db_Content extends DB_DataObject
     private function delete_contentfields() {
         global $aquarius;
         $aquarius->db->query('
-            DELETE FROM cf, cfv
-            USING content_field AS cf
-                JOIN content_field_value AS cfv ON cf.id = cfv.content_field_id
+            DELETE cf, cfv
+            FROM content_field cf 
+            LEFT JOIN content_field_value cfv ON cf.id = cfv.content_field_id
             WHERE cf.content_id = ?
         ', array($this->id));
     }
@@ -280,10 +283,10 @@ class db_Content extends DB_DataObject
     static function delete_contentfield($node_id, $field_name=null) {
         global $aquarius;
         $aquarius->db->query( '
-            DELETE FROM cf, cfv
-            USING content c
+            DELETE cf, cfv
+            FROM content c
                 JOIN content_field cf ON c.id = cf.content_id
-                JOIN content_field_value cfv ON cf.id = cfv.content_field_id
+                LEFT JOIN content_field_value cfv ON cf.id = cfv.content_field_id
             WHERE c.node_id = ?
                   AND cf.name = ?
         ', array($node_id, $field_name));

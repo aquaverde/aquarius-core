@@ -252,6 +252,7 @@ try {
         if ($must_redirect) {
             Log::debug("Redirecting from $request_url to $test_url");
             header('HTTP/1.1 301 Redirecting to proper URL');
+            header('Expires: '.gmdate('D, d M Y H:i:s', time() + 3600)).' GMT'; // Permanent redirect? For one hour!
             header('Location: '.$test_url->str());
             exit();
         }

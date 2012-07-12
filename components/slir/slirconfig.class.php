@@ -25,21 +25,30 @@
 
 require_once 'core/slirconfigdefaults.class.php';
 
-/**
- * SLIR Config Class
- *
- * @since 2.0
- * @author Joe Lencioni <joe@shiftingpixel.com>
- * @package SLIR
- */
-class SLIRConfig extends SLIRConfigDefaults
-{
+
+class SLIRConfig extends SLIRConfigDefaults {
     public static $enableErrorImages  = false;
 
     /** Crop towards 'interesting' areas in pictures */
     public static $defaultCropper = SLIR::CROP_CLASS_SMART;
     
     public static $defaultQuality = 95;
+    
+    public static function init() {
+        if (self::$documentRoot === null) {
+            self::$documentRoot = $_SERVER['DOCUMENT_ROOT'];
+        }
+
+        if (self::$pathToCacheDir === null) {
+            self::$pathToCacheDir = self::$documentRoot . '/aquarius/cache/slir';
+        }
+
+        if (self::$pathToErrorLog === null) {
+        self::$pathToErrorLog = self::$pathToCacheDir . '/error-log.txt';
+        }
+        parent::init();
+    }
+    
 }
 
 SLIRConfig::init();
