@@ -79,7 +79,7 @@ class Aqua_Config_File {
             $this->config = $config;
         } else {
             $date = date('Y.m.d');
-            $this->content = "<? /* Aquarius configuration generated $date */\n";
+            $this->content = "<?php /* Aquarius configuration generated $date */\n";
             $this->config = array();
         }
     }
