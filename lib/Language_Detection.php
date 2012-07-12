@@ -58,6 +58,12 @@ class Language_Detection {
     static function request_parameter($params) {
         return get($params['request'], 'lg');
     }
+    
+    /** Use the first path part if it's a valid language code  */
+    static function request_path($params) {
+        // Try to use the first path part as language code
+        return db_Languages::validate_code(array_shift(array_filter(explode('/', $params['uri']->path))));
+    }
 
     /** Detect language by domain */
     static function domain($params) {

@@ -79,6 +79,7 @@ try {
     require_once "lib/Language_Detection.php";
     $language_detection = new Language_Detection(array(
         'request_parameter',
+        'request_path',
         'domain',
         'accepted_languages',
         'primary'
