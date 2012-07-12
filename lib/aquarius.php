@@ -452,4 +452,9 @@ class Aquarius {
         }
         return realpath($cache_path).'/';
     }
+    
+    /** Returns true when debugging information should be output */
+    function debug() {
+       return  $this->logger && $this->logger->echolevel < Log::INFO;
+    }
 }

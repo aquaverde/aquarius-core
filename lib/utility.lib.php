@@ -608,7 +608,7 @@ function pear_error_to_exception($err) {
         return false;
     }
 
-    throw new Exception($err->getMessage());
+    throw new AquaException(array($err->getMessage(), $err->getUserInfo()));
 }
 
 /** Handle exception */
