@@ -23,7 +23,7 @@ function smarty_block_minify_includes($params, $content, $smarty, &$repeat) {
             $css_min_url->add_param(smarty_block_minify_includes_max_mtime($css_files));
             global $aquarius;
             if ($aquarius->debug()) $css_min_url->add_param('debug', 1);
-            $links .= "<link href='$css_min_url' rel='stylesheet' type='text/css'>";
+            $links .= "<link href='$css_min_url' rel='stylesheet' type='text/css' />";
         }       
         if ($js_files) {
             $js_min_url = new Url('/min/');
@@ -31,7 +31,7 @@ function smarty_block_minify_includes($params, $content, $smarty, &$repeat) {
             $js_min_url->add_param(smarty_block_minify_includes_max_mtime($js_files));
             global $aquarius;
             if ($aquarius->debug()) $js_min_url->add_param('debug', 1);
-            $links .= "<script src='$js_min_url' type='text/javascript'>";
+            $links .= "<script src='$js_min_url' type='text/javascript'></script>";
         }
         return $links;
     }
