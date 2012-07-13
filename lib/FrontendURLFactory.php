@@ -1,4 +1,4 @@
-<?
+<?php
 /** Frontend URL generator
   * Generates links valid frontend pages.
   *
@@ -46,13 +46,15 @@ class FrontendUrlFactory {
       * If content is given the language of the content is used.
       */
     function to($node) {
-        $options = clone $this;
         if ($node instanceof db_Content) {
-            $options->lg = $node->lg;
-            $options->target_node = $node->get_node();
-        } else {
-            $options->target_node = $node;
+            $content = $node; // Just trying to reduce confusion
+            return $this->with('lg', $content->lg)->to($content->get_node());
         }
+
+        // Construction steps may alter parameters, let them work on a copy
+        $options = clone $this;
+        $options->target_node = $node;
+    
         $uri = clone $this->template_uri;
         
         foreach($this->construction_steps as $name => $construction_step) {
@@ -164,10 +166,11 @@ class FrontendUrlFactory {
       * @param value  new value for the option
       * @return duplicate of this factory where given option is changed to new value */
     function with($option, $value) {
+        // Return same instance when nothing changes
+        if (isset($this->$option) && $this->$option === $value) return $this;
+        
         $clone = clone $this;
         $clone->$option = $value;
         return $clone;
     }
 }
-
-?>
