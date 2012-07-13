@@ -16,13 +16,13 @@
   *
   *   array('lg' => 'en', 'node' => 'search');
   *
-  * This implementation is totally not optimized for speed. But it should be fairly easy to add indexes and caches.
-  *
   */
 class DomainConfigs {
     // Config parameters per domain name
     // Domain names are stored with a trailing dot representing the root domain
     private $confs = array();
+    private $lookup_cache = array();
+    private $merged_cache = array();
 
 
     /** Create domain configurations structutre and add given configs */
@@ -39,6 +39,8 @@ class DomainConfigs {
     function add($domain, $new_confs) {
         $existing_confs = get($this->confs, $domain, array());
         $this->confs[$domain] = array_merge($existing_confs, $new_confs);
+        $this->lookup_cache = array();
+        $this->merged_cache = array();
     }
 
 
@@ -48,18 +50,21 @@ class DomainConfigs {
       * @return config dictionary for this domain. Config entries of superdomains are returned as well.
       */
     function get($domain, $name = false) {
-        $confs = get($this->confs, $domain, array());
-        if (strlen($domain) > 0) {
-            $superdomain = $domain;
-            $next_dot = strpos($superdomain, '.');
-            if ($next_dot === null) $superdomain = '';
-            else $superdomain = substr($superdomain, $next_dot+1);
-            $confs = array_merge($this->get($superdomain), $confs);
+        if (!isset($this->merged_cache[$domain])) { 
+            $confs = get($this->confs, $domain, array());
+            if (strlen($domain) > 0) {
+                $superdomain = $domain;
+                $next_dot = strpos($superdomain, '.');
+                if ($next_dot === null) $superdomain = '';
+                else $superdomain = substr($superdomain, $next_dot+1);
+                $confs = array_merge($this->get($superdomain), $confs);
+            }
+            $this->merged_cache[$domain] = $confs;
         }
         if ($name) {
-            return get($confs, $name);
+            return get($this->merged_cache[$domain], $name);
         } else {
-            return $confs;
+            return $this->merged_cache[$domain];
         }
     }
 
@@ -67,20 +72,23 @@ class DomainConfigs {
       * @param $name name of the parameter that must exist
       * @param $value optionally require the parameter to have this value, ignored if null */
     function lookup($name, $value = null) {
-        $found = array();
-        foreach($this->confs as $domain => $_) {
-            $confs = $this->get($domain);
-            if (isset($confs[$name])) {
-                if ($value !== null) {
-                    if ($confs[$name] == $value) {
+        if (!isset($this->lookup_cache[$name][$value])) {
+            $found = array();
+            foreach($this->confs as $domain => $_) {
+                $confs = $this->get($domain);
+                if (isset($confs[$name])) {
+                    if ($value !== null) {
+                        if ($confs[$name] == $value) {
+                            $found[$domain] = $confs;
+                        }
+                    } else {
                         $found[$domain] = $confs;
                     }
-                } else {
-                    $found[$domain] = $confs;
                 }
             }
+            $this->lookup_cache[$name][$value] = $found;
         }
-        return $found;
+        return $this->lookup_cache[$name][$value];
     }
 }
 ?>
