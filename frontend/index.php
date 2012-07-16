@@ -200,10 +200,6 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $smarty->caching = 0;
-    } else {
-        // caching control
-        $smarty->caching = SMARTY_FRONTEND_CACHE;
-        $smarty->cache_lifetime = SMARTY_FRONTEND_CACHE_LIFETIME;
     }
     
     
