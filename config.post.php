@@ -88,9 +88,6 @@ defined('LASTCHANGES_COUNT') or define('LASTCHANGES_COUNT', 50);
 /** legacy define()s
   * Some (most?) of this is not really used anymore and will be removed. */
 
-defined('SMARTY_FRONTEND_CACHE') or define('SMARTY_FRONTEND_CACHE', true);
-defined('SMARTY_FRONTEND_CACHE_LIFETIME') or define('SMARTY_FRONTEND_CACHE_LIFETIME', 60*60*24*7); // 60*60*24 = 24h
-
 defined('PROJECT_URL') or define('PROJECT_URL', 'http://'.$_SERVER['SERVER_NAME']."/");
 defined('ABSOLUTE_PROJECT_URL') or define('ABSOLUTE_PROJECT_URL', PROJECT_URL);
 
