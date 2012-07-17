@@ -1,4 +1,4 @@
-<?
+<?php
 /** Basic implementation of a formtype.
   * 
   * Does not alter values between DB, Content and Contentedit. */
@@ -99,5 +99,14 @@ class Formtype {
         }
         return $ret;
     }
+    
+    /** Load from cache representation */
+    function cache_get($vals, $formfield, $lg) {
+        return $vals;
+    }
+    
+    /** Transform into cache representation */
+    function cache_set($vals, $formfield, $lg) {
+        return $vals;
+    }
 }
-?>
