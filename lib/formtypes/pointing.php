@@ -73,7 +73,7 @@ class Formtype_Pointing extends Formtype {
 
     /** Load node object from id */
     function db_get($values, $formfield) {
-        $pointing_node = db_Node::staticGet(first($values));
+        $pointing_node = db_Node::get_node(first($values));
         if (!$pointing_node) return null;
         return $pointing_node;
     }
@@ -84,6 +84,14 @@ class Formtype_Pointing extends Formtype {
         $node = db_Node::get_Node($value); // Make sure it is a node object
         if ($node) return array($node->id);
         else return array();
+    }
+    
+    function cache_set($vals, $formfield, $lg) {
+        return $this->db_set_field($vals, $formfield, $lg);
+    }
+    
+    function cache_get($vals, $formfield, $lg) {
+        return $this->db_get_field($vals, $formfield, $lg);
     }
     
     function to_string($values) {
