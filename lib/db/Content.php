@@ -16,6 +16,7 @@ class db_Content extends DB_DataObject
     public $id;                              // int(10)  not_null primary_key unsigned auto_increment group_by
     public $lg;                              // char(2)  
     public $cache_title;                     // varchar(250)  multiple_key
+    public $cache_fields;                    // blob(65535)  blob
     public $active;                          // tinyint(1)  not_null multiple_key group_by
 
     /* Static get */
@@ -70,54 +71,88 @@ class db_Content extends DB_DataObject
       * @returns true if the fields were (already) loaded, false otherwise.
       */
     function load_fields() {
+        if (isset($this->_loaded_fields)) return true;
+
+        $loaded = $this->load_cache();
+        if (!$loaded) {
+            $loaded = $this->load_db();
+            // Update the cache
+            if ($loaded) {
+                $this->prepare_cache();
+                $this->update();
+            }
+        }
+        $this->_loaded_fields = true;
+        return false;
+    }
+    
+    function load_db() {
         if ($this->id == null) return false;
-        if (!isset($this->_loaded_fields)) {
-            global $aquarius;
-        
-            // Get all content fields for this content (including language_independent fields)
-            $fieldvals = $aquarius->db->query('
-                SELECT
-                    cf.id,
-                    cf.name,
-                    cfv.name,
-                    cfv.value
-                FROM content c
-                JOIN content_field cf ON c.id = cf.content_id
-                JOIN content_field_value cfv ON cf.id = cfv.content_field_id
-                WHERE c.id = ?
-                ORDER BY cf.weight
-            ', array($this->id));
+        global $aquarius;
+    
+        // Get all content fields for this content (including language_independent fields)
+        $fieldvals = $aquarius->db->query('
+            SELECT
+                cf.id,
+                cf.name,
+                cfv.name,
+                cfv.value
+            FROM content c
+            JOIN content_field cf ON c.id = cf.content_id
+            JOIN content_field_value cfv ON cf.id = cfv.content_field_id
+            WHERE c.id = ?
+            ORDER BY cf.weight
+        ', array($this->id));
 
-            $content_field_values = array();
-            while($field = $fieldvals->fetchRow()) {
-                list($field_id, $field_name, $value_name, $value) = $field;
+        $content_field_values = array();
+        while($field = $fieldvals->fetchRow()) {
+            list($field_id, $field_name, $value_name, $value) = $field;
 
-                if ($value_name) {
-                    $content_field_values[$field_name][$field_id][$value_name] = $value;
-                } else {
-                    $content_field_values[$field_name][$field_id][] = $value;
-                }
+            if ($value_name) {
+                $content_field_values[$field_name][$field_id][$value_name] = $value;
+            } else {
+                $content_field_values[$field_name][$field_id][] = $value;
             }
+        }
 
-            $formfields = $this->get_formfields();
-            $this->initialize_properties($formfields);
+        $formfields = $this->get_formfields();
+        $this->initialize_properties($formfields);
 
-            $formtypes = $aquarius->get_formtypes();
-            foreach($formfields as $field_name => $form_field) {
-                $formtype = $formtypes->get_formtype($form_field->type);
-                if (!is_object($formtype)) throw new Exception("Formtype '$form_field->type' does not exist");
-                
-                $field_values = get($content_field_values, $field_name, array());
-                $this->$field_name = $formtype->db_get_field($field_values, $form_field, $this->lg);
-            }
-            $this->_loaded_fields = true;
+        $formtypes = $aquarius->get_formtypes();
+        foreach($formfields as $field_name => $form_field) {
+            $formtype = $formtypes->get_formtype($form_field->type);
+            if (!is_object($formtype)) throw new Exception("Formtype '$form_field->type' does not exist");
+            
+            $field_values = get($content_field_values, $field_name, array());
+            $this->$field_name = $formtype->db_get_field($field_values, $form_field, $this->lg);
         }
         return true;
     }
     
+    /** Load content fields from cache
+      * @return true if the fields could be loaded */
+    function load_cache() {
+        global $aquarius;
+        $formtypes = $aquarius->get_formtypes();
+        $formfields = $this->get_formfields();
+        $this->initialize_properties($formfields);
+        if (@strlen($this->cache_fields)) {
+            foreach(json_decode($this->cache_fields, true) as $name => $cache_entry) {
+                if (!isset($formfields[$name])) {
+                    return false;
+                }
+                $formfield = $formfields[$name];
+                $formtype = $formtypes->get_formtype($formfield->type);
+                $this->$name = $formtype->cache_get($cache_entry, $formfield, $this->lg);
+            }
+            return true;
+        }
+        return false;
+    }
+    
     /** Load the fields from the DB on the first access */
     function __get($field) {
-        $this->load_fields();
+        $this->cache_load();
         return $this->$field;
     }
 
@@ -178,6 +213,7 @@ class db_Content extends DB_DataObject
             // Let the formtype process the value before writing
             $formtype = $formtypes->get_formtype($formfield->type);
             $val = $formtype->db_set_field($val, $formfield, $this->lg);
+            $cache = 
 
             // Write the fields to the DB
             $weight = 0;
@@ -193,7 +229,7 @@ class db_Content extends DB_DataObject
                 $weight += 1;
             }
         }
-
+        $this->prepare_cache();
         $this->cache_title = join(', ', $this->titlefields());
 
         parent::update();
@@ -201,6 +237,29 @@ class db_Content extends DB_DataObject
         // Lose the cached object
         unset($GLOBALS['_AQUARIUS_CONTENT_CACHE'][$this->node_id][$this->lg]);
     }
+    
+    function prepare_cache() {
+        // Cannot cache fields for transient content
+        if (!$this->id) return false;
+        
+        $cache_fields = array();
+        
+        global $aquarius;
+        $formtypes = $aquarius->get_formtypes();
+        $formfields = $this->get_formfields();
+        foreach($formfields as $formfield) {
+            $name = $formfield->name;
+
+            $val = $this->$name;
+            $formtype = $formtypes->get_formtype($formfield->type);
+            $val = $formtype->cache_set($val, $formfield, $this->lg);
+            if (!is_null($val) && $val !== array()) {
+                $cache_fields[$name] = $val;
+            }
+        }
+        $this->cache_fields = json_encode($cache_fields);
+    }
+
 
     /** Get values that are supposed to be used as its title for this content
       * Contents of the following fields are returned in this order:
