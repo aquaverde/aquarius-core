@@ -1,20 +1,37 @@
 <?php
     
-    $node = get($_REQUEST, 'node_id');
-	if (!$node) $smarty->trigger_error("Node_id is missing for generating pdf") ;
-    
-    $lg = get($_REQUEST, 'lg');
-	if (!$lg) $smarty->trigger_error("Language is missing for generating pdf") ;
-	
-	$template = basename(get($_REQUEST, 'template', PDF_STANDART_TEMPLATE));
-	
-	$prefix = get($_REQUEST, 'prefix', PDF_STANDART_PREFIX);
 
-    $node = db_Node::get_node($node);
-    if (!$node) $smarty->trigger_error("Node is missing for generating pdf") ;
+require '../lib/init.php';
+
+if (!$aquarius->conf('pdfgen/enable')) {
+    throw new Exception("Generating PDF not enabled");
+}
+
+$nodestr = get($_REQUEST, 'node_id');
+if (!$nodestr) throw new Exception("node_id missing");
+
+$lg = get($_REQUEST, 'lg');
+if (!$lg) throw new Exception("lg missing");
+
+$lg = db_Languages::validate_code($lg);
+if (!$lg) throw new Exception("language invalid");
+
+
+$node = db_Node::get_node($nodestr);
+if (!$node) throw new AquaException(array("Not available", "Couldn't load '$nodestr'"));
+if (!$node->active()) throw new AquaException(array("Not available", "Node ".$node->idstr()." is not active."));
+if ($node->access_restricted_node()) throw new AquaException(array("Not available", "Node ".$node->idstr()." is access restricted"));
     
-    $content = $node->get_content($lg);
-    $smarty = $aquarius->get_smarty_frontend_container($lg, $node);
+
+$template = basename(get($_REQUEST, 'template', $aquarius->conf('pdfgen/standard_template')));
+
+$prefix = get($_REQUEST, 'prefix', $aquarius->conf('pdfgen/prefix'));
+    
+$content = $node->get_content($lg);
+if (!$content) throw new AquaException(array("Not available", "Node ".$node->idstr()." has no content in language $lg"));
+if (!$content->active()) throw new AquaException(array("Not available", "Content for ".$node->idstr()." is not active in language $lg"));
+
+$smarty = $aquarius->get_smarty_frontend_container($lg, $node);
     
 	require_once("lib/dompdf/dompdf_config.inc.php");
     
