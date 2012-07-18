@@ -132,3 +132,13 @@ $config['admin']['allow_languageadmin'] = false;
   * "www." stripped off.
   */
 $config['email']['sender_address'] = 'info';
+
+
+/** PDF generator settings.
+  * WARNING: The PDF generator currently allows generating PDF from any node
+  * (even deactivated ones) with any template. This is probably not what you
+  * want, so it is disabled as a precaution. 
+  */
+$config['pdfgen']['enabled'] = false;
+$config['pdfgen']['standard_template'] = 'basic.tpl';
+$config['pdfgen']['prefix'] = 'pdf';

@@ -1,14 +1,21 @@
 <?php
     
+
+require '../lib/init.php';
+
+if (!$aquarius->conf('pdfgen/enable')) {
+    throw new Exception("Generating PDF not enabled");
+}
+    
     $node = get($_REQUEST, 'node_id');
-	if (!$node) $smarty->trigger_error("Node_id is missing for generating pdf") ;
+	if (!$node) throw new Exception("Node_id is missing for generating pdf") ;
     
     $lg = get($_REQUEST, 'lg');
-	if (!$lg) $smarty->trigger_error("Language is missing for generating pdf") ;
+	if (!$lg)throw new Exception("Language is missing for generating pdf") ;
 	
-	$template = basename(get($_REQUEST, 'template', PDF_STANDART_TEMPLATE));
+	$template = basename(get($_REQUEST, 'template', $aquarius->conf('pdfgen/standard_template')));
 	
-	$prefix = get($_REQUEST, 'prefix', PDF_STANDART_PREFIX);
+	$prefix = get($_REQUEST, 'prefix', $aquarius->conf('pdfgen/prefix'));
 
     $node = db_Node::get_node($node);
     if (!$node) $smarty->trigger_error("Node is missing for generating pdf") ;
