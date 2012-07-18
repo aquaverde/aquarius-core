@@ -76,11 +76,6 @@ $config['filemanager']['upload_mode'] = 0777;
 
 defined('FILEMGR_MEMORY_LIMIT') or define('FILEMGR_MEMORY_LIMIT', 128*1024*1024); // Increase memory for file operations
 
-//PDF
-define('PDF_STANDART_TEMPLATE', 'pdf.tpl');
-define('PDF_STANDART_PREFIX', 'pdf');
-define('PDF_STANDART_NODE_TITLE_FIELD', 'title');
-define('PDF_TEMP_PATH', 'download/pdfTemp/');
 
 // Amount last changes to display
 defined('LASTCHANGES_COUNT') or define('LASTCHANGES_COUNT', 50); 
