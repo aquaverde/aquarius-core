@@ -1,8 +1,16 @@
-<?
+<?php
 /** Maintain sitemap index files
   * This module refreshes sitemap index files once a day and sends pings to search engines.
   * The root node may carry a field 'sitemap_exclude' with pointings to nodes (and their children) to be excluded from the sitemap.
   * The config value sitemapxml/exclude_forms can be set to a list of form IDs, nodes using that form will not be included in the sitemap.
+  * 
+  * The module assumes that pages higher up in the hierarchy are more important.
+  * The priority of pages is adjusted accodrdingly. Pages at the first level get
+  * 0.8 priority, the next level gets 0.7 and so forth down to 0.5.
+  * Content may set the field 'meta_priority' to influence this. This value is
+  * set in percent, so meta_priority=90 will yield a priority of 0.9 in the
+  * sitemap.
+  * 
   */
 class Sitemapxml extends Module {
 
@@ -110,12 +118,21 @@ class AquaSitemapper {
             if ($content) {
                 $last_update = db_Journal::last_update($content);
                 $uri = $this->make_uri->to($content);
-                $priority = '0.7';
-                switch($node->depth()) {
-                    case 0: $priority = '1.0'; break;
-                    case 1: $priority = '1.0'; break;
-                    case 2: $priority = '0.9'; break;
-                    case 3: $priority = '0.8'; break;
+                $priority = null;
+                if (isset($content->meta_priority) && is_numeric($content->meta_priority)) {
+                    // A value between 0 and 1 inclusive?!?
+                    // People do not understand ratios.
+                    // Thus meta_priority is in percent.
+                    // Between 0 and 100, easy!
+                    $priority = number_format(min(1, max(0, floatval($content->meta_priority) / 100)), 2);
+                } else {
+                    switch($node->depth()) {
+                        case 0: $priority = '0.8'; break;
+                        case 1: $priority = '0.8'; break;
+                        case 2: $priority = '0.7'; break;
+                        case 3: $priority = '0.6'; break;
+                        default: $priority = '0.5';
+                    }
                 }
                 $sitemap = $this->use_host_sitemap($uri->host);
                 $sitemap->add_url($uri, null, null, $priority);
