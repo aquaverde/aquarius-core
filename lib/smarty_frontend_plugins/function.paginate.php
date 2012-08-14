@@ -10,7 +10,7 @@
   * parameter and replaces the result into the same variable.
   *
   * In the replacement:
-  *   page:       current_page (starts at 1)
+  *   page:       current page nr (starts at 1)
   *   page_count: how many pages there are
   *   first, prev, next, last: link parameters to related pages
   *   pages:      list of link parameters to all pages
@@ -19,7 +19,7 @@
   * Example, assume the smarty variable $products is an array of strings:
   * 
   * {paginate var=products}
-  * <ul>{foreach from=$products item=product}<li>{$product}</li>{/foreach}</ul>
+  * <ul>{foreach from=$products.items item=product}<li>{$product}</li>{/foreach}</ul>
   * {if $products.prev}{link node=$node params=$products.prev}&lt; {wording zurück}{/link}{/if}
   * {foreach from=$products.pages key=p item=pp}
   *   {link node=$node params=$pp} <span {if $p == $products.page}style='font-weight: bold'{/if}>{$p}</span>{/link}
