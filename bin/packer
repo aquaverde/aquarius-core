@@ -21,8 +21,8 @@
   */
 
 $export_aliases = array(
-    'bare' => array('aquarius/core', 'aquarius/admin', 'aquarius/.htaccess', 'aquarius/slir', 'download.php', 'index.php', 'sitemap.php', 'generate_pdf.php'),
-    'full' => array('bare', 'aquarius/dbadmin', 'aquarius/bin', 'aquarius/doc', 'aquarius/config.php', 'aquarius/ckconfig.js'),
+    'bare' => array('aquarius/core'),
+    'full' => array('bare', '?aquarius/config.php', '?aquarius/ckconfig.js'),
     'site' => array('interface', 'lib', 'css', 'download', 'pictures/content', 'pictures/richtext', 'pictures/header', 'aquarius/templates', 'robots.txt', '.htaccess', 'favicon.ico'),
     'all'  => array('full', 'site'),
 );
@@ -39,17 +39,26 @@ if (empty($argv)) {
     exit;
 }
 
-$export_names = array('aquarius');
+// work from core dir first
+$coredir = dirname(dirname(__FILE__));
+$changed = chdir($coredir);
+if (!$changed) fail("Unable to change dir to $coredir");
 
-date_default_timezone_set('UTC');
-$export_names []= date("Ymd-Hi");
-$version = system('git describe', $svnversion_error);
-if ($svnversion_error === 0) {
+// Try to find the version of the installation
+$version = exec('git describe', $_, $version_error);
+
+// Cache version information in file, or use that file if git didn't work
+if ($version_error === 0) {
     echo "Description: $version\n";
-    file_put_contents('aquarius/core/revision', $version);
+    file_put_contents('revision', $version);
 } else {
-    $version = @file_get_contents('aquarius/core/revision');
+    $version = @file_get_contents('revision');
 }
+
+// Build list of names to go into filename
+date_default_timezone_set('UTC');
+$export_names = array('aquarius');
+$export_names []= date("Ymd-Hi");
 $export_names []= $version;
 
 $options = array(
@@ -72,6 +81,11 @@ foreach($argv as $opt) {
 // Do we include the archive in the installer file?
 $inline = $options['inline'];
 
+// Change to web root before expanding aliases
+$rootdir = realpath(getcwd().'/../..');
+$changed = chdir($rootdir);
+if (!$changed) fail("Unable to change dir to $rootdir");
+
 $exports = array();
 $export_names []= join('.', $desired_exports);
 while($desired_export = array_shift($desired_exports)) {
@@ -81,12 +95,19 @@ while($desired_export = array_shift($desired_exports)) {
             $desired_exports
         );
     } else {
+        // Read 'optional' flag
+        $is_optional = $desired_export[0] == '?';
+        if ($is_optional) $desired_export = substr($desired_export, 1);
+        
         // Remove trailing slash if there is one (common source of problems)
         if (substr($desired_export, -1) == DIRECTORY_SEPARATOR) {
             $desired_export = substr($desired_export, 0, -1);
         }
-        if (!file_exists($desired_export)) exit("Path does not exist: $desired_export\n");
-        $exports []= $desired_export;
+        if (!file_exists($desired_export)) {
+            if (!$is_optional) exit("Path does not exist: $desired_export\n");
+        } else {
+            $exports []= $desired_export;      
+        }
     }
 }
 $exports = array_unique($exports);
