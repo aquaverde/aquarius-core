@@ -8,8 +8,8 @@
   * @package Aquarius
   */
 
+require_once 'Aquarius_Frontloader.php';
+$loader = new Aquarius_Frontloader();
 
-require_once 'Aquarius_Loader.php';
-$loader = new Aquarius_loader();
-$aquarius = $loader->init('full');
+$loader->load('full');
 $aquarius->load();
