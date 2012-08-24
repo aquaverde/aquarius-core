@@ -8,6 +8,7 @@ Wrapper to execute SQL statements on DB configured in config.local.php
 require_once dirname(__FILE__)."/../../config.local.php";
 
 $options = array(
+    '--default-character-set=utf8',
 	'--host='.$config['db']['host'],
 	'--password='.$config['db']['pass'],
 	'--user='.$config['db']['user'],
