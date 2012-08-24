@@ -1,7 +1,5 @@
-<?
+<?php
 /** @package Aquarius */
-require_once 'lib/FrontendURLFactory.php';
-require_once 'lib/DomainConfigs.php';
 
 /** Run time basics for the CMS
   */

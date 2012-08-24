@@ -2,10 +2,15 @@
 
 /** Load and initialize an Aquarius instance
   *
-  * Loading the different parts of aquarius happens on request, in stages. Every
-  * stage is a method of this class. Stages may load other stages they depend
-  * on, these will be loaded before the requested stage.
+  * Aquarius is loaded in multiple stages. Each stage has two procedures that
+  * are executed in order. Theses procedures are:
+  * - init(), where the stage includes libraries and prepares its data
+  * - load(), where the stage effects the environment
   *
+  * Of these procedures, only load() will be run on every load of aquarius. The data
+  * structures loaded by init() must be serializable, so that the stage can be
+  * cached.
+  * 
   * Loading Aquarius affects the PHP environment. A lot of classes and functions
   * will be defined, some globals and class variables modified, some PHP
   * behaviour changed.
@@ -16,23 +21,20 @@ class Aquarius_Loader {
     var $stages_initialized = array();
     var $stages_loaded = array();
     
-    var $include_dirs = array();
+    var $include_paths = array();
     var $included_files = array();
 
     var $aquarius;
     var $db_legacy;
     var $db_pear;
-    
-    function __construct($stage_loader) {
-        $this->stage_loader = $stage_loader;
-    }
+
     
     function use_stage($stage_name) {
-        if (isset($this->stages[$stage_name]) return $this->stages[$stage_name];
-        $stage = $this->stage_loader->prepare($stage_name);
+        if (isset($this->stages[$stage_name])) return $this->stages[$stage_name];
+        $stage = $this->prepare($stage_name);
         $this->stages[$stage_name] = $stage;
-        $this->stages_initialized = false;
-        $this->stages_loaded = false;
+        $this->stages_initialized[$stage_name] = false;
+        $this->stages_loaded[$stage_name] = false;
         return $stage;
     }
     
@@ -45,67 +47,42 @@ class Aquarius_Loader {
             $this->load($dep);
         }
         
-        $have_logging = isset($this->stages_loaded['basic_logging']) || isset($this->stages_loaded['logging']);
+        $have_logging = !empty($this->stages_loaded['basic_logging']) || !empty($this->stages_loaded['logging']);
         
         
-        if (!$this->stages_initialized[$stage_name]) {
-            if ($have_logging) Log::debug("Aquarius initializing stage $stage");
+        if (!isset($this->stages_initialized[$stage_name]) || !$this->stages_initialized[$stage_name]) {
+            if ($have_logging) Log::debug("Aquarius initializing stage $stage_name");
             $stage->init($this);
             $this->stages_initialized[$stage_name] = true;
         }
        
-        if ($have_logging) Log::debug("Aquarius loading stage $stage");
+        if ($have_logging) Log::debug("Aquarius loading stage $stage_name");
         
         $stage->load($this);
         $this->stages_loaded[$stage_name] = true;
     }
+    
+    function include_paths($add_paths) {
+        $this->include_paths = array_merge($this->include_paths, $add_paths);
 
-    /** Load full aquarius */
-    function full() {
-        $this->init(
-            'basic_logging',
-            'error_reporting',
-            'basic_settings',
-            'create_aquarius',
-            'configure_settings',
-            'class_autoloader',
-            'establish_db_connection',
-            'configure_logging',
-            'modules',
-            'load_libs',
-            'GLOBALS',
-            'frontloader'
-        );
+        return set_include_path($this->include_paths_str());
+        if ($result === false) throw new Exception("Unable to set include path to ".$loader->include_paths());
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-interface Aquarius_Stage {
-    function depends();
-    function init(Aquarius_Loader $loader);
-    function load(Aquarius_Loader $loader);
-}
-
-class Aquarius_Stage_Loader() {
-    $prefix = "Aquarius_Stage_";
+    
+    function include_paths_str() {
+        return join(PATH_SEPARATOR, $this->include_paths);
+    }
+    
+    function include_file($file) {
+        $this->included_files []= $file;
+        $result = include $file;
+        if ($result === false) throw new Exception("Unable to set include path.");
+    }   
+    
     function prepare($stage_name) {
+        $prefix = "Aquarius_Stage_";
         $class_name = $prefix.$stage_name;
+
         if (!class_exists($class_name)) {
             throw new Exception("Stage $stage_name could not be found");
         }
@@ -113,12 +90,22 @@ class Aquarius_Stage_Loader() {
     }
 }
 
-class Aquarius_Basic_Stage implements Aquarius_Stage {
-    function depends() { return array(); }
-    function init(Aquarius_Loader $loader) {}
-    function load(Aquarius_Loader $loader) {}
+
+interface Aquarius_Stage {
+    function depends();
+    function init($loader);
+    function load($loader);
 }
 
+
+
+class Aquarius_Basic_Stage implements Aquarius_Stage {
+    function depends() { return array(); }
+    function init($loader) {}
+    function load($loader) {}
+}
+
+/** Configure important paths and setup PHP include path */
 class Aquarius_Stage_Paths extends Aquarius_Basic_Stage {
     var $name = 'paths';
     var $core_path;
@@ -126,39 +113,37 @@ class Aquarius_Stage_Paths extends Aquarius_Basic_Stage {
     var $root_path;
     var $include_paths;
     
-    function init(Aquarius_Loader $loader) {
-        $this->core_path = realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
-        $this->aquarius_path = realpath($loader->core_path.'..').DIRECTORY_SEPARATOR;
-        $this->root_path = realpath($loader->core_path.'..'.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
-
-        $loader->include_path($loader->core_path.'lib'.DIRECTORY_SEPARATOR);
-        $loader->include_path($loader->core_path.'lib/');
-        $loader->include_path($loader->core_path.'lib/');
+    function init($loader) {
+        $this->core_path =     realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
+        $this->aquarius_path = realpath($this->core_path.'..').DIRECTORY_SEPARATOR;
+        $this->root_path =     realpath($this->core_path.'..'.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
+        $this->install_path =  realpath($this->core_path.'..').DIRECTORY_SEPARATOR;
         
-        $lib_path = $loader->core_path.'lib'.DIRECTORY_SEPARATOR;
-        $loader->include_path($lib_path);
-        $loader->include_path($lib_path.'pear'.DIRECTORY_SEPARATOR);
-        $loader->include_path($this->core_path); // legacy
+        $lib_path = $this->core_path.'lib'.DIRECTORY_SEPARATOR;
+        $loader->include_paths(array(
+            $lib_path,
+            $lib_path.'pear'.DIRECTORY_SEPARATOR,
+            $this->core_path // legacy
+        ));
     }
 
-    function load(Aquarius_Loader $loader) {
+    function load($loader) {
         $loader->core_path = $this->core_path;
         $loader->aquarius_path = $this->aquarius_path;
         $loader->root_path = $this->root_path;
-        
-        $result = set_include_path($this->include_paths);
-        if ($result === false) throw new Exception("Unable to set include path.");
+        $loader->install_path = $this->root_path;
     }
 }
 
+/** Setup logging without relying on configuration */
 class Aquarius_Stage_Basic_Logging extends Aquarius_Basic_Stage {
     var $name = 'basic_logging';
     var $logger;
     
     function depends() { return array('paths'); }
     
-    function init(Aquarius_Loader $loader) { 
-        $loader->include('log.php');
+    function init($loader) { 
+        $loader->include_file('log.php');
         $this->logger = new Logger(
             false,
             Log::INFO,
@@ -167,32 +152,40 @@ class Aquarius_Stage_Basic_Logging extends Aquarius_Basic_Stage {
         );  
     }
     
-    function load(Aquarius_Loader $loader) {
+    function load($loader) {
         Log::$usuallogger = $this->logger;
     }
 }
 
+/** Load the Aquarius proper */
 class Aquarius_Stage_Aquarius extends Aquarius_Basic_Stage {
     var $aquarius;
     
-    function depends() { return array('paths', 'basic_settings'); }
+    function depends() { return array('paths', 'php_basic_settings', 'basic_logging'); }
     
-    function init(Aquarius_Loader $loader) { 
-        $loader->include('aquarius.php');
+    function init($loader) { 
+        $loader->include_file('aquarius.php');
+        $loader->include_file('DomainConfigs.php');
+        $loader->include_file('url.php');
         $this->aquarius = new Aquarius($loader->root_path, $loader->core_path);
-        $this->aquarius->load_configs();
     }
     
-    function load(Aquarius_Loader $loader) {
+    function load($loader) {
         $loader->aquarius = $this->aquarius;
+        $loader->aquarius->load_configs();
         spl_autoload_register(array($this->aquarius, 'autoload_class'));
     }
 }
 
 /** Standardise the PHP environment a bit, so we can rely on some things */
 class Aquarius_Stage_PHP_Basic_Settings extends Aquarius_Basic_Stage {
-    function load() {
-        if (!defined(E_DEPRECATED)) define('E_DEPRECATED', 8192);
+    function init($loader) {
+        $loader->include_file('utility.lib.php');
+    }
+    
+    function load($loader) {
+        if (!defined('E_DEPRECATED')) define('E_DEPRECATED', 8192);
+       
         
         // Make sure we see them errors
         // Unfortunately we can't enable depreciation warnings and strict
@@ -235,11 +228,11 @@ class Aquarius_Stage_db_connection extends Aquarius_Basic_Stage {
     
     function depends() { return array('aquarius'); }
     function init($loader) {
-        $loader->include('sql.lib.php');
-        $loader->include('DB/DataObject.php');
+        $loader->include_file('sql.lib.php');
+        $loader->include_file('DB/DataObject.php');
 
         // Setup PEAR DB_DataObject
-        $dbconf = $this->aquarius->conf('db');
+        $dbconf = $loader->aquarius->conf('db');
         $this->db_options = array(
             'database'         => 'mysqli://'.$dbconf['user'].':'.DB_PASSWORD.'@'.$dbconf['host'].'/'.$dbconf['name'],
         //  'database_global'  => 'mysql://'.GLOBALDB_USERNAME.':'.GLOBALDB_PASSWORD.'@'.DB_HOST.'/'.GLOBALDB_DBNAME,
@@ -264,6 +257,7 @@ class Aquarius_Stage_db_connection extends Aquarius_Basic_Stage {
         $loader->aquarius->db = new DBwrap($node->getDatabaseConnection());
         
         // Legacy DB connection
+        $dbconf = $loader->aquarius->conf('db');
         $loader->db_legacy = new SQLwrap($dbconf['host'], $dbconf['user'], DB_PASSWORD, $dbconf['name']);
     }
 }
@@ -272,7 +266,7 @@ class Aquarius_Stage_db_connection extends Aquarius_Basic_Stage {
 class Aquarius_Stage_modules extends Aquarius_Basic_Stage {
     
     function init($loader) {
-        $loader->include('Module_Manager.php');
+        $loader->include_file('Module_Manager.php');
         
         /* The modules directory of the installation is set before the one in 
          * core so that installation-specific modules can override core
@@ -298,11 +292,13 @@ class Aquarius_Stage_modules extends Aquarius_Basic_Stage {
 }
 
 
-class Aquarius_Stage_logging extends Aquarius_Basic_Stage {
+class Aquarius_Stage_Logging extends Aquarius_Basic_Stage {
     var $logging_manager;
     
-    function init($loader} {
-        require_once ('lib/Logging_Manager.php');
+    function depends() { return array('aquarius'); }
+    
+    function init($loader) {
+        $loader->include_file('lib/Logging_Manager.php');
         $this->logging_manager = new Logging_Manager(ECHOKEY, $loader->aquarius->conf('log'), $loader->install_path);   
     }
 
@@ -312,7 +308,7 @@ class Aquarius_Stage_logging extends Aquarius_Basic_Stage {
         Log::$usuallogger = $logger;
         
         // Display PHP errors and warnings when echolevel is on debug
-        if ($loder->aquarius->logger->echolevel < Log::INFO || $loader->aquarius->logger->firelevel < Log::INFO) {
+        if ($loader->aquarius->logger->echolevel < Log::INFO || $loader->aquarius->logger->firelevel < Log::INFO) {
             ini_set('display_errors','1');
         } else {
             // Don't change preset
@@ -320,10 +316,23 @@ class Aquarius_Stage_logging extends Aquarius_Basic_Stage {
     }
 }
 
+
 class Aquarius_Stage_globals extends Aquarius_Basic_Stage {
     function load($loader) {
         $GLOBALS['aquarius'] = $loader->aquarius;
         $GLOBALS['DB'] = $loader->db_legacy;
+    }
+}
+
+
+class Aquarius_Stage_full extends Aquarius_Basic_Stage {
+    function depends() {
+        return array(
+            'logging',
+            'db_connection',
+            'php_settings',
+            'globals'
+        );
     }
 }
 

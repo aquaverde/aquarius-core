@@ -1,5 +1,4 @@
 <?php
-require_once 'Aquarius_Loader.php';
 
 class Aquarius_Frontloader {
     function __construct() {
@@ -8,6 +7,8 @@ class Aquarius_Frontloader {
 
     
     function load($stage_name) {
+        require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Aquarius_Loader.php';
+        
         $loader = false;
         if (file_exists($this->cache_file)) {
             try {
@@ -33,17 +34,16 @@ class Aquarius_Frontloader {
     function cache($loader) {
         $frontloader = '<?php
 function frontinclude($file) {
-    $success = @include $file;
+    $success = include $file;
     if (!$success) throw new Exception("Frontload failure to load $file");
 }
 
-$loader = false;
-$frontloader_failure = false;
-try {';
-        
-        foreach(get_included_files() as $included_file) {
+$include_paths = '.var_export($loader->include_paths_str(), true).';
+$success = set_include_path($include_paths);
+if (!$success) throw new Exception("Unable to set include path $include_paths");';
+        foreach($loader->included_files as $included) {
             $frontloader .= '
-    frontinclude('.var_export($included_file, true).');';
+frontinclude('.var_export($included, true).');';
         }
         
         // Prepare a loader that is serializable
@@ -53,15 +53,12 @@ try {';
         $ser_loader->stages_loaded = array();
         
         $frontloader .= '
-    $loader = unserialize('.var_export(serialize($ser_loader), true).');
-} catch (Exception $e) {
-    $loader = false;
-    $frontloader_failure = $e;
-}
+return unserialize('.var_export(serialize($ser_loader), true).');
 ';
-        $frontload_file_new = $frontload_file.'.'.uniqid();
-        file_put_contents($frontload_file_new, $frontloader);
-        rename($frontload_file_new, $frontload_file); // Atomic I presume
-        Log::debug("Wrote frontloader to $frontload_file");
+        $frontload_file_new = $this->cache_file.'.'.uniqid();
+        $success = file_put_contents($frontload_file_new, $frontloader);
+        if ($success === false) throw new Exception("Unable to write to $frontload_file_new");
+        rename($frontload_file_new, $this->cache_file); // Atomic I presume
+        Log::debug("Wrote frontloader to $this->cache_file");
     }
 }
