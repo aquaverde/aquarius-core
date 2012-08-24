@@ -1,7 +1,5 @@
-<?
+<?php
 /** @package Aquarius */
-require_once 'lib/FrontendURLFactory.php';
-require_once 'lib/DomainConfigs.php';
 
 /** Run time basics for the CMS
   */
@@ -322,6 +320,7 @@ class Aquarius {
     /** Prepare a smarty container */
     function get_smarty_container() {
         require_once('lib/smarty/Smarty.class.php');
+        require_once('lib/template.lib.php');
         $smarty = new Smarty();
         $smarty->assign('config', $this->config);
 

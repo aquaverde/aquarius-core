@@ -8,8 +8,12 @@
   * @package Aquarius
   */
 
+#ini_set('display_errors','1');
+#error_reporting(E_ALL);
 
-require_once 'Aquarius_Loader.php';
-$loader = new Aquarius_loader();
-$aquarius = $loader->init('full');
+require dirname(__FILE__).DIRECTORY_SEPARATOR.'Aquarius_Frontloader.php';
+
+$frontloader = new Aquarius_Frontloader();
+$loader = $frontloader->load('full');
+
 $aquarius->load();
