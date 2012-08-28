@@ -98,3 +98,4 @@ Log::backtrace('backend');
     require_once "lib/db/Users2languages.php";
     require_once "lib/adminaction.php";
     require_once "lib/moduleaction.php";
+    require_once "lib/Translation.php";

@@ -65,7 +65,7 @@ class Aquarius_Loader {
     function include_paths($add_paths) {
         $this->include_paths = array_merge($this->include_paths, $add_paths);
 
-        return set_include_path($this->include_paths_str());
+        $result = set_include_path($this->include_paths_str());
         if ($result === false) throw new Exception("Unable to set include path to ".$loader->include_paths());
     }
     
@@ -76,7 +76,7 @@ class Aquarius_Loader {
     function include_file($file) {
         $this->included_files []= $file;
         $result = include $file;
-        if ($result === false) throw new Exception("Unable to set include path.");
+        if ($result === false) throw new Exception("Failure to include file $file");
     }   
     
     function prepare($stage_name) {
@@ -116,8 +116,8 @@ class Aquarius_Stage_Paths extends Aquarius_Basic_Stage {
     function init($loader) {
         $this->core_path =     realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
         $this->aquarius_path = realpath($this->core_path.'..').DIRECTORY_SEPARATOR;
-        $this->root_path =     realpath($this->core_path.'..'.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
-        $this->install_path =  realpath($this->core_path.'..').DIRECTORY_SEPARATOR;
+        $this->root_path =     realpath($this->aquarius_path.'..').DIRECTORY_SEPARATOR;
+        $this->install_path =  $this->aquarius_path;
         
         $lib_path = $this->core_path.'lib'.DIRECTORY_SEPARATOR;
         $loader->include_paths(array(
@@ -131,7 +131,7 @@ class Aquarius_Stage_Paths extends Aquarius_Basic_Stage {
         $loader->core_path = $this->core_path;
         $loader->aquarius_path = $this->aquarius_path;
         $loader->root_path = $this->root_path;
-        $loader->install_path = $this->root_path;
+        $loader->install_path = $this->install_path;
     }
 }
 
@@ -304,6 +304,7 @@ class Aquarius_Stage_Logging extends Aquarius_Basic_Stage {
 
     function load($loader) {
         $logger = $this->logging_manager->load_for(clean_magic($_COOKIE));
+        $loader->aquarius->logging_manager = $this->logging_manager;
         $loader->aquarius->logger = $logger;
         Log::$usuallogger = $logger;
         
