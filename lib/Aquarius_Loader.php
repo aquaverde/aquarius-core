@@ -304,6 +304,7 @@ class Aquarius_Stage_Logging extends Aquarius_Basic_Stage {
 
     function load($loader) {
         $logger = $this->logging_manager->load_for(clean_magic($_COOKIE));
+        $loader->aquarius->logging_manager = $this->logging_manager;
         $loader->aquarius->logger = $logger;
         Log::$usuallogger = $logger;
         
