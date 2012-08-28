@@ -59,7 +59,7 @@ class Menu {
                 '80' => new Menu('menu_super_tools', false, false, array(
                     '10' => new Menu('menu_super_createcontent', Action::make('create_content', 'show', $lg)),
                     '30' => new Menu(false,                    Action::make('db_maintenance', 'dialog')),
-                    '40' => new Menu(false,                    Action::make('cache_cleaner', 'smarty_select')),
+                    '40' => new Menu(false,                    Action::make('cache_cleaner', 'dialog')),
                     '50' => new Menu(false,                    Action::make('search_replace', 'search', $lg)),
                     '60' => new Menu(false,                    Action::make('fileops', 'center')),
                     '70' => new Menu(false,                    Action::make('maintenance_mode', 'dialog')),

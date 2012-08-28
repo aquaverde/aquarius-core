@@ -525,7 +525,7 @@ s_message_content_updated  = "Page %s sauvegardée"
 s_message_content_deleted = "Page '%s' effacée."
 s_message_uploaded  = "Fichier %s envoyé"
 s_message_generated_classes = "DataObject Class generated"
-s_message_node_cache_rebuilt = "Node Cache rebuilded" 
+s_message_node_cache_rebuilt = "Node Cache régénéré" 
 s_message_file_deleted = "Fichier %s effacé" 
 s_message_update_thumbnails = "Image de prévisualisation à jour"
 s_message_permissions_fixed = "Autorisations corrigées"
@@ -648,4 +648,17 @@ message_added = "Message '%s' ajouté"
 message_saved = "Message '%s' sauvgardé"
 
 choose_form = "Template"
-?>
+
+
+
+clear_caches                 = "Vider les caches"
+clear_caches_message         = "C'est possible de vider ces caches à discrétion. Ils seraient reconstruits pendant l'opération normale."
+clear_caches_all             = "Vider tout caches"
+clear_cache_frontend         = "Vider cache frontend"
+clear_cache_frontend_cleared = "Frontend cache vidé"
+clear_cache_backend          = "Vider le cache backend"
+clear_cache_backend_cleared  = "Backend cache vidé"
+clear_cache_content          = "Vider le content-cache"
+clear_cache_content_cleared  = "Content-cache vidé"
+clear_cache_loader           = "Enlever le loader-cache"
+clear_cache_loader_cleared   = "Loader-cache enlevé"

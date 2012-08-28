@@ -87,6 +87,9 @@ try {
                     $GLOBALS['_DB_DATAOBJECT']['CACHE'] = array();
                     $GLOBALS['_AQUARIUS_CONTENT_CACHE'] = array();
                     break;
+                case 'loader':
+                    $frontloader->delete_cache();
+                    break;
                 default:
                     throw new Exception("Don't know what to do about touched region '$region'");
             }

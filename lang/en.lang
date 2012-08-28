@@ -626,4 +626,15 @@ message_saved = "Saved message '%s'"
 
 choose_form = "Template"
 
-?>
+
+clear_caches                 = "Empty caches"
+clear_caches_message         = "These caches may be cleared at will. They will be rebuilt during normal operation of the site."
+clear_caches_all             = "Empty all caches"
+clear_cache_frontend         = "Clear frontend cache"
+clear_cache_frontend_cleared = "Frontend cache cleared"
+clear_cache_backend          = "Clear backend cache"
+clear_cache_backend_cleared  = "Backend cache cleared"
+clear_cache_content          = "Clear content-cache"
+clear_cache_content_cleared  = "Content-cache cleared"
+clear_cache_loader           = "Delete loader-cache"
+clear_cache_loader_cleared   = "Loader-cache deleted"
