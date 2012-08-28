@@ -1,5 +1,5 @@
 {include file='header.tpl'}
-    <h1>{$title}</h1>
+    <h1>{$title|default:$lastaction->get_title()|escape}</h1>
     <div class="bigbox">
         {if $lastaction->get_title()}
             <div class="bigboxtitle"><h2>{$lastaction->get_title()}</h2></div>
