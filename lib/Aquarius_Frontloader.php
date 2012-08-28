@@ -61,4 +61,8 @@ return unserialize('.var_export(serialize($ser_loader), true).');
         rename($frontload_file_new, $this->cache_file); // Atomic I presume
         Log::debug("Wrote frontloader to $this->cache_file");
     }
+    
+    function delete_cache() {
+        if (file_exists($this->cache_file)) unlink($this->cache_file);
+    }
 }
