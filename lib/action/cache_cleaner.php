@@ -1,4 +1,4 @@
-<?
+<?php
 
 class action_cache_cleaner extends AdminAction {
 
@@ -6,51 +6,73 @@ class action_cache_cleaner extends AdminAction {
 
     /** allows superadmins */
     function permit_user($user) {
-        return $user->isSuperadmin();
+        return $user->isSiteadmin();
+    }
+    
+    static function all_cleansing_actions() {
+        return array_filter(array(
+            Action::make('cache_cleaner', 'smarty_frontend'),
+            Action::make('cache_cleaner', 'smarty_backend'),
+            Action::make('cache_cleaner', 'content'),
+            Action::make('cache_cleaner', 'loader')
+        ));
     }
 }
 
-/** The smarty cache cleaner takes two parameters:
-  * 1. selected_end: Were to clean; 'backend', 'frontend' or 'all'
-  * 2. part: either 'cache' or 'compile'. 'compile' clears cache as well. */
-class action_cache_cleaner_smarty extends action_cache_cleaner implements ChangeAction {
-    function get_title() { return new FixedTranslation("Clear {$this->selected_end} {$this->part}"); }
-    var $props = array('class', 'command', 'selected_end', 'part');
-    function process($aquarius, $post, $result) {
-        foreach(array('frontend', 'backend') as $end) {
-            if ($this->selected_end == 'all' || $this->selected_end == $end) {
-                $smarty = $aquarius->{"get_smarty_{$end}_container"}(false);
-                switch($this->part) {
-                    case 'compile':
-                        $smarty->clear_compiled_tpl();
-                        $result->add_message(new FixedTranslation("$end compiled templates cleared"));
-                    case 'cache':
-                        $smarty->clear_all_cache();
-                        $result->add_message(new FixedTranslation("$end cache cleared"));
-                        break;
-                    default: throw new Exception("What that '$this->part', you talkin of?");
-                }
-            }
-        }
-    }
-}
-
-class action_cache_cleaner_smarty_select extends action_cache_cleaner implements DisplayAction {
-    function get_title() { return new FixedTranslation("Smarty cache cleaner"); }
+class action_cache_cleaner_dialog extends action_cache_cleaner implements DisplayAction {
+    function get_title() { return new Translation("clear_caches"); }
     function process($aquarius, $request, $smarty, $result) {
-        foreach(array('frontend', 'backend') as $end) {
-            require_once "lib/action_decorators.php";
-            $smarty->assign('title', 'Clear smarty caches');
-            $smarty->assign('actions', array(
-                Action::make('cache_cleaner', 'smarty', 'frontend', 'cache'),
-                Action::make('cache_cleaner', 'smarty', 'frontend', 'compile'),
-                Action::make('cache_cleaner', 'smarty', 'backend', 'cache'),
-                Action::make('cache_cleaner', 'smarty', 'backend', 'compile'),
-                new ActionTitleChange(Action::make('cache_cleaner', 'smarty', 'all', 'compile'), 'Mr. Proper')
-            ));
-            $result->use_template('select.tpl');
+        require_once "lib/action_decorators.php";
+        $cleansing_actions = array_merge(array(Action::make('cache_cleaner', 'all')), self::all_cleansing_actions());
+        $cleansing_actions []= Action::make('cancel');
+        $smarty->assign('actions', $cleansing_actions);
+        $smarty->assign('message', new Translation('clear_caches_message'));
+        $result->use_template('select.tpl');
+    }
+}
+
+class action_cache_cleaner_all extends action_cache_cleaner implements ChangeAction {
+    function get_title() { return new Translation("clear_caches_all"); }
+    function process($aquarius, $post, $result) {
+        $cleansing_actions = self::all_cleansing_actions();
+        foreach( self::all_cleansing_actions() as $cleansing_action) {
+            $cleansing_action->process($aquarius, $post, $result);
         }
     }
 }
 
-?>
+class action_cache_cleaner_smarty_frontend extends action_cache_cleaner implements ChangeAction {
+    function get_title() { return new Translation("clear_cache_frontend"); }
+    function process($aquarius, $post, $result) {
+        $smarty = $aquarius->get_smarty_frontend_container(false);
+        $smarty->clear_compiled_tpl();
+        $smarty->clear_all_cache();
+        $result->add_message(new Translation("clear_cache_frontend_cleared"));
+    }
+}
+
+class action_cache_cleaner_smarty_backend extends action_cache_cleaner implements ChangeAction {
+    function get_title() { return new Translation("clear_cache_backend"); }
+    function process($aquarius, $post, $result) {
+        $smarty = $aquarius->get_smarty_backend_container();
+        $smarty->clear_compiled_tpl();
+        $smarty->clear_all_cache();
+        $result->add_message(new Translation("clear_cache_backend_cleared"));
+    }
+}
+
+class action_cache_cleaner_content extends action_cache_cleaner implements ChangeAction {
+    function get_title() { return new Translation("clear_cache_content"); }
+    function process($aquarius, $post, $result) {
+        $result->touch_region('content');
+        $result->add_message(new Translation("clear_cache_content_cleared"));
+    }
+}
+
+class action_cache_cleaner_loader extends action_cache_cleaner implements ChangeAction {
+    function get_title() { return new Translation("clear_cache_loader"); }
+    function process($aquarius, $post, $result) {
+        $result->touch_region('loader');
+        $result->add_message(new Translation("clear_cache_loader_cleared"));
+    }
+}

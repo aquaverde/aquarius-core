@@ -564,4 +564,14 @@ message_saved = "Nachricht '%s' gespeichert"
 
 choose_form = "Template"
 
-?>
+clear_caches                 = "Caches leeren"
+clear_caches_message         = "Diese Caches können jederzeit bedenkenlos geleert werden. Sie werden automatisch während des Betriebs wieder aufgebaut."
+clear_caches_all             = "Alle Caches leeren"
+clear_cache_frontend         = "Frontend Caches leeren"
+clear_cache_frontend_cleared = "Frontend Caches geleert"
+clear_cache_backend          = "Backend Caches leeren"
+clear_cache_backend_cleared  = "Backend Caches geleert"
+clear_cache_content          = "Content Cache leeren"
+clear_cache_content_cleared  = "Content Cache geleert"
+clear_cache_loader           = "Loader Cache entfernen"
+clear_cache_loader_cleared   = "Loader Cache entfernt"
