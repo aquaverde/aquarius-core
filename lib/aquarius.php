@@ -107,7 +107,7 @@ class Aquarius {
         if(strpos($class_name, 'db_') === 0) {
            DB_DataObject::_autoloadClass($class_name);
         } else {
-            $classpath = 'lib/'.$class_name.'.php';
+            $classpath = $class_name.'.php';
         }
         if ($classpath) {
             Log::backtrace("Autoloading $classpath");
@@ -142,7 +142,6 @@ class Aquarius {
 
         $this->formtypes = new FormTypes($this);
 
-        require_once 'lib/FilterParser.php';
         $this->filterparser = new FilterParser('lib/predicates');
     }
 
