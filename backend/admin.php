@@ -88,6 +88,7 @@ try {
                     $GLOBALS['_AQUARIUS_CONTENT_CACHE'] = array();
                     break;
                 case 'loader':
+                    Log::debug("Deleting frontloader cache");
                     $frontloader->delete_cache();
                     break;
                 default:

@@ -1,4 +1,4 @@
-<?
+<?php
 class action_modules extends AdminAction {
 
     var $props = array("class", "command");
@@ -37,6 +37,7 @@ class action_modules_toggle_active extends action_modules implements ChangeActio
         $mod->active = !$mod->active;
         $mod->update();
 
+        $result->touch_region('loader');
         $result->add_message(($mod->active?"A":"Dea")."ctivated module $mod->short");
     }
 }
