@@ -68,7 +68,7 @@ $have_modules_table = $aquarius->db->singlequery("
 ");
 
 if ($have_modules_table) {
-    $aquarius_loader->init('modules');
+    $aquarius_loader->load('modules');
     foreach(array('init', 'update') as $step) {
         foreach($aquarius->modules as $module) {
             $found_updates = find_and_apply($step, $module, $requested_updates);

@@ -74,7 +74,7 @@ class Aquarius_Loader {
     }
     
     function include_file($file) {
-        $result = include $file;
+        $result = include_once $file;
         if ($result === false) throw new Exception("Failure to include file $file");
         
         $this->included_files []= $file;
