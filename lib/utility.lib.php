@@ -570,7 +570,6 @@ function json($thing) {
 /* JSON support for legacy PHP. */
 if (!function_exists('json_encode')) {
     function json_encode($thing) {
-        require_once "lib/JSON.php";
         $conv = new Services_JSON();
         return $conv->encode($thing);
     }
@@ -578,7 +577,6 @@ if (!function_exists('json_encode')) {
 
 if (!function_exists('json_decode')) {
     function json_decode($thing, $assoc = false) {
-        require_once "lib/JSON.php";
         $conv = new Services_JSON($assoc? SERVICES_JSON_LOOSE_TYPE : 0);
         return $conv->decode($thing);
     }
