@@ -264,7 +264,7 @@ class Aquarius_Stage_db_connection extends Aquarius_Basic_Stage {
 
 
 class Aquarius_Stage_modules extends Aquarius_Basic_Stage {
-    
+  
     function init($loader) {
         $loader->include_file('Module_Manager.php');
         
@@ -332,6 +332,7 @@ class Aquarius_Stage_full extends Aquarius_Basic_Stage {
             'logging',
             'db_connection',
             'php_settings',
+            'modules',
             'globals'
         );
     }
