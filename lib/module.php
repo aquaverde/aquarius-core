@@ -40,10 +40,6 @@ class Module {
             $this->{$depend_module_short} = $depend_module;
         }
 
-        // Add the module dir to PHP's path
-        set_include_path(get_include_path().PATH_SEPARATOR.$this->path); // Deprecated
-        set_include_path(get_include_path().PATH_SEPARATOR.$this->path.'lib/');
-
         // Register the specified hooks
         foreach($this->register_hooks as $hook_name) {
             $this->aquarius->register_hook($hook_name, $this);

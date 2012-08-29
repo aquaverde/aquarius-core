@@ -27,7 +27,7 @@ class Module_Manager {
       * @return loaded module class
       *
       */
-    function load_module($short) {
+    function load_module($short, $loader) {
         // check whether that module has been loaded before
         if (isset($this->modules[$short])) {
             return $this->modules[$short];
@@ -48,9 +48,18 @@ class Module_Manager {
 
             if (!$module_class_path) throw new No_Such_Module_Exception("Unable to find module '$short' in ".join(', ', $this->modules_paths));
 
+            // Add the module dir to PHP's path
+            $loader->include_paths(array(
+                $module_path, // Deprecated
+                $module_path.'lib/'
+            ));
+            
             Log::debug("Try loading module class $short");
-            $success = include_once $module_class_path;
-            if (!$success) throw new No_Such_Module_Exception("Failed including $module_class_path");
+            try {
+                $loader->include_file($module_class_path);
+            } catch (Exception $e) {
+                throw new No_Such_Module_Exception("Failed including $module_class_path");
+            }
         }
 
         // If there's still no class present, there's nothing we can do
@@ -64,14 +73,14 @@ class Module_Manager {
     }
 
     /** Load all active modules */
-    function load_active_modules() {
+    function load_active_modules($loader) {
         $dbmodule = DB_DataObject::factory('modules');
         $dbmodule->active = true;
         $dbmodule->find();
 
         $modules = array();
         while ($dbmodule->fetch()) {
-            $modules[$dbmodule->short] = $this->load_module($dbmodule->short);
+            $modules[$dbmodule->short] = $this->load_module($dbmodule->short, $loader);
         }
         return $modules;
     }

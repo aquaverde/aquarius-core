@@ -76,7 +76,6 @@ try {
 
     $root_node = db_Node::get_root();
 
-    require_once "lib/Language_Detection.php";
     $language_detection = new Language_Detection(array(
         'request_parameter',
         'request_path',
@@ -113,7 +112,6 @@ try {
 
 
 /* Find node from URI */
-    require_once "lib/Node_Detection.php";
     $node_detection = new Node_Detection(array(
         'root_as_current_node',
         'path_parts_from_uri',
@@ -220,7 +218,7 @@ try {
 
 /* Maybe allow direct edit */
     // Allow only when client logged-in to backend
-    require_once("lib/db/Users.php");
+    require_once("db/Users.php");
     $admin_user = db_Users::authenticated();
     $smarty->assign('admin_user', $admin_user);
     $direct_edit = (bool)$admin_user;
@@ -343,7 +341,6 @@ try {
 
 
     // Let daily jobs run after the rest of the script finished
-    require_once 'lib/cron.php';
     Cron::run_on_shutdown();
 
 } catch (Exception $error) {

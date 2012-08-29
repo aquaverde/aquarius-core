@@ -74,9 +74,10 @@ class Aquarius_Loader {
     }
     
     function include_file($file) {
-        $this->included_files []= $file;
         $result = include $file;
         if ($result === false) throw new Exception("Failure to include file $file");
+        
+        $this->included_files []= $file;
     }   
     
     function prepare($stage_name) {
@@ -279,14 +280,14 @@ class Aquarius_Stage_modules extends Aquarius_Basic_Stage {
         $loader->aquarius->module_manager = new Module_Manager($modules_paths);
 
         try {
-            $loader->aquarius->modules = $loader->aquarius->module_manager->load_active_modules();
+            $loader->aquarius->modules = $loader->aquarius->module_manager->load_active_modules($loader);
         } catch(No_Such_Module_Exception $e) {
             Log::fail($e);
             Log::warn("Module missing, trying to rescue by updating module list");
             $loader->aquarius->module_manager->update_list($remove_only = true);
             
             // If it fails again we let it fail
-            $loader->aquarius->modules = $loader->aquarius->module_manager->load_active_modules();
+            $loader->aquarius->modules = $loader->aquarius->module_manager->load_active_modules($loader);
         }
     }
 }
