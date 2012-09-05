@@ -15,16 +15,18 @@ function smarty_function_load($params, &$smarty) {
     $ignore = get($params, 'ignore', false);
 
     if (!($node || $ignore)) {
-        $smarty->trigger_error("load: could not load node for ".get($params, 'node'));
+        throw new Exception("load: could not load node '".get($params, 'node')."'");
     }
 
     if (!is_string($var)) {
-        $smarty->trigger_error("load: require parameter var, must be string");
+        throw new Exception("load: require parameter var, must be string");
     }
 
-    $content = $node->get_content($lg);
-    if($content) $content->load_fields();
-    
-    $smarty->assign($var.'_node', $node);
-    $smarty->assign($var, $content);
+    if ($node) {
+        $content = $node->get_content($lg);
+        if($content) $content->load_fields();
+        
+        $smarty->assign($var.'_node', $node);
+        $smarty->assign($var, $content);
+    }
 }
