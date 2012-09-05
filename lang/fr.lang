@@ -653,7 +653,7 @@ choose_form = "Template"
 
 clear_caches                 = "Vider les caches"
 clear_caches_message         = "C'est possible de vider ces caches à discrétion. Ils seraient reconstruits pendant l'opération normale."
-clear_caches_all             = "Vider tout caches"
+clear_caches_all             = "Vider tout les caches"
 clear_cache_frontend         = "Vider cache frontend"
 clear_cache_frontend_cleared = "Frontend cache vidé"
 clear_cache_backend          = "Vider le cache backend"
