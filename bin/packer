@@ -197,7 +197,7 @@ $build_date = date("Y.m.d-H.i");
 $build_host = php_uname('n');
 $content_list = join(' ', $exports);
 
-$css = '<style type="text/css">'.file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'admin.css').'</style>';
+$css = '<style type="text/css">'.file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'backend'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'admin.css').'</style>';
 
 $export_pack_basename = $work_dir.DIRECTORY_SEPARATOR.$export_name;
 $export_pack_instname = $export_pack_basename.'.php';
