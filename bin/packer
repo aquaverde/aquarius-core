@@ -151,7 +151,7 @@ function cp($src, $dst, $exclude=array()) {
         $success = mkdir($dst);
         if (!$success) throw new Exception("Unable to create destination directory $dst");
         $num = 1;
-        foreach(scandir($rsrc, SCANDIR_SORT_NONE) as $contained) {
+        foreach(scandir($rsrc) as $contained) {
             $num += cp($rsrc.DIRECTORY_SEPARATOR.$contained, $dst.DIRECTORY_SEPARATOR.$contained, $exclude);
         }
         return $num;
