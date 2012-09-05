@@ -22,10 +22,12 @@
 
 $export_aliases = array(
     'bare' => array('aquarius/core'),
-    'full' => array('bare', '?aquarius/config.php', '?aquarius/ckconfig.js'),
+    'full' => array('bare', '?aquarius/config.php', '?aquarius/ckconfig.js', '?aquarius/dbadmin'),
     'site' => array('interface', 'lib', 'css', 'download', 'pictures/content', 'pictures/richtext', 'pictures/header', 'aquarius/templates', 'robots.txt', '.htaccess', 'favicon.ico', 'aquarius/init'),
     'all'  => array('full', 'site'),
 );
+
+$ignore = array('.git', 'adminer');
 
 function fail($msg) {
     echo $msg;
@@ -128,6 +130,39 @@ echo "Creating export in $export_dir\n";
 
 $export_names []= $export_tag;
 
+
+function cp($src, $dst, $exclude=array()) {
+    $name = basename($src);
+    if ($name == '.' || $name == '..' || in_array($name, $exclude)) {
+        return 0;
+    }
+    
+    $rsrc = realpath($src);
+    if (!$rsrc) throw new Exception("Nonexisting source path '$src'");
+
+    if(is_file($src)) {
+        if(copy($rsrc, $dst)) {
+            touch($dst, filemtime($rsrc));
+            return 1;
+        } else {
+            throw new Exception("Unable to copy file '$name' ('$rsrc' to '$dst')");
+        }
+    } else if(is_dir($rsrc)) {
+        $success = mkdir($dst);
+        if (!$success) throw new Exception("Unable to create destination directory $dst");
+        $num = 1;
+        foreach(scandir($rsrc, SCANDIR_SORT_NONE) as $contained) {
+            $num += cp($rsrc.DIRECTORY_SEPARATOR.$contained, $dst.DIRECTORY_SEPARATOR.$contained, $exclude);
+        }
+        return $num;
+    } else {
+        throw new Exception("$rsrc is neither file nor dir, please try to adhere to our preconceptions of a simple world");
+    }
+}
+
+
+
+
 echo "Exporting: ";
 $file_list = array();
 foreach($exports as $i => $base) {
@@ -142,9 +177,10 @@ foreach($exports as $i => $base) {
         mkdir($export_parent_dir, 0700, true);
     }
     $export_new_dir = $export_dir.DIRECTORY_SEPARATOR.$new;
-    system('cp -r "'.escapeshellcmd($base).'" "'.escapeshellcmd($export_new_dir).'"', $error);
-
-    if ($error !== 0) fail("failed exporting $base");
+    try {
+        $num = cp($base, $export_new_dir, $ignore);
+        echo "($num)";
+    } catch(Exception $e) { fail("failed exporting $base: ".$e->getMessage()); }
 }
 echo ".\n";
 
@@ -437,7 +473,7 @@ if ($op == "replaced") {
         <tr><td width="70">Build date</td><td>'.$build_date.'</td></tr>
         <tr><td>Build host</td><td>'.$build_host.'</td></tr>
         <tr><td>Build tag</td><td>'.$export_tag.'</td></tr>
-        <tr><td>Revision</td><td>'.$revision.'</td></tr>
+        <tr><td>Revision</td><td>'.$version.'</td></tr>
         <tr>
             <td>Contents</td>
             <td><ul><li>'.join('</li><li>', $exports).'</li></ul></td>
