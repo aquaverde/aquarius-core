@@ -5,7 +5,7 @@
   * Aquarius is loaded in multiple stages. Each stage has two procedures that
   * are executed in order. Theses procedures are:
   * - init(), where the stage includes libraries and prepares its data
-  * - load(), where the stage effects the environment
+  * - load(), where the stage effects the aquarius environment
   *
   * Of these procedures, only load() will be run on every load of aquarius. The data
   * structures loaded by init() must be serializable, so that the stage can be
@@ -229,7 +229,6 @@ class Aquarius_Stage_db_connection extends Aquarius_Basic_Stage {
     
     function depends() { return array('aquarius'); }
     function init($loader) {
-        $loader->include_file('sql.lib.php');
         $loader->include_file('DB/DataObject.php');
 
         // Setup PEAR DB_DataObject
@@ -256,10 +255,22 @@ class Aquarius_Stage_db_connection extends Aquarius_Basic_Stage {
         // Force PEAR to initialize the DB connection, we want to use it seperately as well
         $node = DB_DataObject::factory('node');
         $loader->aquarius->db = new DBwrap($node->getDatabaseConnection());
-        
-        // Legacy DB connection
+        $loader->aquarius->db->reset_charset(); // Told you so
+    }
+}
+
+class Aquarius_Stage_legacy_db_connection extends Aquarius_Basic_Stage {
+    var $db_options;
+    
+    function depends() { return array('aquarius'); }
+    function init($loader) {
+        $loader->include_file('sql.lib.php');
+    }
+    
+    function load($loader) {
         $dbconf = $loader->aquarius->conf('db');
         $loader->db_legacy = new SQLwrap($dbconf['host'], $dbconf['user'], DB_PASSWORD, $dbconf['name']);
+        $GLOBALS['DB'] = $loader->db_legacy;
     }
 }
 
@@ -322,7 +333,6 @@ class Aquarius_Stage_Logging extends Aquarius_Basic_Stage {
 class Aquarius_Stage_globals extends Aquarius_Basic_Stage {
     function load($loader) {
         $GLOBALS['aquarius'] = $loader->aquarius;
-        $GLOBALS['DB'] = $loader->db_legacy;
     }
 }
 
@@ -332,6 +342,7 @@ class Aquarius_Stage_full extends Aquarius_Basic_Stage {
         return array(
             'logging',
             'db_connection',
+            'legacy_db_connection',
             'php_settings',
             'modules',
             'globals'
