@@ -16,7 +16,7 @@ $modules = array(
     'core' => $aquarius
 );
 
-$aquarius_loader->init('modules');
+$aquarius_loader->load('modules');
 $modules = array_merge($modules, $aquarius->modules);
 
 $current_schema = "";
