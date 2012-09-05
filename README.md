@@ -16,7 +16,7 @@ repository. Installing from scratch is not documented.
 see doc/aquadoc.txt
 
 
-# Developpement
+# Development
 see doc/coding-guidelines.txt
 
 
