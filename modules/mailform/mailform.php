@@ -77,6 +77,7 @@ class MailForm extends Module {
         $formfield_errors = array();
         $post = clean_magic($_POST);
         $formfields = validate($post, $formspec['formfields'], $formfield_errors);
+        $this->field_errors[$form_name] = $formfield_errors;
         if (count($formfield_errors) > 0) {
             Log::debug("Invalid fields:");
             Log::debug($formfield_errors);
