@@ -114,7 +114,7 @@ class AquaMail {
 
         $logstr = "mail to $to on behalf of ".$_SERVER['REMOTE_ADDR']."\n".$message->getHeaders()->toString()."\n\n".$this->text_body;
 
-        $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
+        $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance(''));
         $success = $mailer->send($message);
         if ($success) {
             Log::info("Sent $logstr");
