@@ -13,15 +13,6 @@ class Lang_Fallback extends Module {
     var $name  = "Switch to another language when content is missing";
 
 
-    /** Determine what site a node belongs to */
-    function site_of_node($node) {
-        foreach($this->site_roots() as $site_root) {
-            if ($node->id == $site_root->id || $site_root->ancestor_of($node)) return $site_root;
-        }
-        return false;
-    }
-
-
     /** Node detection is extended to check for content availability */
     function frontend_extend_node_detection($node_detection) {
         $node_detection->add_step('lang_fallback', array($this, 'lang_fallback_step'), 'before', 'fallthrough');
