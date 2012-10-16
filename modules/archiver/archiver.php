@@ -31,6 +31,11 @@ class Archiver extends Module {
     function run_publisher($now, $archived_nodes) {
         global $DB;
         
+        $having_publish_date = 0;
+        $to_be_published = 0;
+        $archived_count = 0;
+        $published = 0;
+        
         $publishquery = "
             SELECT node.id AS node_id, 
                 content_field_value.value AS publish_date
@@ -48,20 +53,27 @@ class Archiver extends Module {
             // Publish node when publish date has been reached, but not the archiving date
             $publish_date = $val['publish_date'];
 
-            if (is_numeric($publish_date)
-             && $publish_date != 0
-             && $publish_date <= $now
-             && !isset($archived_nodes[$id])
-            ) {
+            $date_valid = is_numeric($publish_date) && $publish_date != 0;
+            $archived = isset($archived_nodes[$id]);
+            $publish = $date_valid && $publish_date <= $now && !$archived;
+            
+            if ($publish) {
                 $node = db_Node::get_node($id);
                 if (!$node->active) {
                     Log::info("Publishing ".$node->idstr());
                     $node->active = 1;
                     $node->update();
                     $node->update_cache();
+                    $published += 1;
                 }
             }
+            
+            $having_publish_date += $date_valid;
+            $to_be_published += $publish;
+            $archived_count += $archived;
         }
+        
+        Log::debug("$having_publish_date nodes have publish date, $published newly activated, $to_be_published currently published, $archived_count currently archived");
     }
     
     function run_archiver($now) {
