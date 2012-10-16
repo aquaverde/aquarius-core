@@ -54,8 +54,8 @@ class action_formfield_list extends action_formfield implements DisplayAction {
                 $field_differences = array();
                 foreach($group['formfields'] as $formfield) {
                     $value = $formfield->$ffield;
-                    if (!isset($field_differences[$value])) $field_differences[$value] = 0;
-                    $field_differences[$value] += 1;
+                    if (!isset($field_differences[$value])) $field_differences[$value] = array();
+                    $field_differences[$value] []= $formfield->get_form()->title;
                 }
                 ksort($field_differences);
                 $differences[$ffield] = $field_differences;

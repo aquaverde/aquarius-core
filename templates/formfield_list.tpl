@@ -25,15 +25,9 @@
                 <td><input class="ef" style="width: 220px" value="{$group.description|escape}" name="descr[{$group.hashid}]" title="{if $group.description}{else}{formfield_title f=$group.formfields.0}&nbsp;{/if}"/></td>
             {foreach from=$group.differences item=difference}
                 <td>
-                {if $difference|@count > 1}
-                    {foreach from=$difference key=value item=count}
-                        {$value|truncate:30:'…'|escape}&nbsp;({$count})<br/>
+                    {foreach from=$difference key=value item=forms}
+                        <div title="{", "|join:$forms}">{$value|truncate:30:'…'|escape}{if $difference|@count > 1}&nbsp;({$forms|@count}){/if}</div>
                     {/foreach}
-                {else}
-                    {foreach from=$difference key=value item=count}
-                        {$value|truncate:30:'…'|escape}
-                    {/foreach}
-                {/if}
                 </td>
             {/foreach}
             </tr>
