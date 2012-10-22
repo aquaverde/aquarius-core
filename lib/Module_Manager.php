@@ -109,9 +109,10 @@ class Module_Manager {
       * undiscovered errors in new modules.
       *
       * @param $remove_only=false don't add modules to DB, remove the ones that are not present anymore (this is pretty safe)
+      * @param $loader use this when loading modules
       *
       */
-    function update_list($remove_only = false) {
+    function update_list($remove_only = false, $loader = false) {
         $dbmodules = $this->available_modules();
 
         $fsmodules = array();
@@ -147,10 +148,10 @@ class Module_Manager {
         }
 
         // Add modules not yet in DB
-        if (!$remove_only) {
+        if (!$remove_only && $loader) {
             foreach(array_diff_key($fsmodules, $dbmodules) as $short => $dbmodule) {
                 Log::info("Adding settings for module '$short' to DB");
-                $module = $this->load_module($short);
+                $module = $this->load_module($short, $loader);
                 $dbmodule->active = false;
                 $dbmodule->name = strlen($module->name) > 0 ? $module->name : $short;
                 $dbmodule->insert();
