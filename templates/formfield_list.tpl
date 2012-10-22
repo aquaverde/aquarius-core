@@ -26,7 +26,7 @@
             {foreach from=$group.differences item=difference}
                 <td>
                     {foreach from=$difference key=value item=forms}
-                        <div title="{", "|join:$forms}">{$value|truncate:30:'…'|escape}{if $difference|@count > 1}&nbsp;({$forms|@count}){/if}</div>
+                        <div title="{", "|join:$forms}" style="cursor:help;">{$value|truncate:30:'…'|escape}{if $difference|@count > 1}&nbsp;({$forms|@count}){/if}</div>
                     {/foreach}
                 </td>
             {/foreach}
