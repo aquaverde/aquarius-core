@@ -5,7 +5,12 @@ class Aquarius_Frontloader {
         $this->cache_file = dirname(__FILE__).'/../../cache/frontloader.php';
     }
 
-    
+    /** Create an aquarius loader and load aquarius to the given stage
+      * The result is cached and reused on later calls to this method
+      * 
+      * @return aquarius loader
+      * 
+      */
     function load($stage_name) {
         require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Aquarius_Loader.php';
         
@@ -29,6 +34,8 @@ class Aquarius_Frontloader {
         if ($rebuild) {
             $this->cache($loader);
         }
+        
+        return $loader;
     }
     
     function cache($loader) {
