@@ -1,27 +1,28 @@
 <?php
 
-function aqua_fputcsv($filePointer, $dataArray, $delimiter, $enclosure){
-    // Write a line to a file
-    // $filePointer = the file resource to write to
-    // $dataArray = the data to write out
-    // $delimeter = the field separator
-    
-    // Build the string
-    $string = "";
-    $writeDelimiter = FALSE;
-    foreach($dataArray as $dataElement){
-    if($writeDelimiter) $string .= $delimiter;
-    $string .= $enclosure . $dataElement . $enclosure;
-    $writeDelimiter = TRUE;
-    } // end foreach($dataArray as $dataElement)
-    
-    // Append new line
-    $string .= "\n";
-    
-    // Write the string to the file
-    fwrite($filePointer, $string);
-    
-} // end function fputcsv($filePointer, $dataArray, $delimiter)
+/** Write a CSV line
+  * This function behaves like fputcvs(), but it is more conservative.
+  * All fields, even empty ones, are wrapped in the enclosure. No Exceptions.
+  * Unlike fputcsv(), this function uses CRLF line-endings because there is
+  * intolerant software that can't deal with lines ending on a single LF.
+  * 
+  * @param $handle writable resource
+  * @param $fields list of values to write
+  * @param $delimiter the field-delimiter, preset is a comma character ','
+  * @param $enclosure the qoute character, preset is the double qoute character '"'
+  * @return the result of the fwrite() call
+  */
+function aqua_fputcsv($handle, $fields, $delimiter=',', $enclosure='"') {
+    array_walk($fields, 'aqua_fputcsv_enclose', $enclosure); // Schönfinkeling your functions in PHP
+    return fwrite($handle, join($delimiter, $fields)."\r\n"); // <-- Se evil CRLF
+}
+
+// Modify string so it's quoted for CVS by wrapping it in the enclosure
+// character and doubling the enclosure character in the enclosed string
+function aqua_fputcsv_enclose(&$enclosed, $_, $enclosure) {
+    $enclosed = $enclosure.str_replace($enclosure, $enclosure.$enclosure, $enclosed).$enclosure; // I find enclosure in CSV
+}
+
 
 /** Filter array by key
   * Like array_filter(), but filters on keys instead of values. */
