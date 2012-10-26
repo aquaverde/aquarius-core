@@ -23,7 +23,7 @@
 $export_aliases = array(
     'bare' => array('aquarius/core'),
     'full' => array('bare', '?aquarius/config.php', '?aquarius/ckconfig.js', '?aquarius/dbadmin'),
-    'site' => array('interface', 'lib', 'css', 'download', 'pictures/content', 'pictures/richtext', 'pictures/header', 'pictures/team', 'aquarius/templates', 'robots.txt', '.htaccess', 'favicon.ico', 'aquarius/init'),
+    'site' => array('interface', 'lib', 'css', 'download', 'pictures', 'aquarius/templates', 'robots.txt', '.htaccess', 'favicon.ico', 'aquarius/init'),
     'all'  => array('full', 'site'),
 );
 

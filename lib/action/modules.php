@@ -13,7 +13,9 @@ class action_modules_list extends action_modules implements DisplayAction {
     function process($aquarius, $get, $smarty, $result) {
         // Update module list in DB
         try {
-            $aquarius->module_manager->update_list();
+            global $loader;
+
+            $aquarius->module_manager->update_list(false, $loader);
         } catch (No_Such_Module_Exception $e) {
             $result->add_message("Failed updating module list: ".$e->getMessage());
         }
