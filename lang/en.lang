@@ -257,6 +257,7 @@ s_expandclose = "Expand/close"
 s_update = "Update"
 s_regenerate = "Regenerate"
 filemanager_fix_permissions = "Correct file permissions"
+inherited = Inherited
 
 s_delete_confirm_list = "Confirm deletion of the following pages:"
 s_delete_nodes = "Delete pages"

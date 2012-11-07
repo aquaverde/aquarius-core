@@ -261,6 +261,7 @@ s_expandclose = "Öffnen/Schliessen"
 s_update = "Erneuern"
 s_regenerate = "Neu generieren"
 filemanager_fix_permissions = "Berechtigungen korrigieren"
+inherited = Vererbt
 
 s_delete_confirm_list = "Die folgenden Seiten löschen:"
 s_delete_nodes = "Seiten löschen"
