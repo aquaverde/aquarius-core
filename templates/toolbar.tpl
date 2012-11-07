@@ -35,7 +35,7 @@
             {if !$is_super}{#choose_form#}:&nbsp;{/if}
             <select name="form_id">
                 {strip}
-                    <option value="null" class="dim">{#inherited#} [{$form->title}]</option>
+                    <option value="null" class="dim">{#inherited#} ({$form->title})</option>
                 {foreach from=$forms item='select_form'}
                     <option value="{$select_form->id}"{if $select_form->id == $node->form_id} selected="selected"{/if}>
                         {$select_form->title}
