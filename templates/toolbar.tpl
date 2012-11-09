@@ -17,21 +17,21 @@
             
         </div>
 
-        {action action="node:editprop:`$node->id`"}        
-    	<div class="separator formbar">
+        {action action="node:editprop:`$node->id`"}
+    	<div class="separator formbar dim">
                 
-                <a href="{url action0=$lastaction action1=$action}" title="edit node">Node: {if $node->name}"{$node->name}"{/if} ID {$node->id}&nbsp;<img src="buttons/edit.gif" alt="" style="margin: -5px 0 0 0;"/></a>
+                <a href="{url action0=$lastaction action1=$action}" title="edit node"><b class="dim">N</b> {if $node->name}"{$node->name}"{/if} ID {$node->id}&nbsp;<img src="buttons/edit.gif" alt="" style="margin: -5px 0 0 0;"/></a>
         </div>
         {/action}
 
 
         {assign var=formedit value="formedit:edit:`$form->id`"|makeaction}
         {if $formedit || $change_form}
-    	<div class="separator">
+    	<div class="separator dim">
         {/if}
 
         {if $formedit}
-    	    <a href="{url action0=$lastaction action1=$formedit}" title="edit form">Form: "{$form->title}" <img src="buttons/edit.gif" alt="form" style="margin-top: -5px"/></a>
+    	    <a href="{url action0=$lastaction action1=$formedit}" title="edit form"><b class="dim">F</b> "{$form->title}" <img src="buttons/edit.gif" alt="form" style="margin-top: -5px"/></a>
         {/if}
         {if $change_form}
             {if !$is_super}{#choose_form#}:&nbsp;{/if}
@@ -51,6 +51,9 @@
         {if $formedit || $change_form}
         </div>
        {/if}
+ 
+        {if $form->template}<div class="separator dim"><b class="dim">T</b> "{$form->template}"</div>{/if}
+
         
         {if $content->lg != $primary_lang->lg}
     	<div class="separator">
@@ -58,8 +61,7 @@
         </div>
         {/if}
         
-        {if $form->template}<div class="separator">Template: "{$form->template}"</div>{/if}
-        
+         
 
     </form>
 </div>
