@@ -24,10 +24,12 @@
         </div>
         {/action}
 
+
         {assign var=formedit value="formedit:edit:`$form->id`"|makeaction}
         {if $formedit || $change_form}
     	<div class="separator">
         {/if}
+
         {if $formedit}
     	    <a href="{url action0=$lastaction action1=$formedit}" title="edit form">Form: "{$form->title}" <img src="buttons/edit.gif" alt="form" style="margin-top: -5px"/></a>
         {/if}
@@ -44,8 +46,8 @@
                 {/strip}
             </select>
             <input type="submit" name="{$change_form}" value="set" class="button" />
-            {if $form->template} &nbsp; Template: "{$form->template}"{/if}
         {/if}
+        
         {if $formedit || $change_form}
         </div>
        {/if}
@@ -55,6 +57,8 @@
         	<a href="{url url=$url->with_param("copy-primary") action=$lastaction }">{#content_copy_primary#}: "{$primary_lang->name}"</a>
         </div>
         {/if}
+        
+        {if $form->template}<div class="separator">Template: "{$form->template}"</div>{/if}
         
 
     </form>
