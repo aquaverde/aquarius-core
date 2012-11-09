@@ -29,13 +29,13 @@
     	<div class="separator">
         {/if}
         {if $formedit}
-    	    <a href="{url action0=$lastaction action1=$formedit}" title="edit form [form: {$form->title}{if $form->template} | template: {$form->template}.tpl{/if}]">Form: <img src="buttons/edit.gif" alt="form" style="margin-top: -5px"/></a>
+    	    <a href="{url action0=$lastaction action1=$formedit}" title="edit form">Form: "{$form->title}" <img src="buttons/edit.gif" alt="form" style="margin-top: -5px"/></a>
         {/if}
         {if $change_form}
             {if !$is_super}{#choose_form#}:&nbsp;{/if}
             <select name="form_id">
                 {strip}
-                    <option value="null" class="dim">{#inherited#} ({$form->title})</option>
+                    <option value="null" class="dim">{#inherited#}</option>
                 {foreach from=$forms item='select_form'}
                     <option value="{$select_form->id}"{if $select_form->id == $node->form_id} selected="selected"{/if}>
                         {$select_form->title}
@@ -44,6 +44,7 @@
                 {/strip}
             </select>
             <input type="submit" name="{$change_form}" value="set" class="button" />
+            {if $form->template} &nbsp; Template: "{$form->template}"{/if}
         {/if}
         {if $formedit || $change_form}
         </div>
@@ -55,11 +56,6 @@
         </div>
         {/if}
         
-        {if $entry}
-    	<div class="separator">        
-            <a href="#boxform">{#s_subcontents#}...</a>
-        </div>
-        {/if}
 
     </form>
 </div>
