@@ -488,15 +488,27 @@ function nmail($to, $subject, $message, $headers=array()) {
   return mail($to, $subject, $message, $headerstr);
 }
 
-/** returns an array of all items of a table (15.jan.07 - stf) */
+/** returns an array of all items of a table (15.jan.07 - stf)
+  * @deprecated use fetch_into_list()
+  */
 function getList($prototype) {
-	$list = array();
-	$prototype->find();
-	while ($prototype->fetch()) {
-		$list[] = clone($prototype);
-	}
-	
-	return $list;
+    return fetch_into_list($prototype);
+}
+
+
+/** Fetch all items found for the given dataobject
+  * Will call find() and fetch() on the object.
+  * @param $prototype DB_DataObject instance used for searching
+  * @return array of instances found
+  */
+function fetch_into_list($prototype) {
+    $list = array();
+    $prototype->find();
+    while ($prototype->fetch()) {
+        $list[] = clone($prototype);
+    }
+
+    return $list;
 }
 
 /** Search the $array for an object (or array) that has an $attribute (resp. key) equal to the given $value, the index (key) of the first match is returned. 
