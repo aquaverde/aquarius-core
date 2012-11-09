@@ -10,6 +10,7 @@
   *   start: index of first node to put into $search.items
   *   length: count of nodes to put into items (max 100)
   *   notfound_recovery: Look in request URL and referrer URL for search strings. This is mainly used on error pages, to give the users options that might interest them.
+  *   purge: Remove undesired nodes and their descendants from results, list of nodes
   * </pre>
   * If any of the params search, lg, start or length are not specified, the plugin looks for them in the request.
   *
@@ -40,12 +41,16 @@ class Content_Search {
 
     /** language code to search in */
     var $lg;
-
+    
+    /** Branches to hide in the result */
+    var $purge = array();
+    
     function parameter_types() {
         return array('search' => 'string'
                     ,'start'  => 'int'
                     ,'length' => 'int'
                     ,'lg'     => 'string'
+                    ,'purge'  => 'string'
                     );
     }
 
@@ -65,6 +70,7 @@ class Content_Search {
         $this->start = max(0, $this->start);
         $this->length = min(100, max(1, $this->length));
         $this->lg = db_Languages::ensure_code($this->lg);
+        $this->purge = db_Node::get_nodes($this->purge);
         return strlen($this->lg) > 0;
     }
 
@@ -85,6 +91,14 @@ class Content_Search {
 
         // Node and content must be active
         $restrictions['active'] = "(node.active AND content.active)";
+        
+        if ($this->purge) {
+            $purgatory = array();
+            foreach($this->purge as $purge_node) {
+                $purgatory []= "(node.cache_left_index < $purge_node->cache_left_index OR node.cache_right_index > $purge_node->cache_right_index)";
+            }
+            $restrictions['purge'] = '('.join(' AND ', $purgatory).')';
+        }
 
         return $restrictions;
     }
@@ -168,4 +182,3 @@ class Content_Search {
         return $result;
     }
 }
-?>
