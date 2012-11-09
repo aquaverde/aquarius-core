@@ -19,8 +19,8 @@
 
         {action action="node:editprop:`$node->id`"}        
     	<div class="separator formbar">
-                &nbsp;
-                <a href="{url action0=$lastaction action1=$action}" title="edit node [Node-ID: {$node->id} | Node-Name: {$node->name}]"><img src="picts/editnode2.gif" alt="" style="margin: -5px -4px 0 -4px;"/></a>
+                
+                <a href="{url action0=$lastaction action1=$action}" title="edit node">Node: {if $node->name}"{$node->name}"{/if} ID {$node->id}&nbsp;<img src="buttons/edit.gif" alt="" style="margin: -5px 0 0 0;"/></a>
         </div>
         {/action}
 
