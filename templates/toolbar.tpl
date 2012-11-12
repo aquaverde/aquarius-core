@@ -17,25 +17,27 @@
             
         </div>
 
-        {action action="node:editprop:`$node->id`"}        
-    	<div class="separator formbar">
-                &nbsp;
-                <a href="{url action0=$lastaction action1=$action}" title="edit node [Node-ID: {$node->id} | Node-Name: {$node->name}]"><img src="picts/editnode2.gif" alt="" style="margin: -5px -4px 0 -4px;"/></a>
+        {action action="node:editprop:`$node->id`"}
+    	<div class="separator formbar dim">
+                
+                <a href="{url action0=$lastaction action1=$action}" title="edit node"><b class="dim">N</b> {if $node->name}"{$node->name}"{/if} ID {$node->id}&nbsp;<img src="buttons/edit.gif" alt="" style="margin: -5px 0 0 0;"/></a>
         </div>
         {/action}
 
+
         {assign var=formedit value="formedit:edit:`$form->id`"|makeaction}
         {if $formedit || $change_form}
-    	<div class="separator">
+    	<div class="separator dim">
         {/if}
+
         {if $formedit}
-    	    <a href="{url action0=$lastaction action1=$formedit}" title="edit form [form: {$form->title}{if $form->template} | template: {$form->template}.tpl{/if}]">Form: <img src="buttons/edit.gif" alt="form" style="margin-top: -5px"/></a>
+    	    <a href="{url action0=$lastaction action1=$formedit}" title="edit form"><b class="dim">F</b> "{$form->title}" <img src="buttons/edit.gif" alt="form" style="margin-top: -5px"/></a>
         {/if}
         {if $change_form}
             {if !$is_super}{#choose_form#}:&nbsp;{/if}
             <select name="form_id">
                 {strip}
-                    <option value="null"></option>
+                    <option value="null" class="dim">{#inherited#}</option>
                 {foreach from=$forms item='select_form'}
                     <option value="{$select_form->id}"{if $select_form->id == $node->form_id} selected="selected"{/if}>
                         {$select_form->title}
@@ -45,9 +47,13 @@
             </select>
             <input type="submit" name="{$change_form}" value="set" class="button" />
         {/if}
+        
         {if $formedit || $change_form}
         </div>
        {/if}
+ 
+        {if $form->template}<div class="separator dim"><b class="dim">T</b> "{$form->template}"</div>{/if}
+
         
         {if $content->lg != $primary_lang->lg}
     	<div class="separator">
@@ -55,11 +61,7 @@
         </div>
         {/if}
         
-        {if $entry}
-    	<div class="separator">        
-            <a href="#boxform">{#s_subcontents#}...</a>
-        </div>
-        {/if}
+         
 
     </form>
 </div>
