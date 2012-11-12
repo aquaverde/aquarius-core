@@ -9,6 +9,7 @@
   *   lg: Search for content in that language (uses current language by default)
   *   start: index of first node to put into $search.items
   *   length: count of nodes to put into items (max 100)
+  *   purge: list of nodes to purge from results, including descendants
   *   notfound_recovery: Look in request URL and referrer URL for search strings. This is mainly used on error pages, to give the users options that might interest them.
   *   use: class name of search to use (optional, standard is 'Content_Search')
   *   
@@ -24,6 +25,7 @@ function smarty_function_search($params, &$smarty) {
     $search = new $class();
     $search->read($_REQUEST);
     $search->read($params);
+    $search->sanitize();
 
     if (get($params, 'notfound_recovery')) {
         $search->search = smarty_function_search_notfound_recovery();

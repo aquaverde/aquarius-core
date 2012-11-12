@@ -1,0 +1,16 @@
+comments_accept = "Kommentare akzeptieren"
+comments_reject = "Kommentare ablehnen"
+comments_accepted = "Akzeptierte Kommentare"
+comments_rejected = "Abgelehnte Kommentare"
+no_comments = "Keine Kommentare"
+new_comments = "Neue Kommentare"
+comments_list = "Kommentare"
+
+
+new_comment_notice = "Neuer Kommentar"
+new_comment_notice_text = "Es wurde ein neuer Kommentar abgegeben:"
+comment_subject = "Titel"
+comment_by = "Von"
+comment_topic = "Thema"
+
+menu_comments = "Kommentare"
