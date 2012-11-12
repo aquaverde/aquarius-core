@@ -1,0 +1,12 @@
+.commentsbox {margin-bottom: 2em; }
+.comments { margin-left: 1em; }
+.comments input { position: absolute; left: -1.5em; top: 0.8ex }
+.comments li.comment { margin: 0.8em; position: relative; }
+.comments .header { display: block; background: #EDF1F4; padding: 0.3em }
+.comments .header li { display: inline; margin: 0.5em }
+.comments .header .date { position: absolute; top: 0 }
+.comments .header .email { position: absolute; left: 10em; top: 1.4em;}
+.comments .header .name { position: relative; top: 0.2em; }
+.comments .header .subject { display: block; font-weight: bold; float: none; clear: right; background: #E0E7EC; margin: 0; padding: 0em; padding-left: 10.2em; }
+.comments .header .node    { display: block; float: none; clear: right; background: #E0E7EC; margin: 0; padding: 0.3em;}
+.comments .body { clear: both; padding: 0.3em; }
