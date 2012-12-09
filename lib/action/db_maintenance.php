@@ -123,53 +123,32 @@ class action_db_maintenance_export extends action_db_maintenance implements Side
         set_time_limit(0);
         header('Content-type: text/plain');
         header('Content-Disposition: attachment; filename="'.$_SERVER['SERVER_NAME']." ".$aquarius->conf('db/name').' '.date('YmdHis').'.sql"');
-     
-        echo '-- Aquarius('.$aquarius->revision().') SQL dump '.$aquarius->conf('db/name').' on '.$aquarius->conf('db/host')."\n\n";
-        
-        global $DB;
-        $this->dump_all($DB);
-    }
-    
-    function dump_all($DB) {
-        foreach($DB->listquery('show tables') as $table) {
-            $this->dump_table_structure($DB, $table);
-            $this->dump_table_data($DB, $table);
-        }
-    }
-    
-    function dump_table_structure($DB, $table) {
-        echo "\n-- Table `$table`: structure \n";
-        echo "DROP TABLE IF EXISTS `$table`;\n";
-        echo get(mysql_fetch_row($DB->query("SHOW CREATE TABLE `$table`")), 1).";\n\n";
-    }
-    
-    function dump_table_data($DB, $table) {
-        $result = $DB->query("SELECT * FROM `$table`");
-        echo "-- Table `$table`: ".mysql_num_rows($result).' rows / '.mysql_num_fields($result)." fields \n";
 
-        if (mysql_num_rows($result) < 1) return;
+        $dumper = new DB_Dump($aquarius->db);
+        $dumper->dump_all(fopen('php://stdout', 'w'));
+    }
+}
+
+/** Dump database into file in init folder
+  */
+class action_db_maintenance_dump extends action_db_maintenance implements ChangeAction {
+
+    function get_title() { return new FixedTranslation("Dump database"); }
+
+    function process($aquarius, $post, $result) {
+        set_time_limit(0);
+        $fname=$_SERVER['SERVER_NAME']." ".$aquarius->conf('db/name').' '.date('Y.m.d His').'.sql';
         
-        $field_types = array();
-        for ($i = 0; $i < mysql_num_fields($result); $i++) {
-            $field = mysql_fetch_field($result, $i);
-            $field_types []= $field->type;
+        $dumper = new DB_Dump($aquarius->db);
+        
+        $fpath = $aquarius->install_path.'init/'.$fname;
+        $f = fopen($fpath, 'w');
+        if (!$f) {
+            $result->add_message(AdminMessage::with_html('warn', "Unable to open $fpath for writing"));
+            return;
         }
-        $field_count = count($field_types);
-     
-        echo "INSERT INTO `$table` VALUES\n";
-        $first = true;
-        while($row = mysql_fetch_row($result)) {
-            echo ($first ? '  (' : ', (');
-            foreach($field_types as $pos => $field_type) {
-                $value = $row[$pos];
-                if (is_null($value)) echo 'null';
-                elseif($field_type == 'int') echo $value;
-                else echo '"'.mysql_real_escape_string($value).'"';
-                if ($pos < $field_count - 1) echo ', ';
-            }
-            echo ")\n";
-            $first = false;
-        }
-        echo ";\n";
+        
+        $dumper->dump_all($f);
+        $result->add_message("DB dumped to $fpath");
     }
 }

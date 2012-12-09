@@ -93,4 +93,9 @@ class DBwrap {
         $firstrow = $result->fetchRow(DB_FETCHMODE_ORDERED);
         return $firstrow[0];
     }
+    
+    /** Quote a value for use in a query */
+    function quote($value) {
+        return $this->connection->quoteSmart($value); 
+    }
 }
