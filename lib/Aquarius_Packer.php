@@ -131,9 +131,7 @@ class Aquarius_Packer {
         }
         $this->message(".");
         
-        // Load the tar library
-        $tar_lib_path = dirname(__FILE__).DIRECTORY_SEPARATOR.'Packer_Tar.php';
-        include($tar_lib_path);
+        include 'Tar.php';
 
         $export_name = join('_', $export_names);
         $export_name = preg_replace('%aquarius/%', '', $export_name); // Remove 'aquarius/' path prefix
@@ -188,7 +186,8 @@ class Aquarius_Packer {
         
         // Writing scripts that write scripts is one of my favourite pastimes.
         // It got out of hand here. Could use some templating love.
-        file_put_contents($export_pack_instname, "<?php 
+        $tar_lib_path = dirname(__FILE__).DIRECTORY_SEPARATOR.'Packer_Tar.php';
+        $wrote = file_put_contents($export_pack_instname, "<?php 
 /* Aquarius installer pack 
  * Date: $build_date
  * Host: $build_host
@@ -438,14 +437,20 @@ echo "
 </body>
 </html>
 ";'.($options['inline'] ? '__halt_compiler();' : ''));
+
+        if ($wrote === false) throw new Exception("Unable to write to $export_pack_instname");
         $this->message("done.");
 
         if ($options['inline']) {
             $this->message("Appending archive: ", true);
-            file_put_contents($export_pack_instname, file_get_contents($tar_path), FILE_APPEND);
+            $wrote = file_put_contents($export_pack_instname, file_get_contents($tar_path), FILE_APPEND);
+            if ($wrote === false) throw new Exception("Unable to write to $export_pack_instname");
         } else {
-            $this->message("Copying archive: ", true);
-            copy($tar_path, $export_pack_basename.'.tar'.$archive_suffix);
+            $archivename = $export_pack_basename.'.tar'.$archive_suffix;
+            $this->message("Copying archive: $archivename", true);
+            
+            $success = copy($tar_path, $archivename);
+            if (!$success) throw new Exception("Unable to write to $archivename");
         }
         $this->message("done.");
 
