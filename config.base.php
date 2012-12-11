@@ -13,6 +13,32 @@ $config['log'] = array(
 
 
 
+/**************** DB */
+
+/** What DB driver to use
+  *
+  * Preset is 'mysqli' and this should be left alone.
+  * 'mysql' is somewhat tested, others won't work unless you do some serious porting work.
+  */
+$config['db']['driver'] = 'mysqli'; // Change this at your own peril.
+
+/** The DB host to connect to, preset is 'localhost' */
+$config['db']['host'] = 'localhost';
+
+/** The database name, this is best configured in config.local.php */
+$config['db']['name'] = null;
+
+/** The database user to connect with, this is best configured in config.local.php */
+$config['db']['user'] = null;
+
+/** The database password to connect with, this is best configured in config.local.php
+  * Note that this will not be available during run-time to avoid leakage.
+  * Use the constant DB_PASSWORD to retrieve it.
+  */
+$config['db']['pass'] = null; 
+
+
+
 /**************** SESSION */
 
 /** Where to save session files
