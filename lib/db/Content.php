@@ -219,6 +219,7 @@ class db_Content extends DB_DataObject
             $weight = 0;
             foreach($val as $fieldvals) {
                 // Remove empty fields
+                if (!is_array($fieldvals)) continue;
                 $fieldvals = array_filter($fieldvals, 'strlen');
                 
                 if (count($fieldvals) > 0) {
