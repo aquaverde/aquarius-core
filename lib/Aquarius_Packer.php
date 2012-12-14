@@ -452,7 +452,7 @@ echo "
             $success = copy($tar_path, $archivename);
             if (!$success) throw new Exception("Unable to write to $archivename");
         }
-        $this->message("done.");
+        $this->message(" done.");
 
         $this->message("Wrote installer to $export_pack_instname");
 
