@@ -234,7 +234,7 @@ class Aquarius_Stage_db_connection extends Aquarius_Basic_Stage {
         // Setup PEAR DB_DataObject
         $dbconf = $loader->aquarius->conf('db');
         $this->db_options = array(
-            'database'         => 'mysqli://'.$dbconf['user'].':'.DB_PASSWORD.'@'.$dbconf['host'].'/'.$dbconf['name'],
+            'database'         => $dbconf['driver'].'://'.$dbconf['user'].':'.DB_PASSWORD.'@'.$dbconf['host'].'/'.$dbconf['name'],
         //  'database_global'  => 'mysql://'.GLOBALDB_USERNAME.':'.GLOBALDB_PASSWORD.'@'.DB_HOST.'/'.GLOBALDB_DBNAME,
         //  'schema_location'  => PROJECT_INCLUDE_PATH.'lib/db/',
             'ini_'.$dbconf['name'] => $loader->aquarius->cache_path().'schema.ini', // Explicit schema location

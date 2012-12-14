@@ -52,10 +52,18 @@ foreach(array('init', 'update') as $step) {
     $found_updates = array();
     foreach(array($aquarius->install_path, $aquarius->core_path) as $path) {
         $aquarius->path = $path;
-        $found_updates = array_merge_recursive($found_updates, find_and_apply($step, $aquarius, $requested_updates));
+        $found_updates = array_merge_recursive($found_updates, find_updates($step, $aquarius));
+    }
+
+    apply_updates($found_updates, $requested_updates, $step, $aquarius);
+    
+    $found_updates = array();
+    foreach(array($aquarius->install_path, $aquarius->core_path) as $path) {
+        $aquarius->path = $path;
+        $found_updates = array_merge_recursive($found_updates, find_updates($step, $aquarius));
     }
     if ($found_updates) {
-        $available_updates[$step] = $found_updates;
+        $available_updates[$step]['core'] = $found_updates;
         $halt = true;
     }
 }
@@ -71,70 +79,44 @@ if ($have_modules_table) {
     $aquarius_loader->load('modules');
     foreach(array('init', 'update') as $step) {
         foreach($aquarius->modules as $module) {
-            $found_updates = find_and_apply($step, $module, $requested_updates);
+            $found_updates = find_updates($step, $module);
+            
+            apply_updates($found_updates, $requested_updates, $step, $module);
+            
+            $found_updates = find_updates($step, $module);
             if ($found_updates) {
-                $available_updates[$step] = array_merge(get($available_updates, $step, array()), $found_updates);
+                $available_updates[$step][$module->short] = array_merge(get(get($available_updates, $step, array()), $module->short, array()), $found_updates);
                 $halt = true;
             }
         }
     }
 }
 
-function find_and_apply($step, $module, $requested_updates) {
+function find_updates($step, $module) {
     $short = $module->short;
     $available_updates = array();
     $updates_path = $module->path.$step.'/';
     
     $update_candidates = Aqua_Update::load_updates($updates_path);
-        
+       
     global $aquarius;
         
     if (count($update_candidates) > 0) {
-        // Check whether running initialization was requested
-        foreach($update_candidates as $update_name => $update) {
-            if (in_array($update_name, $requested_updates)) {
-                Log::info("Applying update $update_name");
-                $update_log_entry = Db_DataObject::factory('update_log');
-                $update_log_entry->date    = time();
-                $update_log_entry->module  = $short;
-                $update_log_entry->success = true;
-                // Hack: Prefix initialization files with a character that orders them before updates (which start with a number)
-                $update_log_entry->name   = ($step=='init'? '*** ' : '').$update_name;
-                
-                try {
-                    $update->apply($aquarius, $module);
-                } catch(Exception $e) {
-                    $update_log_entry->success = false;
-                    message('warn', "Failed applying update '$update_name' for $short. Message: ".$e->getMessage());
-                }
-                
-                if ($update_log_entry->success) {
-                    if ($step=='init') message('', "Initialized $short with $update_name");
-                    else message('', "Updated $short with $update_name");
-                }
-                
-                $update_log_entry->insert();
-            }
-        }
-
         $have_log_table = $aquarius->db->singlequery("
             SELECT COUNT(*) AS count 
             FROM information_schema.tables 
             WHERE table_schema = DATABASE() 
             AND table_name = 'update_log'
         ");
-        
+
 
         if ($have_log_table) {
             $last_update = $aquarius->db->singlequery("SELECT name FROM update_log WHERE module = '$short' ORDER BY name DESC LIMIT 1");
-            if ($step == 'init') {
-                if (!$last_update) {
-                    $available_updates[$short] = $update_candidates;
-                }
-            } else {
+
+            if ($step == 'update') {
                 foreach($update_candidates as $name => $update) {
                     if ($name > $last_update) {
-                        $available_updates[$short][$name] = $update; 
+                        $available_updates[$name] = $update; 
                     }
                     
                 }
@@ -142,11 +124,44 @@ function find_and_apply($step, $module, $requested_updates) {
         } else {
             // If we don't have a log table we assume that initialization will
             // create it.
-            if ($step == 'init') $available_updates[$short] = $update_candidates;
+            if ($step == 'init') $available_updates = $update_candidates;
         }
     }
     
     return $available_updates;
+}
+
+function apply_updates($updates, $requested_updates, $step, $module) {
+    $short = $module->short;
+        
+    global $aquarius;
+        
+    // Check whether running initialization was requested
+    foreach($updates as $update_name => $update) {
+        if (in_array($update_name, $requested_updates)) {
+            Log::info("Applying update $update_name");
+            $update_log_entry = Db_DataObject::factory('update_log');
+            $update_log_entry->date    = time();
+            $update_log_entry->module  = $short;
+            $update_log_entry->success = true;
+            // Hack: Prefix initialization files with a character that orders them before updates (which start with a number)
+            $update_log_entry->name   = ($step=='init'? '*** ' : '').$update_name;
+            
+            try {
+                $update->apply($aquarius, $module);
+            } catch(Exception $e) {
+                $update_log_entry->success = false;
+                message('warn', "Failed applying update '$update_name' for $short. Message: ".$e->getMessage());
+            }
+            
+            if ($update_log_entry->success) {
+                if ($step=='init') message('', "Initialized $short with $update_name");
+                else message('', "Updated $short with $update_name");
+            }
+            
+            $update_log_entry->insert();
+        }
+    }
 }
 
 class Aqua_Update {
@@ -191,7 +206,11 @@ Class Aqua_Update_SQL {
                 // The file is split where semicolons terminate a line (ignoring
                 // comments)
                 if (preg_match("/;\s*(--.*)?\$/", $sql_line)) {
-                    $aquarius->db->query($query);
+                    try {
+                        $aquarius->db->query($query);
+                    } catch (Exception $sqlerr) {
+                        throw new Exception($sqlerr->getMessage()." in query \n".$query);
+                    }
                     $query = "";
                 }
             }

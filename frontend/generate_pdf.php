@@ -1,9 +1,13 @@
 <?php
-    
+
+/*
+NOTE needs the following in htaccess:
+RewriteRule ^pdfs/(..)/(\d+)/.* /aquarius/core/frontend/generate_pdf.php?lg=$1&node_id=$2 [qsappend,last]
+*/
 
 require '../lib/init.php';
 
-if (!$aquarius->conf('pdfgen/enable')) {
+if (!$aquarius->conf('pdfgen/enabled')) {
     throw new Exception("Generating PDF not enabled");
 }
 
@@ -33,7 +37,7 @@ if (!$content->active()) throw new AquaException(array("Not available", "Content
 
 $smarty = $aquarius->get_smarty_frontend_container($lg, $node);
     
-	require_once("lib/dompdf/dompdf_config.inc.php");
+    require_once("lib/dompdf/dompdf_config.inc.php");
     
     $smarty->assign('entry', $content);
     

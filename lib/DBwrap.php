@@ -21,9 +21,16 @@ class DBwrap {
     function query($query, $data=array()) {
         $query = trim($query); // Trim whitespace from queries so the MySQL query-cache works properly
         Log::sql("Query: ".$query);
-        if ($data) Log::sql($data);
         
-        $result = $this->connection->execute($this->connection->prepare($query), $data);
+        $result = false;
+        if ($data) {
+            Log::sql($data);
+            $stmt = $this->connection->prepare($query);
+            $result = $this->connection->execute($stmt, $data);
+        } else {
+            $result = $this->connection->query($query);
+        }
+        
 
         // Log resulting rows, or affected rows for non-selects
         if (stripos($query, 'select') === 0) {
