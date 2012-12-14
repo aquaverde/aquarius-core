@@ -25,6 +25,7 @@ $aquarius_loader = new Aquarius_loader();
 $aquarius_loader->load('aquarius');
 $aquarius_loader->load('globals');
 
+ob_end_flush();
 
 function fail($msg) {
     echo $msg;
