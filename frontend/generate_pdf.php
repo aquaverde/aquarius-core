@@ -42,7 +42,8 @@ $smarty = $aquarius->get_smarty_frontend_container($lg, $node);
     $smarty->assign('entry', $content);
     
     // GET THE HTML
-    $myhtml = $smarty->fetch($template);
+    $cacheid = $node->id.'.'.$lg;
+    $myhtml = $smarty->fetch($template, $cacheid);
 
     // CREATE THE PDF
     $dompdf = new DOMPDF();
