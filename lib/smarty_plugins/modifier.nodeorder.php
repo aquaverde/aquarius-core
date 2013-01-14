@@ -5,7 +5,6 @@
 function smarty_modifier_nodeorder($nodes) {
     $nodes = db_Node::get_nodes($nodes);
     usort($nodes, 'smarty_modifier_nodeordercmp');
-    print_r($nodes);
     return $nodes;
 }
 
