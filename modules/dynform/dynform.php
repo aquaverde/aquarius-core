@@ -317,6 +317,8 @@ class Dynform extends Module
 
             $smarty->assign('dynform', $dynform_struct);
             $smarty->assign($params);
+            
+            $smarty->caching = false; // To make sure
 
             return $smarty->fetch('dynform.form.tpl');
         }
