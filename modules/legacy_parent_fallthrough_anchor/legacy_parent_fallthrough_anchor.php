@@ -19,21 +19,26 @@ class legacy_parent_fallthrough_anchor extends Module {
         // Check whether relocation is necessary
         $node = $options->target_node;
         $relocate_node = $node;
+        $relocated = false;
         while(true) {
             $form = $relocate_node->get_form();
             if ($form->fall_through == 'parent') {
                 if ($relocate_node->is_root()) {
                     throw new Exception("Fall through to parent set in form of root node");
                 }
+                $relocated = true;
                 $relocate_node = $relocate_node->get_parent();
             } else {
                 break;
             }
         }
+        
+        if ($relocated) {
+            // Add anchor to the original node
+            $uri->anchor = 'item'.$node->id;
 
-        // Add anchor to the original node
-        $uri->anchor = 'item'.$node->id;
-
-        $options->target_node = $relocate_node;
+            $options->target_node = $relocate_node;
+        }
     }
 }
+
