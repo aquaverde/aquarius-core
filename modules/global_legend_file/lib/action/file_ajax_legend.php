@@ -11,7 +11,8 @@ class action_file_ajax_legend extends action_file_ajax implements SideAction {
 
         extract($this->load_from($request));
 
-        echo $aquarius->db->singlequery("SELECT legend FROM file_legend WHERE file='$escaped_path' AND (ISNULL(lg) OR lg='$escaped_lg') ORDER BY lg DESC", array($filepath, $this->lg));
+        $filepath = '/'.$path.'/'.requestvar('file');
+        
+        echo $aquarius->db->singlequery("SELECT legend FROM file_legend WHERE file=? AND (ISNULL(lg) OR lg=?) ORDER BY lg DESC", array($filepath, $this->lg));
     }
 }
-
