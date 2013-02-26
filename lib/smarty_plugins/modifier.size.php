@@ -1,23 +1,18 @@
 <?php
 /*
- * size, in kb or mb. returns e.g. "309 KB", "1.13 MB"
+ * size, in kB or MB. returns e.g. "309 kB", "1.13 MB"
  */
 
-function smarty_modifier_size($string)
-{	
-	$file = '.'.$string ; 
-	$retStr = "" ; 
-	
-	if (file_exists($file)) 
-	{
-		$numBytes = intval(filesize($file) * 0.001) ; 
-		if ($numBytes >= 1024)
-		{
-			$retStr = sprintf("%.2f&nbsp;MB", $numBytes / 1024) ; 
-		}
-		else $retStr = $numBytes.'&nbsp;KB' ;
-	}
-	
-	return $retStr ; 
+function smarty_modifier_size($string) {
+    $file = FILEBASEDIR.$string; 
+
+    if (file_exists($file)) {
+        $numBytes = intval(filesize($file) * 0.001); 
+        if ($numBytes >= 1000) {
+            return sprintf("%.2f&nbsp;MB", $numBytes / 1000); 
+        }
+        return $numBytes.'&nbsp;kB';
+    }
+
+    return ''; 
 }
-?> 
