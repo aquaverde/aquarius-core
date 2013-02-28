@@ -40,39 +40,39 @@ class Dynform extends Module
     
     function node_delete($node)
     {
-    	$dynform = new db_Dynform ; 
-    	$dynform->node_id = $node->id ; 
-    	if (!$dynform->find()) return ; 
-    	$dynform->fetch() ; 
-    	$block = new db_Dynform_block ; 
-    	$block->dynform_id = $dynform->id ; 
-    	$block->find() ; 
-    	while($block->fetch())
-    	{
-    		$field = new db_Dynform_field ; 
-    		$field->block_id = $block->id ; 
-    		$field->find() ; 
-    		while ($field->fetch())
-    		{
-    			$field_data = new db_Dynform_field_data ; 
-    			$field_data->field_id = $field->id ; 
-    			$field_data->find() ;
-    			while ($field_data->fetch())
-    			{
-    				$field_data->delete() ; 
-    			}
-    			$field->delete() ; 
-    		}
-    		$block_data = new db_Dynform_block_data ; 
-    		$block_data->block_id = $block->id ; 
-    		$block_data->find() ; 
-    		while ($block_data->fetch())
-    		{
-    			$block_data->delete() ; 
-    		}
-    		$block->delete() ; 
-    	}
-    	$dynform->delete() ; 
+        $dynform = new db_Dynform ; 
+        $dynform->node_id = $node->id ; 
+        if (!$dynform->find()) return ; 
+        $dynform->fetch() ; 
+        $block = new db_Dynform_block ; 
+        $block->dynform_id = $dynform->id ; 
+        $block->find() ; 
+        while($block->fetch())
+        {
+            $field = new db_Dynform_field ; 
+            $field->block_id = $block->id ; 
+            $field->find() ; 
+            while ($field->fetch())
+            {
+                $field_data = new db_Dynform_field_data ; 
+                $field_data->field_id = $field->id ; 
+                $field_data->find() ;
+                while ($field_data->fetch())
+                {
+                    $field_data->delete() ; 
+                }
+                $field->delete() ; 
+            }
+            $block_data = new db_Dynform_block_data ; 
+            $block_data->block_id = $block->id ; 
+            $block_data->find() ; 
+            while ($block_data->fetch())
+            {
+                $block_data->delete() ; 
+            }
+            $block->delete() ; 
+        }
+        $dynform->delete() ; 
     }
     
     
@@ -98,52 +98,52 @@ class Dynform extends Module
         $block->find() ; 
         while ($block->fetch())
         {
-        	$new_block = new db_Dynform_block ; 
-        	$new_block->dynform_id = $destination_dynform->id ; 
-        	$new_block->name = $block->name ; 
-        	$new_block->weight = $block->weight ; 
-        	$new_block->insert() ; 
-        	
-        	$block_data = new db_Dynform_block_data ; 
-        	$block_data->block_id = $block->id ; 
-        	$block_data->find() ; 
-        	while ($block_data->fetch())
-        	{
-        		$new_block_data = new db_Dynform_block_data ; 
-        		$new_block_data->block_id = $new_block->id ; 
-        		$new_block_data->lg = $block_data->lg ; 
-        		$new_block_data->name = $block_data->name ; 
-        		$new_block_data->insert() ; 
-        	}
-        	
-        	$field = new db_Dynform_field ; 
-        	$field->block_id = $block->id ; 
-        	$field->find() ; 
-        	while ($field->fetch())
-        	{
-        		$new_field = new db_Dynform_field ; 
-        		$new_field->block_id = $new_block->id ; 
-        		$new_field->type = $field->type ; 
-        		$new_field->name = $field->name ; 
-        		$new_field->weight = $field->weight ; 
-        		$new_field->required = $field->required ; 
-        		$new_field->num_lines = $field->num_lines ; 
-        		$new_field->width = $field->width ; 
-        		$new_field->insert() ; 
-        	
-        		$field_data = new db_Dynform_field_data ; 
-        		$field_data->field_id = $field->id ; 
-        		$field_data->find() ; 
-        		while ($field_data->fetch())
-        		{
-        			$new_field_data = new db_Dynform_field_data ; 
-        			$new_field_data->field_id = $new_field->id ; 
-        			$new_field_data->lg = $field_data->lg ; 
-        			$new_field_data->name = $field_data->name ; 
-        			$new_field_data->options = $field_data->options ; 
-        			$new_field_data->insert() ; 
-        		}
-        	}
+            $new_block = new db_Dynform_block ; 
+            $new_block->dynform_id = $destination_dynform->id ; 
+            $new_block->name = $block->name ; 
+            $new_block->weight = $block->weight ; 
+            $new_block->insert() ; 
+            
+            $block_data = new db_Dynform_block_data ; 
+            $block_data->block_id = $block->id ; 
+            $block_data->find() ; 
+            while ($block_data->fetch())
+            {
+                $new_block_data = new db_Dynform_block_data ; 
+                $new_block_data->block_id = $new_block->id ; 
+                $new_block_data->lg = $block_data->lg ; 
+                $new_block_data->name = $block_data->name ; 
+                $new_block_data->insert() ; 
+            }
+            
+            $field = new db_Dynform_field ; 
+            $field->block_id = $block->id ; 
+            $field->find() ; 
+            while ($field->fetch())
+            {
+                $new_field = new db_Dynform_field ; 
+                $new_field->block_id = $new_block->id ; 
+                $new_field->type = $field->type ; 
+                $new_field->name = $field->name ; 
+                $new_field->weight = $field->weight ; 
+                $new_field->required = $field->required ; 
+                $new_field->num_lines = $field->num_lines ; 
+                $new_field->width = $field->width ; 
+                $new_field->insert() ; 
+            
+                $field_data = new db_Dynform_field_data ; 
+                $field_data->field_id = $field->id ; 
+                $field_data->find() ; 
+                while ($field_data->fetch())
+                {
+                    $new_field_data = new db_Dynform_field_data ; 
+                    $new_field_data->field_id = $new_field->id ; 
+                    $new_field_data->lg = $field_data->lg ; 
+                    $new_field_data->name = $field_data->name ; 
+                    $new_field_data->options = $field_data->options ; 
+                    $new_field_data->insert() ; 
+                }
+            }
         }
     }
 
@@ -470,13 +470,13 @@ class Dynform extends Module
         if (!empty($submit_node_name)) $subject .= ' | '.$submit_node_name;
 
         $newMail = new FormattedHTMLMail($target_email, $subject, $sender_email) ;
-        $newMail->addText($subject) ;
-        $newMail->addText("") ;
-        if ($content->send_confirmation_mail)
-        {
+        if ($content->send_confirmation_mail) {
             $newMail->addText($content->email_confirmation_text) ;
             $newMail->addText("") ;
+        } else {
+            $newMail->addText($subject);
         }
+        
         $newMail->nextBlock(100, array(40, false));
         $newMail->addDelimiter() ;
         
