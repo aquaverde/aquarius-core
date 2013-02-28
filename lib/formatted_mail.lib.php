@@ -1,5 +1,5 @@
 <?php
-/*	Formated Text Mail
+/*  Formated Text Mail
 
     Class designed to easely create formated text mail.
 
@@ -23,34 +23,34 @@
 */
 
 class FormattedTextMail {
-    protected $mailText		= '';
-    protected $blockColumns	= array();
-    protected $currentColumn	= 0;
+    protected $mailText     = '';
+    protected $blockColumns = array();
+    protected $currentColumn    = 0;
     
-    protected	$targetAddress;
+    protected   $targetAddress;
     protected $senderAddress;
     protected $subject;
     
     public function __construct($targetAddress, $subject, $senderAddress)
     {
-        $this->targetAddress	= $targetAddress;
-        $this->senderAddress	= $senderAddress;
-        $this->subject			= $subject;
+        $this->targetAddress    = $targetAddress;
+        $this->senderAddress    = $senderAddress;
+        $this->subject          = $subject;
     }
     
     public function setTargetAddress($targetAddress)
     {
-   		$this->targetAddress = $targetAddress;
+        $this->targetAddress = $targetAddress;
     }
     
     public function setSenderAddress($senderAddress)
     {
-    	$this->senderAddress = $senderAddress;
+        $this->senderAddress = $senderAddress;
     }
     
     public function setSubject($subject)
     {
-    	$this->subject = $subject;
+        $this->subject = $subject;
     }
     
     public function sendMail() {
@@ -87,8 +87,8 @@ class FormattedTextMail {
     // clear the last blocks settings
     public function nextBlock($maxWidth, $column_sizes)
     {
-        $this->blockColumns		= $column_sizes;
-        $this->maxBlockWidth	= $maxWidth;
+        $this->blockColumns     = $column_sizes;
+        $this->maxBlockWidth    = $maxWidth;
     }
 
     public function addText($text) {
@@ -196,7 +196,7 @@ class FormattedHTMLMail extends FormattedTextMail {
 
     public function addText($text) {
         $this->ensure_closed_table();
-        $this->htmltext .= htmlentities($text, ENT_QUOTES, 'UTF-8')."\n";
+        $this->htmltext .= '<p>'.nl2br(htmlentities($text, ENT_QUOTES, 'UTF-8'))."<p>\n";
         parent::addText($text);
     }
 
@@ -240,6 +240,3 @@ class FormattedHTMLMail extends FormattedTextMail {
         return '<html><body>'.$this->htmltext.'</body></html>';
     }
 }
-
-	
-?>
