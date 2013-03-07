@@ -9,12 +9,8 @@
 		
 		<strong>{$newsletter->title}:</strong>
 
-		{action action="mailChimp:upload_letter:`$newsletter->id`:1:$lg"}
-			<a href="{url action0=$action action1=$lastaction}" title="Bearbeiten">upload</a> | 
-		{/action}
-
-		{action action="mailChimp:upload_letter:`$newsletter->id`:0:$lg"}
-			<a href="{url action0=$action action1=$lastaction}" title="Bearbeiten">anschauen</a>
+		{action action="mailChimp:select_lg:`$newsletter->id`"}
+			<a href="{url action0=$action action1=$lastaction}" class='button'>upload</a>
 		{/action}
 </li>
 {/foreach}
