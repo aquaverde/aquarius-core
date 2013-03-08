@@ -8,6 +8,8 @@
   * Downloads are allowed from FILE_ROOT_DIRS only, excluding dot-files.
   */
 
+require "../lib/init.php";
+
 $error = false;
 $file = requestvar('file');
 $path = requestvar('path');

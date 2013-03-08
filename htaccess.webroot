@@ -11,7 +11,8 @@ RewriteRule ^min/ /aquarius/core/components/minifier/min [qsappend,last]
 
 RewriteRule ^aquarius/slir(/.*) /aquarius/core/components/slir$1 [qsappend,last]
 
-RewriteRule ^$ aquarius/core/frontend/index.php [qsappend,last]
+RewriteRule ^download.php aquarius/core/frontend/download.php [qsappend,last]
+RewriteRule ^$            aquarius/core/frontend/index.php    [qsappend,last]
 
 RewriteCond %{DOCUMENT_ROOT}/$1 !-f
 RewriteCond %{DOCUMENT_ROOT}/$1 !-d  
