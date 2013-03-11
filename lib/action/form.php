@@ -132,4 +132,3 @@ class action_form_import_form_submit extends action_form implements ChangeAction
     }
 }
 
-?>

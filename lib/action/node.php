@@ -359,4 +359,3 @@ class action_node_change_form extends action_node implements ChangeAction {
     }
 }
 
-?>

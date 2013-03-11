@@ -91,4 +91,3 @@ class DomainConfigs {
         return $this->lookup_cache[$name][$value];
     }
 }
-?>

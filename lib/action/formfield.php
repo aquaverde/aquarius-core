@@ -156,4 +156,3 @@ class action_formfield_delete extends action_formfield implements ChangeAction {
         $result->add_message(new FixedTranslation("Deleted '".$group['name']."' fields"));
     }
 }
-?>

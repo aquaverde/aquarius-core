@@ -47,4 +47,3 @@ class action_date_ajax_empty extends action_date_ajax implements DisplayAction {
         $result->use_template('formfield.date.row.tpl');
     }
 }
-?>

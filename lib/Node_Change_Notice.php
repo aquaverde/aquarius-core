@@ -56,4 +56,3 @@ class Node_Change_Notice {
         );
     }
 }
-?>

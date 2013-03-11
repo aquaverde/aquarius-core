@@ -431,4 +431,3 @@ class action_contentedit_save extends action_contentedit implements ChangeAction
     }
 }
 
-?>

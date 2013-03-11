@@ -86,4 +86,3 @@ class Language_Detection {
         return db_Languages::getPrimary()->lg;
     }
 }
-?>

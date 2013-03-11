@@ -81,4 +81,3 @@ class WordingTranslation {
         return $this->translation;
     }
 }
-?>

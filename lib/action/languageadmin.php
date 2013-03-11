@@ -97,4 +97,3 @@ class action_languageadmin_edit extends action_languageadmin implements DisplayA
     }
 }
 
-?>

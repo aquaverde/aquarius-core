@@ -28,4 +28,3 @@ class AdminAction extends Action {
 }
 
 
-?>

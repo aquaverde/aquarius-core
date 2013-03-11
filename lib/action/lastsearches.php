@@ -26,4 +26,3 @@ class action_lastsearches extends AdminAction implements DisplayAction {
     }
 }
 
-?>

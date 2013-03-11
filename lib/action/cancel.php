@@ -26,4 +26,3 @@ class action_cancel extends Action implements DisplayAction {
     // Do nothing, display nothing
   }
 }
-?>

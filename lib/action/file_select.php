@@ -175,4 +175,3 @@ class action_file_select extends AdminAction implements DisplayAction {
         $result->use_template('file_select.tpl');
     }
 }
-?>

@@ -302,4 +302,3 @@ class SQL_NodeFilter {
         return db_Node::get_nodes($node_ids);
     }
 }
-?>

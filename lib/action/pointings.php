@@ -32,4 +32,3 @@ class action_pointings extends AdminAction {
               return compact('messages', 'smarty');
       }
 }
-?>

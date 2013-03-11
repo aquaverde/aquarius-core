@@ -138,4 +138,3 @@ class action_file_ajax_thumb extends action_file_ajax implements DisplayAction {
         $result->use_template('formfield.file.thumb.tpl');
     }
 }
-?>

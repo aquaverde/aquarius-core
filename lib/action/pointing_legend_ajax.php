@@ -44,4 +44,3 @@ class action_pointing_legend_ajax_empty_row extends action_pointing_legend_ajax 
         $result->use_template('formfield.pointing_legend.row.tpl');
     }
 }
-?>

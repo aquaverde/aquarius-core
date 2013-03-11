@@ -248,4 +248,3 @@ class action_wording_import extends action_wording implements ChangeAction {
 }
 
 
-?>

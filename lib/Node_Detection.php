@@ -249,4 +249,3 @@ class Node_Detection {
         return $params;
     }
 }
-?>

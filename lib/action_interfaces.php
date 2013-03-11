@@ -94,4 +94,3 @@ class DisplayResult extends ActionResult {
     /** Do not return user to this view */
     function skip_return() { $this->skip_return = true; }
 }
-?>

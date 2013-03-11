@@ -16,4 +16,3 @@ class action_message_load extends AdminAction implements DisplayAction {
     }
 }
 
-?>

@@ -209,4 +209,3 @@ class action_feuser extends AdminAction {
     }
 
 }
-?>

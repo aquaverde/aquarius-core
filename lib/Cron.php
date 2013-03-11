@@ -51,4 +51,3 @@ class Cron {
         return false;
     }
 }
-?>

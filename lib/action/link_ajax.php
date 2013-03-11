@@ -49,4 +49,3 @@ class action_link_ajax_empty_row extends action_link_ajax implements DisplayActi
         $result->use_template('formfield.link.row.tpl');
     }
 }
-?>

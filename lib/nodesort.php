@@ -42,4 +42,3 @@ class Nodesort {
         return $order * $this->sort_reverse;
     }
 }
-?>

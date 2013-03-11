@@ -22,4 +22,3 @@ class action_progressbar extends AdminAction {
 	}
 
 }
-?>

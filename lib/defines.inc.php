@@ -48,4 +48,3 @@
     $f_type = array($h_ef, $h_mle, $h_date, $h_sf, $h_fl, $h_chk, $h_cb, $h_rte, $ml_in, $point);
 
 
-?>

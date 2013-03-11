@@ -112,4 +112,3 @@ class Module {
         return $aquarius->conf($this->short.'/'.$path, $default);
     }
 }
-?>

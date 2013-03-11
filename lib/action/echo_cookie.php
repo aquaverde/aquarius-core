@@ -60,4 +60,3 @@ class action_echo_cookie_set extends action_echo_cookie implements ChangeAction 
     }
 }
 
-?>

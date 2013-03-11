@@ -39,4 +39,3 @@ class BackendRTE
         return $this->options;
     }
 }
-?>

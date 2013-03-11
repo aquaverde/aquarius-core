@@ -228,4 +228,3 @@ class action_nodes_select_subtree extends action_nodes_select implements Display
         $result->use_template('nodes_select_container.tpl');
     }
 }
-?>

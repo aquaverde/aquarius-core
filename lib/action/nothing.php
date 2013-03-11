@@ -16,4 +16,3 @@ class action_nothing extends Action {
     return compact('messages', 'smarty');
   }
 }
-?>

@@ -85,4 +85,3 @@ class action_checkdb_show extends action_checkdb implements DisplayAction {
         $result->use_template('checkdb.tpl');
     }
 }
-?>

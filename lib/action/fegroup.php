@@ -110,4 +110,3 @@ class action_fegroup extends AdminAction {
 	}
 
 }
-?>

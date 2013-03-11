@@ -16,4 +16,3 @@ class action_formlist extends AdminAction implements DisplayAction {
         $result->use_template("formlist.tpl");
     }
 }
-?>

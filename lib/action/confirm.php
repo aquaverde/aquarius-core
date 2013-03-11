@@ -46,4 +46,3 @@ class action_confirm extends AdminAction implements DisplayAction {
     $result->use_template('confirm.tpl');
   }
 }
-?>

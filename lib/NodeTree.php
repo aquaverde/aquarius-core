@@ -280,4 +280,3 @@ class NodeTree {
         $aquarius->session_set('nodetree_open_nodes', $open_nodes_sections);
     }
 }
-?>

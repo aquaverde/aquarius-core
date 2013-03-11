@@ -311,4 +311,3 @@ class action_nodetree_nodes_move extends action_nodetree implements ChangeAction
     }
 }
 
-?>

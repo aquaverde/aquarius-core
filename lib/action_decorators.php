@@ -34,4 +34,3 @@ class ActionTitleChange extends ActionDecorator {
         return $this->title;
     }
 }
-?>

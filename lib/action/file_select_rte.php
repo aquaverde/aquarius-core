@@ -13,4 +13,3 @@ class action_file_select_rte extends action_file_select implements DisplayAction
         parent::process($aquarius, $request, $smarty, $result);                        
     }
 }
-?>

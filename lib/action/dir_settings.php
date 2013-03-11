@@ -94,4 +94,3 @@ class action_dir_settings_cache_dirs extends action_dir_settings implements Chan
         $result->add_message(new FixedTranslation("Cached ".count($dirs)." dirs"));
     }
 }
-?>

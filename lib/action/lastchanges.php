@@ -41,4 +41,3 @@ class action_lastchanges extends AdminAction implements DisplayAction {
     }
 }
 
-?>

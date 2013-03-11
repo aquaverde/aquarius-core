@@ -22,4 +22,3 @@ class action_logout_redirect extends action_logout implements DisplayAction {
       $result->use_template("login-redirect.tpl");
     }
 }
-?>

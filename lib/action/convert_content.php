@@ -32,4 +32,3 @@ class action_convert_content extends AdminAction {
         return compact('messages', 'smarty', 'action');
     }
 }
-?>

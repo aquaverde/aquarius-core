@@ -59,4 +59,3 @@ class ArrayCompare {
         return call_user_func($this->comp, $a1[$this->key], $a2[$this->key]);
     }
 }
-?>

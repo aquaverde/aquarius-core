@@ -108,4 +108,3 @@ class FilterParser {
 }
 
 class FilterParsingException extends Exception {}
-?>

@@ -179,4 +179,3 @@ class action_fieldgroup_move_group extends action_fieldgroup implements ChangeAc
     }
 }
 
-?>

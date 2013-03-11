@@ -67,4 +67,3 @@ class action_message_edit_list extends action_message_edit implements DisplayAct
         $result->use_template('message_edit.tpl');
     }
 }
-?>

@@ -50,4 +50,3 @@ class ModuleAction extends AdminAction {
         return $this->module;
     }
 }
-?>

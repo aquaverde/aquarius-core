@@ -105,4 +105,3 @@ class SQLwrap {
         return mysql_result($result, 0, 0);
     }
 }
-?>

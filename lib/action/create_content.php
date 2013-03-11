@@ -126,4 +126,3 @@ class action_create_content_create extends action_create_content implements Chan
         $result->touch_region(new Node_Change_Notice($node, false, $recursive));
 	}
 }
-?>

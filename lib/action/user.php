@@ -204,4 +204,3 @@ class action_user_toggle_active extends action_user implements ChangeAction {
         $result->add_message("User switched"); // FIXME translation
     }
 }
-?>
