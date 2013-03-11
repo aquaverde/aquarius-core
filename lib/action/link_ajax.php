@@ -1,4 +1,4 @@
-<?
+<?php 
 class action_link_ajax extends AdminAction {
 
     var $props = array("class", "request");

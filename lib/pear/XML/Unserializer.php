@@ -1,5 +1,4 @@
-<?PHP
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+<?php /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
  * XML_Unserializer

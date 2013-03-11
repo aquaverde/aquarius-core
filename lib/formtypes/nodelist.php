@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Formfield that offers selection of nodes
   * sup3 supplies a comma separated list of nodes available in the selection. Alternatively, set_selection() may be used to provide the list of nodes.
   */

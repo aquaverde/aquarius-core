@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Log::debug() for smarty
   */
 function smarty_block_debug($params, $content, &$smarty, &$repeat) {

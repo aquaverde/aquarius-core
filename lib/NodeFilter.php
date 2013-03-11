@@ -1,4 +1,4 @@
-<?
+<?php 
 /** @package Aquarius */
 
 /** Filters accept or reject things */

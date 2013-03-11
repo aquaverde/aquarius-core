@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /** The following commands are recognized by this action:
   * new: Creates a new form and executes an edit action on it as well

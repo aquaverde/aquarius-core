@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Gets the date of the last change in the content
   * Params:
   *   lg: Get last change for specified language (default: curent language), all langs if false

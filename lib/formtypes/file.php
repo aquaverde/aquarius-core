@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /** The File formtype saves a filename (with optional subdir), and a legend for each entry.
   * The legend is optional. The base path is provided by the form in the sup3 field, but a file might be in a subdir relative to the base dir if subdirs are enabled with sup1 == 1 in the form.

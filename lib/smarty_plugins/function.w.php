@@ -1,4 +1,4 @@
-<?
+<?php 
 /** get the wording data by a key.
 
     if additional parameters are passed, the translation is passed to

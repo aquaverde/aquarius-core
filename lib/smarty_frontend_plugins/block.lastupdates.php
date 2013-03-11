@@ -1,4 +1,4 @@
-<?
+<?php 
 /** @package Aquarius.frontend */
 
 /** Iterate over list of most recent updates of content

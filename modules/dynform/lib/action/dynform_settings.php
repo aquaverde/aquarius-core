@@ -1,4 +1,4 @@
-<?
+<?php 
 /**
   * Action class for the Admin Interface: Dynform data export
   * See also the file $DYNFORM_MODULE_ROOT/dynform.php

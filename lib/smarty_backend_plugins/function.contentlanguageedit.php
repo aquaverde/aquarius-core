@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Function generating action links for different languages.
   * Params:
   *    node: id of the node to be edited

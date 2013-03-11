@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Load Icon-Types for google maps
 */
 

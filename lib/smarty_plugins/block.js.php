@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Generate <script> tags around block content.
   * Parameters given to this block replace variables in the block:
   *

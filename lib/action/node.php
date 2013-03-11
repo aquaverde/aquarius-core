@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /** Base class for actions to change node properties. */
 class action_node extends AdminAction {

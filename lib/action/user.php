@@ -1,4 +1,4 @@
-<?
+<?php 
 abstract class action_user extends AdminAction {
     
     var $props = array("class", "command", "id");

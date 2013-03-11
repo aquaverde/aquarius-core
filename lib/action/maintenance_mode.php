@@ -1,4 +1,4 @@
-<?
+<?php 
 
 require_once "lib/Maintenance_Mode_Control.php";
 

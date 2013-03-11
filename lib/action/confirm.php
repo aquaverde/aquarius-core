@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Used to display a confirmation dialog.
  * Example: Action::make(
  *            'confirm',

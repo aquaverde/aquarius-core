@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Load other content fields
   * Params:
   *   node: The thing you want to load fields for

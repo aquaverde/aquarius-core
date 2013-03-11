@@ -1,4 +1,4 @@
-<?
+<?php 
 class action_pointing_legend_ajax extends AdminAction {
 
     var $props = array("class", "request");

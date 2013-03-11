@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Module to keep people (well, their user-agent) logged into frontend.
   * This is done by setting a long-term cookie 'aquarius_fe_login' when a user
   * logs in; and by refreshing that cookie on each new visit to the site.

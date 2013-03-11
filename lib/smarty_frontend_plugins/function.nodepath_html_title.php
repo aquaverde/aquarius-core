@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Displays a path to a node
   * e.g. Home >  Unsere Angebote >  Prävention
   * where the last node is the actual node and is not a link

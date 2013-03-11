@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Tools to preprocess frontend URL
   *
   * As the name suggests this module is intended for temporary measures. It

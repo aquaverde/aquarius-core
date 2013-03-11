@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Use one domain per language
   * This module is geared towards sites that are served under different host names based on language.
   * It ensures that the correct domain for each language is used. The config

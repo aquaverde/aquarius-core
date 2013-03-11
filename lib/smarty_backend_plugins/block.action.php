@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Block to conditionally show actions. An action is built, and the content of the block executed only if the action is valid. Example:
     {action action="node:toggle_active:`$node->id`"}<a href="admin.php?{$action}">activate!</a>{/action}
 Will only be shown if the user has permission to activate the node.

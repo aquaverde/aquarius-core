@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once 'lib/Shop_order.php';
 require_once 'lib/Shop_order_item.php';
 require_once 'lib/Shop_order_item_attribute.php';

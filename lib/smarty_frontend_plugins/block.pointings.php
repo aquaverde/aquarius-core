@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Loop over content pointing to a node
     If there's no content pointing to a node, pointing to its parent are looked up
 Params:

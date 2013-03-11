@@ -1,4 +1,4 @@
-<?
+<?php 
 
 $rg = strtolower(ini_get('register_globals'));
 if ((bool) $rg && $rg !== "off") {

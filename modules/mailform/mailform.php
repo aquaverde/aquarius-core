@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /** Send mail when a form is POSTed.
   * This is a typical config:

@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Function counting the use of one form in the structure
   * Params:
   *    form_id: id of the form to count the uses in the tree

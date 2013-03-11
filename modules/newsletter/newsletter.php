@@ -1,4 +1,4 @@
-<?
+<?php 
 class Newsletter extends Module {
 
     var $register_hooks = array('menu_init', 'smarty_config', 'smarty_config_backend', 'smarty_config_frontend');

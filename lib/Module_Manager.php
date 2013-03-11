@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once("lib/module.php");
 require_once 'lib/db/Modules.php';
 

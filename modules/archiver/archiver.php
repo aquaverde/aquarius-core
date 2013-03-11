@@ -1,4 +1,4 @@
-<?
+<?php 
 class Archiver extends Module {
         
     var $register_hooks = array('menu_init', 'daily', 'init_form', 'smarty_config', 'smarty_config_backend');

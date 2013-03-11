@@ -1,4 +1,4 @@
-<?
+<?php 
 /** The cancel action
   * It does nothing, but can be used to create cancel buttons.
   * Optional parameters are title (defaults to 's_cancel'), and icon, no default

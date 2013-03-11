@@ -1,4 +1,4 @@
-<?
+<?php 
 /* TODO: eventually it would be good to have a spinner with the groups? */
 class action_fegroup extends AdminAction {
     

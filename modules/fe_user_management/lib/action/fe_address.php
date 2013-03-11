@@ -1,4 +1,4 @@
-<?
+<?php 
 
 require_once("pear/DB/DataObject/FormBuilder.php");
 require_once("pear/HTML/QuickForm/Renderer/ArraySmarty.php");

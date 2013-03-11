@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Creates select-field for countries
   * Params:
   *   fieldname: The name of the select field

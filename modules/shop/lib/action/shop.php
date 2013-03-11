@@ -1,4 +1,4 @@
-<?
+<?php 
 
 class action_shop extends ModuleAction {
     var $modname = "shop";

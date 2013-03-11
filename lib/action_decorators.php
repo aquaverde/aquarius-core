@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /** Wrap classes transparently into another object
   * Useful for decorators. */

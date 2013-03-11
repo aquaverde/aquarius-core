@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once "lib/NodeFilter.php";
 require_once "lib/Compare.php";
 

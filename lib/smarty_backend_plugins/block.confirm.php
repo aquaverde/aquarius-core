@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Generate a 'wrapper action' that asks for confirmation before executing one of the contained actions.
   * Params:
   *   yes: Action to be executed when user clicks on yes (may be empty)

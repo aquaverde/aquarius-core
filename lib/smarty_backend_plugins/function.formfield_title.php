@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Show title of a form-field
  * 
  * If the form-field has a description configured, that name is used. Else, the

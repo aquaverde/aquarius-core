@@ -1,4 +1,4 @@
-<?
+<?php 
 class action_feuser extends AdminAction {
 
     var $props = array("class", "command", "id", "spinner");

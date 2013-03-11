@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /** Determine language from environment (URI, configuration, HTTP cookies, &c.)
   * The process is componentized into detectors so it can easily extended by modules.

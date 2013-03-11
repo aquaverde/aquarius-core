@@ -1,4 +1,4 @@
-<?
+<?php 
 
 class action_languageadmin extends AdminAction {
 

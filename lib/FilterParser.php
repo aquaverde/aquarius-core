@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Reads filter sentences and builds statements for custom filter languages.
   * Example:
   *   $parser        = new FilterParser('lib/predicates');

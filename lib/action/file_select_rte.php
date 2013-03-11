@@ -1,4 +1,4 @@
-<?
+<?php 
 /**
  * special file_select action for using in an RTE
  * we have to assign the CKEditorFuncNum variable (sended from the RTE) to call the right function

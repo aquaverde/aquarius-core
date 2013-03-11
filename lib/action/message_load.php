@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Inject admin messages
   * When this action is executed, messages from the 'message' table are added to the list of messages to be displayed. */
 class action_message_load extends AdminAction implements DisplayAction {

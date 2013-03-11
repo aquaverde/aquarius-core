@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Function that generates an option list for the multi line input from a string
 
 */

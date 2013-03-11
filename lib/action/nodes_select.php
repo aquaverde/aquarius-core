@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Node selection popup action
   * Disaplay a tree of nodes and let the user select nodes. There are two concrete actions: 'node_select_tree', and 'node_select_subtree', the first renders the full code, the second is used to get an open or closed subtree.
   * Action parameters:

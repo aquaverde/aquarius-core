@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Keep multiple sites in one Aquarius DB with this module
   * Aquarius frontend behaviour is extended in the following ways:
   * - do not include subsite name in url path

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once("lib/db/Journal.php");
 require_once("lib/db/Fieldgroup_selection.php");
 

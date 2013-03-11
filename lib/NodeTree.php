@@ -1,4 +1,4 @@
-<?
+<?php 
 /** @package Aquarius */
 
 /** Utility methods to load whole trees of nodes */

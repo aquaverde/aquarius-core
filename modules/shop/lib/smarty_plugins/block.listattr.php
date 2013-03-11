@@ -1,4 +1,4 @@
-<?
+<?php 
 /** @package Aquarius.backend.shop */
 
 /** 

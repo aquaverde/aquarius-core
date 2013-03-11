@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Include a javascript library
   * Includes a file from the aquarius/templates/js or modules/?/templates/js dirs. Files will be included only once.
   * @param file filename of the library

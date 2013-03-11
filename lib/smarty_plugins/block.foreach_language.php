@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Execute block once for each language
     * Optional Parameters:
     *    langs: either "all" (default), "other" or a list of languages (like "de,fr"). (only active languages will be used)

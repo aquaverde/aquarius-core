@@ -1,4 +1,4 @@
-<?
+<?php 
 class action_pointings extends AdminAction {
     
   var $props = array("class", "node", "target");

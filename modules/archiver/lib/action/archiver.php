@@ -1,4 +1,4 @@
-<?
+<?php 
 
 class action_archiver extends ModuleAction {
 	var $modname = "archiver";

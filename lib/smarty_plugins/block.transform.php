@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Pipe content of block through function
   * Param:
   *   function: Name of transform function

@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Create the dropdown menu for single pointings
 */
 

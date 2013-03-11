@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once "lib/Node_Change_Notice.php";
 
 /** The Nodetree actions are used to display trees of nodes.

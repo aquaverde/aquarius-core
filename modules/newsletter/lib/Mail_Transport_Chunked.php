@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Send mail to many recipients by splitting recipients list into chunks and sending the mail separately to each. */
 class Mail_Transport_Chunked {
     /** @param $transport a PEAR Mail instance that will be used to send the mails

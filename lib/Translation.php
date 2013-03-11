@@ -1,4 +1,4 @@
-<?
+<?php 
 /** All the below classes have a toString() method which yields a translation string */
 
 /** Use config translation variable

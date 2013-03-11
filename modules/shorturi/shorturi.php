@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Redirections based on keywords in URI
   * Example:
   *

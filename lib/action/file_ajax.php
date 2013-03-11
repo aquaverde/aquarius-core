@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Provide access to file selection templates for AJAX requests
   *
   * All actions take the following request parameters:

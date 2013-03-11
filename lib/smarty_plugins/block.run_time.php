@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Output time it took to execute block */
 function smarty_block_run_time($params, $content, &$smarty, &$repeat) {
     static $times = array();

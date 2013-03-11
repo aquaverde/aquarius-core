@@ -1,4 +1,4 @@
-<?
+<?php 
 /** 
   * This loads a dynform for a given content. 
   * It assigns "dynform" and "blocks".

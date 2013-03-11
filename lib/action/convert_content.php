@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /** Convert DB
   $ This action loads all content from the DB and saves it again. Handy in the case of DB format changes but not commonly used.

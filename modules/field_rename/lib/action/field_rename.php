@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Copy content fields to a new name */
 class action_field_rename extends ModuleAction {
 	var $modname = "field_rename";

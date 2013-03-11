@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Show the most recent changes to content */
 class action_lastchanges extends AdminAction implements DisplayAction {
     var $props = array('class');

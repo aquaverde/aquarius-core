@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Pointings are references from content to nodes
   * They are used as cross-links between pages, or to categorize content.
   *

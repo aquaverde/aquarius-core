@@ -1,4 +1,4 @@
-<?
+<?php 
 class action_newsletter_edit extends AdminAction implements DisplayAction {
 
     var $props = array('class', 'root', 'lg');

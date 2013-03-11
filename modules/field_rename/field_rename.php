@@ -1,4 +1,4 @@
-<?
+<?php 
 class Field_rename extends Module {
         
     var $register_hooks = array('menu_init', 'smarty_config', 'smarty_config_backend');

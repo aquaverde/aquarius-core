@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Rich Text Edit formtype.
   * This formtype stores HTML code. In the backend the FCKEditor is used to provide a WYSIWYG Text Editor.
   * sup1 defines the height of the RTE, default is 180, minimum is 50.

@@ -1,4 +1,4 @@
-<?
+<?php 
 class action_shop_order extends ModuleAction {
     var $modname = "shop";
     var $props = array('class', 'op');

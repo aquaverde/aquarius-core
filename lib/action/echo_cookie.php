@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /**
 Add a cookie that enables debugging

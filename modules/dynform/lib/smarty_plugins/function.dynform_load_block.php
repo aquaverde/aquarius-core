@@ -1,4 +1,4 @@
-<?
+<?php 
 /** 
   * This loads a block for a given dynform. 
   * It assigns "block_fields".

@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Make links to a node.
   * Convenience wrapper for the href plugin. This blocks wraps the content of the block in '<a>' tag with href attribute to the specified node. The block will not be executed for nonexistant nodes or languges.
   * Parameters:

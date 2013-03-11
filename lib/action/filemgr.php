@@ -1,4 +1,4 @@
-<?
+<?php 
 class action_filemgr extends AdminAction {
     var $props = array("class", "command", "subdir");
     //var $props = array("class", "command", "file", "spinner");

@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Create link to execute an action
   * Params:
   *   action: action object or string

@@ -1,4 +1,4 @@
-<?
+<?php 
 
 require 'lib/formtype_googlemaps.php';
 require_once "lib/template.lib.php";

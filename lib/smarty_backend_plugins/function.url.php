@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Function to generate URLs in smarty. It takes objects of the Url class and adds actions. Actions can be strings describing actions or actual action class objects. Example:
     {url url=$url action0="node:toggle_active:`$node->id`" action1=$someaction}
     

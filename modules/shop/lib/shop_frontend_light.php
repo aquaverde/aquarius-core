@@ -1,4 +1,4 @@
-<?
+<?php 
 class Shop_Frontend_Light {
     var $module_core;
 

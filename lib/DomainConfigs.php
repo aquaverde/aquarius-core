@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Keep configuration parameters for domains
   * Subdomains inherit configuration parameters from their superdomain. Example:
   *

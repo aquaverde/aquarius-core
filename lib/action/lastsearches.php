@@ -1,4 +1,4 @@
-<?
+<?php 
 /** List the most recent searches
   */
 class action_lastsearches extends AdminAction implements DisplayAction {

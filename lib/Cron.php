@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Execute jobs at specific time intervals
   *
   * "Those who do not understand Unix are condemned to reinvent it, poorly."

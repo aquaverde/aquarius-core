@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Cross references are used to sort content into multiple categories.
   * The categories themselves are nodes too, so that users can easily add to them.
   *

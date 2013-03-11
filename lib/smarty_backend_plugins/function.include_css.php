@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once 'lib/action.php';
 
 /** <link> to include a css file from templates/css/

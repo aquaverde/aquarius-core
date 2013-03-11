@@ -1,4 +1,4 @@
-<?
+<?php 
 abstract class action_wording extends AdminAction {
     
     var $props = array("class", "command");

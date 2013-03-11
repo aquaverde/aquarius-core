@@ -1,4 +1,4 @@
-<?
+<?php 
 /** File selection popup action
   * Action parameters:
   *   target_id (string):

@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /** Load paginated list of nodes
   * Supports the same parameters as the loadnodes function. Additional parameters:

@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /** Check DB integrity
 */

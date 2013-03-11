@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Logging is started based on two sources:
   * 1. Config entries in the 'log' section of the config
   * 2. Overrides sent by the 'aquarius_logging' cookie.

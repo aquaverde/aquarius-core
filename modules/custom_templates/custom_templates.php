@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Replace backend templates with custom version
   * If this module is activated, its template dir is searched for aquarius templates before the main aquarius template dir is searched. This allows customizing the aquarius look without touching files in the aquarius dir.
   *

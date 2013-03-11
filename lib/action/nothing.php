@@ -1,4 +1,4 @@
-<?
+<?php 
 /** The 'empty' action
  */
 class action_nothing extends Action {

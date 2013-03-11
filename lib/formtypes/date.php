@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Single date field
   * Stored as UNIX epoch timestamp (seconds since 1.1.1970) */
 class Formtype_Date extends Formtype {

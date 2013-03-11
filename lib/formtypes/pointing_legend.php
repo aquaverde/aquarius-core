@@ -1,4 +1,4 @@
-<?
+<?php 
 
 class Formtype_Pointing_Legend extends Formtype {
 

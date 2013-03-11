@@ -1,4 +1,4 @@
-<?
+<?php 
 /** List pushed childs of some node.
   * Params:
   *   childsof: Look for pushed content in the descendants of this node

@@ -1,4 +1,4 @@
-<?
+<?php 
 /** image get width function.
   * Parameters:
   *     file: the file object in the respective language -> coming from a content, not a node

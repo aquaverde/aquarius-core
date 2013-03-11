@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Loop over a multi-link field (or as well over a single-link field)
 Params:
     node: The node which we are searching pointings for

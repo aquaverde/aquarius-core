@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Get random entry from list.
 *Parameters:
 *    list: List of entries

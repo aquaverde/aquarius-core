@@ -1,4 +1,4 @@
-<?
+<?php 
 /** @package Aquarius
   * Comparator classes for your sorting needs
   * Trash classes like these would not be necessary if PHP had closures. (Just sayin)

@@ -1,4 +1,4 @@
-<?
+<?php 
 /** @package Aquarius */
 
 /** A mail built from smarty templates

@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Look for a DB configuration, test it  and add or change it if it
   * doesn't work.
   */

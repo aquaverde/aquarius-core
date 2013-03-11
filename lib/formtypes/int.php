@@ -1,4 +1,4 @@
-<?
+<?php 
 class Formtype_Int extends Formtype {
 
     private function parseval($val, $formfield) {

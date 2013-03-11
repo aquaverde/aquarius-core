@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Function generating action buttons to change the activation status of the given object.
   * Params:
   *     action: the action for the button

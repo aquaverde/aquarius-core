@@ -1,4 +1,4 @@
-<?
+<?php 
 class Formtype_mle extends Formtype {
     /** Apply formtype specific conversion prior to editing content
      */

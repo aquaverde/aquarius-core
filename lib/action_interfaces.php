@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /** This interface signifies that something may be treated as an action */
 interface BasicAction {

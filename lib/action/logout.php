@@ -1,4 +1,4 @@
-<?
+<?php 
 class action_logout extends AdminAction {
 
     var $props = array('class', 'op');

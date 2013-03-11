@@ -1,4 +1,4 @@
-<?
+<?php 
 /** @package Aquarius.backend */
 
 require_once "lib/file_mgmt.lib.php";

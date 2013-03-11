@@ -1,4 +1,4 @@
-<?
+<?php 
 /** @package Aquarius */
 
 /** Superclass of addon modules, performs default operations expected of a module.

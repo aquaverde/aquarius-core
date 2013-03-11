@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Loop over a multi field (or as well over a single-link field)
 Params:
  	type: can be either "pics", "files", "links" - is mandatory

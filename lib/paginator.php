@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Manage splitting of list of items into pages for display
   *
   */

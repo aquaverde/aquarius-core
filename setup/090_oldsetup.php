@@ -40,10 +40,10 @@ function check_admin() {
 <h2>Initializing Aquarius</h2>
 <form method="post">
         <ul class="setupitems">
-            <li>Current FS path: <?=dirname(__FILE__)?></li>
-            <li>Active include paths: <?=get_include_path()?></li>
-            <li>Active language: <?=check_lang()?></li>
-            <li>Admin user: <?=check_admin()?></li>
+            <li>Current FS path: <?php echo dirname(__FILE__)?></li>
+            <li>Active include paths: <?php echo get_include_path()?></li>
+            <li>Active language: <?php echo check_lang()?></li>
+            <li>Admin user: <?php echo check_admin()?></li>
         </ul>
     </div>
 </form>
@@ -51,7 +51,7 @@ function check_admin() {
 <div class="bigbox">
 <h2>Checking directories &amp; permissions</h2>
 <ul class="setupitems">
-<?
+<?php 
 $paths = array(
     $aquarius->install_path."cache"                         => array('req'=>'must'),
     $aquarius->root_path."download"                         => array('req'=>'should'),

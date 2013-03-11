@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /** Create and copy content in various languages
 */

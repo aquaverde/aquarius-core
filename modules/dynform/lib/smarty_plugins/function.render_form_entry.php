@@ -1,4 +1,4 @@
-<?
+<?php 
 /** 
   * autmated dynform rendering, hc, does everything
   * eats form_object (when a content object has a pointing to a dynform, it's a form object)

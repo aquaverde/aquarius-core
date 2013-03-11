@@ -1,4 +1,4 @@
-<?
+<?php 
 abstract class action_message_edit extends AdminAction {
     /** Superadmins only */
     function permit_user($user) {

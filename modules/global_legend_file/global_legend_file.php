@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Extends file formtype to save the legend per file, not per content as is done by the file formtype.
   * WARNING: This implementation is not language sensitive!
   */

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once("lib/db/Users2modules.php");
 require_once("lib/adminaction.php");
 

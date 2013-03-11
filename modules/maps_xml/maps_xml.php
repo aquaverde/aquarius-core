@@ -1,4 +1,4 @@
-<?
+<?php 
 class Maps_Xml extends Module {
 	var $register_hooks = array('daily');
     

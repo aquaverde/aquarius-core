@@ -1,4 +1,4 @@
-<?
+<?php 
 
 /** Determine requested node from environment (URI, configuration, HTTP cookies, &c.)
   * The process is split into multiple steps so that additional steps can be inserted by modules.

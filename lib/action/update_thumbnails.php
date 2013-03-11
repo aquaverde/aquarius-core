@@ -1,4 +1,4 @@
-<?
+<?php 
 /** (Re)generate thumbnails for managed files
     @package Aquarius.backend
 */

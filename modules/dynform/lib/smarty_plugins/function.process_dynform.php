@@ -1,4 +1,4 @@
-<?
+<?php 
 /** @DEPRECATED use insert_dynform_here() instead.
   * This one doesn't work in some caching scenarios. */
 function smarty_function_process_dynform($params, $smarty) {

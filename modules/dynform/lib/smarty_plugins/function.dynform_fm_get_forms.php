@@ -1,4 +1,4 @@
-<?
+<?php 
 /** Special function for the forms manager "fm"
   * Load all dynforms that can be found in the dynform table.  
   * It assigns "dynforms"

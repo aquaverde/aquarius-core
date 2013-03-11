@@ -1,4 +1,4 @@
-<?
+<?php 
 /* Field type that ensures URL-save strings when saving to the DB */
 class Formtype_Urltitle extends Formtype {
 
