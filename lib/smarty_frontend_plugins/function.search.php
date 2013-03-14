@@ -1,4 +1,4 @@
-<?php 
+<?
 /** @package Aquarius.frontend
   */
 
@@ -18,9 +18,8 @@
   *
   */
 function smarty_function_search($params, &$smarty) {
-    global $DB;
-    global $lg;
-
+    if (!isset($params['lg'])) $params['lg'] = $smarty->get_template_vars('lg');
+    
     $class = get($params, 'use', 'Content_Search');
     $search = new $class();
     $search->read($_REQUEST);
