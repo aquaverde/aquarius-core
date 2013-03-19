@@ -2,28 +2,24 @@
 
 <h1>{#mailChimp_upload#}</h1>
 
-<ul>
-{foreach from=$newsletters item=newsletter}
-<li>
-	
-		
-		<strong>{$newsletter->title}:</strong>
+<div class="bigbox">
+    {foreach from=$newsletters item=newsletter}
+        <h2>{$newsletter->title}</h2>
+        {action action="mailChimp:select_lg:`$newsletter->id`"}
+        	<p style="padding:10px 0 20px 0;"><a href="{url action0=$action action1=$lastaction}" class='submit'>{#mailChimp_upload#}</a></p>
+        {/action}
+    {/foreach}
+</div>
 
-		{action action="mailChimp:select_lg:`$newsletter->id`"}
-			<a href="{url action0=$action action1=$lastaction}" class='button'>upload</a>
-		{/action}
-</li>
-{/foreach}
-</ul>
+<br/>
 
-<br/><br/>
-<h1>Kampagnen</h1>
-
-Anzahl: {$count_campaigns}<br/>
-{foreach from=$campaigns item=campaign}
-<ul>
-	<li><strong>{$campaign.title}</strong> | Status: {$campaign.status} | Verschickt am {$campaign.send_time} an {$campaign.emails_sent} Personen</li>
-</ul>
-{/foreach}
+<h1>Kampagnen (Anzahl: {$count_campaigns})</h1>
+<div class="bigbox">
+    {foreach from=$campaigns item=campaign}
+    	<h2>{$campaign.title}</h2>
+    	Status: {$campaign.status} an <b>{$campaign.emails_sent}</b> Personen
+    	<br>Verschickt am {$campaign.send_time} <br><br></li>
+    {/foreach}
+</div>
 
 {include file='footer.tpl'}
