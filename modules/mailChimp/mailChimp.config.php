@@ -4,4 +4,3 @@ $config['mailChimp'] = array(
     'email'  => 'sender-address@example',
     'name'   => 'mailchimp-userid'
 );
-

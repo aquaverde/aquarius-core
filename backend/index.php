@@ -54,7 +54,7 @@ $smarty->display('frameset.tpl');
 
 
 // Let daily jobs run after the rest of the script finished
-require_once 'lib/cron.php';
+require_once 'lib/Cron.php';
 Cron::run_on_shutdown();
 
 flush_exit();
