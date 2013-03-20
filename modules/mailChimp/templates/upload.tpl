@@ -14,12 +14,16 @@
 <br/>
 
 <h1>Kampagnen (Anzahl: {$count_campaigns})</h1>
-<div class="bigbox">
-    {foreach from=$campaigns item=campaign}
-    	<h2>{$campaign.title}</h2>
-    	Status: {$campaign.status} an <b>{$campaign.emails_sent}</b> Personen
-    	<br>Verschickt am {$campaign.send_time} <br><br></li>
-    {/foreach}
-</div>
+    <table class="table" cellspacing="0" cellpadding="0" border="0">
+    <tr><th>Kampagne</th><th>Status</th><th>Verschickt am</th><th>Verschickt an (Personen)</th></tr>
+        {foreach from=$campaigns item=campaign}
+            <tr>
+        	<td>{$campaign.title}</td>
+        	<td>{$campaign.status} </td>
+        	<td>{$campaign.send_time}</td>
+        	<td><b>{$campaign.emails_sent}</b></td>
+        	</tr>
+        {/foreach}
+    </table>
 
 {include file='footer.tpl'}
