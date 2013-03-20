@@ -1,6 +1,11 @@
 <?php
 
 class Formtype_global_legend_file extends Formtype_File {
+    // On some flaky servers the loading of the legend via AJAX fails often
+    // When loding fails, the legend remains empty and the existing legend is deleted when the content is saved
+    // Thus the option to just keep the old legend instead
+    var $ignore_empty = false;
+
 
     /** Add js code to dynamically load legend when picture changes */
     function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
@@ -34,7 +39,9 @@ class Formtype_global_legend_file extends Formtype_File {
         $escaped_path = mysql_real_escape_string('/'.$formfield->sup3.'/'.get($values, 'file'));
         $legend = get($values, 'legend');
         if (strlen($legend) == 0) {
-            $DB->query("DELETE FROM file_legend WHERE file='$escaped_path' AND lg='$lg'");
+            if (!$this->ignore_empty) {
+                $DB->query("DELETE FROM file_legend WHERE file='$escaped_path' AND lg='$lg'");
+            }
         } else {
             $escaped_legend = mysql_real_escape_string($legend);
             $DB->query("REPLACE file_legend SET file='$escaped_path', legend='$escaped_legend', lg='$lg'");
