@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** Extends file formtype to save the legend per file, not per content as is done by the file formtype.
   * WARNING: This implementation is not language sensitive!
   */
@@ -11,7 +11,8 @@ class Global_Legend_File extends Module {
 
     function init_form($formtypes) {
         require_once 'lib/formtype.global_legend_file.php';
-        $formtypes->add_formtype(new Formtype_global_legend_file('global_legend_file', 'file'));
+        $glf_type = new Formtype_global_legend_file('global_legend_file', 'file');
+        $glf_type->ignore_empty = $this->conf('ignore_empty');
+        $formtypes->add_formtype($glf_type);
     }
 }
-?>
