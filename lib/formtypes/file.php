@@ -26,7 +26,7 @@
 class Formtype_File extends Formtype {
 
     function to_string($values) {
-        return get($values, 'file');
+        return basename(get($values, 'file'));
     }
 
     /** Name for upload fields
