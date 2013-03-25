@@ -221,7 +221,7 @@ echo "<html>'.addslashes($css).'
 
 
 // Included tar library follows
-?>'.file_get_contents($tar_lib_path).'<?php
+?>'.file_get_contents($tar_lib_path).'
 
 // tell PEAR to tell us
 PEAR::setErrorHandling(PEAR_ERROR_TRIGGER);
