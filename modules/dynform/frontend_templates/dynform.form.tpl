@@ -30,7 +30,7 @@
         <span class="errorInvisible" id="errorMessage">{wording please_fill_in_required_fields}</span>
         
         <div class="formSubmit clear">
-            <input type="submit" name="dynform_submit" value="{wording send}" />
+            <button type="submit" name="dynform_submit" class="btn btn-primary">{wording send}</button>
         </div>
             
 	</div>
