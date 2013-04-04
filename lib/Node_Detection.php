@@ -162,7 +162,8 @@ class Node_Detection {
             preg_match('/\\.([0-9]+)$/', $part, $matches);  // See if there's a node id at the end of the urltitle
 
             if (isset($matches[1])) {
-                $node = db_Node::get_node($matches[1]);
+                $node_id = $matches[1];
+                $node = db_Node::get_node($node_id);
                 if ($node) {
                     $new_node = $node;
                 } else {
