@@ -30,6 +30,18 @@ function smarty_block_usecontent($params, $content, &$smarty, &$repeat) {
         $content = false;
 
         if ($node) {
+            // Refuse to load nodes that are not active themselves
+            // Since we're loading on request, the assumption is that
+            // we may show content even if parent nodes are disabled
+            // This helps in cases where you have 'auxiliary nodes' under
+            // a deactivated node
+            if ($smarty->require_active) {
+                if ($node->active == false) {
+                    $load = false;
+                    $reason = "Node ".$node->idstr()." is not active";
+                }
+            }
+        
             // Check permissions
             if (get($params, 'check_access', true)) {
                 $restriction_node = $node->access_restricted_node();
