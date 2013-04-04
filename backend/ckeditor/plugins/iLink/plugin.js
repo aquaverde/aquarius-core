@@ -33,12 +33,12 @@
 				var aqua_node_id = aqua_array[1];
 				
 				if(aqua_node_id)
-					var media = window.showModalDialog(myilink+"&selected="+aqua_node_id,window,"dialogHeight=450px; dialogWidth=350ps; center=yes; resizable=yes");
+					var media = window.showModalDialog(myilink+"&selected="+aqua_node_id,window,"dialogHeight=600px; dialogWidth=500px; center=yes; resizable=yes");
 				else 
-					var media = window.showModalDialog(myilink,window,"dialogHeight=450px; dialogWidth=350px; center=yes; resizable=yes");
+					var media = window.showModalDialog(myilink,window,"dialogHeight=600px; dialogWidth=500px; center=yes; resizable=yes");
 			}
 			else {
-	            var media = window.showModalDialog(myilink,window,"dialogHeight=450px; dialogWidth=350px; center=yes; resizable=yes");				
+	            var media = window.showModalDialog(myilink,window,"dialogHeight=600px; dialogWidth=500px; center=yes; resizable=yes");				
 			}
 			window.ilink_callback = false;     
     	}
