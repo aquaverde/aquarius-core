@@ -19,7 +19,7 @@ class Aquarius_Frontloader {
             try {
                 $loader = include($this->cache_file);
             } catch (Exception $e) {
-                delete($this->cache_file);
+                unlink($this->cache_file);
             }
         }
 
