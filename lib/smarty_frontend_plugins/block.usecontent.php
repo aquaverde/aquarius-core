@@ -30,16 +30,14 @@ function smarty_block_usecontent($params, $content, &$smarty, &$repeat) {
         $content = false;
 
         if ($node) {
-            // Refuse to load nodes that are not active themselves
+            // Refuse to load nodes that are not active themselves.
             // Since we're loading on request, the assumption is that
             // we may show content even if parent nodes are disabled
             // This helps in cases where you have 'auxiliary nodes' under
             // a deactivated node
-            if ($smarty->require_active) {
-                if ($node->active == false) {
-                    $load = false;
-                    $reason = "Node ".$node->idstr()." is not active";
-                }
+            if ($smarty->require_active && $node->active == false) {
+                $load = false;
+                $reason = "Node ".$node->idstr()." is not active";
             }
         
             // Check permissions
@@ -62,7 +60,7 @@ function smarty_block_usecontent($params, $content, &$smarty, &$repeat) {
             if (!$content) {
                 $load = false;
                 $reason = "No content for node $node->id in language $lg";
-            } elseif (!$content->active) {
+            } elseif ($smarty->require_active && $content->active == false) {
                 $load = false;
                 $reason = "Content for node $node->id in language $lg not active";
             }
