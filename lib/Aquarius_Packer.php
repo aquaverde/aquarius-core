@@ -210,7 +210,7 @@ if (isset($argv)) $ops = array_merge($ops, $argv);
 if (in_array("setup", $ops)) {
     include "aquarius/core/lib/Maintenance_Mode_Control.php";
     Maintenance_Mode_Control::enable(2);
-    header("Location: aquarius/admin/setup.php");
+    header("Location: aquarius/core/backend/setup.php");
     exit;
 }
 
