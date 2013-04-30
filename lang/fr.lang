@@ -69,7 +69,7 @@ menu_filemgr_update_thumbnails = "Actualiser les images"
 
 menu_config_cmsuser = "Utilisateurs CMS"
 menu_config_wording = "Wording"
-menu_config_feuser = "Utilisateurs & Groupes"
+menu_config_feuser = "Utilisateurs Website"
 menu_config_feuser_user = "Utilisateurs"
 menu_config_feuser_group = "Groupes"
 

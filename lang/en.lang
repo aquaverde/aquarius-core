@@ -68,7 +68,7 @@ menu_filemgr_update_thumbnails = "Update thumbnails"
 
 menu_config_cmsuser = "CMS users"
 menu_config_wording = "Wording"
-menu_config_feuser = "Users & groups"
+menu_config_feuser = "Website users"
 menu_config_feuser_user = "Users"
 menu_config_feuser_group = "Groups"
 

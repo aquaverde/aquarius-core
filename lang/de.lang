@@ -68,7 +68,7 @@ menu_filemgr_update_thumbnails = "Vorschaubilder aktualisieren"
 
 menu_config_cmsuser = "CMS Benutzer"
 menu_config_wording = "Wording"
-menu_config_feuser = "Benutzer & Gruppen"
+menu_config_feuser = "Website Benutzer"
 menu_config_feuser_user = "Benutzer"
 menu_config_feuser_group = "Gruppen"
 
