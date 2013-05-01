@@ -176,8 +176,8 @@ input.inputweight { width: 30px; margin-bottom: 0px; border: 1px #CCC solid; fon
 .button:active { background-color: #E0E0E0; border-top: 1px solid #666; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; border-left: 1px solid #666; }
 .contentedit_pointing_legend .button, .contentedit_pointing .button, .mapmenu_box .button, #toolbar .button { margin-top: 0; }
 .submit	{ clear: both; margin-top: 20px; font-size: 12px; font-weight: bold; padding: 2px 6px; background-color: #F2F2F2; border-top: 2px solid #CCCCCC; border-right: 2px solid #666666; border-bottom: 2px solid #666666; border-left: 2px solid #CCCCCC; margin-right: 4px; }
-.submit:hover, .undo:hover, .reset:hover, .cancel:hover, .cursor:hover { cursor: pointer; }
-.submit:active	{ background-color: #E0E0E0; border-top: 2px solid #666; border-right: 2px solid #ccc; border-bottom: 2px solid #ccc; border-left: 2px solid #666; cursor: pointer; }
+input[type="submit"]:hover, .submit:hover, .undo:hover, .reset:hover, .cancel:hover, .cursor:hover { cursor: pointer; background-color: #E0E0E0; }
+input[type="submit"]:active, .submit:active	{ background-color: #E0E0E0; border-top: 2px solid #666; border-right: 2px solid #ccc; border-bottom: 2px solid #ccc; border-left: 2px solid #666; cursor: pointer; }
 input[disabled] { color: #ccc; }
 .undo, .cancel { font-size: 12px !important; font-weight: normal; padding: 2px 6px; background-color: #F2F2F2; border-top: 2px solid #CCCCCC; border-right: 2px solid #666666; border-bottom: 2px solid #666666; border-left: 2px solid #CCCCCC; margin-left: 4px; }
 .cancel { margin-top: 20px; }
