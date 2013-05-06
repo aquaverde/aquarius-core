@@ -81,7 +81,7 @@ class Node_Detection {
             if ($old_val !== $value) {
                 $changed_str .= "\n $key: ";
                 if (is_array($value)) {
-                    $changed_str .= '['.join(', ', $value).']';
+                    $changed_str .= json_encode($value);
                 } else {
                     $changed_str .= str($value);
                 }
