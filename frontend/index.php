@@ -110,6 +110,17 @@ try {
     }
     $detection_params['require_active'] = $lg;
 
+    // Process logout requests
+    if (isset($_REQUEST['logout'])) {
+        db_Fe_users::logout();
+        $aquarius->execute_hooks('frontend_logout');
+    }
+
+    // Process logins
+    $login_state = db_Fe_users::authenticate();
+    if ($login_state instanceof db_fe_users) {
+        $aquarius->execute_hooks('frontend_login', $login_state);
+    }
 
 /* Find node from URI */
     $node_detection = new Node_Detection(array(
@@ -166,7 +177,7 @@ try {
         Log::debug('Arrived at '.$node->idstr());
 
         // Tell interested parties about the chosen node and let them choose a different one
-        $jump_nodes = $aquarius->execute_hooks('frontend_node', $node);
+        $jump_nodes = $aquarius->execute_hooks('frontend_node', $node, $node_params);
         if (!empty($jump_nodes)) {
             $node = first($jump_nodes); // There is of course the problem that we could have requests to jump to two different nodes. For now we just choose the first node.
             Log::debug("Jumping to node ".$node->idstr());
@@ -254,17 +265,6 @@ try {
 
 
 /* Access restriction management */
-    // Process logout requests
-    if (isset($_REQUEST['logout'])) {
-        db_Fe_users::logout();
-        $aquarius->execute_hooks('frontend_logout');
-    }
-
-    // Process logins
-    $login_state = db_Fe_users::authenticate();
-    if ($login_state instanceof db_fe_users) {
-        $aquarius->execute_hooks('frontend_login', $login_state);
-    }
     $smarty->assign('login_state', $login_state); // Save login state so that we can check for it in templates
 
     $user = db_Fe_users::authenticated();
