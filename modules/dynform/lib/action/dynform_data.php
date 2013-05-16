@@ -317,11 +317,7 @@ class Action_Dynform_Data_Export_File extends action_dynform_data implements Sid
         echo "\xEF\xBB\xBF"; // OH HAI IM YOUR BITE ORDER MARK for Excel
         
         // Header line
-        if(!function_exists("fputcsv")) {
-            aqua_fputcsv($out, $desired_columns,';','"') ;
-        } else {
-            fputcsv($out, $desired_columns,';','"') ;
-        }
+        aqua_fputcsv($out, $desired_columns,';','"');
         
         // Entries
         foreach($records as $record) {
@@ -329,11 +325,7 @@ class Action_Dynform_Data_Export_File extends action_dynform_data implements Sid
             foreach ($desired_columns as $field_id => $_) {
                 $line []= get($record, $field_id, '');
             }
-            if(!function_exists("fputcsv")) {
-                aqua_fputcsv($out, $line,';','"') ;
-            } else {
-                fputcsv($out, $line,';','"') ;
-            }
+            aqua_fputcsv($out, $line,';','"');
         }
         fclose($out);
 
