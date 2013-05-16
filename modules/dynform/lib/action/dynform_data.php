@@ -311,6 +311,11 @@ class Action_Dynform_Data_Export_File extends action_dynform_data implements Sid
         header('Content-type: text/csv');
         header('Content-Disposition: attachment; filename="'.$filename.'"');
 
+        // Some software defaults to latin1 when reading CSV
+        // Send the otherwise useless UTF8-BOM to allow said software to detect
+        // it's dealing with Unicode
+        echo "\xEF\xBB\xBF"; // OH HAI IM YOUR BITE ORDER MARK for Excel
+        
         // Header line
         if(!function_exists("fputcsv")) {
             aqua_fputcsv($out, $desired_columns,';','"') ;
