@@ -519,6 +519,7 @@ class Dynform extends Module
         }
     }
     
+    
     function load_nodetree($root_id, $lg) {
         $node = db_Node::get_node($root_id);
         if ($node) {
@@ -526,7 +527,7 @@ class Dynform extends Module
                 NodeFilter::create('has_content', $lg), 
                 NodeFilter::create('active_self', true)
             );
-            return NodeTree::build($node, array(), $filter);
+            return NodeTree::build($node, array(), Nodefilter::create('and', $filters));
         }
     }
 }
