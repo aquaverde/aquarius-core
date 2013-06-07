@@ -1,4 +1,4 @@
-<?php 
+<?php
 class Dynform extends Module 
 {
     var $register_hooks = array('menu_init', 'smarty_config', 'smarty_config_backend', 'smarty_config_frontend', 'contentedit_addon', 'node_copy', 'node_delete') ;
@@ -362,6 +362,7 @@ class Dynform extends Module
         // In some places Aquarius erroneously recommends using semiclons to add multiple addresses.
         // We replace those semicolons with commas and tidy up a bit. Yeah yeah, quoted local parts &c not supported.
         $target_email = join(', ', array_map('trim', array_filter(split('[,;]', $target_email))));
+        Log::debug("Dynform target_email $target_email");
         
         // Bot blocker: check that the decoy field is empty
         if (!empty($post_vars['email_validate'])) {
@@ -369,7 +370,7 @@ class Dynform extends Module
             return $content->email_thanx ;
         }
 
-        $sender_email = "" ; 
+        $client_email = "" ; 
         $mailtxt = array() ; 
 
         $dynform = new db_Dynform ; 
@@ -417,8 +418,9 @@ class Dynform extends Module
                     
                 if ($ftype == "Text") continue ;   // no entries for texts
                 elseif ($ftype == "Email") {
-                    if (!$sender_email) {
-                        $sender_email = $value;
+                    if (!$client_email) {
+                        $client_email = $value;
+                        Log::debug("Dynform client_email $client_email");
                         if ($value === $this->conf('test_email')) {
                             $target_email = $this->conf('test_email');
                         }
@@ -461,7 +463,6 @@ class Dynform extends Module
             $mailtxt[] = ' ' ; 
         }
 
-        if (!$sender_email) $sender_email = $target_email ; 
         if ($target_email == "") {
             throw new Exception("FATAL ERROR: Target email for form is missing!") ;
         }
@@ -469,7 +470,8 @@ class Dynform extends Module
         $subject = $content->email_subject;
         if (!empty($submit_node_name)) $subject .= ' | '.$submit_node_name;
 
-        $newMail = new FormattedHTMLMail($target_email, $subject, $sender_email) ;
+        $newMail = new FormattedHTMLMail($target_email, $subject, $target_email);
+        if ($client_email) $newMail->setReplyAddress($client_email);
         if ($content->send_confirmation_mail) {
             $newMail->addText($content->email_confirmation_text) ;
             $newMail->addText("") ;
@@ -490,14 +492,14 @@ class Dynform extends Module
         $newMail->addDelimiter() ;
         $newMail->sendMail() ; 
         
-        if ($content->send_confirmation_mail)
-        {
+        if ($content->send_confirmation_mail && $client_email) {
             $conf_sender = "" ; 
             
             if ($content->email_confirmation_sender) $conf_sender = $content->email_confirmation_sender ; 
             else $conf_sender = "info@".$_SERVER['SERVER_NAME'] ;
             $newMail->setSenderAddress($conf_sender) ; 
-            $newMail->setTargetAddress($sender_email) ;
+            $newMail->setTargetAddress($client_email);
+            $newMail->setReplyAddress($target_email);
             if ($content->email_confirmation_subject) $newMail->setSubject($content->email_confirmation_subject) ; 
             $newMail->sendMail() ; 
         }
@@ -518,7 +520,6 @@ class Dynform extends Module
             return date("Y-m-d H:i:s", $timestamp);
         }
     }
-    
     
     function load_nodetree($root_id, $lg) {
         $node = db_Node::get_node($root_id);
