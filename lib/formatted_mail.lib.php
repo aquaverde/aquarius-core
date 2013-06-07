@@ -27,8 +27,9 @@ class FormattedTextMail {
     protected $blockColumns = array();
     protected $currentColumn    = 0;
     
-    protected   $targetAddress;
+    protected $targetAddress;
     protected $senderAddress;
+    protected $replyAddress = false;
     protected $subject;
     
     public function __construct($targetAddress, $subject, $senderAddress)
@@ -48,6 +49,10 @@ class FormattedTextMail {
         $this->senderAddress = $senderAddress;
     }
     
+    public function setReplyAddress($replyAddress) {
+        $this->replyAddress = $replyAddress;
+    }
+    
     public function setSubject($subject)
     {
         $this->subject = $subject;
@@ -65,7 +70,9 @@ class FormattedTextMail {
         $message->setBody($text);
         
         $message->setFrom($this->senderAddress);
-        
+        if ($this->replyAddress) {
+            $message->setReplyTo($this->replyAddress);
+        }
         $message->setSubject($this->subject);
 
         $tos = array_map('trim', explode(',', $to));
@@ -156,6 +163,9 @@ class FormattedHTMLMail extends FormattedTextMail {
         $message->addPart($this->getMailHTML(), 'text/html');
         
         $message->setFrom($this->senderAddress);
+        if ($this->replyAddress) {
+            $message->setReplyTo($this->replyAddress);
+        }
         
         $message->setSubject($this->subject);
 
