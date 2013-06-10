@@ -19,7 +19,8 @@ see doc/aquadoc.txt
 # Development
 see doc/coding-guidelines.txt
 
-# Wiki
+
+# Implementation
 see [wiki](https://github.com/aquaverde/aquarius-core/wiki) for more informations about implementation 
 
 
