@@ -19,6 +19,9 @@ see doc/aquadoc.txt
 # Development
 see doc/coding-guidelines.txt
 
+# Wiki
+see [blank wiki](https://github.com/aquaverde/aquarius-core/wiki) for more infos
+
 
 # Licence
 
