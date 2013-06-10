@@ -20,7 +20,7 @@ see doc/aquadoc.txt
 see doc/coding-guidelines.txt
 
 # Wiki
-see [blank wiki](https://github.com/aquaverde/aquarius-core/wiki) for more infos
+see [wiki](https://github.com/aquaverde/aquarius-core/wiki) for more informations about implementation 
 
 
 # Licence
