@@ -8,6 +8,6 @@ git submodule update
 mkdir -p ../dbadmin
 cd ../dbadmin
 pwd
-php ../core/components/adminer/compile.php
-mv adminer.php index.php
-rm editor.php
+php ../core/components/adminer/compile.php mysql
+mv adminer-mysql.php index.php
+rm editor-mysql.php
