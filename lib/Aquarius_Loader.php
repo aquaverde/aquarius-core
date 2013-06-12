@@ -168,6 +168,14 @@ class Aquarius_Stage_Aquarius extends Aquarius_Basic_Stage {
         $loader->include_file('aquarius.php');
         $loader->include_file('DomainConfigs.php');
         $loader->include_file('url.php');
+        
+        // Libraries installed via composer
+        $libloader = $loader->core_path.'vendor/autoload.php';
+        if (file_exists($libloader)) {
+            $loader->include_file($libloader);
+        }
+
+        
         $this->aquarius = new Aquarius($loader->root_path, $loader->core_path);
     }
     
