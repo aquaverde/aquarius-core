@@ -16,6 +16,9 @@
     config.emailProtection = 'encode';
     config.linkShowAdvancedTab = false;
 
+    // Disable the useless filler text
+    config.image_previewText = ' ';
+    
     // Load site-specific config if available
     config.customConfig = 'config.js.php';
 
