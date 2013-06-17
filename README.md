@@ -20,6 +20,10 @@ see doc/aquadoc.txt
 see doc/coding-guidelines.txt
 
 
+# Implementation
+see [wiki](https://github.com/aquaverde/aquarius-core/wiki) for more informations about implementation 
+
+
 # Licence
 
 This program is free software: you can redistribute it and/or modify
