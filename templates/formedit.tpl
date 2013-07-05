@@ -9,7 +9,7 @@
 <style type="text/css" media="all">{literal}
 html, body {height: 95%} body {max-width: none;}
 {/literal}</style>
-<h1>Edit form</h1>
+<h1>Edit pagetype</h1>
 <form action="{url action="formedit:save:`$form->id`"}" method="post" style="display: inline">
     
     <div id="outer">

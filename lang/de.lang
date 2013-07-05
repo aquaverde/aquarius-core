@@ -12,7 +12,7 @@ formfield_email_thanx = Bestätigungstext für Website
 formfield_fax = Fax
 formfield_files = Dateien (PDF)
 formfield_download = Dateien (PDF)
-formfield_googleanalytics = Google Analytics Tracking Code
+formfield_googleanalytics = Google Analytics Code
 formfield_googlemaps_url = Google Maps URL für grosse Kartenansicht
 formfield_htmltitle = HTML-Titel (optional)
 formfield_latLng_x = Breitenmass
@@ -68,14 +68,14 @@ menu_filemgr_update_thumbnails = "Vorschaubilder aktualisieren"
 
 menu_config_cmsuser = "CMS Benutzer"
 menu_config_wording = "Wording"
-menu_config_feuser = "Website Benutzer"
+menu_config_feuser = "Benutzer & Gruppen"
 menu_config_feuser_user = "Benutzer"
 menu_config_feuser_group = "Gruppen"
 
 menu_super = "Siteadmin"
 menu_super_site_structure= "Site Structure"
 menu_super_sitemap = "Sitemap"
-menu_super_forms = "Forms"
+menu_super_forms = "Pagetypes"
 menu_super_cmsuser = "CMS Benutzer"
 menu_super_langs = "Sprachen"
 menu_super_modules = "Module"
