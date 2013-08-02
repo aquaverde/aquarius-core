@@ -31,7 +31,7 @@
         {/if}
 
         {if $formedit}
-    	    <a href="{url action0=$lastaction action1=$formedit}" title="edit form"><b class="dim">F</b> "{$form->title}" <img src="buttons/edit.gif" alt="form" style="margin-top: -5px"/></a>
+    	    <a href="{url action0=$lastaction action1=$formedit}" title="edit pagetype"><b class="dim">P</b> "{$form->title}" <img src="buttons/edit.gif" alt="form" style="margin-top: -5px"/></a>
         {/if}
         {if $change_form}
             {if !$is_super}{#choose_form#}:&nbsp;{/if}
