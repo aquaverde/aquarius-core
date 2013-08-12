@@ -466,11 +466,15 @@ class Dynform extends Module
         if ($target_email == "") {
             throw new Exception("FATAL ERROR: Target email for form is missing!") ;
         }
+        
 
         $subject = $content->email_subject;
         if (!empty($submit_node_name)) $subject .= ' | '.$submit_node_name;
 
-        $newMail = new FormattedHTMLMail($target_email, $subject, $target_email);
+        // Take the first address as sender address if there are multiple
+        $sender_email = trim(first(explode(',', $target_email)));
+        
+        $newMail = new FormattedHTMLMail($target_email, $subject, $sender_email);
         if ($client_email) $newMail->setReplyAddress($client_email);
         if ($content->send_confirmation_mail) {
             $newMail->addText($content->email_confirmation_text) ;
