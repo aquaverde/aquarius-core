@@ -66,7 +66,7 @@ class Aquarius_Loader {
         $this->include_paths = array_merge($this->include_paths, $add_paths);
 
         $result = set_include_path($this->include_paths_str());
-        if ($result === false) throw new Exception("Unable to set include path to ".$loader->include_paths());
+        if ($result === false) throw new Exception("Unable to set include path to ".$this->include_paths_str());
     }
     
     function include_paths_str() {

@@ -1,14 +1,14 @@
 {include file='header.tpl'}
-<h1>Forms admin</h1>
+<h1>Pagetypes admin</h1>
 <div class="bigbox">
-    <div class="bigboxtitle"><h2>Edit or create a form:</h2></div>
+    <div class="bigboxtitle"><h2>Edit or create a pagetype:</h2></div>
     <form action="{url action=$lastaction}" method="post">
         <table width="100%" cellpadding="0"  cellspacing="0" class="table2">
 {foreach from=$forms item=form}
 	        <tr class="{cycle values="odd,even"}">
 		        <td width="30%">
 				  {action action="formedit:edit:`$form->id`"}
-					<a href="{url action=$action action1=$lastaction}" title="edit form">
+					<a href="{url action=$action action1=$lastaction}" title="edit pagetype">
 						<img src="picts/form.gif" class="imagebutton" alt="form" align="absmiddle"/>
 						{$form->title}
 					</a>

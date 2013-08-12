@@ -51,6 +51,10 @@ class FrontendUrlFactory {
             return $this->with('lg', $content->lg)->to($content->get_node());
         }
 
+        if (!($node instanceof db_Node)) {
+            throw new AquaException("Trying to build link to something which is not a node", gettype($node));
+        }
+        
         // Construction steps may alter parameters, let them work on a copy
         $options = clone $this;
         $options->target_node = $node;

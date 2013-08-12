@@ -12,6 +12,7 @@
         </tr>
     {/foreach}
     </table>
+    <p><br/><a href="https://us7.admin.mailchimp.com/campaigns/">> Link to MailChimp</a></p>
 <br/>
 <h1>Kampagnen (Anzahl: {$count_campaigns})</h1>
 <table class="table" cellspacing="0" cellpadding="0" border="0">

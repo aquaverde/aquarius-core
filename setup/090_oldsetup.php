@@ -89,7 +89,7 @@ foreach($paths as $path=>$info) {
 <h2>Enjoy the website</h2>
 <p>
 <a href="./index.php">> Backend (admin)</a><br/>
-<a href="../../index.php">> Frontend (website)</a>
+<a href="/">> Frontend (website)</a>
 </p>
 </div>
 
