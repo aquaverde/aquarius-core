@@ -6,10 +6,8 @@ class Formtypes {
     private $class_path;
     private $formtypes = array();
 
-    public function __construct($aquarius) {
-        $this->class_path = $aquarius->core_path.DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'formtypes'.DIRECTORY_SEPARATOR;
-        $this->load_fields();
-        $this->load_modules($aquarius);
+    public function __construct($path) {
+        $this->class_path = $path.DIRECTORY_SEPARATOR;
     }
 
     public function add_formtype($type) {
@@ -24,30 +22,35 @@ class Formtypes {
         return get($this->formtypes, $type);
     }
 
-    private function load_modules($aquarius) {
-        $aquarius->execute_hooks('init_form', $this);
+    function load_internal() {
+        require_once 'Formtype.php';
+        
+        foreach(array(
+            'ef' => 'Formtype',
+            'sf' => 'Formtype',
+            'radiogroup' => 'Formtype',
+            'radiobool' => 'Formtype',
+            'checkbox' => 'Formtype',
+            'code' => 'Formtype_Code',
+            'date' => 'Formtype_Date',
+            'file' => 'Formtype_File',
+            'int' => 'Formtype_Int',
+            'link' => 'Formtype_Link',
+            'mle' => 'Formtype_Mle',
+            'nodelist' => 'Formtype_Nodelist',
+            'pointing' => 'Formtype_Pointing',
+            'pointing_legend' => 'Formtype_Pointing_Legend',
+            'rte' => 'Formtype_Rte',
+            'urltitle' => 'Formtype_Urltitle',
+            'xref' => 'Formtype_Xref',
+            'xref_selection' => 'Formtype_Xref_Selection'
+        ) as $code => $class) { $this->load($code, $class); }
     }
-
-    private function load_fields() {
-        // Some basic fields do not yet require their own class
-        $this->add_formtype(new Formtype('ef'));
-        $this->add_formtype(new Formtype('sf'));
-        $this->add_formtype(new Formtype('radiogroup'));
-        $this->add_formtype(new Formtype('radiobool'));
-        $this->add_formtype(new Formtype('checkbox'));
-
-        // Load extended fields
-        if($dh = opendir($this->class_path)) {
-            while (($file = readdir($dh)) !== false) {
-                $filepath = $this->class_path.$file;
-                if(is_file($filepath) && substr($file, -4) == '.php') {
-                    require_once($filepath);
-                    $code = basename($file, '.php');
-                    $classname = 'Formtype_'.$code;
-                    $this->add_formtype(new $classname($code));
-                }
-            }
-            closedir($dh);
+    
+    function load($code, $class) {
+        if (!class_exists($class, false)) {
+            require $this->class_path.$code.'.php';
         }
+        $this->add_formtype(new $class($code));
     }
 }

@@ -286,6 +286,7 @@ class Aquarius_Stage_legacy_db_connection extends Aquarius_Basic_Stage {
 class Aquarius_Stage_modules extends Aquarius_Basic_Stage {
   
     function init($loader) {
+        $loader->include_file('Module.php');
         $loader->include_file('Module_Manager.php');
         
         /* The modules directory of the installation is set before the one in 
@@ -318,7 +319,7 @@ class Aquarius_Stage_Logging extends Aquarius_Basic_Stage {
     function depends() { return array('aquarius'); }
     
     function init($loader) {
-        $loader->include_file('lib/Logging_Manager.php');
+        $loader->include_file('Logging_Manager.php');
         $this->logging_manager = new Logging_Manager(ECHOKEY, $loader->aquarius->conf('log'), $loader->install_path);   
     }
 

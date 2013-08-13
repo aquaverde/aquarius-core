@@ -124,7 +124,7 @@ class Aquarius {
       * overridden from the main config.
       */
     function load() {
-        require_once("lib/formtypes.php");
+        require_once("formtypes.php");
 
         // Load module config presets
         foreach($this->modules as $short => $module) {
@@ -140,9 +140,11 @@ class Aquarius {
             $module->initialize($this);
         }
 
-        $this->formtypes = new FormTypes($this);
+        $this->formtypes = new FormTypes('formtypes');
+        $this->formtypes->load_internal();
+        $this->execute_hooks('init_form', $this->formtypes);
 
-        $this->filterparser = new FilterParser('lib/predicates');
+        $this->filterparser = new FilterParser('predicates');
     }
 
     /** Load a file into the aquarius configuration.
@@ -294,7 +296,6 @@ class Aquarius {
       * Currently, the execution order of the handlers is not specified.
       */
     function execute_hooks() {
-        require_once("lib/module.php");
         $args = func_get_args();
         $event = array_shift($args);
         $results = array();
@@ -318,8 +319,8 @@ class Aquarius {
 
     /** Prepare a smarty container */
     function get_smarty_container() {
-        require_once('lib/smarty/Smarty.class.php');
-        require_once('lib/template.lib.php');
+        require_once('smarty/Smarty.class.php');
+        require_once('template.lib.php');
         $smarty = new Smarty();
         $smarty->assign('config', $this->config);
 
