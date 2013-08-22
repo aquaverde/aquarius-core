@@ -54,7 +54,7 @@ class Module {
         // If we have a plugin dir, add it
         $plugins_dir = $this->path."lib/smarty_plugins/";
         if (file_exists($plugins_dir)) {
-           array_unshift($smarty->plugins_dir, $this->path.'/lib/smarty_plugins/');
+           $smarty->addPluginsDir($this->path.'/lib/smarty_plugins/');
         }
     }
     
@@ -66,13 +66,13 @@ class Module {
         // Maybe we have some additional config for the language
         $config_file = $this->path."lang/".$admin_lg.".lang";
         if (file_exists($config_file)) {
-            $smarty->config_load($config_file);
+            $smarty->configLoad($config_file);
         }
 
         // If we have a template dir, add it
         $templates_dir = $this->path."templates/";
         if (file_exists($templates_dir)) {
-           $smarty->template_dir[] = $templates_dir;
+           $smarty->addTemplateDir($templates_dir);
         }
     }
     
