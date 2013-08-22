@@ -319,17 +319,16 @@ class Aquarius {
 
     /** Prepare a smarty container */
     function get_smarty_container() {
-        require_once('smarty/Smarty.class.php');
         require_once('template.lib.php');
-        $smarty = new Smarty();
+        $smarty = new Aqua_Smarty();
         $smarty->assign('config', $this->config);
 
         // Add general smarty plugins path
-        array_unshift($smarty->plugins_dir, $this->core_path.'lib/smarty_plugins/');
+        $smarty->addPluginsDir($this->core_path.'lib/smarty_plugins/');
 
-        $smarty->register_function('resize', 'smarty_function_resize');
-        $smarty->register_modifier('alt', 'smarty_modifier_alt');
-        $smarty->register_modifier('th', 'smarty_modifier_th');
+        $smarty->registerPlugin('function', 'resize', 'smarty_function_resize');
+        $smarty->registerPlugin('modifier', 'alt', 'smarty_modifier_alt');
+        $smarty->registerPlugin('modifier', 'th', 'smarty_modifier_th');
         
         // Let the modules configure the container as well
         $this->execute_hooks('smarty_config', $smarty);
@@ -347,7 +346,7 @@ class Aquarius {
       * read. This behaviour is DEPRECATED.
       *
       */
-    function get_smarty_backend_container($admin_lg = false) {
+    function get_smarty_backend_container($admin_lg=false) {
         // Legacy hack when $admin_lg is not given
         if (!$admin_lg) $admin_lg = $GLOBALS['admin_lg'];
         
@@ -357,7 +356,7 @@ class Aquarius {
         $smarty->cache_dir    = $this->cache_path('smarty_backend/cache/');
         $smarty->compile_dir  = $this->cache_path('smarty_backend/compile/');
         
-        array_unshift($smarty->plugins_dir, $this->core_path.'lib/smarty_backend_plugins/');
+        $smarty->addPluginsDir($this->core_path.'lib/smarty_backend_plugins/');
 
         // Adjust caching
         $smarty->force_compile = false;
@@ -365,7 +364,7 @@ class Aquarius {
         
         // Load the config containing the admin language translation
         $smarty->config_booleanize = false;
-        $smarty->config_load($this->core_path."lang/".$admin_lg.'.lang');
+        $smarty->configLoad($this->core_path."lang/".$admin_lg.'.lang');
 
         // Let the modules add configs
         $this->execute_hooks('smarty_config_backend', $smarty, $admin_lg);
@@ -385,13 +384,13 @@ class Aquarius {
         // Content must be active to be shown. This may be overridden by preview mode.
         $smarty->require_active = true;
 
-        $smarty->template_dir = array($this->install_path.'templates/');
+        $smarty->addTemplateDir($this->install_path.'templates/');
         $smarty->compile_dir  = $this->cache_path('smarty_frontend/compile/'); 
         $smarty->cache_dir    = $this->cache_path('smarty_frontend/cache/');
     
         // Put our plugin dirs in front of the internal smarty dir, so we can override smarty plugins
-        array_unshift($smarty->plugins_dir, $this->core_path.'lib/smarty_frontend_plugins/');
-        array_unshift($smarty->plugins_dir, $this->install_path.'templates/smarty_plugins/'); // Site-specific plugins
+        $smarty->insertPluginsDir($this->core_path.'lib/smarty_frontend_plugins/');
+        $smarty->insertPluginsDir($this->install_path.'templates/smarty_plugins/'); // Site-specific plugins
 
         // Prefilter for wording tags
         $smarty->load_filter('pre', 'wording');
@@ -403,17 +402,14 @@ class Aquarius {
         // use: {dynamic} part of the template which should not be cached {/dynamic}
         $smarty->register_block('dynamic', 'smarty_block_dynamic', false);
 
-        // Register filters for template inheritance blocks
-        $smarty->load_filter('post', 'block_fix');
         $smarty->load_filter('pre', 'extends');
-        $smarty->_blocks = array(array()); // Blocks are stored here
 
         // Let the modules add configs
         $this->execute_hooks('smarty_config_frontend', $smarty, $lg);
 
         $smarty->assign('lg', $lg);
         $lang_conf = $this->install_path."/templates/lang/$lg.lang";
-        if (file_exists($lang_conf)) $smarty->config_load($lang_conf);
+        if (file_exists($lang_conf)) $smarty->configLoad($lang_conf);
 
         $smarty->uri = $this->frontend_uri_constructor();
         $smarty->uri->lg = $lg;
