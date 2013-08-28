@@ -6,7 +6,7 @@ Will only be shown if the user has permission to activate the node.
 By default, the constructed action is assigned to $action in smarty, but the parameter 'var' can be used to override the name. As in {action action=$someaction var=myaction}.
 */
 function smarty_block_action($params, $content, &$smarty, &$repeat) {
-    require_once $smarty->_get_plugin_filepath('modifier','makeaction');
+    $smarty->loadPlugin('modifier','makeaction');
     // Don't change output
     if ($content)
         return $content;
