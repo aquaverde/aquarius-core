@@ -86,6 +86,9 @@ class SLIRRequest
    * @var integer
    */
   private $quality;
+  
+
+  private $grayscale;
 
   /**
    * Whether or not progressive JPEG output is turned on
@@ -184,6 +187,11 @@ class SLIRRequest
       case 'quality':
         $this->setQuality($value);
           break;
+          
+      case 'g':
+      case 'gray':
+        $this->setGrayscale($value);
+          break;
 
       case 'p':
       case 'progressive':
@@ -246,6 +254,10 @@ class SLIRRequest
     if ($this->quality < 0 || $this->quality > 100) {
       throw new RuntimeException('Quality must be between 0 and 100: ' . $this->quality);
     }
+  }
+  
+  private function setGrayscale($value) {
+    $this->grayscale  = (bool) $value;
   }
 
   /**

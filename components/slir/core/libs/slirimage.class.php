@@ -15,6 +15,11 @@ abstract class SLIRImage
    * @var integer quality to render image at
    */
   protected $quality;
+  
+  /**
+   * @var whether to apply grayscale filter
+   */
+  protected $grayscale;
 
   /**
    * @var string background color in hex
@@ -105,6 +110,7 @@ abstract class SLIRImage
       $this->getProgressive(),
       $this->getInfo(),
       $this->getCropper(),
+      $this->getGrayscale(),
       $this->getQuality()
     );
 
@@ -182,6 +188,16 @@ abstract class SLIRImage
   public function setQuality($quality)
   {
     $this->quality = $quality;
+    return $this;
+  }
+  
+  
+  public function getGrayscale() {
+    return $this->grayscale;
+  }
+
+  public function setGrayscale($grayscale) {
+    $this->grayscale = (bool)$grayscale;
     return $this;
   }
 
@@ -550,6 +566,7 @@ abstract class SLIRImage
   public function applyTransformations()
   {
     $this->crop()
+      ->grayscale()
       ->sharpen()
       ->interlace()
       ->optimize();
