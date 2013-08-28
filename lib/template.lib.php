@@ -103,6 +103,7 @@ function clean_link($link) {
  *   q or quality:    change JPEG quality (example: 80)
  *   crop: toggle     image cropping (preset true)
  *   c or crop_ratio: set crop ratio (example: "16:9")
+ *   g or gray:       enable filter to grayscale (use 1 as value)
  *   as:              use as preset settings taken from given directory (alt settings unless th flag set to true)
  *   th:              use th settings, not alt settings
  * 
@@ -127,6 +128,7 @@ function smarty_function_resize($params, $smarty) {
     $width      = get($params, 'w', get($params, 'width', false));
     $height     = get($params, 'h', get($params, 'height', false));
     $quality    = get($params, 'q', get($params, 'quality', false));
+    $gray       = get($params, 'g', get($params, 'gray', false));
     $crop       = get($params, 'crop', true);
     $crop_ratio = get($params, 'c', get($params, 'crop_ratio', false));
     $as         = get($params, 'as', false);
@@ -176,6 +178,10 @@ function smarty_function_resize($params, $smarty) {
     
     if ($quality !== false) {
         $slir_options ['q']= $quality;
+    }
+    
+    if ($gray !== false) {
+        $slir_options ['g']= (bool)$gray;
     }
 
     $option_strings = "";
