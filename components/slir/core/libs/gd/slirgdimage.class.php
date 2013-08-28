@@ -549,25 +549,7 @@ class SLIRGDImage extends SLIRImage implements SLIRImageLibrary
   
   public function grayscale() {
     if (!$this->grayscale) return $this;
-    if(function_exists('imagefilter')) {
-        imagefilter($this->getImage(), IMG_FILTER_GRAYSCALE);
-        return $this;
-    }
-    
-    $image = $this->getImage();
-    $width = imagesx($image);
-    $height = imagesy($image);
-    for($x = 0; $x < $width; $x++) {
-        for($y = 0; $y < $height; $y++) {
-            $rgb = imagecolorat($image, $x, $y);
-            $r = ($rgb>>16)&0xFF;
-            $g = ($rgb>>8)&0xFF;
-            $b = $rgb&0xFF;
-            $bw = (int)(($r+$g+$b)/3);
-            $color = imagecolorallocate($image, $bw, $bw, $bw);
-            imagesetpixel($image, $x, $y, $color);
-        }
-    }
+    imagefilter($this->getImage(), IMG_FILTER_GRAYSCALE);
     return $this;
   }
 
