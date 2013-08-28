@@ -124,8 +124,11 @@ class action_db_maintenance_export extends action_db_maintenance implements Side
         header('Content-type: text/plain');
         header('Content-Disposition: attachment; filename="'.$_SERVER['SERVER_NAME']." ".$aquarius->conf('db/name').' '.date('YmdHis').'.sql"');
 
+        while(@ob_end_clean());
         $dumper = new DB_Dump($aquarius->db);
-        $dumper->dump_all(fopen('php://output', 'w'));
+        $out = fopen('php://output', 'w');
+        $dumper->dump_all($out);
+        fclose($out);
     }
 }
 
