@@ -200,6 +200,10 @@ function getAvailableDirectories($directory) {
 
     $dirs = array();
     if (!$blocked) $dirs []= $directory;
+    $path =  FILEBASEDIR.$directory;
+    $handle = opendir($path);
+    if (!$handle) throw new Exception("Unable to open dir '$path'");
+
 
     $handle = opendir(FILEBASEDIR.$directory);
     while (false !== ($dir = readdir($handle))) {
