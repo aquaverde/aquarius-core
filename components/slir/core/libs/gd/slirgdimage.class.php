@@ -546,6 +546,12 @@ class SLIRGDImage extends SLIRImage implements SLIRImageLibrary
     ImageDestroy($colorsHandle);
     */
   }
+  
+  public function grayscale() {
+    if (!$this->grayscale) return $this;
+    imagefilter($this->getImage(), IMG_FILTER_GRAYSCALE);
+    return $this;
+  }
 
   /**
    * @since 2.0

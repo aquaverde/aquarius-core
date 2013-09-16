@@ -108,7 +108,7 @@ try {
         $carry_preview = $preview;
         Log::debug('Enabling preview of disabled content');
     }
-    $detection_params['require_active'] = $lg;
+    $detection_params['require_active'] = $require_active;
 
     // Process logout requests
     if (isset($_REQUEST['logout'])) {
@@ -208,6 +208,7 @@ try {
     // MONKEY CHANGE: add rogue property to container, currently read by loadnodes plugin
     // FIXME: Need to find a better way
     $smarty->require_active = $require_active;
+    $smarty->uri->require_active = $require_active;
 
     if ($carry_preview) {
         $smarty->uri->template_uri->add_param('preview', $carry_preview);

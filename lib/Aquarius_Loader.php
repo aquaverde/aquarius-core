@@ -115,9 +115,9 @@ class Aquarius_Stage_Paths extends Aquarius_Basic_Stage {
     var $include_paths;
     
     function init($loader) {
-        $this->core_path =     realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR;
-        $this->aquarius_path = realpath($this->core_path.'..').DIRECTORY_SEPARATOR;
-        $this->root_path =     realpath($this->aquarius_path.'..').DIRECTORY_SEPARATOR;
+        $this->core_path =     dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR;
+        $this->aquarius_path = dirname($this->core_path).DIRECTORY_SEPARATOR;
+        $this->root_path =     dirname($this->aquarius_path).DIRECTORY_SEPARATOR;
         $this->install_path =  $this->aquarius_path;
         
         $lib_path = $this->core_path.'lib'.DIRECTORY_SEPARATOR;

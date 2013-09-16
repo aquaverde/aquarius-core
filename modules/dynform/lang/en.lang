@@ -1,4 +1,4 @@
-<?  
+
     // Menu
     
     dynform				= "Dynform"  
@@ -79,4 +79,4 @@
 	welche_felder		= "please select the fields you want to export"
 	
     message_clipped_output = "Only %d entries out of %d will be displayed."
-?>
+

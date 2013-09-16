@@ -7,6 +7,7 @@
   *    'node'                 => 'contact'      // id or name of node where fields related to the form are searched. This node and its content fields will be available in the mail templates.
   *    'target_address_field' => 'form_email'   // Name of the field containing the email address the form data will be sent to.
   *    'replyto_formfield'    => 'email'        // Name of the form field whose value will be added as 'Reply-To: ' header
+  *    'test_email'           => 'test@aquaverde.ch'           // If this address shows up in the replyto_formfield, the form is sent to this address, not to the one in target_address_field.
   *    'sender_address'       => '"Kontaktformular" <>',
   *    'text_template'        => 'contactform.mail.txt.tpl' , // Name of the mail template, text version
   *    'html_template'        => 'contactform.mail.html.tpl', // Name of the mail template, html version
@@ -69,11 +70,18 @@ class MailForm extends Module {
         $content = $node->get_content();
         $content->load_fields();
 
+        $replyto_address = requestvar($formspec['replyto_formfield']);
+        
         // Determine target email address
         $field_name = $formspec['target_address_field'];
         $target_address = $content->$field_name;
         if (strlen($target_address) < 1) throw new Exception("No target mail address in node '$node_name' field '$field_name' for $form_name");
-
+        
+        $test_email = get($formspec, 'test_email');
+        if ($test_email == $replyto_address) {
+            $target_address = $test_email;
+        }
+        
         $formfield_errors = array();
         $post = clean_magic($_POST);
         $formfields = validate($post, $formspec['formfields'], $formfield_errors);
@@ -92,8 +100,6 @@ class MailForm extends Module {
         $mail = new AquaMail($smarty, get($formspec, 'text_template'), get($formspec, 'html_template'));
         $mail->set('to', $target_address);
         $mail->set('from', $formspec['sender_address']);
-
-        $replyto_address = requestvar($formspec['replyto_formfield']);
         if ($replyto_address) $mail->set('replyto', $replyto_address);
 
         $decoy_field = get($formspec, 'decoy_field', false);

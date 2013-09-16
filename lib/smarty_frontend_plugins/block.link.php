@@ -32,7 +32,7 @@ function smarty_block_link($params, $content, &$smarty, &$repeat) {
         }
 
         // Execute block contents only when node and language are valid
-        $repeat = (bool)($lg && $node && $node->active() && $node->get_content($lg,true) );
+        $repeat = (bool)($lg && $node && (!$smarty->require_active || $node->active()) && $node->get_content($lg, $smarty->require_active) );
 
         // The link is on if either the node we're linking to is the same that is $on or we're linking to one of its parents
         $smarty->assign('on', $on && ($on->id == $node->id || indexOfAttr($on->get_parents(), 'id', $node->id) >= 0));

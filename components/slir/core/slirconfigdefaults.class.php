@@ -53,6 +53,14 @@ class SLIRConfigDefaults
    * @var integer
    */
   public static $defaultQuality = 80;
+  
+  /**
+   * Default setting for grayscale filter, preset is off
+   *
+   * @since 2.0
+   * @var integer
+   */
+  public static $defaultGrayscale = false;
 
   /**
    * Default setting for whether JPEGs should be progressive JPEGs (interlaced) or not.

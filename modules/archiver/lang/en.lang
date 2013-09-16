@@ -1,9 +1,7 @@
-<?
-    menu_archiver             = "Auto publishing"
-    archiver_archive          = "Auto publish pages"
-    archiver_question         = "Auto publish now ?"
-    archiver_ok               = "Ok"
-    
-    formtype_archiver_archive_date = "Archive Date"
-    formtype_archiver_publish_date = "Publish Date"
-?>
+menu_archiver             = "Auto publishing"
+archiver_archive          = "Auto publish pages"
+archiver_question         = "Auto publish now ?"
+archiver_ok               = "Ok"
+
+formtype_archiver_archive_date = "Archive Date"
+formtype_archiver_publish_date = "Publish Date"
