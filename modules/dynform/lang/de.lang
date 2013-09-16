@@ -1,12 +1,12 @@
-<?   
-   	// Menu
+  
+   	# Menu
     
     dynform				= "Dynform"  
     dynform_forms		= "Formulare"
     dynform_data		= "Daten" 
     
     
-    // Field and Blocks
+    # Field and Blocks
     
     Singleline			= "Einzeiler"
     Multiline			= "Mehrzeiler"
@@ -43,7 +43,7 @@
     delete_block_msg	= "Alle angehängten Felder werden auch gelöscht."
     delete_field_msg	= "Diese Zeile wird in allen Sprachen gelöscht."
     
-    // Backend
+    # Backend
     
     forms_overview		= "Übersicht Formulare"
     forms_manager		= "Formulare Manager"
@@ -74,10 +74,9 @@
     possible_options_fields = "<b>Mögliche Optionen-Felder</b>, mit ; getrennt. Format: exakter Formularfeld Name, Beschreibung (dates, Anmeldedaten; notes, Notizen)" 
     target_email		= "Mögliche Zieladressen fürs Formular. Format: Name, Emailadresse. Ein Eintrag pro Zeile."
     
-    // Export
+    # Export
 	export				= "exportieren"
 	welche_felder		= "Welche Felder wollen sie für den Export verwenden?"
     
     
     message_clipped_output = "Nur %d Einträge von %d werden angezeigt."
-?>
