@@ -39,7 +39,7 @@
 	-->
 	</script>
 </head>
-<body {$showSupportMessage}>
+<body>
     <div id="header">
         <div id="logo">
             <a href="./" target="_parent"><img src="picts/logo.gif" border="0" style="vertical-align: middle;" alt="aquarius version {$smarty.const.AQUARIUS_VERSION}" title="aquarius version {$smarty.const.AQUARIUS_VERSION}" /></a>
