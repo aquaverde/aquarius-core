@@ -8,12 +8,8 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
         <![endif]-->
          
-        {include_javascript file=javascript.js}
+        {include_javascript file='javascript.js'}
         
-        {if $page_requisits}
-            {* Deprecated variable name *}
-            {assign var=page_requisites value=$page_requisits}
-        {/if}
         {if $page_requisites}
             {foreach from=$page_requisites->load_js_lib() item=script}
                     <script type="text/javascript" charset="utf-8" src="{$script}"></script>

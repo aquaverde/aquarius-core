@@ -10,7 +10,7 @@
     <!--[if IE 6]>
        <link type="text/css" rel="stylesheet" href="css/ie_hacks.css">
     <![endif]-->
-    {include_javascript file=javascript.js}
+    {include_javascript file="javascript.js"}
     <base target="mainFrame" />
 </head>
 <body>
