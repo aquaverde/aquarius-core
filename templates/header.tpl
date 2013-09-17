@@ -10,7 +10,7 @@
          
         {include_javascript file='javascript.js'}
         
-        {if $page_requisites}
+        {if $page_requisites|default:false}
             {foreach from=$page_requisites->load_js_lib() item=script}
                     <script type="text/javascript" charset="utf-8" src="{$script}"></script>
             {/foreach}
