@@ -6,7 +6,7 @@
   *     show_noedit: Whether to show an img without link if the action is false or cannot be built (true by default)
   */
 function smarty_function_activationbutton($params, &$smarty) {
-    require_once $smarty->_get_plugin_filepath('modifier','makeaction');
+    $smarty->loadPlugin('smarty_modifier_makeaction');
 
     $action = smarty_modifier_makeaction(get($params, 'action'));
     if (get($params, 'active')) {
