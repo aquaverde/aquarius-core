@@ -13,7 +13,7 @@ class action_dynform extends ModuleAction {
     }
 
     /** Load Dynformlib, content, lg and node; create dynform entry if it does not exist for this node. Return all of this. */
-    function load() {
+    function load($smarty = false) {
 
         $node = or_die(db_Node::get_node($this->node_id), "Unable to load node for %s", $this->node_id);
         $lg = $this->lg;
@@ -30,15 +30,15 @@ class action_dynform extends ModuleAction {
             $dynform->fetch() ; 
         }
         
-        //LOAD RTE
-        global $smarty;
-        require_once "lib/page_requisits.php";
-        $page_requisits = new Page_Requisits();
-        $page_requisits->add_js_lib('ckeditor/ckeditor.js');
-        
-        $backendRTE = new BackendRTE(db_Users::authenticated()->adminLanguage, db_Users::authenticated()->adminLanguage);
-        $smarty->assign('rte_options', $backendRTE->get_options());
-        $smarty->assign('page_requisits', $page_requisits);
+        if ($smarty) {
+            //LOAD RTE
+            $page_requisites = new Page_Requisites();
+            $page_requisites->add_js_lib('ckeditor/ckeditor.js');
+            
+            $backendRTE = new BackendRTE(db_Users::authenticated()->adminLanguage, db_Users::authenticated()->adminLanguage);
+            $smarty->assign('rte_options', $backendRTE->get_options());
+            $smarty->assign('page_requisites', $page_requisites);
+        }
         
         return compact('content', 'lg', 'node', 'dynform');
     }
@@ -49,7 +49,7 @@ class action_dynform extends ModuleAction {
 
 class action_dynform_addnewblock extends action_dynform implements DisplayAction {
     function process($aquarius, $request, $smarty, $result) {
-        extract($this->load());
+        extract($this->load($smarty));
         $smarty->assign('node', $node) ;
         $smarty->assign('content', $content) ;
         $smarty->assign('actions', array(Action::make('dynform', 'addnewblocksubmit', false, $lg, $node->id, false, false), Action::make('cancel')));
@@ -95,7 +95,7 @@ class action_dynform_addnewblocksubmit extends action_dynform implements ChangeA
 
 class action_dynform_deleteblock extends action_dynform implements DisplayAction {
     function process($aquarius, $request, $smarty, $result) {
-        extract($this->load());
+        extract($this->load($smarty));
         $block = new db_Dynform_block ;
         $block->id = $this->block_id ;
         $found = $block->find() ;
@@ -145,7 +145,7 @@ class action_dynform_editblock extends action_dynform implements DisplayAction {
         $found = $block->find() ;
         if ($found)
         {
-            extract($this->load());
+            extract($this->load($smarty));
             $block->fetch() ;
             $smarty->assign('node', $node) ;
             $smarty->assign('content', $content) ;
@@ -187,7 +187,7 @@ class action_dynform_editblocksubmit extends action_dynform implements ChangeAct
 class action_dynform_addfield extends action_dynform implements DisplayAction {
     function process($aquarius, $request, $smarty, $result) {
         $DL = new Dynformlib();
-        extract($this->load());
+        extract($this->load($smarty));
         $block = new db_Dynform_block ;
         $block->id = $this->block_id ;
         $found = $block->find() ;
@@ -223,7 +223,7 @@ class action_dynform_addfield extends action_dynform implements DisplayAction {
 class action_dynform_editfield extends action_dynform implements DisplayAction {
     function process($aquarius, $request, $smarty, $result) {
         $DL = new Dynformlib();
-        extract($this->load());
+        extract($this->load($smarty));
         $block = new db_Dynform_block ;
         $block->id = $this->block_id ;
         $found = $block->find() ;
@@ -384,7 +384,7 @@ class action_dynform_changefieldtype extends action_dynform implements ChangeAct
 
 class action_dynform_deletefield extends action_dynform implements DisplayAction {
     function process($aquarius, $request, $smarty, $result) {
-        extract($this->load());
+        extract($this->load($smarty));
         $block = new db_Dynform_block ;
         $block->id = $this->block_id ;
         $found = $block->find() ;
@@ -432,4 +432,3 @@ class action_dynform_movefieldup extends action_dynform implements ChangeAction 
     }
 }
 
-?>
