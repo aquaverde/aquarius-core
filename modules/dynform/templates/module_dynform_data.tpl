@@ -24,7 +24,7 @@
 				</td>
 				
 				<td nowrap="nowrap">
-					{foreach_language node=$node}
+					{foreach_language}
 					<div class="dynform-data-lg-link">&nbsp;
 						{action action="dynform_data:show:`$dynform.id`:`$entry.lang->lg`"}
 							<a href="{url action0=$lastaction action1=$action}">{$entry.lang->lg} ({dynform_count_entries form_id=$dynform.id lg=$entry.lang->lg})</a>
