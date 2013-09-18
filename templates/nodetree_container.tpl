@@ -10,7 +10,7 @@
             />
         {/if}
     {/if}
-    {if $entry.node->newaction}
+    {if $entry.node->newaction and $lastaction|default:false}
         <a href="{url action=$lastaction action1=$entry.node->newaction}" title="{#s_new_child#}">
             <img src="picts/node_content_on.gif" alt="{#s_new_child#}" />
             <img src="buttons/new.gif" alt="{#s_new_child#}" />
@@ -78,7 +78,7 @@
 
         <span class="nodetree_title{if $entry.node->is_content()} nodetree_title_content{/if}">
         {if $entry.actions.contentedit}
-            <a href="{url action0=$lastaction action1=$entry.actions.contentedit}" title="{$altedittitle}">
+            <a href="{url action0=$lastaction|default:false action1=$entry.actions.contentedit}" title="{$altedittitle}">
                 <img src="picts/{$entry.node->icon()}.gif" alt="{$altedittitle}"/>
                 <span class="contenttitle{if !$entry.has_content} dim{/if}">{$entry.title|truncate:75}</span>
             </a>

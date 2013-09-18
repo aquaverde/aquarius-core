@@ -330,6 +330,13 @@ class Aquarius {
         $smarty->registerPlugin('modifier', 'alt', 'smarty_modifier_alt');
         $smarty->registerPlugin('modifier', 'th', 'smarty_modifier_th');
         
+        // Quickfix to allow periods in filenames without requiring quotes
+        // All template text of the form {include file=xxx.tpl} is translated to
+        // {include file='xxx.tpl'}
+        $smarty->registerFilter('pre', array(function($source) { 
+            return preg_replace('%{include file=([a-zA-Z/0-9.-_])}%', '{include file="$1"}', $source);
+        }, '__invoke')); // Smarty doesn't expect a closure as filter parameter, thus wrapping the old-style callback array :-)
+        
         // Let the modules configure the container as well
         $this->execute_hooks('smarty_config', $smarty);
 
