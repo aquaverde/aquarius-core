@@ -333,8 +333,10 @@ class Aquarius {
         // Quickfix to allow periods in filenames without requiring quotes
         // All template text of the form {include file=xxx.tpl} is translated to
         // {include file='xxx.tpl'}
-        $smarty->registerFilter('pre', array(function($source) { 
-            return preg_replace('%{include file=([a-zA-Z/0-9.-_])}%', '{include file="$1"}', $source);
+        $smarty->registerFilter('pre', array(function($source) {
+            $source = preg_replace('%{extends ([a-zA-Z/0-9.-_]+)}%', '{extends "$1"}', $source);
+            $source = preg_replace('%{include file=([a-zA-Z/0-9.-_]+)}%', '{include file="$1"}', $source);
+            return $source;
         }, '__invoke')); // Smarty doesn't expect a closure as filter parameter, thus wrapping the old-style callback array :-)
         
         // Let the modules configure the container as well
@@ -408,8 +410,6 @@ class Aquarius {
         // register a function to avoid caching for template blocks
         // use: {dynamic} part of the template which should not be cached {/dynamic}
         $smarty->register_block('dynamic', 'smarty_block_dynamic', false);
-
-        $smarty->load_filter('pre', 'extends');
 
         // Let the modules add configs
         $this->execute_hooks('smarty_config_frontend', $smarty, $lg);
