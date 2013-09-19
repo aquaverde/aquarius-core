@@ -11,7 +11,7 @@ function smarty_function_load($params, &$smarty) {
 
     $node = db_Node::get_node(get($params, 'node'));
     $var = get($params, 'var');
-    $lang = get($params, 'lg', $smarty->get_template_vars('lg'));
+    $lg = get($params, 'lg', $smarty->get_template_vars('lg'));
     $ignore = get($params, 'ignore', false);
 
     if (!($node || $ignore)) {
