@@ -32,7 +32,7 @@ function smarty_function_getfield($params, $smarty) {
     $node  = db_Node::get_node(get($params, 'node', $smarty->get_template_vars('node')));
     $field = get($params, 'field');
     $var   = get($params, 'var');
-    $lang  = get($params, 'lg', $smarty->get_template_vars('lg'));
+    $lg    = get($params, 'lg', $smarty->get_template_vars('lg'));
     $box   = get($params, 'box');
     $shuffle = (bool)get($params, 'shuffle', false);
     $pick  = get($params, 'pick', false);
