@@ -44,7 +44,7 @@ function smarty_block_link($params, $content, &$smarty, &$repeat) {
         // Generate href using the href plugin
         $params['node'] = $node;
         $params['lg'] = $lg;
-        require_once $smarty->_get_plugin_filepath('function','href');
+        $smarty->loadPlugin('smarty_function_href');
         $href = smarty_function_href($params, $smarty);
 
         // Determine the class of the link
