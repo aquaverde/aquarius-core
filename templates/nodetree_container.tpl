@@ -3,15 +3,15 @@
 <div class="nodetree_row {if !$entry.node->newaction}nodetree_node{/if}" style="clear:both">
     {if $entry.show_toggle}
         {if $entry.open}
-            <img class="nodetree_toggle" src="picts/toggle-open.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, {ldelim}open: 0{rdelim})" alt="{#s_close#}"
+            <img class="nodetree_toggle" src="picts/toggle-open.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, { open: 0 })" alt="{#s_close#}"
             />
         {else}
-            <img class="nodetree_toggle" src="picts/toggle-closed.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, {ldelim}open: 1{rdelim})" alt="{#s_open#}"
+            <img class="nodetree_toggle" src="picts/toggle-closed.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, { open: 1 })" alt="{#s_open#}"
             />
         {/if}
     {/if}
-    {if $entry.node->newaction and $lastaction|default:false}
-        <a href="{url action=$lastaction action1=$entry.node->newaction}" title="{#s_new_child#}">
+    {if $entry.node->newaction}
+        <a href="{url action=$lastaction|default:false action1=$entry.node->newaction}" title="{#s_new_child#}">
             <img src="picts/node_content_on.gif" alt="{#s_new_child#}" />
             <img src="buttons/new.gif" alt="{#s_new_child#}" />
         </a>
@@ -98,8 +98,8 @@
 {if $entry.open}
     <ul class="nodetree_children">
     {foreach from=$entry.children item=childentry}
-        <li class="nodetree_entry{if !$childentry.last} nodetree_connection{/if}">
-        {if $childentry.last}
+        <li class="nodetree_entry{if !$childentry@last} nodetree_connection{/if}">
+        {if $childentry@last}
             <img class="nodetree_connection" src="picts/joinbottom.gif" alt="" />
         {else}
             <img class="nodetree_connection" src="picts/join.gif" alt="" />

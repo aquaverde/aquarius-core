@@ -99,8 +99,7 @@
 <br/>
 {if $entry}
     {* Nodetree of children *}
-    {include_javascript file=prototype.js lib=true}
-    {include_javascript file=nodetree.js}
+    {include_javascript file='nodetree.js'}
 
     <link rel="stylesheet" href="css/nodetree.css" type="text/css" />
     <div class="bigbox" id="boxform">
