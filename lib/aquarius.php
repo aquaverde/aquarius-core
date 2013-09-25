@@ -96,25 +96,6 @@ class Aquarius {
         
         $this->domain_conf = new DomainConfigs($this->conf('frontend/domains'));
     }
-    
-    /** Autoloader callback to load aquarius classes
-      *
-      * Classes prefixed with 'db_' are loaded from the lib/db/ directory,
-      * other classes from lib/.
-      */
-    function autoload_class($class_name) {
-        $classpath = false;
-        if(strpos($class_name, 'db_') === 0) {
-           DB_DataObject::_autoloadClass($class_name);
-        } else {
-            $classpath = $class_name.'.php';
-        }
-        if ($classpath) {
-            Log::backtrace("Autoloading $classpath");
-            // FIXME: syntax errors in included files not shown because of '@'
-            $success = @include_once($classpath);
-        }
-    }
 
     /** Load aquarius modules
      * 
