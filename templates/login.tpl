@@ -32,12 +32,22 @@
                     <td valign="middle" align="center">
                         <form action="" method="post" name="login" enctype="multipart/form-data">
                             <table border="0" width="350" cellpadding="0" id="login-inner">
+                                {if $login_failed}
+                                    <tr>
+                                        <td valign="middle"  align="middle" colspan="2">{#login_failed#}</td>
+                                    </tr>
+                                {/if}
+                                {if $cookie_missing}
+                                    <tr>
+                                        <td valign="middle"  align="middle" colspan="2">{#cookie_missing#}</td>
+                                    </tr>
+                                {/if}
                                 <tr>
-                                    <td valign="middle" width="80" class="login-firstrow">Username</td>
+                                    <td valign="middle" width="80" class="login-firstrow">{#login_username#}</td>
                                     <td align="right" class="login-firstrow"><input type="text" name="username" style="width:220px; margin:0; margin-right:10px" maxlength="160" class="ef" /></td>
                                 </tr>
                                 <tr>
-                                    <td valign="middle" width="80">Password</td>
+                                    <td valign="middle" width="80">{#login_password#}</td>
                                     <td align="right">
                                         <input type="password" name="password" style="width:220px; margin:0; margin-right:10px" maxlength="160" class="ef" />
                                     </td>

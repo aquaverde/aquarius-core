@@ -47,7 +47,11 @@ s_en = "Englisch"
 
 # login
 
+login_username = "Benutzername"
+login_password = "Passwort"
 login_frontend = "login into frontend"
+login_failed = "Login fehlgeschlagen"
+cookie_missing = "Cookie wurde nicht gespeichert"
 
 # menus
 menu_inventory = "Seiten"
