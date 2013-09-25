@@ -174,7 +174,49 @@ class Aquarius_Stage_Aquarius extends Aquarius_Basic_Stage {
     function load($loader) {
         $loader->aquarius = $this->aquarius;
         $loader->aquarius->load_configs();
-        spl_autoload_register(array($this->aquarius, 'autoload_class'));
+        spl_autoload_register(Aquarius_Autloader::using($loader));
+    }
+}
+
+
+class Aquarius_Autloader {
+    var $loader;
+    
+    function using($loader) {
+        $autoloader = new self();
+        $autoloader->loader = $loader;
+        return array($autoloader, 'autoload_class');
+    }
+    
+    /** Autoloader callback to load aquarius classes
+      *
+      * Classes prefixed with 'db_' are loaded from the lib/db/ directory,
+      * other classes from lib/.
+      */
+    function autoload_class($class_name) {
+        $classpath = false;
+        if(strpos($class_name, 'db_') === 0) {
+           DB_DataObject::_autoloadClass($class_name);
+        } else {
+            $classpath = $class_name.'.php';
+        }
+        if ($classpath) {
+            Log::backtrace("Autoloading $classpath");
+            if (function_exists('stream_resolve_include_path')) { 
+                // For PHP 5.3.2 and up
+                $fullpath = stream_resolve_include_path($classpath);
+                if ($fullpath) {
+                    $this->loader->include_file($fullpath);
+                }
+            } else {
+                // Legacy shit
+                // DUMB: syntax errors in included files not shown because of '@'
+                $success = @include_once($classpath);
+                if ($success) {
+                    $this->loader->included_files []= $file;
+                }
+            }
+        }
     }
 }
 
