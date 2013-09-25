@@ -214,6 +214,7 @@ legend { padding: 0 0.5em; font-weight: bold; }
 #login-submit { margin-bottom: 20px; }
 #loginfooter, #loginhead { width: 350px; text-align: left; padding: 4px 0; }
 #login p { color: #ccc; }
+#login p.loginwarn  { clear: both; margin: 0 10px 10px 0; text-align:center; padding: 6px 10px;  color: black; background: #C1C9CE;
 .darker { background-color: #f2f5f7; }
 .hell { background-color: #fff; }
 

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/admin.css" type="text/css" />
     <link rel="shortcut icon" href="./favicon.ico" />
     <link rel="shortcut icon" type="image/png" href="./favicon.png" />
-    <style type="text/css" media="all">{literal}html, body {height: 95%} body {max-width: none;} #lofe { margin-left: 5px; margin-top: -15px;}{/literal}</style>
+    <style type="text/css" media="all">{literal}html, body {height: 95%} body {max-width: none;}{/literal}</style>
     <!--[if IE]>
         <style type="text/css" media="all">{literal}#lofe {width: 311px; margin-left: -15px;}{/literal}</style>
     <![endif]-->
@@ -21,27 +21,21 @@
     {/literal}</script>
 </head>
 <body onload="initLogin()" id="loginpage">
-<table width="100%" height="95%" border="0" cellspacing="0" cellpadding="0" id="login">
+            
+
+    <table width="100%" height="95%" border="0" cellspacing="0" cellpadding="0" id="login">
     <tr>
         <td align="center" valign="middle">
+            
             <div id="loginhead">
                 <img src="picts/logologin2.gif" alt="aquarius cms" id="loginlogo" />
+                
             </div>
             <table width="100%" border="0" cellpadding="0" cellspacing="0" id="login-outer">
                 <tr>
                     <td valign="middle" align="center">
                         <form action="" method="post" name="login" enctype="multipart/form-data">
                             <table border="0" width="350" cellpadding="0" id="login-inner">
-                                {if $login_failed}
-                                    <tr>
-                                        <td valign="middle"  align="middle" colspan="2">{#login_failed#}</td>
-                                    </tr>
-                                {/if}
-                                {if $cookie_missing}
-                                    <tr>
-                                        <td valign="middle"  align="middle" colspan="2">{#cookie_missing#}</td>
-                                    </tr>
-                                {/if}
                                 <tr>
                                     <td valign="middle" width="80" class="login-firstrow">{#login_username#}</td>
                                     <td align="right" class="login-firstrow"><input type="text" name="username" style="width:220px; margin:0; margin-right:10px" maxlength="160" class="ef" /></td>
@@ -53,10 +47,19 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td width="80">&nbsp;</td>
-                                    <td>&nbsp;
+                                    <td colspan="2">
+                                        {if $login_failed}
+                                            <p class="loginwarn">
+                                                {#login_failed#}
+                                            </p>
+                                        {/if}
+                                        {if $cookie_missing}
+                                            <p class="loginwarn">
+                                                {#cookie_missing#}
+                                            </p>
+                                        {/if}
                                         <input type="submit" value="Login" name="backend_login" class="submit" style="margin:0; margin-bottom: 5px; margin-right:10px; float:right" />
-                                        <div id="lofe"><input type="checkbox" name="login_frontend" id="login_frontend" /> <label for="login_frontend" style="font-size:11px; color:grey; display:inline;">{#login_frontend#}</label></div>
+
                                     </td>
                                 </tr>
                             </table>

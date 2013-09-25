@@ -49,8 +49,7 @@ s_en = "english"
 
 login_username = "Username"
 login_password = "Password"
-login_frontend = "login into frontend"
-login_failed = "Login unsuccessful"
+login_failed = "Your username or password are incorrect. Please check your details."
 cookie_missing = "Cookie wasn't stored"
 
 # menus

@@ -49,9 +49,8 @@ s_en = "anglais"
 
 login_username = "Nom d'utilisateur"
 login_password = "Mot de passe"
-login_frontend = "login into frontend"
-login_failed = "Login échué"
-cookie_missing = "Cookie n'a pas été enregistré"
+login_failed = "Votre nom d'utilisateur ou votre mot de passe n'est pas correct. Veuillez contrôler vos données saisies."
+cookie_missing = "Le cookie n'a pas pu être enregistré, veuillez accepter les cookies pour ce site."
 
 # menus
 menu_inventory = "Pages"
