@@ -38,7 +38,7 @@
                             <table border="0" width="350" cellpadding="0" id="login-inner">
                                 <tr>
                                     <td valign="middle" width="80" class="login-firstrow">{#login_username#}</td>
-                                    <td align="right" class="login-firstrow"><input type="text" name="username" style="width:220px; margin:0; margin-right:10px" maxlength="160" class="ef" /></td>
+                                    <td align="right" class="login-firstrow"><input type="text" name="username" value="{$smarty.post.username|escape}" style="width:220px; margin:0; margin-right:10px" maxlength="160" class="ef" /></td>
                                 </tr>
                                 <tr>
                                     <td valign="middle" width="80">{#login_password#}</td>
