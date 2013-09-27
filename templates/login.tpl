@@ -68,7 +68,7 @@
                 </tr>
             </table>
             <p id="loginfooter">
-                 aquarius cms v.{$smarty.const.AQUARIUS_VERSION} | 
+                 aquarius cms {$revision} | 
                 &copy; <a href="http://www.aquaverde.ch/" target="_blank" style="color:#ccc">aquaverde.ch</a>
                
             </p>

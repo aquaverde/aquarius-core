@@ -92,6 +92,7 @@ Log::backtrace('backend');
         if ($request_uri == $correct_uri) {
             $smarty->assign(compact('login_failed', 'cookie_missing'));
             $smarty->assign('session_id', session_id());
+            $smarty->assign('revision', first(explode('-', $aquarius->revision())));
             $smarty->display('login.tpl');
         } else {
             $correct_uri->params = array();
