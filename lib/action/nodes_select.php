@@ -127,7 +127,7 @@ class action_nodes_select extends AdminAction {
       *   selected: Whether the node is selected
       *   open: whether this branch has children
       *   title: Truncated title for this node
-      *   */
+      */
     function add_control_settings(&$tree) {
         $node = $tree['node'];
         $relative_depth = $node->depth() - $this->root_node->depth();
@@ -139,8 +139,8 @@ class action_nodes_select extends AdminAction {
         $tree['open'] = !empty($tree['children']);
 
         $title = $node->get_contenttitle($this->lg);
-        if (strlen($title) > 30) {
-            $title = mb_substr($title, 0, 30).'…';
+        if (strlen($title) > 60) {
+            $title = mb_substr($title, 0, 60).'…';
         }
         $tree['title'] = $title;
 
