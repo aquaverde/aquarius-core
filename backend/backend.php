@@ -39,7 +39,6 @@ Log::backtrace('backend');
 
     require_once "lib/Language_Detection.php";
     $language_detection = new Language_Detection;
-    $language_detection->require_active = false;
     $language_detection->add_detector('request_parameter');
     $language_detection->add_detector('backend_lg_user_default_lang', 'backend_lg_user_default_lang');
     $language_detection->add_detector('accepted_languages');
@@ -47,7 +46,8 @@ Log::backtrace('backend');
 
     $request_params = array(
         'request' => clean_magic($_REQUEST),
-        'server' => $_SERVER
+        'server' => $_SERVER,
+        'require_active' => false
     );
 
     $lg = $language_detection->detect($request_params);

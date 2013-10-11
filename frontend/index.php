@@ -73,6 +73,18 @@ try {
         header("Location: $moved_permanently_url");
         flush_exit();
     }
+    
+    // display node only if it is active
+    $require_active = true;
+    
+    // Allow display of inactive content for preview
+    $preview = requestvar('preview');
+    $carry_preview = false;
+    if ($preview && $preview == preview_hash(ECHOKEY)) {
+        $require_active = false;
+        $carry_preview = $preview;
+        Log::debug('Enabling preview of disabled content');
+    }
 
     $root_node = db_Node::get_root();
 
@@ -89,26 +101,14 @@ try {
         'request' => clean_magic($_REQUEST),
         'server' => $_SERVER,
         'uri' => $request_uri,
-        'domain_conf' => $aquarius->domain_conf
+        'domain_conf' => $aquarius->domain_conf,
+        'require_active' => $require_active
     );
 
     $lg = $language_detection->detect($detection_params);
     assert('strlen($lg) == 2');
 
     $detection_params['lg'] = $lg;
-    
-    // Usually, display node only if it is active
-    $require_active = true;
-
-    // Allow display of inactive content for preview
-    $preview = requestvar('preview');
-    $carry_preview = false;
-    if ($preview && $preview == preview_hash(ECHOKEY)) {
-        $require_active = false;
-        $carry_preview = $preview;
-        Log::debug('Enabling preview of disabled content');
-    }
-    $detection_params['require_active'] = $require_active;
 
     // Process logout requests
     if (isset($_REQUEST['logout'])) {
