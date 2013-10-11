@@ -22,7 +22,7 @@ function smarty_block_link($params, $content, &$smarty, &$repeat) {
     if ($repeat) {
     
         /* Initialization */
-        $lg = db_Languages::validate_code(get($params, 'lg', $smarty->get_template_vars('lg')));
+        $lg = db_Languages::validate_code(get($params, 'lg', $smarty->get_template_vars('lg')), $smarty->require_active);
         $node = db_Node::get_node(get($params, 'node'));
 
         if (isset($params['on'])) {
