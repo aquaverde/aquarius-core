@@ -78,14 +78,14 @@ class db_Languages extends DB_DataObject
     }
 
 
-    /** Retrieve the primary language of the CMS */
+    /** Retrieve the primary language of the CMS
+      * This will return the first language from the configured languages. Active languages are preferred over inactive ones */
     static function getPrimary() {
         // Retrieve the first active language (sorted by weight)
         $lang_prototype =& DB_DataObject::factory('languages');
-        $lang_prototype->active = true;
-        $lang_prototype->orderBy('weight');
+        $lang_prototype->orderBy('active DESC, weight');
         $lang_prototype->limit(0,1);
-        if ( $lang_prototype->find() < 1 ) throw new Exception("No active language present");
+        if ( $lang_prototype->find() < 1 ) throw new Exception("No language present");
 
         $lang_prototype->fetch();
 
