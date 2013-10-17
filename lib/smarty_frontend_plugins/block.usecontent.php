@@ -25,7 +25,8 @@ function smarty_block_usecontent($params, $content, &$smarty, &$repeat) {
         $reason = false;
         
         // Load node and content
-        $node = db_Node::get_node(get($params, 'node'));
+        $nodestr = get($params, 'node');
+        $node = db_Node::get_node($nodestr);
         $lg = get($params, 'lg', $smarty->get_template_vars('lg'));
         $content = false;
 
@@ -66,7 +67,7 @@ function smarty_block_usecontent($params, $content, &$smarty, &$repeat) {
             }
         } else {
             $load = false;
-            $reason = "Could not load node for '$node'";
+            $reason = "Could not load node for '$nodestr'";
         }
 
         if ($load) {
