@@ -1,4 +1,4 @@
-//<![CDATA[
+
     if (GBrowserIsCompatible()) {
         // Array for decoding the failure codes
         var reasons=[];
@@ -39,8 +39,7 @@
         function check_resize() 
         {
             // HACK: Check whether box size changed (changes between display: none and display: block)
-            map.checkResize();
-            
+            map.checkResize();         
             if(gmap_data.length > 0) {
                 map.setZoom(map.getBoundsZoomLevel(bounds));
                 map.setCenter(bounds.getCenter());
@@ -55,14 +54,12 @@
             if(icon_id === "" || icontypes[icon_id] === undefined) gmarker[id].setImage("/pictures/gmap_icons/" + d_icontype);
             else gmarker[id].setImage(icontypes[icon_id]);
         }
-        
+
+
         function getMarker(icontype) {
             return new GIcon(small_icon,"/pictures/gmap_icons/"+icontype);
         }
-        
-        function add_marker(lat,lng,id) {
-            add_marker(lat,lng,id,null);
-        }
+
                         
         function add_marker(lat,lng,id,kat) {
             var point = new GLatLng(lat,lng);
@@ -96,7 +93,8 @@
             
             id_count++;
         }
-        
+
+
         function add_poly(lats,lngs,id) {
             add_poly(lats,lngs,id,false);
         }
@@ -305,36 +303,36 @@
             newdiv.appendChild(newinput_edit_poly_button);
             }
             
-                var brbr = document.createElement("br");
+            var brbr = document.createElement("br");
             newdiv.appendChild(brbr);
             
-                var brbr = document.createElement("br");
+            var brbr = document.createElement("br");
             newdiv.appendChild(brbr);
             
-                //POINTING
-                    var p  = document.createElement("p");
-                    var t = document.createTextNode(t_kategorie);
-                    attr = document.createAttribute("style")
-                    //p.setAttribute('style','min-width:100px;float:left;');
-                    p.style.cssText = "min-width:100px;float:left;";
-                    p.appendChild(t);
-                newdiv.appendChild(p);  
-                var newinput_point = document.createElement("select");
-                newinput_point.setAttribute("name", formname + "[" + index + "]" + "[kat]");
-                newinput_point.onchange = function(){ // Note: onclick, not onClick
-                    change_marker_icon(index,newinput_point.value);
-                    return true;
-                };
-                for(var i = 0; i < pointing_json.length; i++) {
-                    var option_point = document.createElement("option");
-                    option_point.setAttribute("value", pointing_json[i]["value"]);
-                    if(pointing_json[i]["name"] != null) option_point.innerText = pointing_json[i]["name"];
-                    option_point.text = pointing_json[i]["name"];
-                    newinput_point.appendChild(option_point);
-                }
+            //POINTING
+            var p  = document.createElement("p");
+            var t = document.createTextNode(t_kategorie);
+            attr = document.createAttribute("style")
+            //p.setAttribute('style','min-width:100px;float:left;');
+            p.style.cssText = "min-width:100px;float:left;";
+            p.appendChild(t);
+            newdiv.appendChild(p);  
+            var newinput_point = document.createElement("select");
+            newinput_point.setAttribute("name", formname + "[" + index + "]" + "[kat]");
+            newinput_point.onchange = function() {
+                change_marker_icon(index,newinput_point.value);
+                return true;
+            };
+            for(var i = 0; i < marker_types.length; i++) {
+                var marker = marker_types[i]
+                var option_point = document.createElement("option");
+                option_point.setAttribute("value", marker["value"]);
+                option_point.innerHTML = marker["selection_name"];
+                newinput_point.appendChild(option_point);
+            }
             newdiv.appendChild(newinput_point);
             
-                var brbr = document.createElement("br");
+            var brbr = document.createElement("br");
             newdiv.appendChild(brbr);
             
                 //TITLE
@@ -593,7 +591,7 @@
             }       
         }
             
-        function init_map() {
+        function init_map() { 
             if(multi == 0) {
                 single = true;
                 if(gmap_data[0] != null) {
@@ -635,4 +633,3 @@
     else {
         alert("Your Browser is not compatible with GoogleMaps");
     }
-//]]>

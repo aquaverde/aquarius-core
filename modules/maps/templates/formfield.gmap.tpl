@@ -4,15 +4,13 @@
 <div id="line_length"></div>
 
 <div id="map"></div>
-{get_pointing_array node='gmapc'}
-{load_icon_types node='gmapc'}
 
 {js}
 	var gmap_data = {$field.value|@json};
 	var multi = {$field.formfield->multi};
 	var html_id = "{$field.htmlid}";
 	var formname = "{$field.formname}";	
-	var pointing_json = {$my_pointing|@json};
+	var marker_types = {$field.marker_types|@json};
 	
 	var t_search_by_address = "{#search_by_address#}";
 	var t_search = "{#search#}";
@@ -26,18 +24,17 @@
 	var t_link = "{#link#}";
 	var t_delete_instance = "{#delete_instance#}";
 	
-	var d_lat = {$field.lat};
-	var d_lng = {$field.lon};
-	var d_zoom = {$field.zoom};
-	var d_icontype = "{php}echo MAP_DEFAULT_ICONTYPE;{/php}";
+	var d_lat = {$field.lat|json};
+	var d_lng = {$field.lon|json};
+	var d_zoom = {$field.zoom|json};
+	var d_icontype = {$field.marker_types.0.id|json};
 	
-	var d_poly_color = "{php}echo POLY_COLOR;{/php}";
-	var d_poly_width = "{php}echo POLY_WIDTH;{/php}";
-	var d_poly_trans = "{php}echo POLY_TRANS;{/php}";
+	var d_poly_color = {$field.presets.polyline.color|json};
+	var d_poly_width = {$field.presets.polyline.width|json};
 	
-	var icontypes = new Array();
-	{foreach from=$my_icons item=my_icon key=icon_id}
-		icontypes[{$icon_id}] = "{$my_icon}";
+	var icontypes = {literal}{}{/literal};
+	{foreach from=$field.marker_types item=type}
+		icontypes[{$type.id|json}] = {$type.icon|json};
 	{/foreach}
 {/js}
 
@@ -87,7 +84,12 @@
             
             <br/><br/>
             
-			<p style="min-width:100px;float:left;">{#kategorie#}</p>{select_pointings node='gmapc' name=`$field.formname`[$index][kat] selected=$gmap_data.kat gmap_selecter=true marker_id=$index}
+			<p style="min-width:100px;float:left;">{#kategorie#}</p>
+			<select name="{$field.formname}[{$index}][kat]" onchange="change_marker_icon('{$index}',this.value);">
+                {foreach from=$field.marker_types item=marker key=id}
+                    <option value="{$id}" {if $gmap_data.kat == $id}selected="selected"{/if}>{$marker.selection_name}</option>
+                {/foreach}
+			</select>
 			<br />	
 			<p style="min-width:100px;float:left;">{#titel#}</p>
 			<input type="text" name="{$field.formname}[{$index}][title]" value="{$gmap_data.title|escape}" id="{$field.htmlid}_{$index}_title" class="gmap-textfield" />
@@ -103,7 +105,7 @@
 	{/foreach}
 </div>
 
-<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={php}echo MAP_KEY;{/php}"> </script>
+<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={$field.api_key}"> </script>
 {include_javascript file=gmap_marker.js}
 <script type="text/javascript">
 	init_map()
