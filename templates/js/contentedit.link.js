@@ -1,4 +1,4 @@
-<?
+<?php
 $url = new Url('admin.php');
 ?>
 
@@ -20,7 +20,7 @@ function add_link_ajax(id, formfield , htmlid) {
 		new_id = rows_index;
 	    new Ajax.Updater(
 	        table.tBodies[0],
-	        '<?=$url->with_param(Action::make('link_ajax', 'empty_row'))->str()?>',
+	        '<?php echo $url->with_param(Action::make('link_ajax', 'empty_row'))->str()?>',
 	        {   method: 'get'
 	        ,   insertion: Insertion.Bottom
 	        ,   onComplete: function() {}

@@ -1,4 +1,4 @@
-<?
+<?php
 $url = new Url('admin.php');
 ?>
 
@@ -9,7 +9,7 @@ function add_date_ajax(formfield , htmlid)
     
     new Ajax.Updater(
         whereToAdd,
-        '<?=$url->with_param(Action::make('date_ajax', 'empty'))->str()?>',
+        '<?php echo $url->with_param(Action::make('date_ajax', 'empty'))->str()?>',
         {   method: 'get'
         ,   insertion: Insertion.Bottom
         ,   onComplete: function() {}
