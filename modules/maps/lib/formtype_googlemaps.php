@@ -12,13 +12,35 @@ class Formtype_googlemaps extends Formtype {
         
         // Read preset lat,lon,zoom from sup3 or use default config values
         $form_presets = explode(',', $formfield->sup3);
+        $our_presets = clone $this->presets;
         foreach(array('lat', 'lon', 'zoom') as $var) {
             $form_preset = array_shift($form_presets);
-            $valobject->$var = is_numeric($form_preset) ? $form_preset : $this->presets->position[$var];
+            if (is_numeric($form_preset)) $our_presets = $form_preset;
         }
         
-        $valobject->presets = $form_presets;
-        $valobject->marker_types = $this->presets->marker_types($content->lg);
+        $marker_types = $this->presets->marker_types($content->lg);
+        $icon_types = array();
+        foreach($marker_types as $marker) { 
+            $icon_types[$marker['id']] = $marker['icon'];
+        }
+        
+        $map_options = array(
+            'data'      => $valobject->value,
+            'multi'     => $formfield->multi,
+            'presets'   => $our_presets,
+            'htmlid'    => $valobject->htmlid,
+            'formname'  => $valobject->formname,
+            'marker_types' => $marker_types,
+            'icon_types'   => $icon_types,
+        );
+        
+        /* magic field name */
+        if (!empty($content->kml_file)) {
+            $map_options['kml_file'] = PROJECT_URL.$content->kml_file.file;
+        }
+        
+        $valobject->map_options = $map_options;
+        $valobject->marker_types = $marker_types;
     }
 
 

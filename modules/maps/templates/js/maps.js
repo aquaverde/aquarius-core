@@ -1,38 +1,45 @@
+function initmap(config) {
+    var gmarker = [];
+    var polys = [];
+    var id_count = 0;
+    var external_added = false;
 
-        
-        var gmarker = [];
-        var polys = [];
-        var id_count = 0;
-        var external_added = false;
-        
-        //var pts = [];
-        var bounds = new GLatLngBounds();
-         
-        var single = false;             
+    var bounds = new google.maps.LatLngBounds();
 
-        // ICON
-        var small_icon = new GIcon();
-        small_icon.iconSize = new GSize(25,29);
-        small_icon.iconAnchor=new GPoint(12,29);
-        small_icon.infoWindowAnchor = new GPoint(14,2);
-        
-        //map
-        var map = new GMap2(document.getElementById("map"));
+
+    var single = false;
+    
+    var mapOptions = {
+        zoom: config.presets.position.zoom,
+        center: new google.maps.LatLng(config.presets.position.lat, config.presets.position.lon),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+
+    var map_container = document.getElementById("map_"+config.htmlid, mapOptions)
+
+    var map = new google.maps.Map(map_container, mapOptions)
+
+    return map;
+}
+
+function resizemap(map) {
+    var center = map.getCenter();
+    google.maps.event.trigger(map, 'resize');
+    map.setCenter(center);
+}
+
+         /*          
+
             map.addControl(new GLargeMapControl3D());
-            map.addControl(new GMapTypeControl());
-            map.setCenter(new GLatLng(d_lat,d_lng), parseInt(d_zoom));
-            map.disableDoubleClickZoom();
-        
-        function check_resize() 
-        {
-            // HACK: Check whether box size changed (changes between display: none and display: block)
-            map.checkResize();         
-            if(gmap_data.length > 0) {
-                map.setZoom(map.getBoundsZoomLevel(bounds));
-                map.setCenter(bounds.getCenter());
-            }
-            else map.setCenter(new GLatLng(d_lat,d_lng), parseInt(d_zoom));
-        }
+    map.addControl(new GMapTypeControl());
+    map.setCenter(new GLatLng(d_lat,d_lng), parseInt(d_zoom));
+    map.disableDoubleClickZoom();
+    
+    var small_icon = new GIcon();
+    small_icon.iconSize = new GSize(25,29);
+    small_icon.iconAnchor=new GPoint(12,29);
+    small_icon.infoWindowAnchor = new GPoint(14,2);
+
         
         function change_marker_icon(id, icon_id) {
             //POLYLINE
@@ -614,3 +621,4 @@
             
             set_map_center();
         }
+*/

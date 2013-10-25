@@ -23,7 +23,6 @@ class Maps extends Module {
         );
         
         /* DEPRECATED */
-        if (defined('MAP_KEY')) $this->presets->api_key = MAP_KEY;
         if (defined('MAP_DEFAULT_LAT'))  $this->presets->position['lat'] =  MAP_DEFAULT_LAT;
         if (defined('MAP_DEFAULT_LNG'))  $this->presets->position['lon'] =  MAP_DEFAULT_LNG;
         if (defined('MAP_DEFAULT_ZOOM')) $this->presets->position['zoom'] = MAP_DEFAULT_ZOOM;
@@ -32,7 +31,7 @@ class Maps extends Module {
             Log::debug("No maps API key configured");
         }
         
-        // Deprecated
+        /* DEPRECATED */
         if (!defined('MAP_KEY')) define('MAP_KEY', $this->presets->api_key);
     }
 

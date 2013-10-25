@@ -1,41 +1,40 @@
 {include_javascript file=scriptaculous.js lib=true}
 {include_javascript file=effects.js lib=true}
+{include_javascript file=maps.js defer=true}
+{include_css file=maps.css}
 
 <div id="line_length"></div>
 
-<div id="map"></div>
+<div class="map" id="map_{$field.htmlid}"></div>
 
 {js}
-	var gmap_data = {$field.value|@json};
-	var multi = {$field.formfield->multi};
-	var html_id = "{$field.htmlid}";
-	var formname = "{$field.formname}";	
-	var marker_types = {$field.marker_types|@json};
-	
-	var t_search_by_address = "{#search_by_address#}";
-	var t_search = "{#search#}";
-	var t_point = "{#point#}";
-	var t_way = "{#way#}";
-	var t_is_on_way = "{#is_on_way#}";
-	var t_edit_poly = "{#edit_poly#}";
-	var t_titel = "{#titel#}";
-	var t_beschreibung = "{#beschreibung#}";
-	var t_kategorie = "{#kategorie#}";
-	var t_link = "{#link#}";
-	var t_delete_instance = "{#delete_instance#}";
-	
-	var d_lat = {$field.lat|json};
-	var d_lng = {$field.lon|json};
-	var d_zoom = {$field.zoom|json};
-	var d_icontype = {$field.marker_types.0.id|json};
-	
-	var d_poly_color = {$field.presets.polyline.color|json};
-	var d_poly_width = {$field.presets.polyline.width|json};
-	
-	var icontypes = {literal}{}{/literal};
-	{foreach from=$field.marker_types item=type}
-		icontypes[{$type.id|json}] = {$type.icon|json};
-	{/foreach}
+    var t_search_by_address = "{#search_by_address#}";
+    var t_search = "{#search#}";
+    var t_point = "{#point#}";
+    var t_way = "{#way#}";
+    var t_is_on_way = "{#is_on_way#}";
+    var t_edit_poly = "{#edit_poly#}";
+    var t_titel = "{#titel#}";
+    var t_beschreibung = "{#beschreibung#}";
+    var t_kategorie = "{#kategorie#}";
+    var t_link = "{#link#}";
+    var t_delete_instance = "{#delete_instance#}";
+
+    // Maps deferred loading
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.defer = true;
+    script.src = "http://maps.googleapis.com/maps/api/js?key={$key}&sensor=false&callback=initmap_{$field.htmlid}";
+    document.body.appendChild(script);
+    
+    // Callback that loads the map
+    var initmap_{$field.htmlid} = function() {ldelim}
+        var map = initmap({$field.map_options|@json})
+
+        if (on_tab_init) {ldelim}
+            on_tab_init.push(resizemap.bind(null, map))
+            {rdelim}
+    {rdelim}
 {/js}
 
 <div id="my_map_markers">
@@ -105,17 +104,5 @@
 	{/foreach}
 </div>
 
-<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={$field.api_key}"> </script>
-{include_javascript file=gmap_marker.js}
-<script type="text/javascript">
-	init_map()
-	
-	{if $content->kml_file}
-		var kml_file = '{$smarty.const.PROJECT_URL}{$content->kml_file.file}';
-		init_kml();
-    {/if}
-	
-	if (on_tab_init)
-        on_tab_init.push(check_resize)
-</script>
+
 
