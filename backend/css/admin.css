@@ -8,8 +8,8 @@ h2 { font-size: 12px; font-weight: bold; margin: 3px 0; }
 h3 { font-size: 12px; font-weight: bold; margin: 3px 0; }
 img { border: none; }
 
-.thumb { max-height: 85px; max-width: 85px; margin: 3px; cursor: pointer; }
-.superthumb { max-height: 120px; max-width: 120px; margin: 5px; }
+.thumb { max-height: 150px; max-width: 180px; margin: 3px; cursor: pointer; }
+.superthumb { max-height: 200px; max-width: 200px; margin: 5px; }
 div.sourcelink { padding-bottom: 10px; }
 thin { font-weight: normal; }
 .little { font-size: 11px; line-height: 12px; }
@@ -214,7 +214,6 @@ legend { padding: 0 0.5em; font-weight: bold; }
 #login-submit { margin-bottom: 20px; }
 #loginfooter, #loginhead { width: 350px; text-align: left; padding: 4px 0; }
 #login p { color: #ccc; }
-#login p.loginwarn  { clear: both; margin: 0 10px 10px 0; text-align:center; padding: 6px 10px;  color: black; background: #C1C9CE; }
 .darker { background-color: #f2f5f7; }
 .hell { background-color: #fff; }
 
@@ -251,7 +250,7 @@ ul.tabs li.active { background-color: #e0e7ec; border: 1px solid #6286a0 ; borde
 .contentedit_file .choose_button { margin: 3px; margin-left: 0; vertical-align: middle; cursor: pointer; }
 .contentedit_file label { cursor: pointer; }
 .contentedit_file select { margin: 3px; margin-left: 0; vertical-align: middle; }
-.contentedit_file .thumb { max-height: 100px; max-width: 100px; margin: 3px 0px 1px 0px; }
+.contentedit_file .thumb { max-height: 200px; max-width: 200px; margin: 3px 0px 1px 0px; }
 .contentedit_checkbox { margin-top: 4px; margin-bottom: 0px; }
 .contentedit_checkbox input { float: left; margin-top: -15px; }
 .contentedit_checkbox label { margin-left: 18px; border: none;}
