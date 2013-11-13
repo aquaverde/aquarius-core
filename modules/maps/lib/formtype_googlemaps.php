@@ -1,5 +1,8 @@
 <?php
-
+/* The maps module allows placing points and ways on a map.
+ *
+ * This module is a snowflake, a fractal of special!
+ */
 class Formtype_googlemaps extends Formtype {
     
     var $presets;

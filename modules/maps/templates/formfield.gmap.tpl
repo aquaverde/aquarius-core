@@ -29,10 +29,9 @@
     
     // Callback that loads the map
     var initmap_{$field.htmlid} = function() {ldelim}
-        var map = initmap({$field.map_options|@json})
-
+        var resfun = initmap({$field.map_options|@json}, {$field.value|@json})
         if (on_tab_init) {ldelim}
-            on_tab_init.push(resizemap.bind(null, map))
+            on_tab_init.push(resfun)
             {rdelim}
     {rdelim}
 {/js}
@@ -41,13 +40,8 @@
 	<div class="mapmenu_box">
 		<div style="float:left;">
 		    {#add#}:
-			<input type="radio" name="radios_type" value="1" id="radio_set_point" checked="checked" />&nbsp;{#point#}&nbsp;
-			<input type="radio" name="radios_type" value="1" id="radio_set_poly" />&nbsp;{#way#}
-		</div>
-		
-		<div class="mapmenu_box_search">
-			<input type="text" id="sba_general" value="{#search_by_address#}" onfocus="clear_sba('general');" />
-			<input type="button" id="sba_button_general" onclick = "searchAddress('general');" value="{#search#}" class="button" />
+			<label style="display: inline"><input type="radio" name="radios_type" value="1" id="radio_set_point" checked="checked" />{#point#}</label>&nbsp;
+			<label style="display: inline"><input type="radio" name="radios_type" value="1" id="radio_set_poly" />{#way#}</label>
 		</div>
 	</div>
 	{foreach from=$field.value item=gmap_data key = index}
@@ -56,11 +50,6 @@
 			<input type="hidden" name="{$field.formname}[{$index}][lng]" value="{$gmap_data.lng|escape}" id="{$field.htmlid}_{$index}_lng" />
 			<input type="hidden" name="{$field.formname}[{$index}][zoom]" value="{$gmap_data.zoom|escape}" id="{$field.htmlid}_{$index}_zoom" />
 			<input type="hidden" name="{$field.formname}[{$index}][type]" value="{$gmap_data.type|escape}" id="{$field.htmlid}_{$index}_type" />
-
-		    <div class="mapmenu_box_search">
-				<input type="text" id="sba_{$index}" value="{#search_by_address#}" onfocus="clear_sba({$index});" />
-				<input type="button" id="sba_button_{$index}" onclick = 'searchAddress({$index});' value="{#search#}" class="button" /><br />
-		    </div>	   		
 
 			<input type="button" name="delete_instance_button_{$index}" value="{#delete_instance#}" id="delete_instance_button_{$index}" onclick="delete_instance({$index});" class="button">
 
@@ -84,7 +73,7 @@
             <br/><br/>
             
 			<p style="min-width:100px;float:left;">{#kategorie#}</p>
-			<select name="{$field.formname}[{$index}][kat]" onchange="change_marker_icon('{$index}',this.value);">
+			<select name="{$field.formname}[{$index}][kat]" id="{$field.formname}_{$index}_kat">
                 {foreach from=$field.marker_types item=marker key=id}
                     <option value="{$id}" {if $gmap_data.kat == $id}selected="selected"{/if}>{$marker.selection_name}</option>
                 {/foreach}
