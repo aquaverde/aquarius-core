@@ -24,7 +24,7 @@
     var script = document.createElement("script");
     script.type = "text/javascript";
     script.defer = true;
-    script.src = "http://maps.googleapis.com/maps/api/js?key={$key}&sensor=false&callback=initmap_{$field.htmlid}";
+    script.src = "http://maps.googleapis.com/maps/api/js?key={$key}&libraries=drawing&sensor=false&callback=initmap_{$field.htmlid}";
     document.body.appendChild(script);
     
     // Callback that loads the map
@@ -36,14 +36,7 @@
     {rdelim}
 {/js}
 
-<div id="my_map_markers">
-	<div class="mapmenu_box">
-		<div style="float:left;">
-		    {#add#}:
-			<label style="display: inline"><input type="radio" name="radios_type" value="1" id="radio_set_point" checked="checked" />{#point#}</label>&nbsp;
-			<label style="display: inline"><input type="radio" name="radios_type" value="1" id="radio_set_poly" />{#way#}</label>
-		</div>
-	</div>
+<div id="{$field.formname}_markers">
 	{foreach from=$field.value item=gmap_data key = index}
 		<div class="mapmenu_box" id="mapmenu_box_{$index}" name="map_boxes" style="display:none;">
 			<input type="hidden" name="{$field.formname}[{$index}][lat]" value="{$gmap_data.lat|escape}" id="{$field.htmlid}_{$index}_lat" />

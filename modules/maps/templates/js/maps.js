@@ -8,7 +8,6 @@ function initmap(config, markers) {
     var html_id = config.htmlid
 
     var bounds = new google.maps.LatLngBounds();
-    var editing = false;
     
     var mapOptions = {
         zoom: config.presets.position.zoom,
@@ -20,10 +19,10 @@ function initmap(config, markers) {
     var map_container = document.getElementById("map_"+config.htmlid, mapOptions)
 
     var map = new google.maps.Map(map_container, mapOptions)
-    
+
     for (var i = 0; i < markers.length; i++) {
         if(markers[i]["type"] == "point") {
-            var id = add_marker(markers[i]["lat"],markers[i]["lng"],markers[i]["kat"]);
+            var id = add_marker(markers[i]["lat"],markers[i]["lng"],markers[i]["kat"], i);
             var select = document.getElementById(config.formname+'_'+id+'_kat')
             select.onchange = function() { change_marker_icon(id, this.value) }
         }
@@ -33,46 +32,67 @@ function initmap(config, markers) {
     }
     
     if(markers.length > 0) {
-        map.fitBounds(bounds);
-    }   
+       // map.fitBounds(bounds);
+    } 
+
+    var drawingManager = new google.maps.drawing.DrawingManager({
+        drawingMode: google.maps.drawing.OverlayType.MARKER,
+        drawingControl: true,
+        drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_CENTER,
+            drawingModes: [
+                google.maps.drawing.OverlayType.MARKER,
+                google.maps.drawing.OverlayType.POLYLINE
+            ]
+        },
+        markerOptions: {
+            icon: ''
+        },
+        polylineOptions: {
+            fillColor: '#ffff00',
+            fillOpacity: 1,
+            strokeWeight: 5,
+            clickable: false,
+            zIndex: 1,
+            editable: true
+        }
+    })
+    drawingManager.setMap(map);
     
-    map.addListener("click", function(e) {
-        
-        var type;
-        var id
-        
+    drawingManager.addListener('markercomplete', function(marker) {
         if (!config.multi) {
             // There can be only one
-            id_count = 0;
-            while(markers[0]) gmarker.pop().setMap(null);
+            while(markers[0]) markers.pop().setMap(null);
         }
         
-        if(document.getElementById('radio_set_point').checked) {
-            id = add_marker(e.latLng.lat(), e.latLng.lng());
-            type = "point";
-        } else if(document.getElementById('radio_set_poly').checked) {
-            id = add_poly(null,null,true);
-            type = "poly";
-        }
-                                                                        
+        var type = "point";
+        id = markers.length
+        markers.push(marker)                                                   
         create_new_instance(id, type);
         show_box(id);
         
-        document.getElementById(html_id + "_" + id + "_lat").value = e.latLng.lat();
-        document.getElementById(html_id + "_" + id + "_lng").value = e.latLng.lng();
+        document.getElementById(html_id + "_" + id + "_lat").value = marker.getPosition().lat();
+        document.getElementById(html_id + "_" + id + "_lng").value = marker.getPosition().lng();
         document.getElementById(html_id + "_" + id + "_type").value = type;
     })
     
+    drawingManager.addListener('polylinecomplete', function(line) {
+        console.log(line)
+    })
+
     
-    function change_marker_icon(id, icon_id) {
-        if(markers[id] === undefined) return false; // It's a polyline
+    
+    
+    function change_marker_icon(id, kat) {
+        var icon = config.icon_types[kat];
         
-        // Pick the first icon if the selected on is invalid
-        if(icon_id === "" || icon_types[icon_id] === undefined) {
-            icon_id = config.marker_types[0].id
+        if (!icon) {
+            // just take any
+            console.log('hola marker ' + kat)
+            icon = config.icon_types[Object.keys(config.icon_types)[0]]
         }
         
-        markers[id].setIcon(icon_types[icon_id]);
+        markers[id].setIcon(icon);
     }
     
     
@@ -85,8 +105,7 @@ function initmap(config, markers) {
         )
     }
     
-    function add_marker(lat, lng, kat) {
-        var id = id_count++
+    function add_marker(lat, lng, kat, id) {
         var point = new google.maps.LatLng(lat, lng);
         
         var icon = config.icon_types[kat];
@@ -98,17 +117,16 @@ function initmap(config, markers) {
 
         var marker = new google.maps.Marker({
             position: point,
-            draggable: true, 
             icon: mkIcon(icon), 
             map: map,
-            title:' test'
+            editable: true,
+            draggable: true,
         });
         
         
         marker.addListener("dragend", function() {
-            document.getElementById(config.htmlid + "_" + id + "_lat").value = marker.getPosition().lat();
-            document.getElementById(config.htmlid + "_" + id + "_lng").value = marker.getPosition().lng();
-            editing = false
+            document.getElementById(config.htmlid + "_" + id + "_lat").value = marker.getPosition().lat()
+            document.getElementById(config.htmlid + "_" + id + "_lng").value = marker.getPosition().lng()
         });
         
         marker.addListener("click", function() {
@@ -128,25 +146,30 @@ function initmap(config, markers) {
         return id;
     }
     
-    function add_poly(lats_str, lngs_str, is_new) {    
+    function add_poly(lats_str, lngs_str) {    
         var id = id_count++
         var pts = [];
         
-        if(lats_str != null && lngs_str != null) {
-            var lats = lats_str.split(",");
-            var lngs = lngs_str.split(",");          
+        if (lats_str && lngs_str) {
+            if(lats_str instanceof String && lngs_str instanceof String) {
+                var lats = lats_str.split(",");
+                var lngs = lngs_str.split(",");          
 
-            for(var i = 0; i < lats.length; i++) {
-                var point = new google.maps.LatLng(parseFloat(lats[i]), parseFloat(lngs[i]));
-                pts.push(point);
-                bounds.extend(point);
+                for(var i = 0; i < lats.length; i++) {
+                    var point = new google.maps.LatLng(parseFloat(lats[i]), parseFloat(lngs[i]));
+                    pts.push(point);
+                    bounds.extend(point);
+                }
+            } else {
+                pts.push(new google.maps.LatLng(lats_str, lngs_str))
             }
-        }           
+        }
         
         var opts = {
-            strokeColor: presets.polyline.color,
-            strokeWeight: presets.polyline.width,
-            path: pts
+            strokeColor: config.presets.polyline.color,
+            strokeWeight: config.presets.polyline.width,
+            path: pts,
+            editable: true
         }
         
         var polyline = new google.maps.Polyline(opts);
@@ -169,10 +192,8 @@ function initmap(config, markers) {
                     lngs += ",";
                 }
             }   
-            document.getElementById(config.formname + "_" + id + "_lat").value = lats;
-            document.getElementById(config.formname + "_" + id + "_lng").value = lngs;
-            
-            editing = false
+            document.getElementById(config.formname + "_" + id + "_lat").value = lats
+            document.getElementById(config.formname + "_" + id + "_lng").value = lngs
         });
         
         map.addListener(polyline, "click", function(point) {
@@ -189,12 +210,6 @@ function initmap(config, markers) {
         
         polyline.setMap(map)
         
-        /* CARGO CULT island ahead */
-        if(is_new) {
-            polyline.enableDrawing();
-            polyline.enableEditing();
-        }
-        
         return id;
     }
     
@@ -203,7 +218,7 @@ function initmap(config, markers) {
         
         /* this was written by one code soldier, takin the DOM and runnin with it
          * fuck it's a pile of DOMb copypasta */
-        var parent = document.getElementById('my_map_markers');
+        var parent = document.getElementById(formname+'_markers');
                     
         var newdiv = document.createElement('div');
         newdiv.className = "mapmenu_box";
@@ -421,21 +436,13 @@ function initmap(config, markers) {
         parent.removeChild(to_delete);
     }
     
-    
-    function edit_poly(index) {
-        markers[index].enableDrawing();
-        markers[index].enableEditing();
-        
-        editing = true
-    }
-    
 
     function show_box(index) {
         var my_duration = 0.3;
-        
-        for(var i = 0; i < document.getElementsByName('map_boxes').length; i++) {
-            var ac_document = document.getElementsByName('map_boxes')[i];
-            
+        var elms = document.getElementsByName('map_boxes')
+        for(var i = 0; i < elms.length; i++) {
+            var ac_document = elms[i];
+            console.log(i, index, ac_document.id)
             if(ac_document.id == ('mapmenu_box_' + index)) {
                 if(ac_document.style.display != 'none') Effect.BlindUp(ac_document, {duration: my_duration});
                 else Effect.BlindDown(ac_document, {duration:my_duration}); 
