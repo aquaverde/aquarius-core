@@ -67,8 +67,8 @@
             
 			<p style="min-width:100px;float:left;">{#kategorie#}</p>
 			<select name="{$field.formname}[{$index}][kat]" id="{$field.formname}_{$index}_kat">
-                {foreach from=$field.marker_types item=marker key=id}
-                    <option value="{$id}" {if $gmap_data.kat == $id}selected="selected"{/if}>{$marker.selection_name}</option>
+                {foreach from=$field.marker_types item=marker}
+                    <option value="{$marker.id}" {if $gmap_data.kat == $marker.id}selected="selected"{/if}>{$marker.selection_name}</option>
                 {/foreach}
 			</select>
 			<br />	

@@ -36,7 +36,7 @@ function initmap(config, markers) {
     } 
 
     var drawingManager = new google.maps.drawing.DrawingManager({
-        drawingMode: google.maps.drawing.OverlayType.MARKER,
+        drawingMode: null,
         drawingControl: true,
         drawingControlOptions: {
             position: google.maps.ControlPosition.TOP_CENTER,
@@ -46,7 +46,11 @@ function initmap(config, markers) {
             ]
         },
         markerOptions: {
-            icon: ''
+            animation: google.maps.Animation.DROP,
+            icon: new google.maps.MarkerImage('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'),
+            draggable: true,
+            flat: true,
+            raiseOnDrag: true
         },
         polylineOptions: {
             fillColor: '#ffff00',
@@ -121,6 +125,7 @@ function initmap(config, markers) {
             map: map,
             editable: true,
             draggable: true,
+            clickable: true,
         });
         
         
@@ -430,7 +435,7 @@ function initmap(config, markers) {
 
         markers[index].setMap(null);
        
-        var parent = document.getElementById('my_map_markers');
+        var parent = document.getElementById(formname+'_markers');
         var to_delete = document.getElementById('mapmenu_box_' + index);
 
         parent.removeChild(to_delete);
@@ -442,7 +447,6 @@ function initmap(config, markers) {
         var elms = document.getElementsByName('map_boxes')
         for(var i = 0; i < elms.length; i++) {
             var ac_document = elms[i];
-            console.log(i, index, ac_document.id)
             if(ac_document.id == ('mapmenu_box_' + index)) {
                 if(ac_document.style.display != 'none') Effect.BlindUp(ac_document, {duration: my_duration});
                 else Effect.BlindDown(ac_document, {duration:my_duration}); 
