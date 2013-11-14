@@ -44,7 +44,7 @@
 			<input type="hidden" name="{$field.formname}[{$index}][zoom]" value="{$gmap_data.zoom|escape}" id="{$field.htmlid}_{$index}_zoom" />
 			<input type="hidden" name="{$field.formname}[{$index}][type]" value="{$gmap_data.type|escape}" id="{$field.htmlid}_{$index}_type" />
 
-			<input type="button" name="delete_instance_button_{$index}" value="{#delete_instance#}" id="delete_instance_button_{$index}" onclick="delete_instance({$index});" class="button">
+			<input type="button" name="delete_instance_button_{$index}" value="{#delete_instance#}" id="{$field.formname}_{$index}_delete"" class="button">
 
 
 			{if $gmap_data.type != 'poly' && 1 == 0}
