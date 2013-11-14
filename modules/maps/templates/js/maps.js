@@ -20,7 +20,7 @@ function initmap(config, markers) {
     var map = new google.maps.Map(map_container, mapOptions)
 
     for (var i = 0; i < markers.length; i++) {
-        (function() { // for scoping the id, sorry
+        (function() { // scoping the id for the closures, sorry
             var id = i
             if(markers[i]["type"] == "point") {
                 add_marker(markers[i]["lat"],markers[i]["lng"],markers[i]["kat"], id);
@@ -33,10 +33,6 @@ function initmap(config, markers) {
     }
     
     map.fitBounds(bounds);
-    
-    if(markers.length > 0) {
-       // map.fitBounds(bounds);
-    } 
 
     var drawingManager = new google.maps.drawing.DrawingManager({
         drawingMode: null,
@@ -184,9 +180,7 @@ function initmap(config, markers) {
         
         poly_handlers(id, polyline)
 
-
         polyline.setMap(map)
-        
     }
 
 
@@ -235,27 +229,7 @@ function initmap(config, markers) {
         button_delete_instance.setAttribute("name","delete_instance_button_" + index);
         button_delete_instance.setAttribute("id", formname + "_" + index + "_delete");
         button_delete_instance.setAttribute("value",t_delete_instance);
-        newdiv.appendChild(button_delete_instance);         
-                    
-        //POLY_PARENT
-        if(type == 'point' && 1==0) {
-            var newdiv_parent = document.createElement('div');
-            newdiv_parent.setAttribute('id','mapmenu_box_hasparent_' + index);
-            
-            var newinput_parent_checkbox = document.createElement("input");
-            newinput_parent_checkbox.setAttribute("type","checkbox");
-            newinput_parent_checkbox.setAttribute("name",formname + "[" + index + "]" + "[poly_point]");
-            newinput_parent_checkbox.setAttribute("id", html_id + "_" + index + "_poly_point");
-            newinput_parent_checkbox.setAttribute("value","1");
-            newinput_parent_checkbox.className = "checkbox";
-            newdiv_parent.appendChild(newinput_parent_checkbox);
-            var m_span = document.createElement("span");
-            m_span.className = "little";
-            var t = document.createTextNode(t_is_on_way);
-            m_span.appendChild(t);
-            newdiv_parent.appendChild(m_span);
-            newdiv.appendChild(newdiv_parent);
-        }
+        newdiv.appendChild(button_delete_instance);        
         
         var brbr = document.createElement("br");
         newdiv.appendChild(brbr);
