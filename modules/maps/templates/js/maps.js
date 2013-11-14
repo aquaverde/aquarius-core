@@ -5,7 +5,7 @@ function initmap(config, markers) {
     var external_added = false
     var icon_types = config.icon_types
     var html_id = config.htmlid
-
+    var default_icon = config.icon_types[Object.keys(config.icon_types)[0]]
     var bounds = new google.maps.LatLngBounds();
     
     var mapOptions = {
@@ -32,6 +32,8 @@ function initmap(config, markers) {
             
     }
     
+    map.fitBounds(bounds);
+    
     if(markers.length > 0) {
        // map.fitBounds(bounds);
     } 
@@ -48,7 +50,7 @@ function initmap(config, markers) {
         },
         markerOptions: {
             animation: google.maps.Animation.DROP,
-            icon: new google.maps.MarkerImage('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'),
+            icon: new google.maps.MarkerImage(default_icon),
             draggable: true,
             flat: true,
             raiseOnDrag: true
@@ -67,9 +69,9 @@ function initmap(config, markers) {
     
     
     drawingManager.addListener('markercomplete', function(marker) {
-        if (!config.multi) {
+        if (config.multi == 0) {
             // There can be only one
-            while(markers[0]) markers.pop().setMap(null);
+            remove_all()
         }
         
         var type = "point";
@@ -84,25 +86,44 @@ function initmap(config, markers) {
     
     
     drawingManager.addListener('polylinecomplete', function(line) {
+        if (config.multi == 0) {
+            // There can be only one
+            remove_all()
+        }
+        
         var id = markers.length  
         markers[id] = line                                   
         create_new_instance(id, 'poly')
         show_box(id)
-        
-        set_polyvals(id, line)
+        poly_handlers(id, line)
     })
     
-    function set_polyvals(id, line) {
-        var lats = []
-        var lons = []
-        
-        line.getPath().forEach(function(pt) {
-            lats.push(pt.lat())
-            lons.push(pt.lng())
-        })
-        
-        document.getElementById(html_id + "_" + id + "_lat").value = lats.join(',')
-        document.getElementById(html_id + "_" + id + "_lng").value = lons.join(',')
+    function remove_all() {
+        while(markers[0]) markers.pop().setMap(null);
+        var m = document.getElementById(config.formname+'_markers')
+        while (m.hasChildNodes()) {
+            m.removeChild(m.lastChild);
+        }
+    }
+    
+    function poly_handlers(id, line) {
+        var set_polyvals = function() {
+            var lats = []
+            var lons = []
+            
+            line.getPath().forEach(function(pt) {
+                lats.push(pt.lat())
+                lons.push(pt.lng())
+            })
+            
+            document.getElementById(html_id + "_" + id + "_lat").value = lats.join(',')
+            document.getElementById(html_id + "_" + id + "_lng").value = lons.join(',')
+        }
+        set_polyvals()
+        line.addListener("dragend", set_polyvals);
+        line.getPath().addListener("insert_at", set_polyvals);
+        line.getPath().addListener("remove_at", set_polyvals);
+        line.getPath().addListener("set_at", set_polyvals);
     }
 
     
@@ -120,9 +141,7 @@ function initmap(config, markers) {
         
         var icon = config.icon_types[kat];
         if (!icon) {
-            // just take any
-            console.log('hola marker '+kat)
-            icon = config.icon_types[Object.keys(config.icon_types)[0]]
+            icon = default_icon
         }
 
         var marker = new google.maps.Marker({
@@ -163,13 +182,10 @@ function initmap(config, markers) {
         var polyline = new google.maps.Polyline(opts);
         markers[id] = polyline;
         
-        
-        map.addListener(polyline, "endline", function() {
-            set_polyvals(id, polyline)
-        });
+        poly_handlers(id, polyline)
+
 
         polyline.setMap(map)
-        console.log(polyline)
         
     }
 
@@ -210,39 +226,7 @@ function initmap(config, markers) {
         newinput_type.setAttribute("id", html_id + "_" + index + "_type");
         newinput_type.setAttribute("value", type);
         newdiv.appendChild(newinput_type);
-        
-        var newdiv_search = document.createElement('div');
-        newdiv_search.className = "mapmenu_box_search";
-            
-        //INPUT SEARCH
-        var newinput_search = document.createElement("input");
-        newinput_search.setAttribute("type","text");
-        newinput_search.setAttribute("value",t_search_by_address);
-        newinput_search.setAttribute("id", "sba_"+index);
-        //newinput_search.setAttribute("onfocus", "clear_sba(" + index + ");");
-        newinput_search.onfocus = function(){ // Note: onclick, not onClick
-            clear_sba(index);
-            return true;
-        };
-        newdiv_search.appendChild(newinput_search);
-        
-        var t = document.createTextNode(" ");
-        newdiv_search.appendChild(t);
-            
-        //SEARCH BUTTON
-        var newinput_search_button = document.createElement("input");
-        newinput_search_button.setAttribute("type","button");
-        newinput_search_button.setAttribute("id", "sba_button_"+index);
-        newinput_search_button.className = "button";
-        newinput_search_button.setAttribute("value",t_search);
-        //newinput_search_button.setAttribute("onclick", "searchAddress(" + index + ")");
-        newinput_search_button.onclick = function(){ // Note: onclick, not onClick
-            searchAddress(index);
-            return true;
-        };
-        newdiv_search.appendChild(newinput_search_button);
-            
-        newdiv.appendChild(newdiv_search);  
+
         
         //DELETE BUTTON
         var button_delete_instance = document.createElement("input");
