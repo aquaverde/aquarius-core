@@ -46,32 +46,17 @@
 
 			<input type="button" name="delete_instance_button_{$index}" value="{#delete_instance#}" id="{$field.formname}_{$index}_delete"" class="button">
 
-
-			{if $gmap_data.type != 'poly' && 1 == 0}
-			<div id="mapmenu_box_hasparent_{$index}">
-				<input type="checkbox" name="{$field.formname}[{$index}][poly_point]" value="1" id="{$field.htmlid}_{$index}_poly_point" class="checkbox" 
-				{if $gmap_data.poly_point == '1'}
-					checked="checked"
-				{/if}
-				/>&nbsp;<span class="little">{#is_on_way#}</span>
-			</div>
-			{/if}
-
-			{if $gmap_data.type == 'poly'}
-				<div id="edit_poly_{$index}" style="float:left;margin-right:5px;">
-					<input type="button" name="edit_poly_button_{$index}" value="{#edit_poly#}" id="edit_poly_button_{$index}" onclick="edit_poly({$index});" class="button" />
-				</div>
-			{/if}
+			<br/>
             
-            <br/><br/>
-            
+            {if $gmap_data.type == 'point'}
 			<p style="min-width:100px;float:left;">{#kategorie#}</p>
 			<select name="{$field.formname}[{$index}][kat]" id="{$field.formname}_{$index}_kat">
                 {foreach from=$field.marker_types item=marker}
                     <option value="{$marker.id}" {if $gmap_data.kat == $marker.id}selected="selected"{/if}>{$marker.selection_name}</option>
                 {/foreach}
 			</select>
-			<br />	
+			<br />
+			{/if}
 			<p style="min-width:100px;float:left;">{#titel#}</p>
 			<input type="text" name="{$field.formname}[{$index}][title]" value="{$gmap_data.title|escape}" id="{$field.htmlid}_{$index}_title" class="gmap-textfield" />
 			<br />

@@ -25,7 +25,7 @@ function initmap(config, markers) {
             if(markers[i]["type"] == "point") {
                 add_marker(markers[i]["lat"],markers[i]["lng"],markers[i]["kat"], id);
             } else {
-                add_poly(markers[i]["lat"],markers[i]["lng"]);
+                add_poly(markers[i]["lat"],markers[i]["lng"], id);
             }
             box_handlers(id)                 
         })()
@@ -54,15 +54,17 @@ function initmap(config, markers) {
             raiseOnDrag: true
         },
         polylineOptions: {
-            fillColor: '#ffff00',
+            strokeColor: config.presets.polyline.color,
+            strokeWeight: config.presets.polyline.width,
+            fillColor: config.presets.polyline.color,
             fillOpacity: 1,
-            strokeWeight: 5,
             clickable: false,
             zIndex: 1,
             editable: true
         }
     })
     drawingManager.setMap(map);
+    
     
     drawingManager.addListener('markercomplete', function(marker) {
         if (!config.multi) {
@@ -78,12 +80,30 @@ function initmap(config, markers) {
         
         document.getElementById(html_id + "_" + id + "_lat").value = marker.getPosition().lat();
         document.getElementById(html_id + "_" + id + "_lng").value = marker.getPosition().lng();
-        document.getElementById(html_id + "_" + id + "_type").value = type;
     })
     
+    
     drawingManager.addListener('polylinecomplete', function(line) {
-        console.log(line)
+        var id = markers.length  
+        markers[id] = line                                   
+        create_new_instance(id, 'poly')
+        show_box(id)
+        
+        set_polyvals(id, line)
     })
+    
+    function set_polyvals(id, line) {
+        var lats = []
+        var lons = []
+        
+        line.getPath().forEach(function(pt) {
+            lats.push(pt.lat())
+            lons.push(pt.lng())
+        })
+        
+        document.getElementById(html_id + "_" + id + "_lat").value = lats.join(',')
+        document.getElementById(html_id + "_" + id + "_lng").value = lons.join(',')
+    }
 
     
     function mkIcon(icon) {
@@ -117,27 +137,22 @@ function initmap(config, markers) {
         
         markers[id] = marker;
         bounds.extend(point);
-        return id;
     }
     
-    function add_poly(lats_str, lngs_str) {
+    function add_poly(lats_str, lngs_str, id) {
         var pts = [];
         
         if (lats_str && lngs_str) {
-            if(lats_str instanceof String && lngs_str instanceof String) {
-                var lats = lats_str.split(",");
-                var lngs = lngs_str.split(",");          
+            var lats = lats_str.split(",");
+            var lngs = lngs_str.split(",");          
 
-                for(var i = 0; i < lats.length; i++) {
-                    var point = new google.maps.LatLng(parseFloat(lats[i]), parseFloat(lngs[i]));
-                    pts.push(point);
-                    bounds.extend(point);
-                }
-            } else {
-                pts.push(new google.maps.LatLng(lats_str, lngs_str))
+            for(var i = 0; i < lats.length; i++) {
+                var point = new google.maps.LatLng(parseFloat(lats[i]), parseFloat(lngs[i]));
+                pts.push(point);
+                bounds.extend(point);
             }
         }
-        
+
         var opts = {
             strokeColor: config.presets.polyline.color,
             strokeWeight: config.presets.polyline.width,
@@ -150,30 +165,15 @@ function initmap(config, markers) {
         
         
         map.addListener(polyline, "endline", function() {
-            var pts = [];
-            for (i = 0; i < polyline.getVertexCount(); i++) {
-                pts.push(polyline.getVertex(i));
-            }
-            
-            var lats = "";
-            var lngs = "";
-            for(var i = 0; i < pts.length; i++) {
-                lats += pts[i].lat(); 
-                lngs += pts[i].lng();
-                if(i != pts.length - 1) {
-                    lats += ",";
-                    lngs += ",";
-                }
-            }   
-            document.getElementById(config.formname + "_" + id + "_lat").value = lats
-            document.getElementById(config.formname + "_" + id + "_lng").value = lngs
+            set_polyvals(id, polyline)
         });
 
         polyline.setMap(map)
+        console.log(polyline)
         
-        return id;
     }
-    
+
+
     function create_new_instance(index, type) {
         var formname = config.formname
         
@@ -208,7 +208,7 @@ function initmap(config, markers) {
         newinput_type.setAttribute("type", "hidden");
         newinput_type.setAttribute("name", formname + "[" + index + "]" + "[type]");
         newinput_type.setAttribute("id", html_id + "_" + index + "_type");
-        newinput_type.setAttribute("value", "point");
+        newinput_type.setAttribute("value", type);
         newdiv.appendChild(newinput_type);
         
         var newdiv_search = document.createElement('div');
@@ -271,49 +271,32 @@ function initmap(config, markers) {
             m_span.appendChild(t);
             newdiv_parent.appendChild(m_span);
             newdiv.appendChild(newdiv_parent);
-        }               
-        
-        //EDIT POLY
-        if(type == 'poly') {
-            var newinput_edit_poly_button = document.createElement("input");
-            newinput_edit_poly_button.className = "button";
-            newinput_edit_poly_button.setAttribute("type","button");
-            newinput_edit_poly_button.setAttribute("name","edit_poly_button_" + index);
-            newinput_edit_poly_button.setAttribute("id", "edit_poly_button_" + index);
-            newinput_edit_poly_button.setAttribute("value",t_edit_poly);
-            newinput_edit_poly_button.style.cssText = "float:left;margin-right:5px;";
-            newinput_edit_poly_button.onclick = function(){
-                edit_poly(index);
-                return true;
-            };
-            newdiv.appendChild(newinput_edit_poly_button);
         }
         
         var brbr = document.createElement("br");
         newdiv.appendChild(brbr);
         
-        var brbr = document.createElement("br");
-        newdiv.appendChild(brbr);
-        
-        //POINTING
-        var p  = document.createElement("p");
-        var t = document.createTextNode(t_kategorie);
-        var attr = document.createAttribute("style")
-        //p.setAttribute('style','min-width:100px;float:left;');
-        p.style.cssText = "min-width:100px;float:left;";
-        p.appendChild(t);
-        newdiv.appendChild(p);  
-        var newinput_point = document.createElement("select");
-        newinput_point.setAttribute("name", formname + "[" + index + "]" + "[kat]")
-        newinput_point.setAttribute("id", formname + "_" + index + "_kat")
-        for(var i = 0; i < config.marker_types.length; i++) {
-            var marker = config.marker_types[i]
-            var option_point = document.createElement("option");
-            option_point.setAttribute("value", marker["value"]);
-            option_point.innerHTML = marker["selection_name"];
-            newinput_point.appendChild(option_point);
+        if (type == 'point') {
+            //POINTING
+            var p  = document.createElement("p");
+            var t = document.createTextNode(t_kategorie);
+            var attr = document.createAttribute("style")
+            //p.setAttribute('style','min-width:100px;float:left;');
+            p.style.cssText = "min-width:100px;float:left;";
+            p.appendChild(t);
+            newdiv.appendChild(p);  
+            var newinput_point = document.createElement("select");
+            newinput_point.setAttribute("name", formname + "[" + index + "]" + "[kat]")
+            newinput_point.setAttribute("id", formname + "_" + index + "_kat")
+            for(var i = 0; i < config.marker_types.length; i++) {
+                var marker = config.marker_types[i]
+                var option_point = document.createElement("option");
+                option_point.setAttribute("value", marker["value"]);
+                option_point.innerHTML = marker["selection_name"];
+                newinput_point.appendChild(option_point);
+            }
+            newdiv.appendChild(newinput_point);
         }
-        newdiv.appendChild(newinput_point);
         
         var brbr = document.createElement("br");
         newdiv.appendChild(brbr);
@@ -382,8 +365,8 @@ function initmap(config, markers) {
 
     function box_handlers(id) {
         var marker = markers[id]
-        
-        document.getElementById(config.formname+'_'+id+'_kat').onchange = function() { 
+        var cat_select = document.getElementById(config.formname+'_'+id+'_kat')
+        if (cat_select) cat_select.onchange = function() { 
             var kat = this.value
             var icon = config.icon_types[kat];
             
@@ -410,11 +393,11 @@ function initmap(config, markers) {
             show_box(id);                                
         });
         
-        map.addListener(marker, "mouseover", function() {
+        marker.addListener("mouseover", function() {
             document.getElementById('mapmenu_box_' + id).style.background = "#FFF";
         });
         
-        map.addListener(marker, "mouseout", function() {
+        marker.addListener("mouseout", function() {
             document.getElementById('mapmenu_box_' + id).style.background = "none";
         });
         
