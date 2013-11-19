@@ -56,7 +56,7 @@ defined('PICTURE_RESIZE') or define('PICTURE_RESIZE', 'm' );
 defined('PICTURE_MAX_SIZE') or define('PICTURE_MAX_SIZE', 1000);
 
 // default thumbnail and alt size
-defined('PICTURE_TH_SIZE') or define('PICTURE_TH_SIZE', 100); 
+defined('PICTURE_TH_SIZE') or define('PICTURE_TH_SIZE', 200); 
 defined('PICTURE_ALT_SIZE') or define('PICTURE_ALT_SIZE', 250);
 
 // how much files can a user maximal upload with the filemgr
@@ -66,7 +66,7 @@ defined('FILE_MAX_UPLOAD_COUNT') or define('FILE_MAX_UPLOAD_COUNT', 15);
 defined('DEFAULT_MANAGER_STYLE') or define('DEFAULT_MANAGER_STYLE', 'list');
 
 // Maximum width of thumbanils in filemanager
-defined('FILE_SHOW_THUMB_MAX') or define('FILE_SHOW_THUMB_MAX', 100);
+defined('FILE_SHOW_THUMB_MAX') or define('FILE_SHOW_THUMB_MAX', 200);
 
 // Quality for JPEG
 defined('QUALITY') or define('QUALITY', 95);

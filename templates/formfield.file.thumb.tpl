@@ -1,1 +1,1 @@
-{thumbnail link=true file=$fileinfo width=100 height=100}
+{thumbnail link=true file=$fileinfo width=200 height=100}

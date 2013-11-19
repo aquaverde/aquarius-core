@@ -42,7 +42,7 @@
 <body {$showSupportMessage}>
     <div id="header">
         <div id="logo">
-            <a href="./" target="_parent"><img src="picts/logo.gif" border="0" style="vertical-align: middle;" alt="aquarius version {$smarty.const.AQUARIUS_VERSION}" title="aquarius version {$smarty.const.AQUARIUS_VERSION}" /></a>
+            <a href="./" target="_parent"><img src="picts/logo_top.png" border="0" style="vertical-align: middle;" alt="aquarius version {$smarty.const.AQUARIUS_VERSION}" title="aquarius version {$smarty.const.AQUARIUS_VERSION}" /></a>
         </div>
         <div class="title">
        {if $user->isSuperadmin()}
