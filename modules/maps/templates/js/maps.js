@@ -7,6 +7,7 @@ function initmap(config, markers_in) {
     var html_id = config.htmlid
     var default_icon = config.icon_types[Object.keys(config.icon_types)[0]]
     var bounds = new google.maps.LatLngBounds();
+    var fit_bounds = markers_in.length > 0;
     
     var mapOptions = {
         zoom: config.presets.position.zoom,
@@ -29,10 +30,8 @@ function initmap(config, markers_in) {
                 add_poly(m["lat"], m["lng"], id);
             }
             box_handlers(id)                 
-        })()       
+        })()
     }
-    
-    map.fitBounds(bounds);
 
     var drawingManager = new google.maps.drawing.DrawingManager({
         drawingMode: null,
@@ -384,11 +383,18 @@ function initmap(config, markers_in) {
         map.addOverlay(kml);
     }
 
+    
+    function resize() {
+        if (fit_bounds) {
+            fit_bounds = false;
+            map.fitBounds(bounds)
+            google.maps.event.addListenerOnce(map, 'bounds_changed', function() { if (map.getZoom() > 12) map.setZoom(12); });
+        }
 
-    /* returns a function that can be called when the map must be resized */
-    return function() {
         var center = map.getCenter();
         google.maps.event.trigger(map, 'resize');
         map.setCenter(center);
     }
+    
+    return resize;
 }
