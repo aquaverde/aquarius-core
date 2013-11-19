@@ -4,6 +4,7 @@
   * @param file filename of the library
   * @param multiple optionally the library can be included multiple times. Setting this flag causes the function to ignore whether the library has been included already and does not mark it as included
   * @param lib optional flag to use the lib dir (templates/js/lib), default false
+  * @param defer optional flag to enable deferred loading
 */
 function smarty_function_include_javascript($params, &$smarty) {
     if (!isset($smarty->_included_javascript)) $smarty->_included_javascript = array();
@@ -21,8 +22,13 @@ function smarty_function_include_javascript($params, &$smarty) {
         $action = action_file::make($location, $file);
         $url = new Url('admin.php');
         $url->add_param($action);
+        
+        $defer = '';
+        if (get($params, 'defer', false)) {
+            $defer = " defer='defer'";
+        }
 
-        $result = '<script type="text/javascript" src="'.str($url).'"></script>';
+        $result = '<script type="text/javascript" src="'.str($url).'"'.$defer.'></script>';
 
         if (!$multiple) $smarty->_included_javascript[] = $file;
     }
