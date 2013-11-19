@@ -1,7 +1,7 @@
 "use strict";
 
-function initmap(config, markers) {
-    var makers = []
+function initmap(config, markers_in) {
+    var markers = [];
     var external_added = false
     var icon_types = config.icon_types
     var html_id = config.htmlid
@@ -15,11 +15,11 @@ function initmap(config, markers) {
         disableDoubleClickZoom: true
     }
 
-    var map_container = document.getElementById("map_"+config.htmlid, mapOptions)
+    var map_container = document.getElementById("map_"+config.htmlid)
 
     var map = new google.maps.Map(map_container, mapOptions)
 
-    for (var i = 0; i < markers.length; i++) {
+    for (var i = 0; i < markers_in.length; i++) {
         (function() { // scoping the id for the closures, sorry
             var id = i
             if(markers[i]["type"] == "point") {
@@ -239,7 +239,6 @@ function initmap(config, markers) {
             var p  = document.createElement("p");
             var t = document.createTextNode(t_kategorie);
             var attr = document.createAttribute("style")
-            //p.setAttribute('style','min-width:100px;float:left;');
             p.style.cssText = "min-width:100px;float:left;";
             p.appendChild(t);
             newdiv.appendChild(p);  
@@ -263,7 +262,6 @@ function initmap(config, markers) {
         var p  = document.createElement("p");
         var t = document.createTextNode(t_titel);
         attr = document.createAttribute("style")
-        //p.setAttribute('style','min-width:100px;float:left;');
         p.style.cssText = "min-width:100px;float:left;";
         p.appendChild(t);
         newdiv.appendChild(p);
@@ -282,7 +280,6 @@ function initmap(config, markers) {
         var p  = document.createElement("p");
         var t = document.createTextNode(t_beschreibung);
         attr = document.createAttribute("style")
-        //p.setAttribute('style','min-width:100px;float:left;');
         p.style.cssText = "min-width:100px;float:left;";
         p.appendChild(t);
         newdiv.appendChild(p);
@@ -300,7 +297,6 @@ function initmap(config, markers) {
         var p  = document.createElement("p");
         var t = document.createTextNode(t_link);
         attr = document.createAttribute("style")
-        //p.setAttribute('style','min-width:100px;float:left;');
         p.style.cssText = "min-width:100px;float:left;";
         p.appendChild(t);
         newdiv.appendChild(p);
