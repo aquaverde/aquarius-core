@@ -8,41 +8,56 @@ class Maps extends Module {
     var $register_hooks = array('menu_init', 'init_form', 'smarty_config', 'smarty_config_backend', 'smarty_config_frontend');
     
     var $short = "maps";
-    var $name  = "Google Maps Modul";
+    var $name  = "Google Maps fields";
+    
+    var $presets;
     
     function initialize($aquarius) {
         parent::initialize($aquarius);
         
-        // Read Google Maps key from domain config if it has not been configured yet
-        if (!defined('MAP_KEY')) {
-            $request_domain = $_SERVER['HTTP_HOST'];
-            $map_key = $aquarius->domain_conf->get($request_domain, 'maps_key');
-            if ($map_key) {
-                Log::debug("Google Maps key used for $request_domain: $map_key");
-                define('MAP_KEY', $map_key);
-            } else {
-                Log::warn("Unable to find Google Maps key for $request_domain");
-            }
+        $this->presets = new Maps_Presets(
+            $this->conf('api_key'),
+            $this->conf('position', array()),
+            $this->conf('polyline', array()),
+            'gmapc'
+        );
+        
+        /* DEPRECATED */
+        if (defined('MAP_DEFAULT_LAT'))  $this->presets->position['lat'] =  MAP_DEFAULT_LAT;
+        if (defined('MAP_DEFAULT_LNG'))  $this->presets->position['lon'] =  MAP_DEFAULT_LNG;
+        if (defined('MAP_DEFAULT_ZOOM')) $this->presets->position['zoom'] = intval(MAP_DEFAULT_ZOOM);
+
+        if (strlen($this->presets->api_key) < 1) {
+            Log::debug("No maps API key configured");
         }
         
+        /* DEPRECATED */
+        if (!defined('MAP_KEY')) define('MAP_KEY', $this->presets->api_key);
     }
-    
+
+
     function init_form($formtypes) {
-        $formtypes->add_formtype(new Formtype_googlemaps('gmap'));
+        $mapstype = new Formtype_googlemaps('gmap');
+        
+        // Poor man's dependency injection
+        $mapstype->presets = $this->presets;
+        
+        $formtypes->add_formtype($mapstype);
     }
-    
+
+
     function menu_init($menu, $lg) {
         $menu->add_entry(
             'menu_modules',
             300,
             new Menu('maps_menu', false, false, array(
-            	1 => new Menu('maps_edit', Action::make('maps','showmap', $lg))
+                1 => new Menu('maps_edit', Action::make('maps','showmap', $lg))
             ))
-       	);
+        );
     }
 
     
-    function create_marker($point,$node_id,$cache_title,$lg) {
+    function create_marker($point, $node_id, $cache_title, $lg) {
  
 		if(empty($point['type'])) continue;
 	
@@ -287,4 +302,3 @@ class Maps extends Module {
 		return $categories;
 	}
 }
-?>

@@ -333,22 +333,5 @@ div.nodetree_node:hover { background-color: #bedce7; }
 .nodetree_title_content { font-weight: normal; }
 
 
-/* google Maps */
-#mapContent { margin-top:5px; }
-#map { border: 1px solid #6286a0; height:400px; }
-.mapmenu_box { border: 1px solid #6286a0; border-top: none; padding: 8px 10px 2px 10px; position: relative; font-size: 11px; height:auto; min-height:25px; }
-.mapmenu_box_search { font-size: 11px; float: right; }
-.mapmenu_box input { border: 1px solid #6286a0; margin-bottom: 4px; font-size: 11px; }
-.mapmenu_box input[type="checkbox"] { border: none; }
-.mapmenu_box input[type="radio"] { border: none; }
-.mapmenu_box .button { width: inherit; font-size: 11px; font-weight: normal; padding: 0px 4px; background-color: #F2F2F2; border-top: 1px solid #CCCCCC; border-right: 1px solid #666666; border-bottom: 1px solid #666666; border-left: 1px solid #CCCCCC; }
-.mapmenu_box select { font-size: 11px; border: default; margin-bottom: 4px; }
-.mapmenu_box .gmap-textfield { width: 250px; }
-.mapmenu_box textarea { font-size: 11px; width:250px; height:65px; border: 1px solid #6286a0; margin-bottom: 4px; }
-.mapmenu_box label { padding: 0; margin:0; position:relative; font-size: 11px; }
-.mapmenu_box .mapmenu_box_hasparent { font-size: 11px;
- }
-
-
 /* file selection popup */
 body.file_select { min-width: 300px; }
