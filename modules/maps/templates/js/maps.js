@@ -20,16 +20,16 @@ function initmap(config, markers_in) {
     var map = new google.maps.Map(map_container, mapOptions)
 
     for (var i = 0; i < markers_in.length; i++) {
+        var m = markers_in[i];
         (function() { // scoping the id for the closures, sorry
             var id = i
-            if(markers[i]["type"] == "point") {
-                add_marker(markers[i]["lat"],markers[i]["lng"],markers[i]["kat"], id);
+            if(m["type"] == "point") {
+                add_marker(m["lat"], m["lng"], m["kat"], id);
             } else {
-                add_poly(markers[i]["lat"],markers[i]["lng"], id);
+                add_poly(m["lat"], m["lng"], id);
             }
             box_handlers(id)                 
-        })()
-            
+        })()       
     }
     
     map.fitBounds(bounds);

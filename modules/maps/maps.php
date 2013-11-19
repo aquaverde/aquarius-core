@@ -25,7 +25,7 @@ class Maps extends Module {
         /* DEPRECATED */
         if (defined('MAP_DEFAULT_LAT'))  $this->presets->position['lat'] =  MAP_DEFAULT_LAT;
         if (defined('MAP_DEFAULT_LNG'))  $this->presets->position['lon'] =  MAP_DEFAULT_LNG;
-        if (defined('MAP_DEFAULT_ZOOM')) $this->presets->position['zoom'] = MAP_DEFAULT_ZOOM;
+        if (defined('MAP_DEFAULT_ZOOM')) $this->presets->position['zoom'] = intval(MAP_DEFAULT_ZOOM);
 
         if (strlen($this->presets->api_key) < 1) {
             Log::debug("No maps API key configured");
