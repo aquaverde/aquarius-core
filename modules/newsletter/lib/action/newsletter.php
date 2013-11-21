@@ -52,7 +52,7 @@ class action_newsletter extends ModuleAction {
     }
 
 
-    function send($recipients, $edition_node, $lg, $notify_on_send = false) {
+    function send($recipients, $edition_node, $lg, $notify_on_send = false, $notify_on_error = false) {
         global $aquarius;
         $smarty = $aquarius->get_smarty_frontend_container($lg);
         $edition = new Newsletter_Edition($edition_node, $lg, $smarty);
@@ -60,7 +60,7 @@ class action_newsletter extends ModuleAction {
         $transport = $this->module->get_mail_transport();
         
         Log::info("Sending newsletter edition $edition_node ($lg) to ".count($recipients)." recipients. Header: ".print_r($edition->header(), true));
-        return $transport->send($recipients, $edition, $notify_on_send);
+        return $transport->send($recipients, $edition, $notify_on_send, $notify_on_error);
     }
 
 
@@ -596,11 +596,19 @@ class Action_Newsletter_Send_It extends Action_Newsletter implements ChangeActio
                 // Prepare address_id lookup table for the mark_as_sent callback
                 $this->_address_ids = array_flip($recipients);
                 $sent_callback = array($this, 'mark_as_sent');
+                
+                $warnmessage = new AdminMessage('warn');
+                $warnmessage->add_line('newsletter_failed_sending');
+                $error_reporter = new Error_Reporter($warnmessage);
 
                 // Send to recipients
-                $count = $this->send($checked_recipients['valid'], $edition_node, $lg, $sent_callback);
+                $count = $this->send($checked_recipients['valid'], $edition_node, $lg, $sent_callback, array($error_reporter, 'register_error'));
                 $total_count += $count;
                 $message->add_line('newsletter_sent_n_lg', $count, $language['name']);
+                
+                if ($error_reporter->count) {
+                    $result->add_message($warnmessage);
+                }
             }
         }
         $message->add_line('newsletter_sent_to_n', $total_count);
@@ -636,13 +644,32 @@ class Action_Newsletter_Send_Test extends Action_Newsletter implements ChangeAct
         if (count($checked_recipients['valid']) > 0) {
             $edition_node = db_Node::get_node($this->edition_id);
             $message = new AdminMessage('info');
+            
+            $warnmessage = new AdminMessage('warn');
+            $warnmessage->add_line('newsletter_failed_sending');
+            $error_reporter = new Error_Reporter($warnmessage);
+            
             foreach($this->available_languages($edition_node) as $language) {
                 if (in_array($language['lg'], $selected_lgs)) {
-                    $count = $this->send($checked_recipients['valid'], $edition_node, $language['lg']);
+                    $count = $this->send($checked_recipients['valid'], $edition_node, $language['lg'], false, array($error_reporter, 'register_error'));
                     $message->add_line('newsletter_sent_n_lg', $count, $language['name']);
                 }
             }
             if ($count > 0) $result->add_message($message);
+            if ($error_reporter->count) $result->add_message($warnmessage);
         }
+    }
+}
+
+
+class Error_Reporter {
+    function __construct($warnmessage) {
+        $this->warnmessage = $warnmessage;
+        $this->count = 0;
+    }
+    
+    function register_error($addresses, $message) {
+        $this->count += 1;
+        $this->warnmessage->add_html(join(',', $addresses).": ".$message);
     }
 }

@@ -49,6 +49,7 @@
     newsletter_send_to_n_recipients = "Send newsletter "%s" to %d recipients?"
     newsletter_invalid_addresses    = "Inalid addresses: %s"
     newsletter_sent_n_lg            = "Newsletter sent to %d recipients (%s)."
+    newsletter_failed_sending       = "Failure to send to the following recipients:"
     newsletter_sent_to_n            = "Newsletter sent to %d recipients in total."
     
 ?>
