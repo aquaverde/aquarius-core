@@ -290,7 +290,7 @@ div.editcontrols input { border: none; padding: 0; }
 .dynform_table { margin-top: 10px ; width: 100% ; }
 .dynform_block_td { background: #ECF0F4 ; padding: 10px ; padding-top: 2px ; padding-bottom: 2px ; }
 .dynform_seperator_td { height: 10px ; background: clear ; }
-.dynform_line_wrapper { width: 100% ; border-bottom: 1px solid #6488A1 ; padding-top: 3px ; padding-bottom: 3px ; height: 14px ; }
+.dynform_line_wrapper { width: 100% ; border-bottom: 1px solid #6488A1 ; padding-top: 3px ; padding-bottom: 3px ; height: 27px ; }
 .dynform_line_wrapper:hover { background-color: #DDE1E5; }
 .dynform_line_wrapper_no_border { width: 100% ; padding-top: 5px ; padding-bottom: 5px ; clear: both ; }
 .dynform_block_header { font-weight: bold ; float: left ; width: 80% ; }
