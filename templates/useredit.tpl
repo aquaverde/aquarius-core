@@ -53,10 +53,10 @@
     {/if}
 {/if}
 		{action action="user:saveUser:`$user->id`"}
-			<input type="submit" name="{$action}" value="{#s_done#}" class="submit"/>
+			<input type="submit" name="{$action}" value="{#s_done#}" class="btn btn-primary"/>
     	{/action}
     	&nbsp;
-    	<input type="submit" name="" value="{#s_cancel#}" class="cancel"/>	
+    	<input type="submit" name="" value="{#s_cancel#}" class="btn btn-default"/>	
 	</div>
 
 {if $nodelist}
@@ -96,10 +96,10 @@
 
 {if $nodelist}
         {action action="user:saveUser:`$user->id`"}
-            <input type="submit" name="{$action}" value="{#s_done#}" class="submit"/>
+            <input type="submit" name="{$action}" value="{#s_done#}" class="btn btn-primary"/>
         {/action}
         &nbsp;
-        <input type="submit" name="" value="{#s_cancel#}" class="cancel"/>  
+        <input type="submit" name="" value="{#s_cancel#}" class="btn btn-default"/>  
 {/if}
 
 </form>

@@ -1,1 +1,1 @@
-<input class="ef" type="text" name="{$field.formname}" value="{$field.value|escape}" id="{$field.htmlid}"/>
+<input class="form-control" type="text" name="{$field.formname}" value="{$field.value|escape}" id="{$field.htmlid}"/>
