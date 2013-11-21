@@ -60,6 +60,7 @@
     newsletter_send_to_n_recipients = "Envoyer newsletter "%s" à %d destinataires?"
     newsletter_invalid_addresses    = "Adresses pas valables: %s"
     newsletter_sent_n_lg            = "Newsletter envoyée à %d destinataires (%s)."
+    newsletter_failed_sending       = "Erreur envoyer aux destinateurs suivants:"
     newsletter_sent_to_n            = "Newsletter envoyée à %d destinataires en total."
     
 ?>

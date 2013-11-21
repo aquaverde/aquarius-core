@@ -23,12 +23,13 @@ class Mail_Transport_Chunked {
       * @param $recipients a list of email addresses to send to. Plain mail addresses only, RFC822 quoted stuff currently not supported.
       * @param $message something that responds to header() and body() calls.
       * @param $notify_on_send When present, this function is called with each chunk of addresses when a mail was sent to them.
+      * @param $notify_on_error When present, this function is called when a chunk of addresses was not sent due to an error. If this is omitted, an exception is thrown and sending is aborted.
       * @return the recipients count
       *
       * Mail headers are converted to the ISO-8859-1 encoding. In 2010 there is still no reliable way (with the tools we use) to prepare mails in Unicode, especially the headers.
       *
       */
-    function send($recipients, $message, $notify_on_send = false) {
+    function send($recipients, $message, $notify_on_send = false, $notify_on_error = false) {
         $mime = new Mail_mime("\n"); // For some reason the Pear Mail class expects newline-only mails
         $mime->setHTMLBody($message->body());
         $build_params = array(
@@ -58,6 +59,8 @@ class Mail_Transport_Chunked {
             }
         }
         $ordered = array_flatten($grouped_by_domain);
+        
+        $sent_count = 0;
         foreach(array_chunk($ordered, $this->max_rcpt) as $index => $recipients_chunk) {
             if ($this->delay_per_rcpt > 0 && $index !== 0) {
                 $delay = $this->max_rcpt * $this->delay_per_rcpt;
@@ -65,16 +68,19 @@ class Mail_Transport_Chunked {
                 sleep($delay);
             }
             Log::debug("Sending mail to ".print_r($recipients_chunk, true));
-            $send_report = $this->transport->send($recipients_chunk, $mail_header, $mail_body);
-
-            if (PEAR::isError($send_report)) { 
-                throw new Exception($send->getMessage());
+            try {
+                $send_report = $this->transport->send($recipients_chunk, $mail_header, $mail_body);
+            } catch (Exception $e) {
+                if ($notify_on_error) {
+                    call_user_func($notify_on_error, $recipients_chunk, $e->getMessage());
+                    continue; // ON ERROR RESUME NEXT
+                } else {
+                    throw $e;
+                }
             }
-
             if ($notify_on_send) call_user_func($notify_on_send, $recipients_chunk);
+            $sent_count += count($recipients_chunk);
         }
-
-        return count($recipients);
+        return $sent_count;
     }
 }
-?>
