@@ -1,8 +1,8 @@
 /* bootstrap override */
 
 h1, h2, h3 { margin-bottom: 10px; margin-top: 0px;}
-.form-control { height: auto; font-size: 13px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 0px; width: 98%; }
-hr { margin: 0 0 20px 0; border-color:#ccc; }
+.form-control { height: auto; font-size: 13px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 2px; box-shadow: none; width: 98%; }
+hr { margin: 0 0 10px 0; border-color:transparent; }
 .btn { border-radius: 2px; margin-right: 10px;}
 .btn-primary { background-color: #009DE5 }
 .radio, .checkbox { display: inline; min-height: 10px;}
@@ -159,7 +159,7 @@ label.inline { display: inline; padding-bottom: 3px; border: none;padding-top: 0
 .ef, .mle, .code { width: 99%; border: 1px solid #8f8f8f; }
 .code { font-family: Monaco, "Courier New", Courier, monospace; font-size: 11px; }
 input.checkbox { border: none; vertical-align:middle; }	
-.inputsmall { border: 1px solid #8f8f8f; }
+.inputsmall { font-size: 13px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 2px; color: #555; }
 img.label_img {vertical-align: middle; cursor:help; float:right; margin-right: 5px; margin-top: 1px;}
 .permission_level0 { background: url(../buttons/permission_superadmin.gif) right 4px no-repeat; margin-right: 3px;}
 .permission_level1 { background: url(../buttons/permission_siteadmin.gif) right 4px no-repeat; margin-right: 3px;}
@@ -278,7 +278,7 @@ ul.tabs li.active { background-color: #F3F3F3; border: 1px solid #f3f3f3 ; borde
 .contentedit_checkbox label { margin-left: 18px; border: none;}
 .contentedit_nodelist input { display: inline; }
 .contentedit_nodelist label { display: inline; }
-.contentedit_date input { padding-bottom: 1px; }
+.contentedit_date input { }
 .contentedit_date img { margin-bottom: -2px; }
 .contentedit_nodelist { margin-top: 10px; }
 .contentedit_link tr:hover { background-color: inherit;	 } 
