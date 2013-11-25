@@ -5,7 +5,7 @@
 	<div class="">
 		<h2>{#s_cms_users#}</h2>
 		
-		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table table-bordered">
+		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table">
 			<tr>
 				<th>&nbsp;</th>
 				<th>{#s_users#}</th>

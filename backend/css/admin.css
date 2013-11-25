@@ -44,8 +44,8 @@ div.message.info h1 { color: #513200; font-size: 14px; font-weight: bold; margin
 
  
 /* links elements */
-a { color: #009DE5; text-decoration: none; }
-a:hover	{ color: #000; }	
+a { color: #666; text-decoration: none; font-weight: bold; }
+a:hover	{ color: #009DE5; text-decoration: none; }	
 
 
 /* outer boxes */
@@ -68,7 +68,7 @@ a:hover	{ color: #000; }
 /* table 3 */
 .table3 { border: none; padding: 0; width: 100% !important; width: 95%; margin-top: 10px; margin-bottom: 25px; }
 .table3 tr { height: 20px; }
-.table3 th, .table2 td { padding: 0; border: none; line-height: 9px }
+.table3 th, .table2 td { padding: 5px 0; border: none; line-height: 10px }
 .table3 th { text-align: left; background-color: #fff; }
 .table3 tr:hover, .tabledialog tr:hover{ background-color: #BEDCE7; }
 .table3 tr.nohover:hover, .table tr.nohover:hover { background-color: #fff; }

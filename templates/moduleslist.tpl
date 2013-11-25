@@ -2,10 +2,10 @@
 <h1>Modules administration</h1>
 
 <form action="" method="post">
-	<div class="bigbox">
+	<div class="">
 		<div class="bigboxtitle"><h2>Modules</h2></div>
 		
-		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table2">
+		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table table-condensed table-striped">
 			<tr>
 				<th>&nbsp;</th>
                 <th>Shortcut</th>
@@ -13,7 +13,7 @@
 				<th>&nbsp;</th>
 			</tr>
 		{foreach from=$modules item="module"}
-			<tr class="{cycle values="even,odd"}">
+			<tr>
 				<td width="25">&nbsp;
 			            {activationbutton action="modules:toggle_active:`$module->id`" active=$module->active}
 				</td>

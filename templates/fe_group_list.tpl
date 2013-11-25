@@ -2,13 +2,13 @@
 
 <h1>{#s_groups#}</h1>
 
-<div class="bigbox">
+<div class="">
 	<div class="bigboxtitle"><h2>{#s_groups#}</h2></div>
 
-	<table width="100%" border="0" cellpadding="0" cellspacing="0"  class="table2" style="margin-top:10px;">
+	<table class="table">
 
 		{foreach from=$groups item="group"}
-			<tr class="{cycle values="even,odd"}">
+			<tr>
 				<td nowrap="nowrap" align="left">
 					&nbsp;
 				  {action action="fegroup:toggle_active:`$group->id`:0}
@@ -18,10 +18,10 @@
 				  {/action}
 				  
 				  {action action="fegroup:edit:`$group->id`:"}
-					<a href="admin.php{url action=$action action1=$lastaction}">{$group->name}({$group->id})</a>
+					<a href="admin.php{url action=$action action1=$lastaction}">{$group->name} ({$group->id})</a>
 				  {/action}
 				</td>
-				<td valign="middle" align="right" class="linebottomlight">
+				<td valign="middle" align="right">
 				  {action action="fegroup:edit:`$group->id`:"}
 					<a href="admin.php{url action=$action action1=$lastaction}">
 						<img src="buttons/edit.gif" border="0" alt="edit" />
@@ -39,20 +39,12 @@
 				</td>
 			</tr>
 		{/foreach}
-		
-		{*NEW button*}
-		<tr class="bottom">
-			<td colspan="2" width="40" nowrap="nowrap" valign="top" align="right">&nbsp;
-			  {action action="fegroup:edit:null:"}
-				<a href="admin.php{url action=$action action1=$lastaction}">
-					<img src="buttons/new.gif" border="0" alt="new" />
-				</a>
-			  {/action}
-			</td>
-		</tr>
-
 	</table>
-
+    {action action="fegroup:edit:null:"}
+    <a href="admin.php{url action=$action action1=$lastaction}" class="btn btn-sm btn-default btn-success">
+        <span class="glyphicon glyphicon-neg glyphicon-plus-sign white"></span> {#s_new#}
+    </a>                
+    {/action}
 
 </div>
 
