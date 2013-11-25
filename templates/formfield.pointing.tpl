@@ -27,7 +27,7 @@
         type='button'
         name=''
         value='{$field.popup_action->get_title()}'
-        class='button'
+        class='btn btn-default btn-xs'
         onclick='open_attached_popup("{$simpleurl->with_param($field.popup_action)}&selected="+$("{$field.htmlid}_selected").value, {$field.htmlid|json}, "height=600,width=500,status=yes,resizable=yes,scrollbars=yes"); return false;'>{$field.popup_action->get_title()}
     </button>    
     <div class="dim" id="{$field.htmlid}_titlebox" style="margin-top: 3px; {if $field.selected_nodes|@count  == 0}display: none{/if}">

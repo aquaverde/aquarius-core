@@ -2,8 +2,8 @@
 
 h1, h2, h3 { margin-bottom: 10px; margin-top: 0px;}
 .form-control { height: auto; font-size: 13px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 2px; box-shadow: none; width: 98%; }
-hr { margin: 0 0 10px 0; border-color:transparent; }
-.btn { border-radius: 2px; margin-right: 10px;}
+hr { margin: 0 0 10px 0; border-color:#ccc; }
+.btn { border-radius: 3px; margin-right: 10px;}
 .btn-primary { background-color: #009DE5 }
 .radio, .checkbox { display: inline; min-height: 10px;}
 
@@ -44,8 +44,8 @@ div.message.info h1 { color: #513200; font-size: 14px; font-weight: bold; margin
 
  
 /* links elements */
-a { color: #000000; text-decoration: none; }
-a:hover	{ color: #4D6B7F; }	
+a { color: #009DE5; text-decoration: none; }
+a:hover	{ color: #000; }	
 
 
 /* outer boxes */
@@ -104,7 +104,7 @@ ul { margin: 0; padding: 0; list-style-position: inherit; list-style-type: none;
 .dim, .toolbox a.dim { color: #8f8f8f; font-style: italic; }
 .title	{ font-size: 21px; color: #8AA5B8; }
 #path { font-size: 12px; color: #8AA5B8; }
-#path a { color: #8AA5B8; }	
+#path a { color: #009DE5; }	
 .redFont { font-size: 11px; color: #CC0000; }
 .white { color: #fff; }
 .on	{ font-size: 11px; color: #CC0000; font-weight: bold; }
@@ -120,8 +120,9 @@ p.spiner, p.action { margin: 3px 0; padding: 0; }
 
 /* toolbar */
 #toolbar { background-color: #E3E3E3; border: 0px #ccc solid; height: 28px; padding: 2px 10px 0 2px; margin-bottom: 10px; color: #000; }
-#toolbar .separator { float: left; border-right: solid #ccc 1px; padding: 2px 8px; padding-top: 1px; height: 18px; vertical-align: middle; line-height: 18px; font-size: 11px; }
+#toolbar .separator { float: left; border-right: solid #ccc 1px; padding: 2px 8px; padding-top: 3px; height: 18px; vertical-align: middle; line-height: 18px; font-size: 11px; }
 #toolbar a, #toolbar select { color: #000; font-size: 11px; }
+#toolbar a:hover { color: #009DE5 }
 #toolbar select { vertical-align: middle; /*border: solid #8f8f8f 1px;*/ }
 .iconbar img { padding: 0 4px; vertical-align: middle; }
 .formbar img { padding-top: 0px; }
@@ -259,10 +260,10 @@ table.formadmin tr:hover { background-image: url(../picts/bkg5.gif); }
 
 
 /* Styles for the contentedit pages */
-div.contentedit { clear: left; border-top: 1px #f5f5f5 solid; padding-top: 2px; margin-top: 0px;  margin-bottom: 10px;}
+div.contentedit { clear: left; border-top: 1px #ccc solid; padding-top: 5px; margin-top: 0px;  margin-bottom: 15px;}
 #tabbox { margin: 0; padding: 0; }
 ul.tabs { position: absolute; top: -31px; left: -1px; /* compensate border */ }
-ul.tabs li { display: block; float: left; font-weight: bold; border: 1px solid #f3f3f3; border-bottom: transparent; margin-right: 5px; padding: 6px 12px 5px 12px; background-color: transparent; cursor: pointer; z-index:-10; font-size: 13px; line-height: 18px;}
+ul.tabs li { display: block; float: left; font-weight: bold; border: 1px solid #ccc; border-bottom: transparent; margin-right: 5px; padding: 6px 12px 5px 12px; background-color: transparent; cursor: pointer; z-index:-10; font-size: 13px; line-height: 18px;}
 ul.tabs li.active { background-color: #F3F3F3; border: 1px solid #f3f3f3 ; border-bottom: 1px solid #F3F3F3 ; }
 
 .contentedit_ef .ef, .contentedit_ef .mle, .contentedit_select .select { margin-bottom: 0; }
@@ -344,7 +345,8 @@ div.nodetree_node:hover { background-color: #f5f5f5; }
 #nodetree span.nodetree_title img { padding: 0; margin: 0; vertical-align: middle; }
 #nodetree span.contenttitle { padding-top: 0px; vertical-align: middle; }
 
-#nodetree a:hover { text-decoration:none;}
+#nodetree a { color: #000; }
+#nodetree a:hover { color: #009DE5; text-decoration:none;}
 
 /* Make titles of first two levels bold */
 .nodetree_title { font-weight: bold; }
