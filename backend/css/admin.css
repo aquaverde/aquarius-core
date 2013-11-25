@@ -334,9 +334,9 @@ filter: alpha(opacity=50); -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(O
 
 /* nodetree customization */
 div.nodetree_row img { vertical-align: middle; }
-div.nodetree_row { background-color: #f5f5f5; height: 22px; vertical-align: middle; }
+div.nodetree_row { height: 23px; vertical-align: middle; border-top: 1px solid #e0e0e0; }
 div.odd { background-color: white; }
-div.nodetree_node:hover { background-color: #dceaef; }
+div.nodetree_node:hover { background-color: #f5f5f5; }
 .nodetree_icon { background-color: white; vertical-align: middle; }
 #nodetree div.nodetree_row { vertical-align: middle; }
 #nodetree span.title { padding: 0; margin: 0; vertical-align: middle; }
