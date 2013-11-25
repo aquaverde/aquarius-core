@@ -70,7 +70,7 @@
                 <td width="80%">
                     <input type="text"
                            name="wording[{$word->keyword|escape}]"
-                           value="{$word->translation|escape}" style="margin:0;" class="ef" />
+                           value="{$word->translation|escape}" style="margin:0;" class="form-control" />
                 </td>
                 <td width="1%" align="right" nowrap="nowrap">
                     &nbsp;&nbsp;<input type="image" name="{$word->delete_action}" src="buttons/delete.gif" title="{#s_delete#}" />

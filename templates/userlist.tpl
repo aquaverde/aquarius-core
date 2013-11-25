@@ -18,7 +18,7 @@
             {action var="editaction" action="user:editUser:`$user->id`"}
 			<tr>
 				<td width="25">&nbsp;
-					{activationbutton action="user:toggle_active:`$user->id`" active=$user->active}
+					{activationbutton action="user:toggle_active:`$user->id`" active=$user->active class=imagebutton}
 				</td>
    				<td>
    				    <a href="{url action0=$editaction action1=$lastaction}">{$user->name}</a>
@@ -55,19 +55,12 @@
 			</tr>
             {/action}         
 		{/foreach}
-		    {action action="user:editUser:new"}
-			<tr class="bottom">				
-				<td colspan="7" align="right">
-                    <button name="{$action}" type="submit" class="btn btn-sm btn-default btn-success">
-                      <span class="glyphicon glyphicon-neg glyphicon-plus-sign white"></span> New
-                    </button>
-
-                    
-                </td>
-			</tr>
-			{/action}
 		</table>
-		
+        {action action="user:editUser:new"}
+            <button name="{$action}" type="submit" class="btn btn-sm btn-default btn-success">
+                <span class="glyphicon glyphicon-neg glyphicon-plus-sign white"></span> {#s_new#}
+            </button>
+        {/action}
 	</div>
 </form>
 {include file='footer.tpl'}
