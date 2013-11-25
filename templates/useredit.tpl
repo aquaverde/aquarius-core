@@ -6,15 +6,15 @@
 	<div id="outer">
 
 		<label for="name">{#s_username#}</label>
-		<input type="text" name="name" value="{$user->name}" class="ef"/>
+		<input type="text" name="name" value="{$user->name}" class="form-control"/>
 
 		<label for="password">{#s_new_password#}</label>
-		<input type="password" name="user_password" value="" class="ef"/>
+		<input type="password" name="user_password" value="" class="form-control"/>
 
         <fieldset>
             <legend>{#s_permissions#}</legend>
             <label for="">{#s_status#}</label>
-            <select name="status" class="select" style="width:120px;">
+            <select name="status">
             {html_options options=$user_statuses selected=$user->status}
             </select>
             <label><input type="checkbox" name="activation_permission" {if $user->activation_permission}checked="checked"{/if} value="1"/>
@@ -30,12 +30,12 @@
 		
         <fieldset>            
             <label for="">{#s_admin_language#}</label>
-            <select name="adminLanguage" class="select" style="width:120px;">
+            <select name="adminLanguage">
                 {html_options options=$interfaceLanguages selected=$user->adminLanguage}
             </select>
             <legend>{#s_language#}</legend>
             <label for="defaultLanguage">{#s_default_language#}</label>
-            <select name="defaultLanguage" class="select" style="width:120px;">
+            <select name="defaultLanguage">
                 {html_options options=$languages selected=$user->defaultLanguage}
             </select>
         </fieldset>
@@ -53,10 +53,10 @@
     {/if}
 {/if}
 		{action action="user:saveUser:`$user->id`"}
-			<input type="submit" name="{$action}" value="{#s_done#}" class="submit"/>
+			<input type="submit" name="{$action}" value="{#s_done#}" class="btn btn-primary"/>
     	{/action}
     	&nbsp;
-    	<input type="submit" name="" value="{#s_cancel#}" class="cancel"/>	
+    	<input type="submit" name="" value="{#s_cancel#}" class="btn btn-default"/>	
 	</div>
 
 {if $nodelist}
@@ -75,7 +75,7 @@
 			</tr>
 		{foreach from=$nodelist item=nodeinfo}
         
-        	<tr class="{cycle values="even,odd"}">
+        	<tr class="">
           		<td nowrap="nowrap">
     		{foreach from=$nodeinfo.connections item=connection}
     	            <img src="picts/{$connection}.gif" alt="" style="vertical-align:middle" />
@@ -95,11 +95,13 @@
 {/if}
 
 {if $nodelist}
+    
+        <hr>
         {action action="user:saveUser:`$user->id`"}
-            <input type="submit" name="{$action}" value="{#s_done#}" class="submit"/>
+            <input type="submit" name="{$action}" value="{#s_done#}" class="btn btn-primary"/>
         {/action}
         &nbsp;
-        <input type="submit" name="" value="{#s_cancel#}" class="cancel"/>  
+        <input type="submit" name="" value="{#s_cancel#}" class="btn btn-default"/>  
 {/if}
 
 </form>

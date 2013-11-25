@@ -5,7 +5,7 @@
 <form action="{url action=$lastaction}" method="post">
     <h1>{#s_wording_admin#}</h1>
 
-    <div id="outer">
+    <div id="">
     
 		<div class="toolbox2" style="margin-top:30px;">
             {foreach from=$languages item=lang}
@@ -22,7 +22,7 @@
         {* hidden form button so that hitting enter while editing executes saveaction, not delete action *}
         <input style="display: none" type="submit" name="{$saveaction}" value="{#s_save#}" class="submit" />
         <br/>
-        <table width="100%" border="0" cellspacing="4" cellpadding="0">
+        <table class="table table-bordered" width="100%" border="0" cellspacing="4" cellpadding="0">
         <tr>
             <th align="right">
 
@@ -70,7 +70,7 @@
                 <td width="80%">
                     <input type="text"
                            name="wording[{$word->keyword|escape}]"
-                           value="{$word->translation|escape}" style="margin:0;" class="ef" />
+                           value="{$word->translation|escape}" style="margin:0;" class="form-control" />
                 </td>
                 <td width="1%" align="right" nowrap="nowrap">
                     &nbsp;&nbsp;<input type="image" name="{$word->delete_action}" src="buttons/delete.gif" title="{#s_delete#}" />
@@ -81,7 +81,7 @@
             <tr>
                 <td></td>
                 <td align="left">
-                    <input type="submit" name="{$saveaction}" value="{#s_save#}" class="submit" />
+                    <input type="submit" name="{$saveaction}" value="{#s_save#}" class="btn btn-primary" />
                 </td>
                 <td></td>
             </tr>

@@ -27,7 +27,7 @@
 		</table>
 		</div>
 		
-		<table border="0" cellpadding="3" cellspacing="0" class="table">
+		<table border="0" cellpadding="3" cellspacing="0" class="table table-bordered">
 			<tr align="left">
 				<th>Directory</th>
 				<th>Resize Type (max. or width)</th>
@@ -52,13 +52,12 @@
 		{/foreach}
 		</table>
     {action action="dir_settings:save"}
-
-		<input type="submit" name="{$action}" value="Save" class="submit" />
+		<input type="submit" name="{$action}" value="Save" class="btn btn-primary" />
         &nbsp;
         {if $show_resize_option}
         <input id="update_thumbnails_check" type="checkbox" name="update_thumbnails" value="1" checked="checked" class="checkbox" />
-        {/if}
         <label for="update_thumbnails_check" class="inline">Update thumbnails</label>
+        {/if}
     {/action}
 	</form>
 

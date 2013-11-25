@@ -20,9 +20,9 @@
 	{action action="user:savePrefs:`$user->id`"}
 		<input 	type="submit" 
 				name="{$action}" 
-				value="{#s_save#}" />
+				value="{#s_save#}"  class="btn btn-primary"/>
 	{/action}
-		<input 	type="submit" name="" value="{#s_cancel#}" class="cancel"/>
+		<input 	type="submit" name="" value="{#s_cancel#}" class="btn btn-default"/>
 	</div>
 </form>
 

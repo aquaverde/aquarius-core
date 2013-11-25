@@ -26,6 +26,7 @@ li.nodetree_entry {
 
 li.nodetree_connection {
     background: url(../picts/line_nav.gif) repeat-y;
+    line-height: 18px;
 }
 
 .nodetree_container {

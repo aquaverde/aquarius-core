@@ -39,7 +39,7 @@
 	</select>
 	
 </div>
-    <table cellpadding="3" cellspacing="0" class="table">
+    <table cellpadding="3" cellspacing="0" class="table table-bordered">
 	    <tr align="left">
 	    	<th>{#s_select_file#}</th>
 	    </tr>
@@ -49,14 +49,14 @@
 		<tr>
 			<td>
 				<input type="file" size="50" maxlength="0" name="file{$smarty.section.loop.index}" onchange="checkForFile(this)" />
-				| <input type="checkbox" name="file{$smarty.section.loop.index}_zip" value="1"> {#is_zip_file#}
+				<input type="checkbox" name="file{$smarty.section.loop.index}_zip" value="1"> {#is_zip_file#}
 			</td>
 		</tr>
 	{/section}
 
 	</table>
 	<p>
-		<input type="submit" name="{$upload_files_action}" value="Upload Files" class="submit" />
+		<input type="submit" name="{$upload_files_action}" value="Upload Files" class="btn btn-primary" />
     </p>
    	</form>
 

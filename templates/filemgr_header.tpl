@@ -4,8 +4,11 @@
 		<title>aquarius FileManager</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta http-equiv="cache-control" content="no-cache" />
+        <script src="https://code.jquery.com/jquery.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>     
         {include_javascript file=javascript.js}
     {if !$isPopup }
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="css/admin.css" type="text/css" />
     {else}
         <link rel="stylesheet" href="css/popup.css" type="text/css" />
