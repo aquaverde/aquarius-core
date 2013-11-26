@@ -1,10 +1,7 @@
 {include file='header.tpl'}
-<h1>{#s_cms_user_administration#}</h1>
+<h1>{#s_cms_users#}</h1>
 
 <form action="{url action0=$lastaction}" method="post">
-	<div class="">
-		<h2>{#s_cms_users#}</h2>
-		
 		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table">
 			<tr>
 				<th>&nbsp;</th>
@@ -61,6 +58,5 @@
                 <span class="glyphicon glyphicon-neg glyphicon-plus-sign white"></span> {#s_new#}
             </button>
         {/action}
-	</div>
 </form>
 {include file='footer.tpl'}

@@ -78,15 +78,12 @@
             </tr>
             {/strip}
         {/foreach}
-            <tr>
-                <td colspan="2" align="left">
-                    <input type="submit" name="{$saveaction}" value="{#s_save#}" class="btn btn-primary" />
-                </td>
-                <td></td>
-            </tr>
 {/if}
         </table>
+        
+        <input type="submit" name="{$saveaction}" value="{#s_save#}" class="btn btn-primary" />
         {actionlink action="wording:port"}
+        
 	</div>
 </form>
 {include file="footer.tpl"}

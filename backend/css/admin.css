@@ -6,12 +6,12 @@ hr { margin: 0 0 10px 0; border-color:#ccc; }
 .btn { border-radius: 3px; margin-right: 10px;}
 .btn-primary { background-color: #009DE5 }
 .radio, .checkbox { display: inline; min-height: 10px;}
-
-* { -moz-box-sizing: inherit;}
+table.table {border-bottom: 1px solid #DDDDDD;}
+*, *:before, *:after { -moz-box-sizing: border-box;}
 
 
 html { background-color: #fff; }
-body { margin: 15px 25px 25px 20px; font-size: 12px; background-color: white; min-width: 635px; max-width: 900px; padding-bottom: 20px; }
+body { margin: 25px 40px 25px 40px; font-size: 12px; background-color: white; min-width: 635px; max-width: 900px; padding-bottom: 20px; }
 input, textarea { background-color: white; }
 	
 h1 { font-size: 32px; color: #009DE5; font-weight: normal; margin-bottom: 15px; margin-top: 5px; }
@@ -104,7 +104,8 @@ ul { margin: 0; padding: 0; list-style-position: inherit; list-style-type: none;
 .dim, .toolbox a.dim { color: #8f8f8f; font-style: italic; }
 .title	{ font-size: 21px; color: #8AA5B8; }
 #path { font-size: 12px; color: #8AA5B8; }
-#path a { color: #009DE5; }	
+#path a { color: #666; font-weight: normal}	
+#path a:hover { color: #009DE5; }
 .redFont { font-size: 11px; color: #CC0000; }
 .white { color: #fff; }
 .on	{ font-size: 11px; color: #CC0000; font-weight: bold; }
