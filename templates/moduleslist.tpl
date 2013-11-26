@@ -5,12 +5,11 @@
 	<div class="">
 		<div class="bigboxtitle"><h2>Modules</h2></div>
 		
-		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table table-condensed table-striped">
+		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table table-hover">
 			<tr>
 				<th>&nbsp;</th>
                 <th>Shortcut</th>
 				<th>Modulname</th>
-				<th>&nbsp;</th>
 			</tr>
 		{foreach from=$modules item="module"}
 			<tr>

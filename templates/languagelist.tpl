@@ -4,7 +4,7 @@
 <form action="{url action=$lastaction}" method="post">
     <div class="">
         <div class="bigboxtitle"><h2>Languages</h2></div>
-		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table table-condensed table-striped">
+		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table  table-hover">
 		{foreach from=$languages item=lang}
 			{assign var="nLG" value=$lang->lg}
 			{if $lang->active } 
