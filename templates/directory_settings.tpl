@@ -3,7 +3,7 @@
     <h1>FileManager : Directory Settings</h1>
 	<form method="post" action="{url action=$lastaction}">
 		
-		<div id="outer">
+		<div class="topbar">
 		<table border="0" cellpadding="3" cellspacing="0">
 			<tr>
 				<td colspan="2"><strong>Defaults</strong></td>

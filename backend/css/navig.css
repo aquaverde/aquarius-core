@@ -89,7 +89,7 @@ li.level1:hover {}
 
 .level1 a { color: #000 }
 
-.level0 .menu_entry a:hover { ccolor: #009DE5; text-decoration:none; }
+.level0 .menu_entry a:hover { color: #009DE5; text-decoration:none; }
 
 .level1 .menu_entry a:hover { color: #009DE5; text-decoration:none; }
 

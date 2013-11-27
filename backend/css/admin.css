@@ -7,19 +7,19 @@ hr { margin: 0 0 10px 0; border-color:#e0e0e0; }
 .btn-primary { background-color: #009DE5 }
 .radio, .checkbox { display: inline; min-height: 10px;}
 table.table {border-bottom: 1px solid #DDDDDD;}
-.table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
-    background-color: #fff;
-}
+.table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th { background-color: #fff; }
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td { border-top: 1px solid #CCCCCC; }
+
 
 td, th, tr {-moz-box-sizing: content-box !important;}
 
 
 html { background-color: #f5f5f5; }
-body { margin: 20px 40px 25px 40px; font-size: 13px; background-color: #f5f5f5; min-width: 635px; max-width: 900px; padding-bottom: 20px; }
+body { margin: 20px 40px 25px 40px; font-size: 13px; background-color: #f5f5f5; min-width: 635px; max-width: 900px; padding-bottom: 20px; color: #535353; }
 input, textarea { background-color: white; }
 	
 h1 { font-size: 36px; color: #009DE5; font-weight: 300; margin-bottom: 15px; margin-top: 5px; }
-h2 { font-size: 13px; font-weight: bold; }
+h2 { font-size: 21px; font-weight: 300; margin-bottom: 15px; }
 h3 { font-size: 13px; font-weight: bold; margin: 3px 0; }
 img { border: none; }
 
@@ -46,7 +46,7 @@ div.message.info h1 { color: #513200; font-size: 14px; font-weight: bold; margin
 div#outer+table { margin-top: 20px; }
  
 /* links elements */
-a { color: #666; text-decoration: none; }
+a { color: #000; text-decoration: none;}
 a:hover	{ color: #009DE5; text-decoration: none; }	
 
 
@@ -99,11 +99,15 @@ ul { margin: 0; padding: 0; list-style-position: inherit; list-style-type: none;
 #filelist tr:hover, #filelist label:hover, #filelist input:hover { cursor: pointer; }
 #selection { clear: both; }
 .topnode { font-weight: bold; }
-.active { font-weight: bold; border: 1px #557D99 solid; padding: 0px 2px; }
+.active { border: 1px #357EBD solid; padding: 1px 4px; background: #009DE5; }
+
 .toolbox .active { font-weight: normal; border: 1px #357EBD solid; background-color: #009DE5; padding: 1px 4px; color: #fff; text-transform:uppercase;}
-.toolbox a.active:hover { color: #fff; }
+.toolbox a { color: #000; }
+.toolbox a:hover { color: #009DE5; }
+.toolbox a.active:hover { color: #fff; background: #009DE5; }
 .toolbox .active.dim { color: #fff; font-style: italic; }
 .dim, .toolbox a.dim { color: #8f8f8f; font-style: italic; }
+.toolbox a.dim:hover { color: #357EBD; }
 .title	{ font-size: 21px; color: #8AA5B8; }
 #path { font-size: 13px; color: #8AA5B8; }
 #path a { color: #666; font-weight: normal}	
@@ -268,6 +272,8 @@ div.contentedit { clear: left; border-top: 1px #e0e0e0 solid; padding-top: 5px; 
 ul.tabs { position: absolute; top: -31px; left: -1px; /* compensate border */ }
 ul.tabs li { display: block; float: left; font-weight: bold; border: 1px solid #ccc; border-bottom: transparent; margin-right: 5px; padding: 6px 12px 5px 12px; background-color: #ededed; cursor: pointer; z-index:-10; font-size: 13px; line-height: 18px; border-radius: 5px 5px 0 0;}
 ul.tabs li.active { background-color: #F3F3F3; border: 1px solid #ccc ; border-bottom: 1px solid #F3F3F3 ; }
+ul.tabs li:hover { background: #fff; }
+ul.tabs li.active:hover { background: #F3F3F3; }
 
 .contentedit_ef .ef, .contentedit_ef .mle, .contentedit_select .select { margin-bottom: 0; }
 .contentedit_rte { margin-top: 10px; }
@@ -286,6 +292,7 @@ ul.tabs li.active { background-color: #F3F3F3; border: 1px solid #ccc ; border-b
 .contentedit_date img { margin-bottom: -2px; }
 .contentedit_nodelist { margin-top: 10px; }
 .contentedit_link tr:hover { background-color: inherit;	 } 
+#boxpictures table { border-left: 1px solid #CCCCCC ;  border-right: 1px solid #CCCCCC ; }
 
 .drag { cursor: move; }
 
@@ -350,6 +357,10 @@ div.nodetree_node:hover { background-color: #fff; }
 
 #nodetree a { color: #000; }
 #nodetree a:hover { color: #009DE5; text-decoration:none;}
+#nodetree a.dim { color: #8f8f8f; }
+#nodetree a.dim:hover { color: #009DE5; }
+#nodetree a.active { color: #fff; }
+#nodetree a.active:hover { color: #fff; background: #357EBD; }
 
 /* Make titles of first two levels bold */
 .nodetree_title { font-weight: bold; }

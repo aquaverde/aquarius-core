@@ -1,7 +1,6 @@
 {include file='header.tpl'}
 <h1>Pagetypes admin</h1>
 <div class="">
-    <div class="bigboxtitle"><h2>Edit or create a pagetype:</h2></div>
     <form action="{url action=$lastaction}" method="post">
         <table width="100%" cellpadding="0"  cellspacing="0" class="table table-hover">
 {foreach from=$forms item=form}

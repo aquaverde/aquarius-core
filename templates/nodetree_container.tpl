@@ -63,7 +63,7 @@
         {if $entry.forms}
          <div style="float: right;">
             {foreach from=$entry.forms item=form}
-            <div style="float: left; width: 80px; padding-top: 3px; class="eng">
+            <div style="float: left; width: 80px; padding-top: 3px;" class="eng">
                 {if $form}
                     <a href="{url action0=$form.action action1=$lastaction}" {$form.class} title="{$form.form->title|escape}">
                         {$form.form->title|truncate:15|escape}
