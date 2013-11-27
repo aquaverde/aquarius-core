@@ -14,22 +14,12 @@ html, body {
     background-color: #f5f5f5;
 }
 
-html {
-    border-right: 1px solid #e0e0e0;
-    height: 100%;
-}
+html { border-right: 1px solid #e0e0e0; height: 100%; }
 
-body {
-    margin-top: 25px;
-    margin-bottom: 40px;
-    
-}
+body { margin-top: 25px; margin-bottom: 40px; }
 
 
-a {
-    text-decoration: none;
-    
-}
+a { text-decoration: none; }
 
 img {
     border: none;
@@ -73,7 +63,7 @@ li {
     display: block;
 }
 
-.menu_entry a:hover { color: #000; }
+.menu_entry a:hover { color: #009DE5; text-decoration:none; }
 
 li.level0  {
     margin-bottom: 4px;
@@ -83,7 +73,7 @@ li.level0  {
 
 li.level1  .menu_entry a { padding: 0; }
 
-.level0:hover { color: #6286A0; }
+.level0:hover { color: #009DE5; text-decoration:none; }
 
 li.level1  {
     color: #000;
@@ -99,9 +89,9 @@ li.level1:hover {}
 
 .level1 a { color: #000 }
 
-.level0 .menu_entry a:hover { color: #6286A0; }
+.level0 .menu_entry a:hover { ccolor: #009DE5; text-decoration:none; }
 
-.level1 .menu_entry a:hover { color: #6286A0; }
+.level1 .menu_entry a:hover { color: #009DE5; text-decoration:none; }
 
 
 /* Special layout for the inventory menu entries */
@@ -123,7 +113,7 @@ li.level1:hover {}
 #nodetree a:hover, #menu_sitemap a:hover, #menu_lastsearches a:hover, #lastchanges_menu a:hover, #menu_reload a:hover
 {
 	/*text-decoration: underline;*/
-	color: #4D6B7F;
+	color: #009DE5; text-decoration:none;
 }
 
 
