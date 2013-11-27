@@ -7,17 +7,22 @@
 
 html, body {
     font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
-    font-weight:300;
+    font-weight:normal;
     font-size: 13px;
     margin: 0;
     padding: 0;
     background-color: #f5f5f5;
 }
 
+html {
+    border-right: 1px solid #e0e0e0;
+    height: 100%;
+}
 
 body {
-    margin-top: 22px;
+    margin-top: 25px;
     margin-bottom: 40px;
+    
 }
 
 
@@ -39,7 +44,7 @@ ul
 	margin: 0px;
 	list-style-position: inherit;
 	list-style-type: none;
-	background-color: #f5f5f5;
+	background-color: transparent;
 }
 
 ul.level0 {
@@ -47,7 +52,7 @@ ul.level0 {
 	width: auto !important;
 	min-width: 250px;
 	_width: 250px; /* underscore hack uniquement interprété par IE Win */
-	/*border-top: #E0E0E0 1px solid; */
+	border-top: #E0E0E0 1px solid;
 	padding-top: 4px;
 }
 
@@ -106,7 +111,7 @@ li.level1:hover {}
 }
 
 #menu_sitemap, #menu_lastsearches, #lastchanges_menu, #menu_reload {
-    background-color: #f5f5f5;
+    background-color: transparent;
     color: #000;
     font-weight: normal;
 }
@@ -123,7 +128,7 @@ li.level1:hover {}
 
 
 #nodetree {
-    background-color: #f5f5f5;
+    background-color: transparent;
     font-weight: normal;
     color: #000;
 }
@@ -193,6 +198,7 @@ li.separator {
     color: #666;
     padding: 5px;
     width: 96%;
+    font-size: 11px;
 }
 
 

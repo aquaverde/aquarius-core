@@ -3,7 +3,7 @@
 
 
 <h2>{$journal_info|@count} {#s_last_changes#}</h2>
-<table class="table table-bordered">
+<table class="table table-hover">
 {foreach from=$journal_info item=journal_item}
     {strip}
     {assign var='content' value=$journal_item.content}
