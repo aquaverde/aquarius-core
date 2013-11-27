@@ -100,7 +100,7 @@
     {foreach from=$entry.children item=childentry}
         <li class="nodetree_entry{if !$childentry.last} nodetree_connection{/if}">
         {if $childentry.last}
-            <img class="nodetree_connection" src="picts/joinbottom.gif" alt="" />
+            <img class="nodetree_connection join_bottom" src="picts/joinbottom.gif" alt="" />
         {else}
             <img class="nodetree_connection" src="picts/join.gif" alt="" />
         {/if}

@@ -6,7 +6,8 @@
 }
 
 html, body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
+    font-weight:300;
     font-size: 13px;
     margin: 0;
     padding: 0;
@@ -15,6 +16,7 @@ html, body {
 
 
 body {
+    margin-top: 22px;
     margin-bottom: 40px;
 }
 
@@ -45,7 +47,7 @@ ul.level0 {
 	width: auto !important;
 	min-width: 250px;
 	_width: 250px; /* underscore hack uniquement interprété par IE Win */
-	border-top: #C1C9CE 1px solid;
+	/*border-top: #E0E0E0 1px solid; */
 	padding-top: 4px;
 }
 
@@ -57,7 +59,7 @@ li {
 }
 
 .menu_entry {
-    border-bottom: #f5f5f5 2px solid;
+    border-bottom: none;
     /*padding: 3px 3px 3px 10px;*/
 }
 
@@ -71,7 +73,7 @@ li {
 li.level0  {
     margin-bottom: 4px;
     padding-bottom: 2px;
-    border-bottom: #C1C9CE 1px solid;
+    border-bottom: #E0E0E0 1px solid;
 }
 
 li.level1  .menu_entry a { padding: 0; }
@@ -132,6 +134,9 @@ li.nodetree_entry {
     width: 100px;
 }
 
+.nodetree_row { vertical-align: middle; padding: 4px 0 1px; }
+
+
 /* Make titles of first two levels bold */
 .nodetree_title {
     font-weight: bold;
@@ -141,6 +146,7 @@ li.nodetree_entry {
     font-weight: normal;
 }
 
+.nodetree_icon { position:relative; left: 0px; top: -1px; }
 
 span.top {
     font-weight: bold;
@@ -153,7 +159,7 @@ span.top {
 
 li.separator {
    height: 5px;
-   border-top: #C1C9CE 1px solid;
+   border-top: #E0E0E0 1px solid;
 }
 
 #footer {

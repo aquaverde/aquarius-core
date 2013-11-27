@@ -6,7 +6,7 @@
     {assign var="nodetitle" value=$tree.node->get_contenttitle()|strip_tags}
     {assign var="action" value="contentedit:edit:`$tree.node->id`:$lg"|makeaction}
     {if $action}<a href="{url url=$adminurl action=$action action2=$lastaction}" title="{$nodetitle}: {#s_edit#} ({$tree.node->id})">{/if}
-    <img src="picts/{$tree.node->icon()}.gif" alt=""/>
+    <img src="picts/{$tree.node->icon()}.gif" alt="" class="nodetree_icon" />
     <span class="nodetree_title{if !$tree.node->get_content($lg)} dim{/if}">
         {$nodetitle|truncate:30}
         {if $tree.node->access_restricted == 1} 
@@ -19,7 +19,7 @@
         {foreach item="child_tree" from=$tree.children}
             <li class="nodetree_entry{if !$child_tree.last} nodetree_connection{/if}">
                 {if $child_tree.last}
-                    <img class="nodetree_connection" src="picts/joinbottom.gif" alt="" />
+                    <img class="nodetree_connection join_bottom" src="picts/joinbottom.gif" alt="" />
                 {else}
                     <img class="nodetree_connection" src="picts/join.gif" alt="" />
                 {/if}
