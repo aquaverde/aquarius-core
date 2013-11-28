@@ -10,7 +10,9 @@ body { 	font-family: Arial, Helvetica, sans-serif; font-size: 12px; background-c
 
 .title { float: right; font-size: 21px; color: #FFFFFF; padding-right: 10px; margin-top: 15px;}
 
-.title a:hover { text-decoration: none; color: #009DE5; } 	
+.title a:hover { text-decoration: none; color: #009DE5; }
+
+.site_title { padding-left: 20px;}
 
 a {	color: #FFFFFF; text-decoration: none; }
 		
@@ -39,7 +41,7 @@ ul#mainNavig  { list-style: none; margin-left: 10px; clear:both;}
 
 #serviceNavig { float: right; color: #666; padding-top: 5px; margin-right: 10px;}
 
-#serviceNavig #lang { float: left; margin-right: 6px; }
+#serviceNavig #lang { float: left;  }
 
 
 /* --------------------- forms */
@@ -47,6 +49,10 @@ ul#mainNavig  { list-style: none; margin-left: 10px; clear:both;}
 form { display: inline; }
 
 input { font-family: Arial, Helvetica, sans-serif; font-size: 11px; vertical-align: middle; color: #666; border: 1px solid #5F5F5F; background-color: transparent; margin: 0; margin-top: -2px; padding: 1px;}
+
+input.btn {  border: 0; color: #009DE5; }
+
+input.btn:hover {  border: 0; color: #fff; cursor: pointer; }
 
 input.logout { border: 0; color: white; font-size: 12px;}
 
