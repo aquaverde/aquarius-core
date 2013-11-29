@@ -61,7 +61,7 @@ function set_parent(new_parent, title, from_all) {
                 type='button'
                 name=''
                 value='{#move_copy_select_from_all#}'
-                class='button'
+                class='btn btn-default'
                 onclick='open_attached_popup("{$simpleurl->with_param($select_from_all)}&selected="+$("node_target").value,0, "height=450,width=350,status=yes,resizable=yes,scrollbars=yes"); return false;'/><br/><br/>
         {/if}
     {/if}
@@ -70,9 +70,9 @@ function set_parent(new_parent, title, from_all) {
         {#move_copy_selected_page#}: {$node->get_contenttitle()}<br/>
         {#move_copy_target_location#}: <span id='node_target_title'>{$parent->get_contenttitle()}</span><br/><br/>
         <input type='hidden' id='node_target' name='node_target' value='{$parent->id}'/>
-        {if $copyaction}<input type="submit" name="{$copyaction}" value="{$copyaction->get_title()}"  class="submit" style="margin:0;" />{/if}
-        {if $moveaction}<input type="submit" name="{$moveaction}" value="{$moveaction->get_title()}"  class="submit" style="margin:0;" id='move_button' disabled='disabled'/>{/if}
-        <input type="submit" name="" value="{#s_cancel#}"  class="cancel submit" style="margin:0;"  />
+        {if $copyaction}<input type="submit" name="{$copyaction}" value="{$copyaction->get_title()}"  class="btn btn-default" />{/if}
+        {if $moveaction}<input type="submit" name="{$moveaction}" value="{$moveaction->get_title()}"  class="btn btn-default" id='move_button' disabled='disabled'/>{/if}
+        <input type="submit" name="" value="{#s_cancel#}"  class="btn btn-default"  />
     </div>
 </form>
 {include file='footer.tpl'}

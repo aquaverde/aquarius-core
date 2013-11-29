@@ -18,6 +18,9 @@ html { border-right: 1px solid #e0e0e0; height: 100%; }
 
 body { margin-top: 25px; margin-bottom: 40px; }
 
+.glyphicon { color: #ccc; -webkit-font-smoothing:grayscale; font-size: 12px !important;}
+.btn-link:hover { color: #009DE5; }
+
 
 a { text-decoration: none; }
 
@@ -142,6 +145,12 @@ li.nodetree_entry {
 }
 
 .nodetree_icon { position:relative; left: 0px; top: -1px; }
+
+.on	{ color: #5CB85C; }
+.on:hover	{ color: red; }
+.off { color: red;  }
+.off:hover	{ color: #5CB85C; }
+
 
 span.top {
     font-weight: bold;

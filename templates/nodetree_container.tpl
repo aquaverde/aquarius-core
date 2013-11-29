@@ -1,4 +1,4 @@
-{strip}
+
 {if !$hide_root}
 <div class="nodetree_row {if !$entry.node->newaction}nodetree_node{/if}" style="clear:both">
     {if $entry.show_toggle}
@@ -10,7 +10,7 @@
     {/if}
     {if $entry.node->newaction}
         <a href="{url action=$lastaction action1=$entry.node->newaction}" title="{#s_new_child#}" class="new">
-            <img src="picts/node_content_on.gif" alt="{#s_new_child#}" />
+            <span class="glyphicon glyphicon-file"></span>
             <span class="glyphicon glyphicon-plus-sign"></span>
         </a>
     {else}
@@ -77,11 +77,11 @@
         <span class="nodetree_title{if $entry.node->is_content()} nodetree_title_content{/if}">
         {if $entry.actions.contentedit}
             <a href="{url action0=$lastaction action1=$entry.actions.contentedit}" title="{$altedittitle}">
-                <img src="picts/{$entry.node->icon()}.gif" alt="{$altedittitle}"/>
+                <span class="glyphicon glyphicon-file{if !$entry.node->active} off{/if}"></span>
                 <span class="contenttitle{if !$entry.has_content} dim{/if}">{$entry.title|truncate:75}</span>
             </a>
         {else}
-            <img src="picts/{$entry.node->icon()}.gif" alt="alttitle"/>
+            <span class="glyphicon glyphicon-file{if !$entry.node->active} off{/if}"></span>
             {$entry.title|truncate:50}&nbsp;
         {/if}
 
@@ -109,4 +109,3 @@
     {/foreach}
     </ul>
 {/if}
-{/strip}

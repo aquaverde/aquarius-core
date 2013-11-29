@@ -10,11 +10,11 @@ function smarty_function_activationbutton($params, &$smarty) {
 
     $action = smarty_modifier_makeaction(get($params, 'action'));
     if (get($params, 'active')) {
-        $class = "off";
+        $class = "on";
         $de = "de";
         $in = "";
     } else {
-        $class = "on";
+        $class = "off";
         $de = "";
         $in = "in";
     }

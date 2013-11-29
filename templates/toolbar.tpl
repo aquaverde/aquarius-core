@@ -3,10 +3,10 @@
 
     	<div class="separator iconbar">
 
-            <a href="#" onclick="document.getElementById('savebutton').click();return false;"><span class="glyphicon glyphicon-floppy-disk"></span></a>&nbsp;
+            <a href="#" onclick="document.getElementById('savebutton').click();return false;"  title="{#s_save#}"><span class="glyphicon glyphicon-save"></span></a>&nbsp;
 
             {if $preview_uri}
-                <a target="_new" href="{$preview_uri}"><span class="glyphicon glyphicon-eye-open"></span></a>
+                <a target="_new" href="{$preview_uri}" title="{#s_page_view#}"><span class="glyphicon glyphicon-eye-open"></span></a>
             {/if}
 
             {if $node->id}
@@ -19,8 +19,7 @@
 
         {action action="node:editprop:`$node->id`"}
     	<div class="separator formbar dim">
-                
-                <a href="{url action0=$lastaction action1=$action}" title="edit node"><b class="dim">N</b> {if $node->name}"{$node->name}"{/if} ID {$node->id}&nbsp;<span class="glyphicon glyphicon-pencil"></span></a>
+                <a href="{url action0=$lastaction action1=$action}" data-toggle="tooltip" title="Node {if $node->name}"{$node->name}"{/if} ID {$node->id}">Node</a>
         </div>
         {/action}
 
@@ -31,7 +30,7 @@
         {/if}
 
         {if $formedit}
-    	    <a href="{url action0=$lastaction action1=$formedit}" title="edit pagetype"><b class="dim">P</b> "{$form->title}" <img src="buttons/edit.gif" alt="form" style="margin-top: -5px"/></a>
+    	    <a href="{url action0=$lastaction action1=$formedit}" title="Pagetype: {$form->title}"  data-toggle="tooltip">Pagetype:</a>
         {/if}
         {if $change_form}
             {if !$is_super}{#choose_form#}:&nbsp;{/if}

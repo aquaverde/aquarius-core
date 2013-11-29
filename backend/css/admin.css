@@ -40,6 +40,8 @@ thin { font-weight: normal; }
 .clear { clear:both; }
 .new .glyphicon { color: #5CB85C; top: 3px; font-size: 12px !important;}
 .new .glyphicon:hover { color: #000; top: 3px;}
+.right { text-align:right; }
+.right .btn { margin-right: 0; }
 
 /* outer div */
 div#outer { padding: 20px 10px 15px 15px; background-color: #f5f5f5; border: 1px solid #ccc ; margin-bottom: 0; z-index: 1; }
@@ -122,10 +124,10 @@ ul { margin: 0; padding: 0; list-style-position: inherit; list-style-type: none;
 #path a:hover { color: #009DE5; }
 .redFont { font-size: 11px; color: #CC0000; }
 .white { color: #fff; }
-.on	{ color: red; }
-.on:hover	{ color: #5CB85C; }
-.off { color: #5CB85C;  }
-.off:hover	{ color: red; }
+.on	{ color: #5CB85C; }
+.on:hover	{ color: red; }
+.off { color: red;  }
+.off:hover	{ color: #5CB85C; }
 .mini { font-size: 10px}
 .light { font-weight: normal; color: #8f8f8f; font-size: 11px; }
 .eng, .eng a, .dim .eng { font-size: 11px }
@@ -137,16 +139,16 @@ p.spiner, p.action { margin: 3px 0; padding: 0; }
 
 
 /* toolbar */
-#toolbar { background-color: #E3E3E3; border: 0px #ccc solid; height: 28px; padding: 2px 10px 0 2px; margin-bottom: 10px; color: #000; }
-#toolbar .separator { float: left; border-right: solid #ccc 1px; padding: 2px 8px; padding-top: 3px; height: 18px; vertical-align: middle; line-height: 18px; font-size: 11px; }
+#toolbar { background-color: #E3E3E3; border: 0px #ccc solid; height: 29px; padding: 0 10px 0 2px; margin-bottom: 10px; color: #000;}
+#toolbar .separator { float: left; border-right: solid #ccc 1px; padding: 2px 10px; height: 29px; vertical-align: middle; line-height: 24px; font-size: 11px; }
 #toolbar a, #toolbar select { color: #000; font-size: 11px; }
 #toolbar a:hover { color: #009DE5 }
 #toolbar select { vertical-align: middle; /*border: solid #8f8f8f 1px;*/ }
 .iconbar img { padding: 0 4px; vertical-align: middle; }
 .formbar img { padding-top: 0px; }
-#toolbar .glyphicon { font-size: 12px; margin-right: 5px; line-height: 16px; }
-#toolbar .btn-link { margin-top: -8px;}
-
+#toolbar .glyphicon { font-size: 12px; margin-right: 8px; line-height: 22px; }
+#toolbar .btn-link { margin-top: -9px !important;}
+#toolbar .btn.btn-xs { margin-right: 0 !important; margin-top: 2px; font-size:11px !important; }
 
 /* toolbox */
 .toolbox { float: right; margin-top: -25px; margin-bottom: 5px !important; margin-bottom: 1px; padding: 2px; vertical-align: bottom; z-index: 10; text-align: right; margin-right: -11px; }
@@ -376,6 +378,8 @@ div.nodetree_node:hover { background-color: #fff; }
 #nodetree a.active { color: #000; }
 #nodetree a.active:hover { color: #fff; background: #009DE5; }
 
+#nodetree .glyphicon.glyphicon-file { color: #ccc; }
+
 /* Make titles of first two levels bold */
 .nodetree_title { font-weight: bold; }
 
@@ -384,6 +388,7 @@ div.nodetree_node:hover { background-color: #fff; }
 #nodetree .nodetree_container .nodetree_container .nodetree_container .nodetree_title,
 .nodetree_title_content { font-weight: normal; }
 
+div.nodetree_container+div.right { margin-top: -20px;}
 
 /* file selection popup */
 body.file_select { min-width: 300px; }

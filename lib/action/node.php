@@ -171,7 +171,7 @@ class action_node_delete extends action_node implements ChangeAction {
   * possible parents is prepared so the user can choose from those. Siteadmins may instead choose to move nodes anywhere they please.
   * */
 class action_node_moveorcopy extends action_node implements DisplayAction {
-    function get_icon()  { return 'sort'; }
+    function get_icon()  { return 'move'; }
     function get_title() { return new Translation('s_move_copy'); }
 
     function process($aquarius, $request, $smarty, $result) {
