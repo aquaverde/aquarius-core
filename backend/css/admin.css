@@ -116,7 +116,7 @@ ul { margin: 0; padding: 0; list-style-position: inherit; list-style-type: none;
 .white { color: #fff; }
 .on	{ font-size: 11px; color: #CC0000; font-weight: bold; }
 .mini { font-size: 10px}
-.light { font-weight: normal; color: #6186A0; font-size: 11px; }
+.light { font-weight: normal; color: #8f8f8f; font-size: 11px; }
 .eng, .eng a, .dim .eng { font-size: 11px }
 .titletop { font-size: 16px; font-weight: bolder; color: #fff; }
 div.topbar { margin: 0; padding: 15px; background-color: #e0e0e0; margin-bottom: 20px; }
