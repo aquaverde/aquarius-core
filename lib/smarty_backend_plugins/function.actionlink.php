@@ -67,7 +67,8 @@ function smarty_function_actionlink($params, &$smarty) {
         }
         else {
             $content = array();
-            if ($icon) $content[] = "<img src='$icon' alt='$title' title='$title'/>";
+            /*if ($icon) $content[] = "<img src='$icon' alt='$title' title='$title'/>";*/
+            if ($icon) $content[] = "<span class='glyphicon glyphicon-".$icon."'></span>";
             if ($show_title && $title) $content[] = $title;
             if ($icon_placement == 'after') $content = array_reverse($content);
             if (!empty($content)) return "<a href='".str($url)."' $onclick>".implode('&nbsp;', $content).'</a>';

@@ -3,11 +3,9 @@
 <div class="nodetree_row {if !$entry.node->newaction}nodetree_node{/if}" style="clear:both">
     {if $entry.show_toggle}
         {if $entry.open}
-            <img class="nodetree_toggle" src="picts/toggle-open.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, {ldelim}open: 0{rdelim})" alt="{#s_close#}"
-            />
+            <img class="nodetree_toggle" src="picts/toggle-open.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, {ldelim}open: 0{rdelim})" alt="{#s_close#}"/>
         {else}
-            <img class="nodetree_toggle" src="picts/toggle-closed.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, {ldelim}open: 1{rdelim})" alt="{#s_open#}"
-            />
+            <img class="nodetree_toggle" src="picts/toggle-closed.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, {ldelim}open: 1{rdelim})" alt="{#s_open#}"/>
         {/if}
     {/if}
     {if $entry.node->newaction}
@@ -21,18 +19,18 @@
         <div style="float: right; width: 15px; padding-top: 2px; padding-right: 2px;">
             <input type="checkbox" name="selected[{$entry.node->id}]" value="1"/>
         </div>
-        <div style="float: right; width: 15px; padding-top: 7px">
+        <div style="float: right; width: 20px; padding-top: 2px">
             {activationbutton action=$entry.actions.toggle_active active=$entry.node->active}
         </div>
-        <div style="float: right; width: 30px; padding-top: 5px">
+        <div style="float: right; width: 20px; padding-top: 2px">
             {assign var=moveorcopy value="node:moveorcopy:`$entry.node->id`:`$lg`"|makeaction}
             {if $moveorcopy}
-                <input name="{$moveorcopy}" type="image"  title="{#s_move_copy#}" alt="{#s_move_copy#}" src="buttons/move.gif"/>
+                <button name="{$moveorcopy}" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-sort"></span></button>
             {else}
                 &nbsp;
             {/if}
         </div>
-         <div style="float: right; width: 20px; padding-top: 5px">
+         <div style="float: right; width: 20px; padding-top: 4px">
             {if $entry.actions.delete}
                 {actionlink action=$entry.actions.delete show_title=false}
             {else}
@@ -56,7 +54,7 @@
         </div>
         <div style="float: right; width: 25px; padding-top: 0px;">
             {if $entry.actions.contentedit}
-                <input name="{$entry.actions.contentedit}" type="image" src="buttons/edit.gif" title="{$altedittitle}" alt="{$altedittitle}"/>
+                <button name="{$entry.actions.contentedit}" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-pencil"></span></button>
             {/if}
             &nbsp;
         </div>

@@ -10,18 +10,18 @@ function smarty_function_activationbutton($params, &$smarty) {
 
     $action = smarty_modifier_makeaction(get($params, 'action'));
     if (get($params, 'active')) {
-        $src = "picts/flag_1.gif";
+        $class = "off";
         $de = "de";
         $in = "";
     } else {
-        $src = "picts/flag_0.gif";
+        $class = "on";
         $de = "";
         $in = "in";
     }
     
     if ($action) {
         $alt = $smarty->get_config_vars($de.'activate');
-        return '<input type="image" name="'.str($action).'" src="'.$src.'" title="'.$alt.'" alt="'.$alt.'" class="imagebutton" />';
+        return '<button name="'.str($action).'" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-flag '.$class.'"></button>';
     } elseif (get($params, 'show_noedit', true)) {
         $alt = $smarty->get_config_vars($in.'active');
         return '<img src="'.$src.'" alt="'.$alt.'"/>';

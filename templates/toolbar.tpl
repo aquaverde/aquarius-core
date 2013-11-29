@@ -3,10 +3,10 @@
 
     	<div class="separator iconbar">
 
-            <a href="#" onclick="document.getElementById('savebutton').click();return false;"><img src="buttons/save.gif" alt="{#s_save#}" title="{#s_save#}" /></a>&nbsp;
+            <a href="#" onclick="document.getElementById('savebutton').click();return false;"><span class="glyphicon glyphicon-floppy-disk"></span></a>&nbsp;
 
             {if $preview_uri}
-                <a target="_new" href="{$preview_uri}"><img src="picts/theeye.gif" alt="{#s_page_view#}" title="{#s_page_view#}"/></a>
+                <a target="_new" href="{$preview_uri}"><span class="glyphicon glyphicon-eye-open"></span></a>
             {/if}
 
             {if $node->id}
@@ -20,7 +20,7 @@
         {action action="node:editprop:`$node->id`"}
     	<div class="separator formbar dim">
                 
-                <a href="{url action0=$lastaction action1=$action}" title="edit node"><b class="dim">N</b> {if $node->name}"{$node->name}"{/if} ID {$node->id}&nbsp;<img src="buttons/edit.gif" alt="" style="margin: -5px 0 0 0;"/></a>
+                <a href="{url action0=$lastaction action1=$action}" title="edit node"><b class="dim">N</b> {if $node->name}"{$node->name}"{/if} ID {$node->id}&nbsp;<span class="glyphicon glyphicon-pencil"></span></a>
         </div>
         {/action}
 
