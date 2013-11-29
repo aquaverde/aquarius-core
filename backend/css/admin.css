@@ -8,8 +8,7 @@ hr { margin: 0 0 10px 0; border-color:#e0e0e0; }
 .radio, .checkbox { display: inline; min-height: 10px;}
 table.table {border-bottom: 1px solid #DDDDDD;}
 .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th { background-color: #fff; }
-.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td { border-top: 1px solid #CCCCCC; }
-
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td { border-top: 1px solid #CCCCCC; vertical-align: middle; }
 
 td, th, tr {-moz-box-sizing: content-box !important;}
 
@@ -264,7 +263,7 @@ table.formadmin input.dimed { color: #ccc; }
 .nodimed { color: #000; }
 table.formadmin input.checkbox { width: inherit; border: none; width: 15px; height: 15px; }
 table.formadmin tr:hover { background-image: url(../picts/bkg5.gif); }
-
+.table.darker { border-left: 1px solid #ccc ; border-right: 1px solid #ccc ; }
 
 /* Styles for the contentedit pages */
 div.contentedit { clear: left; border-top: 1px #e0e0e0 solid; padding-top: 5px; margin-top: 0px;  margin-bottom: 15px;}
@@ -306,10 +305,11 @@ div.editcontrols input { border: none; padding: 0; }
 .inline-item label { display: inline; }
 .short { width: 100px; }
  
+#dynform_block_wrapper { margin-top: 20px; }
 .dynform_table { margin-top: 10px ; width: 100% ; }
-.dynform_block_td { background: #ECF0F4 ; padding: 10px ; padding-top: 2px ; padding-bottom: 2px ; }
+.dynform_block_td { background: transparent ; padding: 10px ; padding-top: 2px ; padding-bottom: 2px ; }
 .dynform_seperator_td { height: 10px ; background: clear ; }
-.dynform_line_wrapper { width: 100% ; border-bottom: 1px solid #6488A1 ; padding-top: 3px ; padding-bottom: 3px ; height: 27px ; }
+.dynform_line_wrapper { width: 100% ; border-bottom: 1px solid #E0E0E0 ; padding-top: 3px ; padding-bottom: 3px ; height: 27px ; }
 .dynform_line_wrapper:hover { background-color: #fff; }
 .dynform_line_wrapper_no_border { width: 100% ; padding-top: 5px ; padding-bottom: 5px ; clear: both ; }
 .dynform_block_header { font-weight: bold ; float: left ; width: 80% ; }
