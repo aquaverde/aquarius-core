@@ -166,7 +166,7 @@ input.savebutton { position:absolute; right:28px; top:41px	 }
 #goto a, #outer-closed a { color: #8f8f8f; }
 		
 #goto2 { float: left; margin:0; padding: 0; background-color: #e0e7ec;	 }
-.lastchange { float: right; font-size: 11px; color: #ADADAD; }
+.lastchange { float: right; font-size: 11px; color: #ADADAD; } 
 
 
 /* form elements */
@@ -378,7 +378,8 @@ div.nodetree_node:hover { background-color: #fff; }
 #nodetree a.active { color: #000; }
 #nodetree a.active:hover { color: #fff; background: #009DE5; }
 
-#nodetree .glyphicon.glyphicon-file { color: #ccc; }
+#nodetree .glyphicon.glyphicon-file { color: #B8B8B8; }
+#nodetree .glyphicon.glyphicon-file:hover {color: #009DE5; }
 
 /* Make titles of first two levels bold */
 .nodetree_title { font-weight: bold; }

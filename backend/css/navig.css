@@ -18,7 +18,7 @@ html { border-right: 1px solid #e0e0e0; height: 100%; }
 
 body { margin-top: 25px; margin-bottom: 40px; }
 
-.glyphicon { color: #ccc; -webkit-font-smoothing:grayscale; font-size: 12px !important;}
+.glyphicon { color: #B8B8B8; -webkit-font-smoothing:grayscale; font-size: 12px !important;}
 .btn-link:hover { color: #009DE5; }
 
 
