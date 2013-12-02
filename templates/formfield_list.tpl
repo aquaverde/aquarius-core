@@ -6,7 +6,10 @@
     })
 {/literal}{/js}
 
-<style>{literal}.table td {padding:2px 4px; font-size:12px;} .ef { font-size:12px; border-color: #ccc; width: 200px;} {/literal}</style>
+<style>
+    {literal}.table td {padding:2px 4px; font-size:12px;} .ef { font-size:12px; border-color: #ccc; width: 200px;} 
+    .wrapper { border: none;}
+    {/literal}</style>
 <h1>Formfields</h1>
     <form action="{url action=$lastaction}" method="post">
         <table width="100%" cellpadding="0"  cellspacing="0" class="table table-hover">
