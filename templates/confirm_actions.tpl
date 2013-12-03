@@ -7,7 +7,7 @@
     {if $text}<div>{$text}</div>{/if}
 {foreach from=$actions item=action}
     {assign var=title value=$action->get_title()|str}
-    {if $action}<input type="submit" name="{$action}" value="{$title}" class="cancel" style="margin: 5px 0" /><br/>{/if}
+    {if $action}<input type="submit" name="{$action}" value="{$title}" class="btn btn-default" style="margin: 5px 0" /><br/>{/if}
 {/foreach}
 </div>
 </form>

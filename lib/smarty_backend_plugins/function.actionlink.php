@@ -59,15 +59,16 @@ function smarty_function_actionlink($params, $smarty) {
         $button = get($params, 'button', $action instanceof ChangeAction);
         if ($button) {
             if ($icon) return "<input type='image' src='$icon' name='".str($action)."' alt='$title' title='$title' $onclick/>";
-            else return "<input type='submit' name='".str($action)."' value='$title' class='button' $onclick/>";
+            else return "<input type='submit' name='".str($action)."' value='$title' class='btn btn-default' $onclick/>";
         } else if ($new_button) {
             $content = array();
             if ($title) $content[] = $title;
-            if (!empty($content)) return "<a href='".str($url)."' $onclick class=\"new_button\">".implode('&nbsp;', $content).'</a>';
+            if (!empty($content)) return "<a href='".str($url)."' $onclick class=\"btn btn-success btn-sm\"><span class='glyphicon glyphicon-plus-sign'></span> ".implode('&nbsp;', $content).'</a>';
         }
         else {
             $content = array();
-            if ($icon) $content[] = "<img src='$icon' alt='$title' title='$title'/>";
+            /*if ($icon) $content[] = "<img src='$icon' alt='$title' title='$title'/>";*/
+            if ($icon) $content[] = "<span class='glyphicon glyphicon-".$icon."' title='$title'></span>";
             if ($show_title && $title) $content[] = $title;
             if ($icon_placement == 'after') $content = array_reverse($content);
             if (!empty($content)) return "<a href='".str($url)."' $onclick>".implode('&nbsp;', $content).'</a>';

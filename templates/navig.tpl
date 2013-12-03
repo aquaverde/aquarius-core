@@ -6,6 +6,9 @@
 	<meta http-equiv="pragma" content="no-cache" />
 	<meta http-equiv="expires" content="-1">
     <title>aquarius navigation</title>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/navig.css" type="text/css"></link>
     <!--[if IE 6]>
        <link type="text/css" rel="stylesheet" href="css/ie_hacks.css">

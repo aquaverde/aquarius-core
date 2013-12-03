@@ -1,11 +1,8 @@
 {include file='header.tpl'}
-<h1>{#s_cms_user_administration#}</h1>
+<h1>{#s_cms_users#}</h1>
 
 <form action="{url action0=$lastaction}" method="post">
-	<div class="">
-		<h2>{#s_cms_users#}</h2>
-		
-		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table table-bordered">
+		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table">
 			<tr>
 				<th>&nbsp;</th>
 				<th>{#s_users#}</th>
@@ -35,20 +32,15 @@
                     {$smarty.config.$adminlg}
                 </td>
 				<td align="right">
-					<input 	type="image"
-							name="{$editaction}"
-							src="buttons/edit.gif"
-							class="imagebutton" />
+					<button name="{$editaction}" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-pencil"></button>
 					&nbsp;
                     {confirm
                         yes="user:deleteUser:`$user->id`"
                         title=$smarty.config.s_delete_user
                         message=$smarty.config.s_delete_user_confirm|sprintf:$user->name
                     }
-					<input 	type="image"
-							name="{$action}"
-							src="buttons/delete.gif"
-							class="imagebutton" />
+                    <button name="{$action}" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-trash"></button>
+
 					&nbsp;
                     {/confirm} 
 				</td>
@@ -61,6 +53,5 @@
                 <span class="glyphicon glyphicon-neg glyphicon-plus-sign white"></span> {#s_new#}
             </button>
         {/action}
-	</div>
 </form>
 {include file='footer.tpl'}

@@ -1,5 +1,5 @@
 {include file='header.tpl'}
-<h1>{$form_name} : {$lg_desc}</h1>
+<h1>{if $form_name}{$form_name} : {/if}{$lg_desc}</h1>
 
 {literal}
 <script type="text/javascript">
@@ -20,7 +20,7 @@
 	{action action="dynform_data:delete_selected:`$form_id`:`$lg`"}
 	<form style="display: inline" name="entryForm" method="post" action="{url action0=$lastaction action1=$action}"  enctype="multipart/form-data">
 	<table border="0" cellpadding="0" cellspacing="0" class="table">
-		<tr class="header" bgcolor="#e0e7ec">
+		<tr class="header">
 			<td nowrap="nowrap"><input type="checkbox" onChange="selectAll(this)" class="button" />&nbsp;</td>
 			{foreach from=$columntitles item=title}
 				<td nowrap="nowrap"><b>{$title|truncate:80:"..."}</b></td>

@@ -1,18 +1,16 @@
-{strip}
+
 {if !$hide_root}
 <div class="nodetree_row {if !$entry.node->newaction}nodetree_node{/if}" style="clear:both">
     {if $entry.show_toggle}
         {if $entry.open}
-            <img class="nodetree_toggle" src="picts/toggle-open.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, { open: 0 })" alt="{#s_close#}"
-            />
+            <img class="nodetree_toggle" src="picts/toggle-open.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, { open: 0 })" alt="{#s_close#}"/>
         {else}
-            <img class="nodetree_toggle" src="picts/toggle-closed.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, { open: 1 })" alt="{#s_open#}"
-            />
+            <img class="nodetree_toggle" src="picts/toggle-closed.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, { open: 1 })" alt="{#s_open#}"/>
         {/if}
     {/if}
     {if $entry.node->newaction}
         <a href="{url action=$lastaction|default:false action1=$entry.node->newaction}" title="{#s_new_child#}" class="new">
-            <img src="picts/node_content_on.gif" alt="{#s_new_child#}" />
+            <span class="glyphicon glyphicon-file"></span>
             <span class="glyphicon glyphicon-plus-sign"></span>
         </a>
     {else}
@@ -21,18 +19,18 @@
         <div style="float: right; width: 15px; padding-top: 2px; padding-right: 2px;">
             <input type="checkbox" name="selected[{$entry.node->id}]" value="1"/>
         </div>
-        <div style="float: right; width: 15px; padding-top: 7px">
+        <div style="float: right; width: 20px; padding-top: 2px">
             {activationbutton action=$entry.actions.toggle_active active=$entry.node->active}
         </div>
-        <div style="float: right; width: 30px; padding-top: 5px">
+        <div style="float: right; width: 20px; padding-top: 2px">
             {assign var=moveorcopy value="node:moveorcopy:`$entry.node->id`:`$lg`"|makeaction}
             {if $moveorcopy}
-                <input name="{$moveorcopy}" type="image"  title="{#s_move_copy#}" alt="{#s_move_copy#}" src="buttons/move.gif"/>
+                <button name="{$moveorcopy}" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-sort"></span></button>
             {else}
                 &nbsp;
             {/if}
         </div>
-         <div style="float: right; width: 20px; padding-top: 5px">
+         <div style="float: right; width: 20px; padding-top: 4px">
             {if $entry.actions.delete}
                 {actionlink action=$entry.actions.delete show_title=false}
             {else}
@@ -56,14 +54,14 @@
         </div>
         <div style="float: right; width: 25px; padding-top: 0px;">
             {if $entry.actions.contentedit}
-                <input name="{$entry.actions.contentedit}" type="image" src="buttons/edit.gif" title="{$altedittitle}" alt="{$altedittitle}"/>
+                <button name="{$entry.actions.contentedit}" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-pencil"></span></button>
             {/if}
             &nbsp;
         </div>
         {if $entry.forms}
          <div style="float: right;">
             {foreach from=$entry.forms item=form}
-            <div style="float: left; width: 80px; padding-top: 3px; class="eng">
+            <div style="float: left; width: 80px; padding-top: 3px;" class="eng">
                 {if $form}
                     <a href="{url action0=$form.action action1=$lastaction}" {$form.class} title="{$form.form->title|escape}">
                         {$form.form->title|truncate:15|escape}
@@ -79,11 +77,11 @@
         <span class="nodetree_title{if $entry.node->is_content()} nodetree_title_content{/if}">
         {if $entry.actions.contentedit}
             <a href="{url action0=$lastaction|default:false action1=$entry.actions.contentedit}" title="{$altedittitle}">
-                <img src="picts/{$entry.node->icon()}.gif" alt="{$altedittitle}"/>
+                <span class="glyphicon glyphicon-file{if !$entry.node->active} off{/if}"></span>
                 <span class="contenttitle{if !$entry.has_content} dim{/if}">{$entry.title|truncate:75}</span>
             </a>
         {else}
-            <img src="picts/{$entry.node->icon()}.gif" alt="alttitle"/>
+            <span class="glyphicon glyphicon-file{if !$entry.node->active} off{/if}"></span>
             {$entry.title|truncate:50}&nbsp;
         {/if}
 
@@ -100,7 +98,7 @@
     {foreach from=$entry.children item=childentry}
         <li class="nodetree_entry{if !$childentry@last} nodetree_connection{/if}">
         {if $childentry@last}
-            <img class="nodetree_connection" src="picts/joinbottom.gif" alt="" />
+            <img class="nodetree_connection join_bottom" src="picts/joinbottom.gif" alt="" />
         {else}
             <img class="nodetree_connection" src="picts/join.gif" alt="" />
         {/if}
@@ -111,4 +109,3 @@
     {/foreach}
     </ul>
 {/if}
-{/strip}

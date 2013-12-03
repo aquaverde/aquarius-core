@@ -1,12 +1,11 @@
 <div class="nodetree_row {if $tree.open}open{/if}">
-{strip}
     {if $tree.show_toggle}
             <img class="nodetree_toggle" id="nodetree_toggle_{$tree.node->id}" src="picts/lapse-{if $tree.open}open{else}closed{/if}.gif" onclick="this.src='picts/lapse-loading.gif'; nodetree.update({$tree.node->id}, {ldelim} open: {if $tree.open}0{else}1{/if} {rdelim})" alt="{if $tree.open}{#s_close#}{else}{#s_open#}{/if}"/>
     {/if}
     {assign var="nodetitle" value=$tree.node->get_contenttitle()|strip_tags}
     {assign var="action" value="contentedit:edit:`$tree.node->id`:$lg"|makeaction}
     {if $action}<a href="{url url=$adminurl action=$action action2=$lastaction|default:false}" title="{$nodetitle}: {#s_edit#} ({$tree.node->id})">{/if}
-    <img src="picts/{$tree.node->icon()}.gif" alt=""/>
+    <span class="glyphicon glyphicon-file{if !$tree.node->active} off{/if}"></span>
     <span class="nodetree_title{if !$tree.node->get_content($lg)} dim{/if}">
         {$nodetitle|truncate:30}
         {if $tree.node->access_restricted == 1} 
@@ -17,9 +16,15 @@
 {if $tree.children|@count > 0}
     <ul>
         {foreach item="child_tree" from=$tree.children}
+<<<<<<< HEAD
             <li class="nodetree_entry{if !$child_tree@last} nodetree_connection{/if}">
                 {if $child_tree@last}
                     <img class="nodetree_connection" src="picts/joinbottom.gif" alt="" />
+=======
+            <li class="nodetree_entry{if !$child_tree.last} nodetree_connection{/if}">
+                {if $child_tree.last}
+                    <img class="nodetree_connection join_bottom" src="picts/joinbottom.gif" alt="" />
+>>>>>>> master
                 {else}
                     <img class="nodetree_connection" src="picts/join.gif" alt="" />
                 {/if}
@@ -30,5 +35,4 @@
         {/foreach}
     </ul>
 {/if}
-{/strip}
 </div>

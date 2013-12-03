@@ -14,7 +14,7 @@
 
     {action action="filemgr:delete_in:$selectedDir:"}
     <p class="action" style="float:right;">{#s_forselection#}:
-        <input name="{$action}" type="submit" onClick="return confirm('{$smarty.config.s_delete_files|escape}');" value="{#s_delFileDelete#}" class="button" />
+        <input name="{$action}" type="submit" onClick="return confirm('{$smarty.config.s_delete_files|escape}');" value="{#s_delFileDelete#}" class="btn btn-default btn-sm" />
     </p>
     {/action}
 
@@ -23,5 +23,6 @@
 {/if}
 
     </form>
+    <div>
 	</body>
 </html>
