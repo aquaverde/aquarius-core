@@ -264,44 +264,35 @@ class db_Content extends DB_DataObject
 
     /** Get values that are supposed to be used as its title for this content
       * Contents of the following fields are returned in this order:
-      * - field 'title' if there is one
-      * - the first field in the form if 'title' does not exist
+      * - field 'title' if it exists
       * - fields having the 'add_to_title' flag (in the order they are defined in the form)
+      * - the first field in the form if there are no other fields used as title
       * The values are converted to string, empty fields are not included in returned list.
-      * @return list of field values as strings
+      * @return list of titles as strings
       */
     function titlefields() {
         $formfields = $this->get_formfields();
-
-        // Title of the content is either the value in field 'title' or the first field's value
-        $titlefield = false;
-        $use_first = false; // Whether to use the first field as stand-in title, only if we're desperate
-        if (isset($formfields['title'])) {
-            $titlefield = $formfields['title'];
-        } else {
-            $use_first = true;
-        }
         
         $titlefields = array();
-        if ($titlefield) {
-            $titlefields []= $titlefield;
+        if (isset($formfields['title'])) {
+            $titlefields []= $formfields['title'];
         }
+        
         foreach($formfields as $formfield) {
-            if ($formfield != $titlefield && $formfield->add_to_title) {
-                $use_first = false;
+            if ($formfield->add_to_title) {
                 $titlefields []= $formfield;
             }
         }
 
-        if ($use_first && count($formfields)) {
+        if (count($titlefields) == 0 && count($formfields > 0)) {
+            // we're desperate
             $titlefields []= first($formfields);
         }
-
+        
         $titles = array();
         foreach($titlefields as $field) {
             if (isset($this->{$field->name})) {
                 $title = $this->{$field->name};
-
                 $formtype = $field->get_formtype();
                 $titlestr = $formtype->to_string($title);
                 if (strlen($titlestr) > 0) {
@@ -311,6 +302,7 @@ class db_Content extends DB_DataObject
         }
         return $titles;
     }
+
 
     function fetch() {
         // Reset the loaded_fields flag
