@@ -23,5 +23,6 @@
 {/if}
 
     </form>
+    <div>
 	</body>
 </html>
