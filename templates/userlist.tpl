@@ -2,10 +2,10 @@
 <h1>{#s_cms_user_administration#}</h1>
 
 <form action="{url action0=$lastaction}" method="post">
-	<div class="bigbox">
-		<div class="bigboxtitle"><h2>{#s_cms_users#}</h2></div>
+	<div class="">
+		<h2>{#s_cms_users#}</h2>
 		
-		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table2">
+		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table table-bordered">
 			<tr>
 				<th>&nbsp;</th>
 				<th>{#s_users#}</th>
@@ -16,9 +16,9 @@
 			</tr>
 		{foreach item="user" from=$users}
             {action var="editaction" action="user:editUser:`$user->id`"}
-			<tr class="{cycle values="even,odd"}">
+			<tr>
 				<td width="25">&nbsp;
-					{activationbutton action="user:toggle_active:`$user->id`" active=$user->active}
+					{activationbutton action="user:toggle_active:`$user->id`" active=$user->active class=imagebutton}
 				</td>
    				<td>
    				    <a href="{url action0=$editaction action1=$lastaction}">{$user->name}</a>
@@ -55,18 +55,12 @@
 			</tr>
             {/action}         
 		{/foreach}
-		    {action action="user:editUser:new"}
-			<tr class="bottom">				
-				<td colspan="7" align="right">
-					<input 	type="image"
-							name="{$action}"
-							src="buttons/new.gif"
-							class="imagebutton" />
-				</td>
-			</tr>
-			{/action}
 		</table>
-		
+        {action action="user:editUser:new"}
+            <button name="{$action}" type="submit" class="btn btn-sm btn-default btn-success">
+                <span class="glyphicon glyphicon-neg glyphicon-plus-sign white"></span> {#s_new#}
+            </button>
+        {/action}
 	</div>
 </form>
 {include file='footer.tpl'}

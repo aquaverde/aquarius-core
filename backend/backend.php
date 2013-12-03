@@ -12,10 +12,10 @@ Log::backtrace('backend');
 
 /* Process logins & load logged in user */
     require_once "db/Users.php";
-    $logged_in = db_Users::authenticate();
+    $login_status = db_Users::authenticate();
                 
     // Redirect to frontend if user wants to
-    if ($logged_in && isset($_REQUEST['login_frontend'])) {
+    if ($login_status instanceof db_User && isset($_REQUEST['login_frontend'])) {
         header('Location:'.PROJECT_URL);
         exit;
     }
@@ -38,7 +38,6 @@ Log::backtrace('backend');
     }
 
     $language_detection = new Language_Detection;
-    $language_detection->require_active = false;
     $language_detection->add_detector('request_parameter');
     $language_detection->add_detector('backend_lg_user_default_lang', 'backend_lg_user_default_lang');
     $language_detection->add_detector('accepted_languages');
@@ -46,7 +45,8 @@ Log::backtrace('backend');
 
     $request_params = array(
         'request' => clean_magic($_REQUEST),
-        'server' => $_SERVER
+        'server' => $_SERVER,
+        'require_active' => false
     );
 
     $lg = $language_detection->detect($request_params);
@@ -81,11 +81,21 @@ Log::backtrace('backend');
                 $correct_uri->path = dirname($correct_uri->path).'/';
             }
         }
-
+        
+        // Login status of -1 means failed attempt
+        $login_failed = $login_status === -1;
+        
+        // primitive check that we had a session cookie submitted
+        $cookie_missing = (isset($_GET['returning']) || (bool)$login_status) && empty($_COOKIE);
+        
         if ($request_uri == $correct_uri) {
+            $smarty->assign(compact('login_failed', 'cookie_missing'));
             $smarty->assign('session_id', session_id());
+            $smarty->assign('revision', first(explode('-', $aquarius->revision())));
             $smarty->display('login.tpl');
         } else {
+            $correct_uri->params = array();
+            $correct_uri->add_param('returning');
             $smarty->assign('correct_uri', $correct_uri);
             $smarty->display('login-redirect.tpl');
         }

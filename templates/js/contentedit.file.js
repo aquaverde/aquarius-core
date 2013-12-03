@@ -1,4 +1,4 @@
-<?
+<?php
 $url = new Url('admin.php');
 ?>
 
@@ -43,7 +43,7 @@ with (FileSelectorList) {
         reg_id = "f" + this.formfield + "_" + new_id;
         new Ajax.Updater(
             this.field.tBodies[0],
-            '<?=$url->with_param(Action::make('file_ajax', 'empty_row'))->str()?>',
+            '<?php echo $url->with_param(Action::make('file_ajax', 'empty_row'))->str()?>',
             {   method: 'get'
             ,   insertion: Insertion.Bottom
             ,   onComplete: function() { this.register(reg_id) }.bind(this)
@@ -185,7 +185,7 @@ with (FileSelector) {
     prototype.update_thumbnail = function() {
         new Ajax.Updater(
             this.thumb,
-            '<?=$url->with_param(Action::make('file_ajax', 'thumb'))->str()?>',
+            '<?php echo $url->with_param(Action::make('file_ajax', 'thumb'))->str()?>',
             {   method: 'get'
             ,   parameters: { formfield: this.manager.formfield
                             , file: this.file.value
@@ -204,7 +204,7 @@ with (FileSelector) {
                 subdir = this.get_subdir(this.manager.get_row_above(this.container));
             }
         }
-        url = '<?=$url?>?' + this.manager.popup_action+
+        url = '<?php echo $url?>?' + this.manager.popup_action+
                     '&file='+encodeURIComponent(this.get_proper_filename(this.file.value))+
                     '&subdir='+encodeURIComponent(subdir)+
                     '&target_id='+this.id

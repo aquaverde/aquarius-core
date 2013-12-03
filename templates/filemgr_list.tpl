@@ -1,4 +1,4 @@
-<table width="100%" cellpadding="3" cellspacing="0" class="table">
+<table width="100%" class="table table-bordered">
     	<tr align="left">
     		<th><input type="checkbox" onchange="selectAll(document.select_files, this)"></th>
     		<th>{#s_preview#}</th>

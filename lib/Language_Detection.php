@@ -8,9 +8,6 @@
   * */
 class Language_Detection {
     private $language_detectors;
-    
-    /** Whether to only detect active languages */
-    public $require_active = true;
 
     /** Create a language detection process
     * @param $detector_names is an optional list of builtin detector names to add.
@@ -42,7 +39,7 @@ class Language_Detection {
             $proposed_lg = call_user_func($detector, $parameters);
             if ($proposed_lg) {
                 // Make sure that language is valid
-                $lg = db_Languages::validate_code($proposed_lg, $this->require_active);
+                $lg = db_Languages::validate_code($proposed_lg, get($parameters, 'require_active'));
                 if ($lg) {
                     Log::debug("Language '$lg' detected by $name");
                     return $lg;
@@ -61,7 +58,7 @@ class Language_Detection {
     /** Use the first path part if it's a valid language code  */
     static function request_path($params) {
         // Try to use the first path part as language code
-        return db_Languages::validate_code(array_shift(array_filter(explode('/', $params['uri']->path))));
+        return array_shift(array_filter(explode('/', $params['uri']->path)));
     }
 
     /** Detect language by domain */
@@ -75,7 +72,7 @@ class Language_Detection {
 
         $accepted_lgs = array();
         foreach ($accepted_languages as $langstr) {
-           $lg = db_Languages::validate_code(substr($langstr, 0,2));
+           $lg = db_Languages::validate_code(substr($langstr, 0,2), get($params, 'require_active'));
            if ($lg) return $lg;
         }
     }

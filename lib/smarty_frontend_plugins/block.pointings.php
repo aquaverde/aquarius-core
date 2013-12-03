@@ -1,42 +1,44 @@
-<?php 
+<?
 /** Loop over content pointing to a node
     If there's no content pointing to a node, pointing to its parent are looked up
 Params:
     to: The node which we are searching pointings for
-    lg: 
+    lg: the language in which to search for pointings, preset: current language
     children_of: To limit the search to children of a node
-    limit: Optional limit of iterations (default: unlimited)
+    search_parents: look up pointings in parents, preset: true
+    filter: filter sentence selecting nodes that will end up in the list
+    sort: set this to true to sort by title
+    limit: Optional limit of iterations, preset: unlimited
     shuffle: randomize list before display
-    search_parents: look up pointings in parents (default: true)
 */
 
 function smarty_block_pointings($params, $content, &$smarty, &$repeat) {
     static $pointing_nodes;
-	global $DB;
+    global $DB;
 
     // On first invocation of the block, we build the list of nodes
-	if ( $repeat ) {
+    if ( $repeat ) {
         $nodeparam = get($params, 'to');
         $node = db_Node::get_node($nodeparam);
         if (!$node) Log::debug("Could not load pointing node from 'to' param ".$nodeparam);
-        
+Log::debug($node);        
         $inherit = (bool)get($params, 'inherit');
         $search_parents = (bool)get($params, 'search_parents', true);
         $children_of = db_Node::get_node(get($params, 'children_of'));
         $depth = get($params, 'depth', false);
         $lg = db_Languages::ensure_code(get($params, 'lg', $smarty->get_template_vars('lg')));
+        $custom_filter_sentence = get($params, 'filter');
         
         $sort = get($params, 'sort');
         $andchilds = get($params, 'andchilds');
         
         // Look for pointings starting from this node
-        $pointing_nodes = array();
+        $found_nodes = array();
         $searching_node = $node;
     
         if($andchilds) $searching_node_childs = $searching_node->children();
         
-        if($depth)
-        {
+        if($depth) {
             $children = $children_of->children();
 
             $query = "
@@ -86,11 +88,8 @@ function smarty_block_pointings($params, $content, &$smarty, &$repeat) {
                 $query .= ")";
             }
             
-            $pointing_nodes = $DB->listquery($query);
-        }
-        
-        else
-        {
+            $found_nodes = $DB->listquery($query);
+        } else {
             while($searching_node) {
                 $query = "
                     SELECT DISTINCT node.id
@@ -112,9 +111,9 @@ function smarty_block_pointings($params, $content, &$smarty, &$repeat) {
                         AND node.parent_id = $children_of->id";
 
                 }
-                $pointing_nodes = $DB->listquery($query);
+                $found_nodes = $DB->listquery($query);
 
-                if (count($pointing_nodes) < 1 && $search_parents) {
+                if (count($found_nodes) < 1 && $search_parents) {
                     $searching_node = $searching_node->get_parent();
                 } else {
                     $searching_node = false;
@@ -122,7 +121,24 @@ function smarty_block_pointings($params, $content, &$smarty, &$repeat) {
             }
         }
         
-        if (get($params, 'shuffle')) shuffle($pointing_nodes);
+        foreach ($found_nodes as $fnode) {
+            $node = db_Node::get_node($fnode);
+            if ($node) $pointing_nodes []= $node;
+        }
+        
+        $custom_filter = false;
+        if ($custom_filter_sentence) {
+            try {
+                global $aquarius;
+                $custom_filter = $aquarius->filterparser->interpret($custom_filter_sentence, $smarty->get_template_vars());
+            } catch (FilterParsingException $filter_error) {
+                $smarty->trigger_error("Failed parsing filter '$custom_filter_sentence': ".$filter_error->getMessage());
+            }
+        }
+        
+        if ($custom_filter) {
+            $pointing_nodes = array_filter($pointing_nodes, array($custom_filter, 'pass'));
+        }
         
         if($sort) {
             usort($pointing_nodes, "sort_nodes_by_field");
@@ -130,26 +146,26 @@ function smarty_block_pointings($params, $content, &$smarty, &$repeat) {
         
         $limit = intval(get($params, 'limit', 0));
         if ($limit > 0) $pointing_nodes = array_slice($pointing_nodes, 0, $limit);
-	}	
+        
+        if (get($params, 'shuffle')) shuffle($pointing_nodes);
+        
+    }
 
     // In each iteration, we check whether there's a pointing node left to display, and load its content
     $pointing_node = array_shift($pointing_nodes);
     $repeat = (bool)$pointing_node;
     if ($repeat) {
-        $content_obj = db_Content::get_cached($pointing_node, $lg);
+        $content_obj = $pointing_node->get_content($lg);
         $content_obj->load_fields();
         $smarty->assign('pointing', $content_obj);
     }
     
-	return $content;
+    return $content;
 }
 
-function sort_nodes_by_field($entry1, $entry2)
+function sort_nodes_by_field($node1, $node2)
 {
     $fieldname = "title";
-    
-    $node1 = db_Node::get_node($entry1);
-    $node2 = db_Node::get_node($entry2);
     
     $c1 = $node1->get_content();
     $c2 = $node2->get_content();
@@ -175,4 +191,3 @@ function sort_nodes_by_field($entry1, $entry2)
     }
     return $order;
 }
-?>

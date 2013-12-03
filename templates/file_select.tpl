@@ -46,7 +46,7 @@
         <div style="{if $subdirs} margin-top: 10px;{/if}{if !$filter}display: none{/if}" id="filter_box">
             <label for='filterinput' style="display: inline">{#s_search#} </label><input type="text" id='filterinput' name="filter" value="{$filter}" class="ef" style="width:30%;"/>
             &nbsp;<input type="submit" name="doFilter" value="{#s_filter_it#}" class="button" />
-            &nbsp;<input type="submit" name="reset" value="{#s_filter_reset#}" onclick="form.filter.value='';form.submit()" class="button" />
+            &nbsp;<input type="submit" name="reset" value="{#s_filter_reset#}" onclick="form.filter.value='';form.submit()" class="btn btn-sm btn-default" />
         </div>
     </form>
     <div class="clear"> </div>
@@ -55,7 +55,7 @@
     <div id="div_upload_box" style="margin:5px 0 5px 0;">
         <form action="{url action=$lastaction}" enctype="multipart/form-data" method="post" accept-charset="utf-8">
             {#s_upload_picture#}:&nbsp;<input type="file" id="input_file_upload" name="input_file_upload" /><br/>
-            <input type="submit" name="btn_upload_file" value="{#upload_starten#}" id="btn_upload_file" class="button" style="margin-top :8px" />
+            <input type="submit" name="btn_upload_file" value="{#upload_starten#}" id="btn_upload_file" class="btn btn-sm btn-default" style="margin-top :8px" />
         </form>
 	</div>
     <div class="clear"></div>
@@ -84,7 +84,7 @@
     <div class="clear"></div>
 </div>
 {else}
-<table id='filelist' width="100%" cellpadding="3" cellspacing="0" class="table">
+<table id='filelist' width="100%" cellpadding="3" cellspacing="0" class="table table-bordered">
     <tr align="left">
         <th width="25">&nbsp;</th>
         <th>{#s_preview#}</th>
@@ -115,6 +115,6 @@
     {/if}
 </table>
 {/if}
-<input type="submit" name="" value="{#s_close#}" onclick="window.close()" class="button" style="margin: 10px 0 15px 0; float:right"/>
+<input type="submit" name="" value="{#s_close#}" onclick="window.close()" class="btn btn-sm btn-default" style="margin: 10px 0 15px 0; float:right"/>
 {include file=page_select.tpl lastaction=false}
 {include file="footer.tpl"}

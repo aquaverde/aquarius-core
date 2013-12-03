@@ -26,7 +26,7 @@
 <div class="clear"></div>
 
 {if $tabs}
-    <div style="height: 23px"></div> {* padding for tabs sticking out *}
+    <div style="height: 30px;"></div> {* padding for tabs sticking out *}
 {/if}
 
 
@@ -75,19 +75,21 @@
             </div>
     {/foreach}
     {strip}
-    <div class="clear"></div>
+
+            <hr>
             {action action=$saveaction}
                 <input type='hidden' name='tab' value='{$active_tab_id}' id='active_tab_id'/>
                 <input type="hidden" name="check" value="{$content->node_id}{$content->lg}"/>
-                <input type="submit" name="{$doneaction}" value="{#s_done#}" class="submit"/>
-                <input type="submit" name="{$saveaction}" value="{#s_save#}" class="submit" id="savebutton"/>
+                <input type="submit" name="{$doneaction}" value="{#s_done#}" class="btn btn-primary" />&nbsp;
+                <input type="submit" name="{$saveaction}" value="{#s_save#}" class="btn btn-default" id="savebutton"/>&nbsp;
             {/action}
-                <input type="submit" class="cancel submit" name="" value="{#s_cancel#}"/>
+                <input type="submit" class="btn btn-default"  name="" value="{#s_cancel#}"/>
 
         </form>
     {/strip}
     </div>
 </div>
+
 
 
 {* Show addons *}
@@ -115,7 +117,7 @@
                     <option value="{$command}">{$smarty.config.$text}</option>
                 {/foreach}
                 </select>&nbsp;
-                <input type="submit" name="{$forallaction}" value="ok" class="button" />
+                <button type="submit" name="{$forallaction}" class="btn btn-default btn-xs">OK</button>
             </div>
         </form>
         {/strip}

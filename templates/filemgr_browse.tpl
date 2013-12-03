@@ -1,4 +1,4 @@
-<table width="100%" cellpadding="3" cellspacing="0" class="table">
+<table width="100%" class="table table-bordered">
 		<tr class="nohover">
 			<td>
 				<div id="browse" style="border:none;">

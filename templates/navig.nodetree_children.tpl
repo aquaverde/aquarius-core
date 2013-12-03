@@ -29,19 +29,19 @@
             {if $next_depth<=$nodeDepth+1}
             
                 {if $connection == "join"}
-                        <img src="picts/join_nav.gif" alt="" />
+                        <img src="picts/join.gif" alt="" />
                 {else}
-                        <img src="picts/joinbottom_nav.gif" alt="" />
+                        <img src="picts/joinbottom.gif" alt="" />
                 {/if}
             
             {/if}
 
         {if $action}
                 <a href="admin.php{url action=$action}" title="{#s_edit#}: {$nodetitle} ({$nodeinfo.node->id})">
-                <img src="picts/{$nodeinfo.node->icon()}_nav.gif" title="{#s_edit#}: {$nodetitle}  ({$nodeinfo.node->id})" alt="{#s_edit#}: {$nodetitle} ({$nodeinfo.node->id})"/>
+                <img src="picts/{$nodeinfo.node->icon()}.gif" title="{#s_edit#}: {$nodetitle}  ({$nodeinfo.node->id})" alt="{#s_edit#}: {$nodetitle} ({$nodeinfo.node->id})"/>
                 <span class="{if !$nodeinfo.node->get_content($content->lg)} dim{/if}">{$nodetitle|strip_tags|truncate:30}</span></a>
         {else}
-                <img src="picts/{$nodeinfo.node->icon()}_nav.gif" alt=""/>&nbsp;
+                <img src="picts/{$nodeinfo.node->icon()}.gif" alt=""/>&nbsp;
                 <span class="{if !$nodeinfo.node->get_content($content->lg)} dim{/if}">{$nodetitle|strip_tags|truncate:30}</span>
         {/if}
         

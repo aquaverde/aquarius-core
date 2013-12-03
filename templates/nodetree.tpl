@@ -23,7 +23,7 @@
                 <option value="{$command}">{$smarty.config.$text}</option>
             {/foreach}
             </select>&nbsp;
-            <input type="submit" name="{$forallaction}" value="ok" class="button" />
+            <button type="submit" name="{$forallaction}" class="btn btn-default btn-xs">OK</button>
         </div>
     </form>
 </div>

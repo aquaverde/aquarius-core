@@ -7,7 +7,7 @@ RewriteEngine on
 
 RewriteRule ^aquarius/admin(/?.*) /aquarius/core/backend$1 [qsappend,last]
 RewriteRule ^admin/? /aquarius/admin/ [R,last]
-RewriteRule ^min/ /aquarius/core/components/minifier/min [qsappend,last]
+RewriteRule ^min/ /aquarius/core/frontend/min.php [qsappend,last]
 
 RewriteRule ^aquarius/slir(/.*) /aquarius/core/components/slir$1 [qsappend,last]
 
