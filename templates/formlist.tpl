@@ -1,11 +1,10 @@
 {include file='header.tpl'}
 <h1>Pagetypes admin</h1>
-<div class="bigbox">
-    <div class="bigboxtitle"><h2>Edit or create a pagetype:</h2></div>
+<div class="">
     <form action="{url action=$lastaction}" method="post">
-        <table width="100%" cellpadding="0"  cellspacing="0" class="table2">
+        <table width="100%" cellpadding="0"  cellspacing="0" class="table table-hover">
 {foreach from=$forms item=form}
-	        <tr class="{cycle values="odd,even"}">
+	        <tr>
 		        <td width="30%">
 				  {action action="formedit:edit:`$form->id`"}
 					<a href="{url action=$action action1=$lastaction}" title="edit pagetype">
@@ -46,12 +45,17 @@
 {/foreach}		
         </table>
     </form>
-    <form action="{url action=$lastaction}" method="post">
-        <input name="{$action_new}" class="imagebutton" type="image" title="new form" src="buttons/new.gif" border="0" alt="new" />
-    </form>
     
-    <br />
-    <a href="{url action1=$lastaction action='form:import'}"><img src="buttons/import.gif" alt="import" title="import" /></a>
+    <a href="{url action1=$lastaction action='form:import'}" class="btn btn-default btn-sm pull-right"><span class="glyphicon glyphicon-download-alt"></span> Import</a>
+
+    
+    <form action="{url action=$lastaction}" method="post">
+        <button type="submit" name="{$action}" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus-sign"></span> {#s_new#}</button>
+    </form>
+
+    
+    
+    
     
 </div>
 {include file='footer.tpl'}

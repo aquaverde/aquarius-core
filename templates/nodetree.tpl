@@ -5,10 +5,10 @@
 {include_javascript file=prototype.js lib=true}
 {include_javascript file=nodetree.js}
 
-<h1>{$lg|language_name} - Sitemap</h1>
+<h1>Sitemap</h1>
 
 <div class="bigbox">
-    <div class="bigboxtitle"><h2>{$lg|language_name} - Sitemap</h2></div>
+    <div class="bigboxtitle"><h2>{$lg|language_name}</h2></div>
 
     {strip}
     <form action="{url action0=$lastaction}" id="nodetree" method="post">

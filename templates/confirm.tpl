@@ -4,8 +4,8 @@
     <form action="{url}" method="post">
         <div>{$message}</div>
         <br/>
-        <input type="submit" name="{$yesAction}" class="submit" value="  {#s_yes#}  " />
-        <input type="submit" name="{$noAction}" class="cancel" value="  {#s_no#}  " />
+        <input type="submit" name="{$yesAction}" class="btn btn-default" value="  {#s_yes#}  " />
+        <input type="submit" name="{$noAction}" class="btn btn-default" value="  {#s_no#}  " />
     </form>
 </div>
 {include file='footer.tpl'}

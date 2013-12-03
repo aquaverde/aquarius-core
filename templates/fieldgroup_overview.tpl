@@ -1,13 +1,14 @@
 {include file='header.tpl'}
 <h1>{$lastaction->get_title()}</h1>
 
-<div class="bigbox">
+<div class="">
   <form action="{url action=$lastaction}" method="POST">
     <h2>Group Selections</h2>
-    <table border="0" cellpadding="0" cellspacing="0" class="table2">
+    <table class="table table-hover">
         <tr>
             <th>Selection name</th>
             <th>Included groups</th>
+            <th></th>
         </tr>
     {whilefetch object=$selection}
         <tr class="{cycle values="even,odd"}">
@@ -35,12 +36,13 @@
     {actionlink action=$new_selection new_button=1}
 </div>
 
-<br/>
+    <br><hr><br>
 
-<div class="bigbox">
+
+<div class="">
     <h2>Field Groups</h2>
-    <table border="0" cellpadding="0" cellspacing="0" class="table2">
-        <tr><th>Group name</th><th>Display Name</th><th>Field selections</th><th></th></tr>
+    <table class="table table-hover">
+        <tr><th>Group name</th><th>Display Name</th><th>Field selections</th><th></th><th></th></tr>
     {whilefetch object=$fieldgroup}
         <tr class="{cycle values="even,odd"}">
             <td>

@@ -22,7 +22,7 @@
         {* hidden form button so that hitting enter while editing executes saveaction, not delete action *}
         <input style="display: none" type="submit" name="{$saveaction}" value="{#s_save#}" class="submit" />
         <br/>
-        <table class="table table-bordered" width="100%" border="0" cellspacing="4" cellpadding="0">
+        <table class="table" width="100%" border="0" cellspacing="4" cellpadding="0">
         <tr>
             <th align="right">
 
@@ -78,16 +78,12 @@
             </tr>
             {/strip}
         {/foreach}
-            <tr>
-                <td></td>
-                <td align="left">
-                    <input type="submit" name="{$saveaction}" value="{#s_save#}" class="btn btn-primary" />
-                </td>
-                <td></td>
-            </tr>
 {/if}
         </table>
+        
+        <input type="submit" name="{$saveaction}" value="{#s_save#}" class="btn btn-primary" />
         {actionlink action="wording:port"}
+        
 	</div>
 </form>
 {include file="footer.tpl"}

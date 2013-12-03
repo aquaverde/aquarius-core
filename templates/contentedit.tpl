@@ -18,7 +18,7 @@
 {/if}
     
 {if $node->access_restricted == 1} 
-    <img src="buttons/lock_on.gif" alt="{#s_access_restricted#}" title="{#s_access_restricted#}" />
+    <span title="{#s_access_restricted#}" class="glyphicon glyphicon-lock"></span>
 {/if}
 </h1>
 
@@ -110,9 +110,9 @@
         {strip}
         <form action="{url action0=$lastaction}" id="nodetree" method="post">
             <div style="padding-left: 0; padding-top: 10px" class="nodetree_container" id="nodetree_entry_{$entry.node->id}">
-                {include file='nodetree_container.tpl' hide_root=true}
+            {include file='nodetree_container.tpl' hide_root=true}
             </div>&nbsp;
-            <div style="text-align: right">
+            <div class="right">
                 <select name="command">
                 {foreach from=$forallaction->commands() key=command item=text}
                     <option value="{$command}">{$smarty.config.$text}</option>

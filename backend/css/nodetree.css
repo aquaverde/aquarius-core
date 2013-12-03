@@ -26,7 +26,6 @@ li.nodetree_entry {
 
 li.nodetree_connection {
     background: url(../picts/line_nav.gif) repeat-y;
-    line-height: 18px;
 }
 
 .nodetree_container {
@@ -46,6 +45,7 @@ li.nodetree_connection {
 img.nodetree_connection {
     position: absolute;
     left: 0;
+    top: 6px;
 }
 
 img.nodetree_toggle {
@@ -55,3 +55,5 @@ img.nodetree_toggle {
     cursor: hand;
 }
 
+
+img.nodetree_connection.join_bottom { top: -6px;  }

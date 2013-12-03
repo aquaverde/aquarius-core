@@ -8,16 +8,15 @@
 
 	<table border="0">
 		<tr>
-			<td>{#s_username_contains#}</td>
+			<td width="200">{#s_username_contains#}</td>
 			<td>{#s_user_of_goup_only#}</td>
 		</tr>
 		<tr>
 			<td>
-				<input type="text" name="user_search" value="{$user_search}" />
+				<input type="text" name="user_search" value="{$user_search}" class="form-control" />
 			</td>
-
 			<td>
-				<select name="group_search" style="width: 100px;">
+				<select name="group_search" >
 						<option value=""> {#s_all#} </option>
 						
 				{foreach from=$groups item="group" }
@@ -33,13 +32,13 @@
 			<td colspan="2">
 				<br/>
 				{action action="feuser:list::"}
-					<input type="submit" name="{$action}" value="{#s_search#}" class="button" />
+					<input type="submit" name="{$action}" value="{#s_search#}" class="btn btn-sm btn-default" />
 				{/action}
 				{action action="feuser:list:::filter_reset"}
-				    <input type="submit" name="{$action}" value="{#s_filter_reset#}" class="button" />
+				    <input type="submit" name="{$action}" value="{#s_filter_reset#}" class="btn btn-sm btn-default" />
 				{/action}
 				{action action="feuser:export::"}
-                    <input type="submit" name="{$action}" value="{#s_export#}" class="button" />
+                    <input type="submit" name="{$action}" value="{#s_export#}" class="btn btn-sm btn-default" />
 				{/action}
 			</td>
 		</tr>
@@ -51,14 +50,14 @@
 	{include file="spinner.tpl"}
 {/if}
 
-	<div class="bigbox">
+	<div class="">
 		<div class="bigboxtitle"><h2>{#s_users#} (Id)</h2></div>
 
-		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table2" style="margin-top:10px;">
+		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table" style="margin-top:10px;">
 
 			{foreach from=$users item="user" key="index"}
 			
-			<tr class="{cycle values="even,odd"}">
+			<tr>
 				<td nowrap="nowrap">
 					&nbsp;
 				  {action action="feuser:toggle_active:`$user->id`:"}
@@ -100,19 +99,14 @@
 			</tr>
 
 			{/foreach}
-			
-			<tr class="bottom">				
-				<td colspan="3" align="right">
-					  {action action="feuser:edit:null:"}
-						<a href="{url action=$action action1=$lastaction}">
-							<img src="buttons/new.gif" border="0" alt="new" />
-						</a>
-					  {/action}
-				</td>
-			</tr>
-
 		</table>
 
+        {action action="feuser:edit:null:"}
+            <a href="{url action=$action action1=$lastaction}" class="btn btn-sm btn-default btn-success">
+            <span class="glyphicon glyphicon-neg glyphicon-plus-sign white"></span> {#s_new#}
+            </a>
+        {/action}
+        
 	{if $hasSpinner}
 		{include file="spinner.tpl"}
 	{/if}
