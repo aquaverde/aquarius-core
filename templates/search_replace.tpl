@@ -5,16 +5,16 @@
 <div class="bigbox">
     <div class="bigboxtitle">
         <h2>{#s_r_search_string#}</h2>
-		<input type="text" class="ef" id="search_string" name="search_string" value="{$search_string|escape}" style="margin-top: 5px;" />
+		<input type="text" class="form-control" id="search_string" name="search_string" value="{$search_string|escape}" style="margin-top: 5px;" />
         {action action="search_replace:search:$lg"}
-            <input type="submit" class="submit" name="{$action}" value="{#s_r_search#}" style="margin-top: 10px;"/>
+            <input type="submit" class="btn btn-primary" name="{$action}" value="{#s_r_search#}" style="margin-top: 10px;"/>
         {/action}
 	
 	    {if $results}
 	        <br /><br />
             <div class="bigboxtitle"><h2>{#s_r_replace_string#}</h2></div>
-		        <input type="text" class="ef" id="replace_string" name="replace_string" style="margin-top: 5px;" />
-                    {action action="search_replace:replace:$lg"}<input type="submit" class="submit" name="{$action}" value="{#s_r_replace#}" style="margin-top: 10px;"/>{/action}
+		        <input type="text" class="form-control" id="replace_string" name="replace_string" style="margin-top: 5px;" />
+                    {action action="search_replace:replace:$lg"}<input type="submit" class="btn btn-primary" name="{$action}" value="{#s_r_replace#}" style="margin-top: 10px;"/>{/action}
 	        </div>
 	    {/if}
 </div>	

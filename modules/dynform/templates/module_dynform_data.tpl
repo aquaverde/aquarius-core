@@ -1,9 +1,9 @@
 {include file='header.tpl'}
-<h1>{#dynform_data#}</h1>
+<h1>Dynform</h1>
 
-<div class="bigbox">
+<div class="">
 	<h2>{#data_manager#}</h2>
-	<table border="0" cellpadding="0" cellspacing="0" class="table2">
+	<table border="0" cellpadding="0" cellspacing="0" class="table">
 		{dynform_fm_get_forms lg=$lg}
 		{foreach from=$dynforms item=dynform}
 			<tr class="{cycle values="even,odd"}">
