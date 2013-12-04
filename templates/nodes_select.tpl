@@ -9,8 +9,8 @@
     {/literal}
 </style>
 
-{include_javascript file=prototype.js lib=true}
-{include_javascript file=nodetree.js}
+{include_javascript file='prototype.js' lib=true}
+{include_javascript file='nodetree.js'}
 
 {js target_id=$target_id callback=$callback}
     var selected = {$selected}

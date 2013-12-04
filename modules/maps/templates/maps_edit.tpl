@@ -1,16 +1,11 @@
 {include file='header.tpl'}
 
-{js}	
-	var d_lat = {php}echo MAP_DEFAULT_LAT;{/php};
-	var d_lng = {php}echo MAP_DEFAULT_LNG;{/php};
-	var d_zoom = {php}echo MAP_DEFAULT_ZOOM;{/php};
-{/js}
 <div id="myExit"></div>
 
 <h1>{#map#}</h1>
 <div id="map"></div>
 	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={php}echo MAP_KEY;{/php}" type="text/javascript"></script>
-	{include_javascript file=googlemaps.js}
+	{include_javascript file='googlemaps.js'}
 	<script type="text/javascript">
 		init_map('{$myXml}');
 	</script>
