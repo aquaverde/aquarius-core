@@ -16,15 +16,9 @@
 {if $tree.children|@count > 0}
     <ul>
         {foreach item="child_tree" from=$tree.children}
-<<<<<<< HEAD
             <li class="nodetree_entry{if !$child_tree@last} nodetree_connection{/if}">
                 {if $child_tree@last}
-                    <img class="nodetree_connection" src="picts/joinbottom.gif" alt="" />
-=======
-            <li class="nodetree_entry{if !$child_tree.last} nodetree_connection{/if}">
-                {if $child_tree.last}
                     <img class="nodetree_connection join_bottom" src="picts/joinbottom.gif" alt="" />
->>>>>>> master
                 {else}
                     <img class="nodetree_connection" src="picts/join.gif" alt="" />
                 {/if}

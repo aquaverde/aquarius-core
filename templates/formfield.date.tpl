@@ -1,5 +1,5 @@
-{include_javascript file=date-functions.js lib=true}
-{include_javascript file=datechooser.js lib=true}
+{include_javascript file='date-functions.js' lib=true}
+{include_javascript file='datechooser.js' lib=true}
 {include_javascript file='contentedit.date.js'}
 
 <link rel='stylesheet' href='css/datechooser.css' type='text/css' />
