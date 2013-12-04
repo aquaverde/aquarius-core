@@ -379,7 +379,7 @@ div.nodetree_node:hover { background-color: #fff; }
 #nodetree div.nodetree_row { vertical-align: middle; }
 #nodetree span.title { padding: 0; margin: 0; vertical-align: middle; }
 #nodetree span.nodetree_title img { padding: 0; margin: 0; vertical-align: middle; }
-#nodetree span.contenttitle { padding-top: 0px; vertical-align: middle; }
+#nodetree span.contenttitle { padding-top: 0px; }
 
 #nodetree a { color: #000; }
 #nodetree a:hover { color: #009DE5; text-decoration:none;}

@@ -184,7 +184,7 @@ function clean_dict(dict) {
     return clean
 }
 
-jquery( document ).ready(function() {
-    jquery('a').tooltip('show');
+jQuery( document ).ready(function() {
+    jQuery('.tooltip').tooltip();
 });
 

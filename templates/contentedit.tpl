@@ -76,7 +76,6 @@
     {/foreach}
     {strip}
 
-            <hr>
             {action action=$saveaction}
                 <input type='hidden' name='tab' value='{$active_tab_id}' id='active_tab_id'/>
                 <input type="hidden" name="check" value="{$content->node_id}{$content->lg}"/>
