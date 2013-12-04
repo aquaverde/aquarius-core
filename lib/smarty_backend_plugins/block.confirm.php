@@ -18,8 +18,9 @@
   *     {/confirm}
   */
 function smarty_block_confirm($params, $content, &$smarty, &$repeat) {
-    require_once $smarty->_get_plugin_filepath('modifier','makeaction');
-    require_once $smarty->_get_plugin_filepath('function','url');
+    $smarty->loadPlugin('smarty_modifier_makeaction');
+    $smarty->loadPlugin('smarty_function_url');
+    
     // Don't change output
     if ($content)
         return $content;

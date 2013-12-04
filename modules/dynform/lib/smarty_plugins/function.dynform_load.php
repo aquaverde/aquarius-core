@@ -5,10 +5,7 @@
   * Both these assoc arrays just contain what is stored in the db for the given content.
   */
   
-function smarty_function_dynform_load($params, &$smarty) 
-{
-    require_once $smarty->_get_plugin_filepath('modifier','makeaction') ;
-    
+function smarty_function_dynform_load($params, $smarty) {
     $smarty->assign('blocks', null) ; 
     $content_id = get($params, 'content_id') ;
     
@@ -45,4 +42,3 @@ function smarty_function_dynform_load($params, &$smarty)
 	
 	$smarty->assign("dynform", $dynform) ;
 }
-?>
