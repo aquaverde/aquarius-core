@@ -7,6 +7,9 @@ hr { margin: 0 0 10px 0; border-color:#e0e0e0; }
 .btn-primary { background-color: #009DE5; font-size:13px; font-weight: 700; }
 .btn.btn-xs { font-size: 12px !important; margin-top: 0; }
 .btn.btn-sm { margin-top: 0; }
+
+.pull-right .btn { margin: 0; }
+
 .radio, .checkbox { display: inline; min-height: 10px;}
 .table { margin-bottom: 5px; }
 table.table { border-bottom: 1px solid #DDDDDD;}
@@ -68,8 +71,8 @@ a:hover	{ color: #009DE5; text-decoration: none; }
 
 
 /* outer boxes */
-.bigbox { border: 1px solid #ccc ; padding: 15px; }
-/*.bigbox h2 { height: 21px; line-height: 21px; background-color: #f3f3f3; padding: 0; margin: 0; margin: 0 -15px 5px -15px; padding-left: 8px; } */
+.bigbox { padding: 15px 0; }
+.bigbox h2 { margin-bottom: 5px; }
 .bigbox .table2 { margin-bottom: 8px; }
 
 
@@ -141,7 +144,7 @@ ul { margin: 0; padding: 0; list-style-position: inherit; list-style-type: none;
 .titletop { font-size: 16px; font-weight: bolder; color: #fff; }
 div.topbar { margin: 0; padding: 15px; background-color: #e0e0e0; margin-bottom: 20px; }
 div.topbar img, div.topbar input { vertical-align: middle; }
-p.spiner, p.action { margin: 3px 0; padding: 0; }
+.spiner, .action { margin: 3px 0; padding: 0; }
 .littleflag { width: 5px;}
 
 

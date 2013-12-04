@@ -13,9 +13,9 @@
 	{/if}
 
     {action action="filemgr:delete_in:$selectedDir:"}
-    <p class="action" style="float:right;">{#s_forselection#}:
+    <div class="action pull-right">{#s_forselection#}:
         <input name="{$action}" type="submit" onClick="return confirm('{$smarty.config.s_delete_files|escape}');" value="{#s_delFileDelete#}" class="btn btn-default btn-sm" />
-    </p>
+    </div>
     {/action}
 
 {if $hasSpinner}
