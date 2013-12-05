@@ -21,10 +21,10 @@ function smarty_function_activationbutton($params, &$smarty) {
     
     if ($action) {
         $alt = $smarty->get_config_vars($de.'activate');
-        return '<button name="'.str($action).'" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-flag '.$class.'"></button>';
+        return '<button name="'.str($action).'" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-flag '.$class.'"></span></button>';
     } elseif (get($params, 'show_noedit', true)) {
         $alt = $smarty->get_config_vars($in.'active');
-        return '<img src="'.$src.'" alt="'.$alt.'"/>';
+        return '<span class="glyphicon glyphicon-flag '.$class.'"></span>';
     }
 }
 ?>

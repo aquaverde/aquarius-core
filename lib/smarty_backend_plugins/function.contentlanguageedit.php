@@ -37,9 +37,10 @@ function smarty_function_contentlanguageedit($params, &$smarty) {
             if (ADMIN_SHOW_CONTENT_ACTIVE_FLAGS) {
                 if ($content) {
                     $lgtoggle = Action::make("contentedit", "toggle_active", $node->id, $lang->lg);
-                    $link .= '<input type="image" name="'.str($lgtoggle).'" class="imagebutton littleflag" src="picts/flag_'.$content->active.'.gif" title="'.$lang->name.': '.$smarty->get_config_vars("content_tooltip_active").'" alt=""/>';
+                    if ($content->active) { $class = "on"; } else { $class = "off"; }
+                    $link .= '<button name="'.str($lgtoggle).'" class="btn btn-xxs btn-link" title="'.$lang->name.': '.$smarty->get_config_vars("content_tooltip_active").'"><span class="glyphicon glyphicon-flag '.$class.'"></span></button>';
                 } else {
-                    $link .= '<img class="imagebutton littleflag" src="picts/flag_empty.gif"/>';
+                    $link .= '<span class="glyphicon glyphicon-flag dim"></span>';
                 }
             }
             $links []= $link.'&nbsp;&nbsp;';
