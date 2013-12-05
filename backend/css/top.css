@@ -2,9 +2,9 @@
 
 * { padding: 0; margin: 0; outline: none; }
 
-body { 	font-family: Arial, Helvetica, sans-serif; font-size: 12px; background-color: #000; }
+body { 	font-family: Helvetica Neue, Arial, Helvetica, sans-serif; font-size: 12px; background-color: #000; }
 
-#header { height: 58px; height: 58px;}
+#header { height: 60px; }
 
 #logo { padding-left: 10px; padding-top: 9px; float: left;}
 
@@ -12,7 +12,7 @@ body { 	font-family: Arial, Helvetica, sans-serif; font-size: 12px; background-c
 
 .title a:hover { text-decoration: none; color: #009DE5; }
 
-.site_title { padding-left: 20px;}
+.site_title { padding-left: 20px; font-weight:300; -webkit-font-smoothing:antialiased;}
 
 a {	color: #FFFFFF; text-decoration: none; }
 		
@@ -27,7 +27,7 @@ ul#mainNavig  { list-style: none; margin-left: 10px; clear:both;}
 
 #mainNavig li { display: inline; }
 
-#mainNavig li a { float: left; margin-right: 6px; height: 32px; background-color: #333; line-height: 32px; font-size: 14px; padding:0 12px; border-radius: 5px 5px 0 0; } 
+#mainNavig li a {letter-spacing: .05em;  text-transform:uppercase; color: #ccc; float: left; margin-right: 6px; height: 30px; background-color: #333; line-height: 30px; font-size: 12px; padding:0 12px; border-radius: 5px 5px 0 0; } 
 
 #mainNavig li a:hover { background-color: #515151; } 
 
@@ -50,7 +50,7 @@ form { display: inline; }
 
 input { font-family: Arial, Helvetica, sans-serif; font-size: 11px; vertical-align: middle; color: #666; border: 1px solid #5F5F5F; background-color: transparent; margin: 0; margin-top: -2px; padding: 1px;}
 
-input.btn {  border: 0; color: #009DE5; }
+input.btn {  border: 0; color: #009DE5; background-color: #002b3e; }
 
 input.btn:hover {  border: 0; color: #fff; cursor: pointer; }
 
