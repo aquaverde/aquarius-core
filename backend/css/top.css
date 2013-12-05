@@ -12,7 +12,7 @@ body { 	font-family: Helvetica Neue, Arial, Helvetica, sans-serif; font-size: 12
 
 .title a:hover { text-decoration: none; color: #009DE5; }
 
-.site_title { padding-left: 20px; font-weight:300; -webkit-font-smoothing:antialiased;}
+.site_title { padding-left: 20px; font-weight:300; -webkit-font-smoothing:antialiased; letter-spacing: .05em;}
 
 a {	color: #FFFFFF; text-decoration: none; }
 		

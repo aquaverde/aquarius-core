@@ -74,6 +74,7 @@ a:hover	{ color: #009DE5; text-decoration: none; }
 .bigbox { padding: 15px 0; }
 .bigbox h2 { margin-bottom: 5px; }
 .bigbox .table2 { margin-bottom: 8px; }
+h1+.bigbox { padding: 0; }
 
 
 /* tables */
