@@ -21,6 +21,9 @@ table.table { border-bottom: 1px solid #DDDDDD;}
 
 .glyphicon { color: #535353; -webkit-font-smoothing:grayscale; font-size: 12px !important;}
 
+.glyphicon.glyphicon-file { color: #B8B8B8;}
+.glyphicon.glyphicon-file.node_content_off  { color: red !important; }
+
 .btn-success .glyphicon { color: white; }
 
 .btn-link:hover { color: #009DE5; }
@@ -395,6 +398,8 @@ div.nodetree_node:hover { background-color: #fff; }
 #nodetree .glyphicon.glyphicon-file { color: #B8B8B8; }
 #nodetree .glyphicon.glyphicon-file.off { color: red; }
 #nodetree .glyphicon.glyphicon-file:hover {color: #009DE5; }
+
+
 
 /* Make titles of first two levels bold */
 .nodetree_title { font-weight: bold; }
