@@ -207,7 +207,7 @@ input.inputweight { width: 30px; margin-bottom: 0px; border: 1px #CCC solid; fon
 .contentedit_daypricing input[type="text"] {margin-top:-1px; text-align: right;}
 .contentedit_daypricing td {padding: 3px 0;}
 .contentedit_daypricing tr:hover { background-color: #fff; }
-.permission_level0.language_independent, .permission_level1.language_independent, .permission_level2.language_independent {margin-right: 52px;}
+.permission_level0.language_independent, .permission_level1.language_independent, .permission_level2.language_independent {margin-right: 0;}
 .permission_level0.language_independent .label_img , .permission_level1.language_independent .label_img , .permission_level2.language_independent .label_img {margin-right: -48px;}
 
 

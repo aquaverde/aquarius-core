@@ -67,7 +67,7 @@
     {foreach from=$fields key=field_id item=field}
             <div class='contentedit contentedit_{$field.template_name}' id='box{$field.formfield->name}' style="display: {if !$active_fields || $field.formfield->name|@in_array:$active_fields}block{else}none{/if}">
                 <label for="{$field.htmlid}" title="{$field.formfield->name}" class="permission_level{$field.formfield->permission_level}{if $langlinks|@count > 1}{if $field.formfield->language_independent} language_independent{/if}{/if}">{formfield_title f=$field.formfield}
-                    {if $langlinks|@count > 1}{if $field.formfield->language_independent} <img src="buttons/multilang.gif" alt="{#multi_language#}" title="{#multi_language#}" class="label_img" />{/if}{/if}
+                    {if $langlinks|@count > 1}{if $field.formfield->language_independent} <span title="{#s_multi_language#}" class="glyphicon glyphicon-globe pull-right"></span>{/if}{/if}
                 </label>
 
         {include file=$field.template_file}

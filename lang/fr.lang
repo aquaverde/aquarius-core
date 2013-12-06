@@ -255,6 +255,7 @@ s_new = "Nouveau"
 s_newcat  = "Nouvelle catégorie"
 s_newsubcat  = "Nouvelle sous-catégorie"
 s_edit = "Editer"
+s_multi_language = "Multilangues"
 
 s_update_weights  = "adapter l'ordre d'affichage"
 s_delete  = "Effacer"
