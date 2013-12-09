@@ -45,7 +45,7 @@ li.nodetree_connection {
 img.nodetree_connection {
     position: absolute;
     left: 0;
-    top: 6px;
+    top: 4px;
 }
 
 img.nodetree_toggle {
@@ -56,4 +56,4 @@ img.nodetree_toggle {
 }
 
 
-img.nodetree_connection.join_bottom { top: -6px;  }
+img.nodetree_connection.join_bottom { top: 0;  }
