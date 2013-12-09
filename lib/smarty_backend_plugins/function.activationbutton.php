@@ -5,7 +5,7 @@
   *     active: whether the object is currently active
   *     show_noedit: Whether to show an img without link if the action is false or cannot be built (true by default)
   */
-function smarty_function_activationbutton($params, &$smarty) {
+function smarty_function_activationbutton($params, $smarty) {
     require_once $smarty->_get_plugin_filepath('modifier','makeaction');
 
     $action = smarty_modifier_makeaction(get($params, 'action'));
@@ -21,10 +21,9 @@ function smarty_function_activationbutton($params, &$smarty) {
     
     if ($action) {
         $alt = $smarty->get_config_vars($de.'activate');
-        return '<button name="'.str($action).'" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-flag '.$class.'"></span></button>';
+        return '<button name="'.str($action).'" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-flag '.$class.'" title="'.$alt.'"></span></button>';
     } elseif (get($params, 'show_noedit', true)) {
         $alt = $smarty->get_config_vars($in.'active');
-        return '<span class="glyphicon glyphicon-flag '.$class.'"></span>';
+        return "<span class='glyphicon glyphicon-flag $class' title='$alt'></span>";
     }
 }
-?>
