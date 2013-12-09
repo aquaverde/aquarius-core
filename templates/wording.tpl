@@ -15,7 +15,7 @@
                 {/action}
                 {if $lang->lg == $current_lg}</b>{/if} &nbsp;
             {/foreach}
-             <button name="{$saveaction}" title="{#s_save#}" class="btn-link"><span class="glyphicon glyphicon-save"></span></button>
+             <button name="{$saveaction}" title="{#s_save#}" class="btn-link"><span class="glyphicon glyphicon-floppy-open"></span></button>
         </div>
 
 
