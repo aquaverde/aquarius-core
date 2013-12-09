@@ -3,7 +3,7 @@
 
     	<div class="separator iconbar">
 
-            <a href="#" onclick="document.getElementById('savebutton').click();return false;"  title="{#s_save#}"><span class="glyphicon glyphicon-save"></span></a>&nbsp;
+            <a href="#" onclick="document.getElementById('savebutton').click();return false;" data-toggle="tooltip" title="{#s_save#}"><span class="glyphicon glyphicon-save"></span></a>&nbsp;
 
             {if $preview_uri}
                 <a target="_new" href="{$preview_uri}" title="{#s_page_view#}"><span class="glyphicon glyphicon-eye-open"></span></a>
@@ -19,7 +19,7 @@
 
         {action action="node:editprop:`$node->id`"}
     	<div class="separator formbar dim">
-                <a href="{url action0=$lastaction action1=$action}" data-toggle="tooltip" title="Node {if $node->name}"{$node->name}"{/if} ID {$node->id}">Node</a>
+                <a href="{url action0=$lastaction action1=$action}" data-toggle="tooltip" title="Node: {if $node->name}'{$node->name}'{/if} ID {$node->id}"><span class="glyphicon glyphicon-wrench"></span>Node</a>
         </div>
         {/action}
 

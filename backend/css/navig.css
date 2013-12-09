@@ -20,7 +20,7 @@ body { margin-top: 25px; margin-bottom: 40px; }
 
 .glyphicon { color: #B8B8B8; -webkit-font-smoothing:grayscale; font-size: 12px !important;}
 .btn-link:hover { color: #009DE5; }
-
+.glyphicon.glyphicon-lock { color: #535353; }
 
 a { text-decoration: none; }
 
@@ -139,6 +139,14 @@ li.nodetree_entry {
 .nodetree_title {
     font-weight: bold;
 }
+
+
+.nodetree_title.nodetree_title_content {
+    font-weight: normal;
+}
+
+
+
 /* Ensure the rest of the titles have normal font-weight */
 .nodetree_container .nodetree_container .nodetree_container .nodetree_title {
     font-weight: normal;

@@ -15,7 +15,7 @@
                 {/action}
                 {if $lang->lg == $current_lg}</b>{/if} &nbsp;
             {/foreach}
-            <input type="image" src="buttons/save.gif" name="{$saveaction}" value="{#s_save#}" alt="{#s_save#}" title="{#s_save#}" />
+             <button name="{$saveaction}" title="{#s_save#}" class="btn-link"><span class="glyphicon glyphicon-save"></span></button>
         </div>
 
 
@@ -73,7 +73,7 @@
                            value="{$word->translation|escape}" style="margin:0;" class="form-control" />
                 </td>
                 <td width="1%" align="right" nowrap="nowrap">
-                    &nbsp;&nbsp;<input type="image" name="{$word->delete_action}" src="buttons/delete.gif" title="{#s_delete#}" />
+                    <button name="{$word->delete_action}" title="{#s_delete#}" class="btn-link"><span class="glyphicon glyphicon-trash"></span></button>
                 </td>
             </tr>
             {/strip}

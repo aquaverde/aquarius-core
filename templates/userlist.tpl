@@ -49,7 +49,7 @@
 		{/foreach}
 		</table>
         {action action="user:editUser:new"}
-            <button name="{$action}" type="submit" class="btn btn-sm btn-default btn-success">
+            <button name="{$action}" type="submit" class="btn btn-default btn-success">
                 <span class="glyphicon glyphicon-neg glyphicon-plus-sign white"></span> {#s_new#}
             </button>
         {/action}
