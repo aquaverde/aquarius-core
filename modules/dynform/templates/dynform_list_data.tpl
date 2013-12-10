@@ -13,6 +13,7 @@
         }
     }
 </script>
+<style>.wrapper{border:none;}</style>
 {/literal}
 
 <div>

@@ -208,7 +208,7 @@ with (FileSelector) {
                     '&file='+encodeURIComponent(this.get_proper_filename(this.file.value))+
                     '&subdir='+encodeURIComponent(subdir)+
                     '&target_id='+this.id
-        var pop = window.open(url, "select_file", "height=550,width=500,status=yes,resizable=yes,scrollbars=yes")
+        var pop = window.open(url, "select_file", "height=650,width=600,status=yes,resizable=yes,scrollbars=yes")
         pop.focus()
 
         /* Ensure the popup is closed when the content is saved */

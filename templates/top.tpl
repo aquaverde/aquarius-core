@@ -79,7 +79,7 @@
                     </form>
                 {/if}
             </div>
-            &nbsp;|&nbsp;&nbsp;<a href="http://wiki.aquarius3.ch/" target="_blank">{#s_help_title#}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+            &nbsp;&nbsp;|&nbsp;&nbsp;
             <form method="post" action="{url action="search:"}" target="mainFrame">
                 <input type="text" name="search" value="{$lastSearch|default:''}" title="{#s_suche#}" style="height: 12px;vertical-align: middle;" />&nbsp;&nbsp;|&nbsp;
             </form>

@@ -1,6 +1,6 @@
 {foreach from=$messages item=message}
 <div class="alert alert-success {$message->type()}">
-    {$message->html()}
+  {$message->html()}
 </div>
 {/foreach}
 

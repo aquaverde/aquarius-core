@@ -17,7 +17,7 @@
         </div>
     {/strip}
         &nbsp;
-        <div style="text-align: right">
+        <div class="action pull-right">
             <select name="command">
             {foreach from=$forallaction->commands() key=command item=text}
                 <option value="{$command}">{$smarty.config.$text}</option>
