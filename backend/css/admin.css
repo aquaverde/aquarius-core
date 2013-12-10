@@ -269,7 +269,7 @@ legend {
 .linebottomlightright { border-bottom-style: solid; border-bottom-color: #E0E7EC; border-bottom-width: 1px; border-right-style: solid; border-right-color: #8f8f8f; border-right-width: 1px; }
 .lineallaround { border-left-style: solid; border-left-color: #8f8f8f; border-left-width: 1px; border-right-style: solid; border-right-color: #8f8f8f; border-right-width: 1px; border-top-style: solid; border-top-color: #8f8f8f; border-top-width: 1px; border-bottom-style: solid; border-bottom-color: #8f8f8f; border-bottom-width: 1px; }
 
-.formfield_file_cell_right { vertical-align:top!important; border-left: 1px solid #ccc !important; }
+.formfield_cell_right { vertical-align:top!important; border-left: 1px solid #ccc !important; }
 
 
 .dim, .dim a, a.dim, .dimmed a, a.dimmed, tr.dim * { text-decoration: none; color: #8f8f8f; /*color: #ccc ;*/ }
