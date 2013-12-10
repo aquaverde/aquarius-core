@@ -1,6 +1,6 @@
 <tr id="uri_row_{$myindex}">
     <td width="100%" style="vertical-align:middle" nowrap="nowrap">
-        <input type="hidden" name="uritableid[{$myindex}]" value="{if $uri.id}{$uri.id}{/if}" />
+        <input type="hidden" name="uritableid[{$myindex}]" value="{$uri.id}" />
         <input type="hidden" id="delete_{$myindex}" name="delete[{$myindex}]" value="" />
         {#from_domain#}
         <input type="text" class="ef" style="margin:0px 6px 0 3px; width:18%;" name="from[{$myindex}]" value="{if $uri.domain}{$uri.domain}{/if}" />

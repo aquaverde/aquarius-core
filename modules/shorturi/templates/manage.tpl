@@ -8,19 +8,14 @@
 <form action="{url action=$lastaction}" method="post">
 
 <table cellpadding="0" cellspacing="0" border="0" class="table darker" id="uri_table">
-	{assign var="myindex" value=0}
-
-	{foreach from=$uris item=uri}
+	{foreach from=$uris item=uri key=myindex}
 		{include file='uritable.row.tpl'}
-		{assign var="myindex" value=$myindex+1}
 	{/foreach}
-    
-    {assign var="uri" value=""}
-    {include file='uritable.row.tpl'}
+    {include file='uritable.row.tpl' uri=$new_uri myindex=$uris|@count}
 
 	<script type="text/javascript">
 	<!--
-		uri_index = {$myindex};
+		uri_index = {$uris|@count};
 	// -->
 	</script>
 

@@ -21,7 +21,7 @@
 {include file='navig.entry.tpl' menu=$menu->subentries level=0}
 
 <div id="footer">
-    aquarius {$revision}<br/>
+    aquarius {$revision|rev_format}<br/>
     &copy; 2001-{$smarty.now|date_format:'%Y'} <a href="http://www.aquaverde.ch/" target="_blank">aquaverde GmbH</a>
 </div>
 
