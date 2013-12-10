@@ -128,9 +128,9 @@ ul { margin: 0; padding: 0; list-style-position: inherit; list-style-type: none;
 #filelist tr:hover, #filelist label:hover, #filelist input:hover { cursor: pointer; }
 #selection { clear: both; }
 .topnode { font-weight: bold; }
-.active { border: 1px #009DE5 solid; padding: 1px 4px; background: transparent; }
+.active { border: 1px #009DE5 solid; padding: 0 4px; background: transparent; }
 
-.toolbox .active { font-weight: normal; border: 1px #009DE5 solid; background-color: transparent; padding: 1px 4px; color: #000;}
+.toolbox .active { font-weight: normal; border: 1px #009DE5 solid; background-color: transparent; padding: 0 4px; color: #000;}
 .toolbox a { color: #000; }
 .toolbox a:hover { color: #009DE5; }
 .toolbox a.active:hover { color: #fff; background: #009DE5; }
