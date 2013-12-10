@@ -43,7 +43,7 @@ html, body {height: 95%} body {max-width: none;}
     </div>
         <br>
         <h2>Fields</h2>
-        <table class="table table-condensed table-bordered" width="100%" cellpadding="0" cellspacing="2">
+        <table class="table table-condensed table-bordered table-hover" width="100%" cellpadding="0" cellspacing="2">
         <tr>
             <th>Active</th>
             <th width="12%" style="min-width: 150px;">Name</th>
