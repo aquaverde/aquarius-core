@@ -21,7 +21,9 @@ table.table { border-bottom: 1px solid #DDDDDD;}
 
 .glyphicon { color: #535353; -webkit-font-smoothing:grayscale; font-size: 12px !important;}
 
-.glyphicon.glyphicon-globe { color: #B8B8B8;}
+.right_icons .glyphicon  { color: #B8B8B8; margin-left: 3px;}
+.right_icons .glyphicon:hover  { color: #009DE5; cursor:help}
+
 .glyphicon.glyphicon-file { color: #B8B8B8;}
 .glyphicon.glyphicon-file.node_content_off  { color: red !important; }
 
@@ -193,6 +195,7 @@ input, img { vertical-align: middle; }
 input, textarea { font-size: 13px; margin: 0; padding: 2px; color: black; }
 input[type="radio"], input[type="checkbox"], input.checkbox { border: none; margin: 0 5px 0 0; padding: 0; }
 input[type="image"], .imagebutton { border: none; margin: 0; padding: 0; vertical-align:middle; background-color: transparent; cursor: pointer; }
+input[type="file"] { background-color: transparent; cursor: pointer;}
 input.imagebutton { border: none; margin: 0; padding: 0; vertical-align:middle; margin-top: -1px; margin-bottom: -1px;    }
 input.rooticon { margin-left: -5px; }
 label { display: block; padding-bottom: 3px; padding-top: 3px; font-weight: normal; margin-bottom: 0;}
@@ -417,3 +420,4 @@ div.nodetree_container+div.right { margin-top: -20px;}
 
 /* file selection popup */
 body.file_select { min-width: 300px; }
+body.file_select .wrapper { padding: 5px 15px 15px 15px; border: 0; margin-right: 5px;}

@@ -66,26 +66,21 @@
 
     {foreach from=$fields key=field_id item=field}
             <div class='contentedit contentedit_{$field.template_name}' id='box{$field.formfield->name}' style="display: {if !$active_fields || $field.formfield->name|@in_array:$active_fields}block{else}none{/if}">
-                <label for="{$field.htmlid}" title="{$field.formfield->name}" class="permission_level{$field.formfield->permission_level}{if $langlinks|@count > 1}{if $field.formfield->language_independent} language_independent{/if}{/if}">{formfield_title f=$field.formfield}
+                <label for="{$field.htmlid}" title="{$field.formfield->name}" class="right_icons">{formfield_title f=$field.formfield}
                     {if $langlinks|@count > 1}{if $field.formfield->language_independent} <span title="{#s_multi_language#}" class="glyphicon glyphicon-globe pull-right"></span>{/if}{/if}
+                    {if $field.formfield->permission_level != 2}<span title="{#s_may_edit#}: {if $field.formfield->permission_level == 1}Siteadmin{elseif $field.formfield->permission_level == 0}Superadmin{/if}" class="glyphicon glyphicon-user pull-right"></span>{/if}
                 </label>
-
-        {include file=$field.template_file}
-
+                {include file=$field.template_file}
             </div>
     {/foreach}
-    {strip}
-
             {action action=$saveaction}
                 <input type='hidden' name='tab' value='{$active_tab_id}' id='active_tab_id'/>
                 <input type="hidden" name="check" value="{$content->node_id}{$content->lg}"/>
                 <input type="submit" name="{$doneaction}" value="{#s_done#}" class="btn btn-primary" />&nbsp;
                 <input type="submit" name="{$saveaction}" value="{#s_save#}" class="btn btn-default" id="savebutton"/>&nbsp;
             {/action}
-                <input type="submit" class="btn btn-default"  name="" value="{#s_cancel#}"/>
-
+            <input type="submit" class="btn btn-default"  name="" value="{#s_cancel#}"/>
         </form>
-    {/strip}
     </div>
 </div>
 
@@ -106,7 +101,6 @@
     <link rel="stylesheet" href="css/nodetree.css" type="text/css" />
     <div class="bigbox" id="boxform">
         <div class="bigboxtitle"><h2>{#s_subcontents#}</h2></div>
-        {strip}
         <form action="{url action0=$lastaction}" id="nodetree" method="post">
             <div style="padding-left: 0; padding-top: 10px" class="nodetree_container" id="nodetree_entry_{$entry.node->id}">
             {include file='nodetree_container.tpl' hide_root=true}
@@ -120,7 +114,6 @@
                 <button type="submit" name="{$forallaction}" class="btn btn-default btn-xs">OK</button>
             </div>
         </form>
-        {/strip}
     </div>
 
     <script type="text/javascript">
