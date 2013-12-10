@@ -58,7 +58,7 @@ function smarty_function_actionlink($params, &$smarty) {
 
         $button = get($params, 'button', $action instanceof ChangeAction);
         if ($button) {
-            if ($icon) return "<button name='".str($action)."' data-toggle='tooltip' title='$title' $onclick/><span class='glyphicon glyphicon-".$icon."'></span></button>";
+            if ($icon) return "<button name='".str($action)."' data-toggle='tooltip' title='".$title."' class='btn btn-link' $onclick><span class='glyphicon glyphicon-".$icon."'></span></button>";
             else return "<input type='submit' name='".str($action)."' value='$title' data-toggle='tooltip' class='btn btn-default' $onclick/>";
         } else if ($new_button) {
             $content = array();

@@ -18,11 +18,11 @@
         <td width="10" align="center" class="formfield_cell_right">
             {if $field.formfield->multi}
                 <input id="{$fileval.htmlid}_weight" type="hidden" class="inputweight" name="{$fileval.form_name}[weight]" value="{$fileval.weight}" />
-                <button type='button' class='imagebutton drag' id="{$fileval.htmlid}_move_row" title="{#s_move#}" alt="{#s_move#}">
+                <button type='button' class='imagebutton drag' id="{$fileval.htmlid}_move_row" title="{#s_move#}" alt="{#s_move#}" data-toggle="tooltip">
                     <span class="glyphicon glyphicon-move"></span>
                 </button>
             {/if}
-            <button type='button' class='btn btn-link' style="{if !$fileval.file}display:none;{/if}" id="{$fileval.htmlid}_delete_file" title="{#s_delete#}" alt="{#s_delete#}">
+            <button type='button' class='btn btn-link' style="{if !$fileval.file}display:none;{/if}" id="{$fileval.htmlid}_delete_file" title="{#s_delete#}" data-toggle="tooltip" alt="{#s_delete#}">
     			<span class="glyphicon glyphicon-remove"></span>
     		</button>
         </td>
