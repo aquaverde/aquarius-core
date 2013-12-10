@@ -58,20 +58,20 @@ function smarty_function_actionlink($params, &$smarty) {
 
         $button = get($params, 'button', $action instanceof ChangeAction);
         if ($button) {
-            if ($icon) return "<button name='".str($action)."' title='$title' $onclick/><span class='glyphicon glyphicon-".$icon."'></span></button>";
-            else return "<input type='submit' name='".str($action)."' value='$title' class='btn btn-default' $onclick/>";
+            if ($icon) return "<button name='".str($action)."' data-toggle='tooltip' title='$title' $onclick/><span class='glyphicon glyphicon-".$icon."'></span></button>";
+            else return "<input type='submit' name='".str($action)."' value='$title' data-toggle='tooltip' class='btn btn-default' $onclick/>";
         } else if ($new_button) {
             $content = array();
             if ($title) $content[] = $title;
-            if (!empty($content)) return "<a href='".str($url)."' $onclick class=\"btn btn-success btn-sm\"><span class='glyphicon glyphicon-plus-sign'></span> ".implode('&nbsp;', $content).'</a>';
+            if (!empty($content)) return "<a href='".str($url)."' $onclick data-toggle='tooltip' title='".$title."' class=\"btn btn-success btn-sm\"><span class='glyphicon glyphicon-plus-sign'></span> ".implode('&nbsp;', $content).'</a>';
         }
         else {
             $content = array();
             /*if ($icon) $content[] = "<img src='$icon' alt='$title' title='$title'/>";*/
-            if ($icon) $content[] = "<span class='glyphicon glyphicon-".$icon."' title='$title'></span>";
+            if ($icon) $content[] = "<span class='glyphicon glyphicon-".$icon."'></span>";
             if ($show_title && $title) $content[] = $title;
             if ($icon_placement == 'after') $content = array_reverse($content);
-            if (!empty($content)) return "<a href='".str($url)."' $onclick>".implode('&nbsp;', $content).'</a>';
+            if (!empty($content)) return "<a href='".str($url)."' $onclick data-toggle='tooltip' title='".$title."'>".implode('&nbsp;', $content).'</a>';
         }
     }
     return '';

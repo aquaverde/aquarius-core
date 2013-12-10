@@ -33,12 +33,12 @@ function smarty_function_contentlanguageedit($params, &$smarty) {
             $link_class = $class;
             if ($lang->lg==$currentlg) $link_class .= ' active';
             if (!$content) $link_class .= ' dim';
-            $link = '<a href="'.$lglink.'" class="'.$link_class.'" title="'.$lang->name.': '.$smarty->get_config_vars("s_edit").'">'.$lang->lg.'</a>&nbsp;';
+            $link = '<a href="'.$lglink.'" class="'.$link_class.'" title="'.$lang->name.': '.$smarty->get_config_vars("s_edit").'" data-toggle="tooltip">'.$lang->lg.'</a>&nbsp;';
             if (ADMIN_SHOW_CONTENT_ACTIVE_FLAGS) {
                 if ($content) {
                     $lgtoggle = Action::make("contentedit", "toggle_active", $node->id, $lang->lg);
                     if ($content->active) { $class = "on"; } else { $class = "off"; }
-                    $link .= '<button name="'.str($lgtoggle).'" class="btn btn-xxs btn-link" title="'.$lang->name.': '.$smarty->get_config_vars("content_tooltip_active").'"><span class="glyphicon glyphicon-flag '.$class.'"></span></button>';
+                    $link .= '<button name="'.str($lgtoggle).'" class="btn btn-xxs btn-link" title="'.$lang->name.': '.$smarty->get_config_vars("content_tooltip_active").'" data-toggle="tooltip"><span class="glyphicon glyphicon-flag '.$class.'"></span></button>';
                 } else {
                     $link .= '<span class="glyphicon glyphicon-flag dim"></span>';
                 }

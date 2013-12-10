@@ -185,6 +185,6 @@ function clean_dict(dict) {
 }
 
 jQuery( document ).ready(function() {
-    jQuery('.tooltip').tooltip();
+    jQuery('[data-toggle]').addClass('tooltipp').tooltip();
 });
 

@@ -6,7 +6,7 @@
             <a href="#" onclick="document.getElementById('savebutton').click();return false;" data-toggle="tooltip" title="{#s_save#}"><span class="glyphicon glyphicon-floppy-open"></span></a>&nbsp;
 
             {if $preview_uri}
-                <a target="_new" href="{$preview_uri}" title="{#s_page_view#}"><span class="glyphicon glyphicon-eye-open"></span></a>
+                <a target="_new" href="{$preview_uri}" data-toggle="tooltip" title="{#s_page_view#}"><span class="glyphicon glyphicon-eye-open"></span></a>
             {/if}
 
             {if $node->id}
@@ -51,7 +51,7 @@
         </div>
        {/if}
  
-        {if $form->template}<div class="separator dim"><b class="dim">T</b> "{$form->template}"</div>{/if}
+        {if $form->template}<div class="separator dim"><a href="{url action0=$lastaction action1=$formedit}" title="Template: {$form->template}"  data-toggle="tooltip">Template</a></div>{/if}
 
         
         {if $content->lg != $primary_lang->lg}

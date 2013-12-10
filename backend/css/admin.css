@@ -169,6 +169,8 @@ div.topbar img, div.topbar input { vertical-align: middle; }
 #toolbar .glyphicon { font-size: 12px; margin-right: 8px; line-height: 22px; }
 #toolbar .btn-link { margin-top: -9px !important;}
 #toolbar .btn.btn-xs { margin-right: 0 !important; margin-top: 2px; font-size:11px !important; }
+.tooltipp { display:inline-block !important;}
+
 
 /* toolbox */
 .toolbox { float: right; margin-top: -25px; margin-bottom: 5px !important; margin-bottom: 1px; padding: 2px; vertical-align: bottom; z-index: 10; text-align: right; margin-right: -11px; }
