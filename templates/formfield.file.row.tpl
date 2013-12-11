@@ -9,9 +9,9 @@
             <label id='{$fileval.htmlid}_file_label' style='display:inline;'>
                 {$fileval.file_label|escape}
             </label>
-            <input type="text" class="ef legend {if !$fileval.has_legend}empty_legend{/if}" style='{if $fileval.file}display:block;{else}display:none;{/if}' value="{if $fileval.has_legend}{$fileval.legend|escape}{else}{#s_upload_legend#}{/if}" id="{$fileval.htmlid}_legend" name="{$fileval.form_name}[legend]" />
+            <input type="text" class="form-control legend {if !$fileval.has_legend}empty_legend{/if}" style='{if $fileval.file}display:block;{else}display:none;{/if}' value="{if $fileval.has_legend}{$fileval.legend|escape}{else}{#s_upload_legend#}{/if}" id="{$fileval.htmlid}_legend" name="{$fileval.form_name}[legend]" />
             {if $field.formfield->sup4}
-                <input type="text" class="ef legend {if !$fileval.description}empty_legend{/if}" style='{if $fileval.file}display:block;{else}display:none;{/if}' value="{if $fileval.description}{$fileval.description}{else}{$field.formfield->sup4}{/if}" id="{$fileval.htmlid}_description" name="{$fileval.form_name}[description]"
+                <input type="text" class="form-control legend {if !$fileval.description}empty_legend{/if}" style='{if $fileval.file}display:block;{else}display:none;{/if}' value="{if $fileval.description}{$fileval.description}{else}{$field.formfield->sup4}{/if}" id="{$fileval.htmlid}_description" name="{$fileval.form_name}[description]"
                 />                                  
             {/if}
         </td>
