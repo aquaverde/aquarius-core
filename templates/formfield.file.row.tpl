@@ -5,7 +5,7 @@
         </td>
         <td style="vertical-align: top;">
             <input name='{$fileval.form_name}[file]' value='{$fileval.file|escape}' id='{$fileval.htmlid}_file' type='hidden' />
-            <button type='button' class='btn btn-xs pull-right' id='{$fileval.htmlid}_choose_button'><span class="glyphicon glyphicon-folder-open"></span> &nbsp;{$field.popup_action->get_title()}...</button>
+            <button type='button' class='btn btn-default btn-xs pull-right' id='{$fileval.htmlid}_choose_button'><span class="glyphicon glyphicon-folder-open"></span> &nbsp;{$field.popup_action->get_title()}...</button>
             <label id='{$fileval.htmlid}_file_label' style='display:inline;'>
                 {$fileval.file_label|escape}
             </label>

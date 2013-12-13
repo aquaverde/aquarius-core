@@ -21,7 +21,7 @@
         <form action="{url action=$lastaction}" enctype="multipart/form-data" method="post" accept-charset="utf-8">
             <h2>{#s_upload_picture#}</h2>
             <input type="file" id="input_file_upload" name="input_file_upload" />
-            <button type="submit" name="btn_upload_file" value="{#upload_starten#}" id="btn_upload_file" class="btn btn-sm btn-default" style="margin-top :8px" /><span class="glyphicon glyphicon-upload"></span> {#upload_starten#}</button>
+            <button type="submit" name="btn_upload_file" value="{#upload_starten#}" id="btn_upload_file" class="btn btn-sm btn-primary" style="margin-top :8px" /><span class="glyphicon glyphicon-upload"></span> {#upload_starten#}</button>
         </form>
 	</div>
     <div class="clear"></div>

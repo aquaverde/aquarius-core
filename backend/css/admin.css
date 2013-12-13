@@ -21,8 +21,10 @@ table.table { border-bottom: 1px solid #DDDDDD;}
 
 .glyphicon { color: #535353; -webkit-font-smoothing:grayscale; font-size: 12px !important;}
 
-.right_icons .glyphicon  { color: #B8B8B8; margin-left: 3px;}
-.right_icons .glyphicon:hover  { color: #009DE5; cursor:help}
+.btn-primary .glyphicon { color: #fff; }
+
+.right_icons.glyphicon  { color: #B8B8B8; margin-left: 3px;}
+.right_icons.glyphicon:hover  { color: #009DE5; cursor:help}
 
 .glyphicon.glyphicon-file { color: #B8B8B8;}
 .glyphicon.glyphicon-file.node_content_off  { color: red !important; }
@@ -134,11 +136,11 @@ ul { margin: 0; padding: 0; list-style-position: inherit; list-style-type: none;
 .toolbox a { color: #000; }
 .toolbox a:hover { color: #009DE5; }
 .toolbox a.active:hover { color: #fff; background: #009DE5; }
-.toolbox .active.dim { color: #fff; font-style: italic; }
+.toolbox .active.dim { color: #ccc; font-style: italic; }
 .dim, .toolbox a.dim { color: #8f8f8f; font-style: italic; }
 .toolbox a.dim:hover { color: #357EBD; }
-.title	{ font-size: 21px; color: #8AA5B8; }
-#path { font-size: 13px; color: #8AA5B8; }
+.title	{ font-size: 21px; color: #009DE5; }
+#path { font-size: 13px; color: #ccc; }
 #path a { color: #666; font-weight: normal}	
 #path a:hover { color: #009DE5; }
 .redFont { font-size: 11px; color: #CC0000; }
@@ -207,8 +209,8 @@ input[type="image"], .imagebutton { border: none; margin: 0; padding: 0; vertica
 input[type="file"] { background-color: transparent; cursor: pointer;}
 input.imagebutton { border: none; margin: 0; padding: 0; vertical-align:middle; margin-top: -1px; margin-bottom: -1px;    }
 input.rooticon { margin-left: -5px; }
-label { display: block; padding-bottom: 3px; padding-top: 3px; font-weight: normal; margin-bottom: 0;}
-label.inline { display: inline; padding-bottom: 3px; border: none;padding-top: 0;}
+label { display: block; padding-top: 3px; padding-bottom: 3px; margin-right: 5px; font-weight: normal; margin-bottom: 0;}
+label.inline { display: inline; border: none;padding-top: 0;}
 .ef, .mle, .code { width: 99%; border: 1px solid #8f8f8f; }
 .code { font-family: Monaco, "Courier New", Courier, monospace; font-size: 11px; }
 input.checkbox { border: none; vertical-align:middle; }	
@@ -229,7 +231,7 @@ input.inputweight { width: 30px; margin-bottom: 0px; border: 1px #CCC solid; fon
 
 .button { font-size: 11px; font-weight: normal; padding: 1px 4px; margin-top: 8px; background-color: #F2F2F2; border-top: 1px solid #CCCCCC; border-right: 1px solid #666666; border-bottom: 1px solid #666666; border-left: 1px solid #CCCCCC; cursor: pointer; }
 .button:active { background-color: #E0E0E0; border-top: 1px solid #666; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; border-left: 1px solid #666; }
-.contentedit_pointing_legend .button, .contentedit_pointing .button, .mapmenu_box .button, #toolbar .button { margin-top: 0; }
+.contentedit_pointing_legend .button, .contentedit_pointing .button, .mapmenu_box .button, #toolbar .button { margin-top: 0; line-height:normal; }
 /*
 .submit	{ clear: both; margin-top: 20px; font-size: 13px; font-weight: bold; padding: 2px 6px; background-color: #F2F2F2; border-top: 2px solid #CCCCCC; border-right: 2px solid #666666; border-bottom: 2px solid #666666; border-left: 2px solid #CCCCCC; margin-right: 4px; }
 input[type="submit"]:hover, .submit:hover, .undo:hover, .reset:hover, .cancel:hover, .cursor:hover { cursor: pointer; background-color: #E0E0E0; }
@@ -325,7 +327,7 @@ ul.tabs li.active:hover { background: #F3F3F3; }
 
 .contentedit_ef .ef, .contentedit_ef .mle, .contentedit_select .select { margin-bottom: 0; }
 .contentedit_rte { margin-top: 10px; }
-.contentedit_file input.legend { width: 45%; }
+.contentedit_file input.legend { width: 45%; margin-top: 3px;}
 .contentedit_file input.empty_legend { font-style: italic; color: grey; }
 .contentedit_file .choose_button { margin: 3px; margin-left: 0; vertical-align: middle; cursor: pointer; }
 .contentedit_file label { cursor: pointer; }

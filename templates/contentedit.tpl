@@ -66,10 +66,9 @@
 
     {foreach from=$fields key=field_id item=field}
             <div class='contentedit contentedit_{$field.template_name}' id='box{$field.formfield->name}' style="display: {if !$active_fields || $field.formfield->name|@in_array:$active_fields}block{else}none{/if}">
-                <label for="{$field.htmlid}" class="right_icons">{formfield_title f=$field.formfield}
-                    {if $langlinks|@count > 1}{if $field.formfield->language_independent} <span title="{#s_multi_language#}" class="glyphicon glyphicon-globe pull-right" data-toggle="tooltip"></span>{/if}{/if}
-                    {if $field.formfield->permission_level != 2}<span title="{#s_may_edit#}: {if $field.formfield->permission_level == 1}Siteadmin{elseif $field.formfield->permission_level == 0}Superadmin{/if}" class="glyphicon glyphicon-user pull-right" data-toggle="tooltip"></span>{/if}
-                </label>
+ {if $langlinks|@count > 1}{if $field.formfield->language_independent} <span title="{#s_multi_language#}" class="right_icons glyphicon glyphicon-globe pull-right" data-toggle="tooltip"></span>{/if}{/if}
+                    {if $field.formfield->permission_level != 2}<span title="{#s_may_edit#}: {if $field.formfield->permission_level == 1}Siteadmin{elseif $field.formfield->permission_level == 0}Superadmin{/if}" class="right_icons glyphicon glyphicon-user pull-right" data-toggle="tooltip"></span>{/if}
+                <label for="{$field.htmlid}" title="{$field.formfield->name}" data-toggle="tooltip">{formfield_title f=$field.formfield}</label>
                 {include file=$field.template_file}
             </div>
     {/foreach}
