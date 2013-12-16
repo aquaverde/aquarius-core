@@ -4,21 +4,16 @@ class action_Shorturi extends ModuleAction {
 	var $props = array('class', 'op');
 }
 
-class action_Shorturi_manage extends action_Shorturi implements DisplayAction
-{
+class action_Shorturi_manage extends action_Shorturi implements DisplayAction {
 
     function valid($user) {
       return (bool)$user;
     }
 
 
-	function process($aquarius,$request,$smarty,$result) 
-	{
-		global $DB;
+	function process($aquarius, $request, $smarty, $result) {
 
-		if(isset($request['save_button']))
-		{
-
+		if(isset($request['save_button'])) {
 			for($i = 0; $i < count($request['from']); $i++)
 			{
 				//URI ALREADY IN DB -> UPDATE				
@@ -53,44 +48,16 @@ class action_Shorturi_manage extends action_Shorturi implements DisplayAction
 					$uri->keyword 	= mb_strtolower($request['keyword'][$i]);
 					$uri->redirect 	= $request['url'][$i];
 
-					$uri->insert();		
+					$uri->insert();
 				}
 			}
 		}
-		
-		//IMPORT CONFIG
-		// $DB->query("truncate table shorturi");
-		// foreach ($this->module->conf("redirections") as $key => $value) 
-		// {
-		// 	$query = "INSERT INTO shorturi 
-		// 					(keyword, redirect) 
-		// 				VALUES 
-		// 					('".mb_strtolower(urldecode($key))."','".$value."')";
-
-		// 	$DB->query($query);
-		// }
-
-		// $frontend = $this->module->aquarius->conf("frontend");
-		// foreach ($frontend["domains"] as $key => $value) 
-		// {
-		// 	if(isset($value["shorturi"]))
-		// 	{
-
-		// 		foreach ($value["shorturi"] as $keyword => $newurl) {
-		// 			$query = "INSERT INTO shorturi 
-		// 							(domain, keyword, redirect) 
-		// 						VALUES 
-		// 							('".$key."','".mb_strtolower(urldecode($keyword))."','".$newurl."')";
-
-		// 			$DB->query($query);
-		// 		}
-		// 	}
-		// }
 
 		$query = "SELECT * FROM shorturi ORDER BY keyword";
-		$redis = $DB->queryhash($query);
+		$redis = $aquarius->db->queryhash($query);
 
 		$smarty->assign("uris", $redis);
+		$smarty->assign('new_uri', array('id' => ''));
 		$result->use_template("manage.tpl");
 	
 	}
@@ -109,5 +76,3 @@ class action_Shorturi_empty_row extends action_Shorturi implements DisplayAction
 	}
 
 }
-
-?>
