@@ -59,7 +59,7 @@ $packer->message_handler = new Message_Outhouse();
 try {
     $packer->pack($aquarius, $desired_exports, $options);
 } catch (Exception $e) {
-    echo $e->getMessage();
+    echo $e->getMessage()."\n";
     exit(1);
 }
 
