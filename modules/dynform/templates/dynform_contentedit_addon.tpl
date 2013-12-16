@@ -1,8 +1,8 @@
 <div id="dynform_block_wrapper">
     <form action="{url action0=$lastaction}" method="post" id="dynform_form" name="dynform_form">
-    <div class="bigbox">
+    <div class="">
         <h2>Dynform</h2>
-        <table border="0" cellpadding="0" cellspacing="0" class="dynform_table" id="boxtable">
+        <table border="0" cellpadding="0" cellspacing="0" class="table" id="boxtable">
 
             {dynform_load content_id=$content->id}  
             {if !$unassigned_node}
@@ -25,7 +25,7 @@
                                     
                                     <div class="dynform-control-icon">
                                     {action action="dynform:editblock:`$content->id`:`$content->lg`:`$node->id`:`$block->id`:0"}
-                                        <a href="{url action0=$lastaction action1=$action}"><img src="buttons/df_edit.gif" alt="" title="" /></a>
+                                        <a href="{url action0=$lastaction action1=$action}"><span class="glyphicon glyphicon-pencil"></span></a>
                                     {/action}
                                     </div>
                                     
@@ -39,7 +39,7 @@
                                     
                                     <div class="dynform-control-icon">
                                     {action action="dynform:deleteblock:`$content->id`:`$content->lg`:`$node->id`:`$block->id`:0"}
-                                        <a href="{url action0=$lastaction action1=$action}"><img src="buttons/df_trash.gif" alt="" title="" /></a>
+                                        <a href="{url action0=$lastaction action1=$action}"><span class="glyphicon glyphicon-remove"></span></a>
                                     {/action}
                                     </div>
                                 
@@ -65,7 +65,7 @@
                                         
                                         <div class="dynform-control-icon">
                                         {action action="dynform:editfield:`$content->id`:`$content->lg`:`$node->id`:`$block->id`:`$field->id`"}
-                                            <a href="{url action0=$lastaction action1=$action}"><img src="buttons/df_edit.gif" alt="" title="" /></a>
+                                            <a href="{url action0=$lastaction action1=$action}"><span class="glyphicon glyphicon-pencil"></span></a>
                                         {/action}
                                         </div>
                                         
@@ -79,7 +79,7 @@
                                         
                                         <div class="dynform-control-icon">
                                         {action action="dynform:deletefield:`$content->id`:`$content->lg`:`$node->id`:`$block->id`:`$field->id`"}
-                                            <a href="{url action0=$lastaction action1=$action}"><img src="buttons/df_trash.gif" alt="" title="" /></a>
+                                            <a href="{url action0=$lastaction action1=$action}"><span class="glyphicon glyphicon-remove"></span></a>
                                         {/action}
                                         </div>
                                     
@@ -92,7 +92,7 @@
                                     <form>
                                     <div class="dynform_field_title">
                                         {action action="dynform:addfield:`$content->id`:`$content->lg`:`$node->id`:`$block->id`:0"}
-                                            <input type="submit" name="{$action}" value="{#new_field#}" class="df_new_button" />
+                                            <button type="submit" name="{$action}" value="{#new_field#}" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span> {#new_field#}</button>
                                         {/action}
                                     </div>
                                     <div class="dynform_field_type">
@@ -115,7 +115,7 @@
                 <tr class="bottom">
                     <td style="height:30px;">
                         {action action="dynform:addnewblock:`$content->id`:`$content->lg`:`$node->id`:0:0"}
-                            <input type="submit" name="{$action}" value="{#new_block#}" class="df_new_button" />
+                            <button type="submit" name="{$action}" value="{#new_field#}" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span> {#new_block#}</button>
                         {/action}
                     </td>
                 </tr>

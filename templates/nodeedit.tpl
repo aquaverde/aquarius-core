@@ -20,12 +20,12 @@ function nodes_selected(_, selected_nodes) {
     <form name="nodeedit" method="post" action="{url}">
         <label>
             {#s_title#}<br/>
-            <input class="ef" type="text" name="title" value="{$node->title|escape}" id="nodedit_title"/>
+            <input class="form-control" type="text" name="title" value="{$node->title|escape}" id="nodedit_title"/>
         </label>
         
         <label>
             {#s_name#}<br/>
-            <input class="ef" type="text" name="name" value="{$node->name|escape}" id="nodedit_name"/>
+            <input class="form-control" type="text" name="name" value="{$node->name|escape}" id="nodedit_name"/>
         </label>
 
     {if $parent_select_action}
@@ -35,7 +35,7 @@ function nodes_selected(_, selected_nodes) {
             <button
                 type='button'
                 name='nodeedit_parent' id='nodeedit_parent'
-                class='button'
+                class='btn btn-default btn-xs'
                 onclick='open_attached_popup("{$simpleurl->with_param($parent_select_action)}&selected={$node->parent_id}", "parent_select", "height=450,width=350,status=yes,resizable=yes,scrollbars=yes"); return false;'>{$parent_select_action->get_title()}
             </button>
         </label>
@@ -88,12 +88,12 @@ function nodes_selected(_, selected_nodes) {
         
         <label>
             {#s_boxdepth#}<br/>
-            <input class="ef short" type="text" name="box_depth" value="{$node->box_depth|escape}" id="nodedit_boxdepth"/>
+            <input class="form-control short" type="text" name="box_depth" value="{$node->box_depth|escape}" id="nodedit_boxdepth"/>
         </label>
 
         <label>
             {#s_weight#}<br/>
-            <input class="ef short" type="text" name="weight" value="{$node->weight|escape}" id="nodedit_weight"/>
+            <input class="form-control short" type="text" name="weight" value="{$node->weight|escape}" id="nodedit_weight"/>
         </label>
         
         <label>
@@ -108,13 +108,13 @@ function nodes_selected(_, selected_nodes) {
 
         <label>
             {#s_last_change#}<br/>
-            <input class="ef short" type="text" name="last_change" value="{$node->last_change|date_format:"%d.%m.%Y"}" disabled="disabled" />
+            <input class="form-control short" type="text" name="last_change" value="{$node->last_change|date_format:"%d.%m.%Y"}" disabled="disabled" />
         </label>
 
         <br/>
         <input type="hidden" name="submit" value="submit"/>
-        <input type="submit" name="{$submitaction}" value="{#s_save#}" class="submit" />
-        <input type="submit" name="" value="{#s_cancel#}" class="cancel"/>
+        <input type="submit" name="{$submitaction}" value="{#s_save#}" class="btn btn-primary" />
+        <input type="submit" name="" value="{#s_cancel#}" class="btn btn-default"/>
 
     </form>
 
