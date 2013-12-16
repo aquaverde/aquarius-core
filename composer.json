@@ -1,6 +1,7 @@
 {
     "require": {
         "smarty/smarty": "3.*",
-        "mrclay/minify": "2.*"
+        "mrclay/minify": "2.*",
+        "swiftmailer/swiftmailer": "4.*"
     }
 }
