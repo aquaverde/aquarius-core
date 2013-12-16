@@ -24,7 +24,6 @@ class action_email_test_send extends action_email_test  implements ChangeAction 
     }
 
     function swift_html($from, $to, $subject, $body) {
-        require_once 'lib/swift/swift_required.php';
         $message = Swift_Message::newInstance();
         $message->setFrom($from);
         $message->setTo($to);
