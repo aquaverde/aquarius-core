@@ -1,14 +1,15 @@
 COMPOSER=bin/composer.phar
+VENDOR=vendor/autoload.php
 
-all: vendor
+all: $(VENDOR)
 
-full: vendor
+full: $(VENDOR)
 	php bin/packer full
 
-bare: vendor
+bare: $(VENDOR)
 	php bin/packer core
 
-vendor: $(COMPOSER)
+$(VENDOR): $(COMPOSER) composer.json $(wildcard composer.lock)
 	php $(COMPOSER) update
 
 $(COMPOSER):
