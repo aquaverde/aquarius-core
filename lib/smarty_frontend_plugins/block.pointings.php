@@ -1,15 +1,15 @@
-<?
+<?php
 /** Loop over content pointing to a node
     If there's no content pointing to a node, pointing to its parent are looked up
 Params:
     to: The node which we are searching pointings for
-    lg: the language in which to search for pointings, preset: current language
+    lg: 
     children_of: To limit the search to children of a node
-    search_parents: look up pointings in parents, preset: true
-    filter: filter sentence selecting nodes that will end up in the list
-    sort: set this to true to sort by title
-    limit: Optional limit of iterations, preset: unlimited
+    limit: Optional limit of iterations (default: unlimited)
     shuffle: randomize list before display
+    search_parents: look up pointings in parents (default: true)
+    filter: filter sentence selecting nodes that will end up in the list
+    sort: set to true to sort by title, or set a field name
 */
 
 function smarty_block_pointings($params, $content, &$smarty, &$repeat) {
@@ -21,7 +21,7 @@ function smarty_block_pointings($params, $content, &$smarty, &$repeat) {
         $nodeparam = get($params, 'to');
         $node = db_Node::get_node($nodeparam);
         if (!$node) Log::debug("Could not load pointing node from 'to' param ".$nodeparam);
-Log::debug($node);        
+       
         $inherit = (bool)get($params, 'inherit');
         $search_parents = (bool)get($params, 'search_parents', true);
         $children_of = db_Node::get_node(get($params, 'children_of'));
@@ -30,6 +30,10 @@ Log::debug($node);
         $custom_filter_sentence = get($params, 'filter');
         
         $sort = get($params, 'sort');
+        if ($sort === true) {
+            $sort = 'title';
+        }
+        
         $andchilds = get($params, 'andchilds');
         
         // Look for pointings starting from this node
@@ -141,7 +145,7 @@ Log::debug($node);
         }
         
         if($sort) {
-            usort($pointing_nodes, "sort_nodes_by_field");
+            usort($pointing_nodes, Compare_Pointings::by_field($sort));
         }
         
         $limit = intval(get($params, 'limit', 0));
@@ -163,31 +167,40 @@ Log::debug($node);
     return $content;
 }
 
-function sort_nodes_by_field($node1, $node2)
-{
-    $fieldname = "title";
-    
-    $c1 = $node1->get_content();
-    $c2 = $node2->get_content();
-    
-    $order = 0;
-    if($c1 && $c2)
-    {
-        $c1->load_fields();
-        $c2->load_fields();
-        $c1_set = isset($c1->$fieldname);
-        $c2_set = isset($c2->$fieldname);
-        if ($c1_set && $c2_set) {
-            // If both values are numeric we sort numerically else we use alphabetical order
-            if (is_numeric($c1->$fieldname) && is_numeric($c2->$fieldname)) {
-                $order = $c1->$fieldname - $c2->$fieldname;
-            } else {
-                $order = strcasecmp($c1->$fieldname, $c2->$fieldname);
-            }
-        } else {
-            // Empty fields go first
-            $order = intval($c1_set) - intval($c2_set);
-        }
+
+// This is very similar to the Nodesort class and should probably be merged with it
+class Compare_Pointings {
+    static function by_field($field='title') {
+        $cmp = new self();
+        $cmp->field = $field;
+        return array($cmp, 'cmp');
     }
-    return $order;
+    
+    function cmp($node1, $node2) {
+        $fieldname = $this->field;
+        
+        $c1 = $node1->get_content();
+        $c2 = $node2->get_content();
+        
+        $order = 0;
+        if($c1 && $c2)
+        {
+            $c1->load_fields();
+            $c2->load_fields();
+            $c1_set = isset($c1->$fieldname);
+            $c2_set = isset($c2->$fieldname);
+            if ($c1_set && $c2_set) {
+                // If both values are numeric we sort numerically else we use alphabetical order
+                if (is_numeric($c1->$fieldname) && is_numeric($c2->$fieldname)) {
+                    $order = $c1->$fieldname - $c2->$fieldname;
+                } else {
+                    $order = strcasecmp($c1->$fieldname, $c2->$fieldname);
+                }
+            } else {
+                // Empty fields go first
+                $order = intval($c1_set) - intval($c2_set);
+            }
+        }
+        return $order;
+    }
 }
