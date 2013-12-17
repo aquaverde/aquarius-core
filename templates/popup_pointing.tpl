@@ -66,8 +66,8 @@
 		</td>
 	</tr>
 </table>
-	<input type="button" name="" value=" OK " class="submit" onclick="savePointings();" />
-	<input type="button" name="" value="Cancel" class="cancel" onclick="window.close();" />
+	<input type="button" name="" value=" OK " class="btn btn-primary" onclick="savePointings();" />
+	<input type="button" name="" value="Cancel" class="btn btn-default" onclick="window.close();" />
 {/strip}
 </form>
 </body>

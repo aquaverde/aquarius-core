@@ -21,7 +21,7 @@ function smarty_function_activationbutton($params, $smarty) {
     
     if ($action) {
         $alt = $smarty->get_config_vars($de.'activate');
-        return '<button name="'.str($action).'" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-flag '.$class.'" title="'.$alt.'"></span></button>';
+        return '<button name="'.str($action).'" class="btn btn-xs btn-link" data-toggle="tooltip" title="'.$alt.'"><span class="glyphicon glyphicon-flag '.$class.'" title="'.$alt.'"></span></button>';
     } elseif (get($params, 'show_noedit', true)) {
         $alt = $smarty->get_config_vars($in.'active');
         return "<span class='glyphicon glyphicon-flag $class' title='$alt'></span>";

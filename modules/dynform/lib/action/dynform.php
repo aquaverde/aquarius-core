@@ -414,7 +414,7 @@ class action_dynform_deletefieldsubmit extends action_dynform implements ChangeA
 
 
 class action_dynform_movefielddown extends action_dynform implements ChangeAction {
-    function get_icon() { return "buttons/df_move_down.gif"; }
+    function get_icon() { return "chevron-down"; }
     function process($aquarius, $post, $result) {
         $DL = new Dynformlib();
         $DL->move_field($this->field_id, "DOWN") ;
@@ -424,7 +424,7 @@ class action_dynform_movefielddown extends action_dynform implements ChangeActio
 
 
 class action_dynform_movefieldup extends action_dynform implements ChangeAction {
-    function get_icon() { return "buttons/df_move_up.gif"; }
+    function get_icon() { return "chevron-up"; }
     function process($aquarius, $post, $result) {
         $DL = new Dynformlib();
         $DL->move_field($this->field_id, "UP") ;

@@ -17,15 +17,24 @@
 {/js}
 <h1>{$lastaction->get_title()}</h1>
 <div class="topbar">
+    <div id="div_upload_box" style="margin:5px 0 5px 0;">
+        <form action="{url action=$lastaction}" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+            <h2>{#s_upload_picture#}</h2>
+            <input type="file" id="input_file_upload" name="input_file_upload" />
+            <button type="submit" name="btn_upload_file" value="{#upload_starten#}" id="btn_upload_file" class="btn btn-sm btn-primary" style="margin-top :8px" /><span class="glyphicon glyphicon-upload"></span> {#upload_starten#}</button>
+        </form>
+	</div>
+    <div class="clear"></div>
+</div>
+<h2>{#s_choose#}</h2>
+<div style="padding-bottom: 15px;">
     <div style="float:right">
         {foreach from=$view_actions item=view_action}
             {actionlink action=$view_action return=0 show_title=0}
         {/foreach}
     </div>
     {if !$filter}
-    <div style="float:right">
-        <input type="image" src="buttons/loupe.gif" id="show_filter" name="show_filter" value="{#s_search#}..." onclick="$('show_filter').hide(); $('filter_box').show(); return false"/>&nbsp;&nbsp;&nbsp;
-    </div>
+        <button id="show_filter" class="btn btn-default btn-sm" name="show_filter" value="{#s_search#}..." onclick="$('show_filter').hide(); $('filter_box').show(); return false"><span class="glyphicon glyphicon-search"></span> {#s_search#}</button>
     {/if}
     <form action="{url action=$change_action}" method="post">
         <div>            
@@ -44,21 +53,12 @@
         {/if}
         </div>
         <div style="{if $subdirs} margin-top: 10px;{/if}{if !$filter}display: none{/if}" id="filter_box">
-            <label for='filterinput' style="display: inline">{#s_search#} </label><input type="text" id='filterinput' name="filter" value="{$filter}" class="ef" style="width:30%;"/>
-            &nbsp;<input type="submit" name="doFilter" value="{#s_filter_it#}" class="button" />
+            <input placeholder="{#s_search#}" type="text" id='filterinput' name="filter" value="{$filter}" class="form-control" style="display:inline; width:30%;"/>
+            &nbsp;<input type="submit" name="doFilter" value="{#s_filter_it#}" class="btn btn-sm btn-default" />
             &nbsp;<input type="submit" name="reset" value="{#s_filter_reset#}" onclick="form.filter.value='';form.submit()" class="btn btn-sm btn-default" />
         </div>
     </form>
     <div class="clear"> </div>
-</div>
-<div class="topbar">
-    <div id="div_upload_box" style="margin:5px 0 5px 0;">
-        <form action="{url action=$lastaction}" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-            {#s_upload_picture#}:&nbsp;<input type="file" id="input_file_upload" name="input_file_upload" /><br/>
-            <input type="submit" name="btn_upload_file" value="{#upload_starten#}" id="btn_upload_file" class="btn btn-sm btn-default" style="margin-top :8px" />
-        </form>
-	</div>
-    <div class="clear"></div>
 </div>
 {include file=page_select.tpl lastaction=false}
 {if $browse}
@@ -84,7 +84,7 @@
     <div class="clear"></div>
 </div>
 {else}
-<table id='filelist' width="100%" cellpadding="3" cellspacing="0" class="table table-bordered">
+<table id='filelist' width="100%" class="table table-bordered">
     <tr align="left">
         <th width="25">&nbsp;</th>
         <th>{#s_preview#}</th>

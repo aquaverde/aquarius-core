@@ -9,11 +9,11 @@
     <link rel="shortcut icon" type="image/png" href="./favicon.png" />
 </head>
 
-<frameset rows="90,*" cols="*" frameborder="no" border="0" framespacing="0">
-  <frame src="{$top_url}" style="border: 0;" name="topFrame" scrolling="no" noresize="noresize" marginwidth="0" marginheight="0" />
-  <frameset cols="250,*">
-    <frame src="{$navig_url}" name="leftFrame" style="border:none;" scrolling="auto" noresize="noresize"  marginwidth="0" marginheight="0" />
-    <frame src="{$admin_url}" name="mainFrame" style="border:none;" scrolling="auto" noresize="noresize"  marginwidth="0" marginheight="0" />
+<frameset rows="90,*" cols="*" frameborder="0" border="0" framespacing="0">
+  <frame src="{$top_url}" frameborder="0" name="topFrame" scrolling="no" noresize="noresize" marginwidth="0" marginheight="0" style="border: 0" />
+  <frameset cols="250,*" frameborder="1" border="1" bordercolor="f5f5f5" >
+    <frame src="{$navig_url}" name="leftFrame" style="border: 0" scrolling="auto" marginwidth="0" marginheight="0" />
+    <frame src="{$admin_url}" name="mainFrame" style="border: 0" scrolling="auto" marginwidth="0" marginheight="0" />
   </frameset>
 </frameset>
 </html>

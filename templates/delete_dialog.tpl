@@ -3,10 +3,7 @@
 
 <form action="{url}" method="post">
 <div class="bigbox">
-    <h2>{#s_delete_content#}</h2>
-    {$smarty.config.s_confirm_delete_content|sprintf:$node->title}
-    <br/>
-    <br/>
+    <div class="alert alert-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> <strong>{$smarty.config.s_confirm_delete_content|sprintf:$node->title}</strong></div>
     {if $children}
     <h2>{#s_confirm_delete_children#}</h2>
     <ul style="margin-top: 10px;">
