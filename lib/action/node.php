@@ -136,7 +136,7 @@ class action_node_toggle_lock extends action_node implements ChangeAction {
 
 /** Delete dialog for nodes */
 class action_node_delete_dialog extends action_node implements DisplayAction {
-    function get_icon()  { return 'buttons/delete.gif'; }
+    function get_icon()  { return 'trash'; }
     function get_title() { return new Translation('s_delete_content'); }
 
     function process($aquarius, $request, $smarty, $result) {
@@ -171,7 +171,7 @@ class action_node_delete extends action_node implements ChangeAction {
   * possible parents is prepared so the user can choose from those. Siteadmins may instead choose to move nodes anywhere they please.
   * */
 class action_node_moveorcopy extends action_node implements DisplayAction {
-    function get_icon()  { return 'buttons/move.gif'; }
+    function get_icon()  { return 'retweet'; }
     function get_title() { return new Translation('s_move_copy'); }
 
     function process($aquarius, $request, $smarty, $result) {

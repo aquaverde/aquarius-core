@@ -1,16 +1,15 @@
 <div class="nodetree_row {if $tree.open}open{/if}">
-{strip}
     {if $tree.show_toggle}
             <img class="nodetree_toggle" id="nodetree_toggle_{$tree.node->id}" src="picts/lapse-{if $tree.open}open{else}closed{/if}.gif" onclick="this.src='picts/lapse-loading.gif'; nodetree.update({$tree.node->id}, {ldelim} open: {if $tree.open}0{else}1{/if} {rdelim})" alt="{if $tree.open}{#s_close#}{else}{#s_open#}{/if}"/>
     {/if}
     {assign var="nodetitle" value=$tree.node->get_contenttitle()|strip_tags}
     {assign var="action" value="contentedit:edit:`$tree.node->id`:$lg"|makeaction}
     {if $action}<a href="{url url=$adminurl action=$action action2=$lastaction}" title="{$nodetitle}: {#s_edit#} ({$tree.node->id})">{/if}
-    <img src="picts/{$tree.node->icon()}.gif" alt="" class="nodetree_icon" />
-    <span class="nodetree_title{if !$tree.node->get_content($lg)} dim{/if}">
+    <span class="glyphicon glyphicon-file{if !$tree.node->active} off{/if}"></span>
+    <span class="nodetree_title{if $tree.node->is_content()} nodetree_title_content{/if}{if !$tree.node->get_content($lg)} dim{/if}">
         {$nodetitle|truncate:30}
         {if $tree.node->access_restricted == 1} 
-            &nbsp;<img src="buttons/lock_on.gif" alt="{#s_access_restricted#}" title="{#s_access_restricted#}" style="margin-top:-4px;" />
+            &nbsp;<span class="glyphicon glyphicon-lock" title="{#s_access_restricted#}"></span>
         {/if}
     </span>
     {if $action}</a>{/if}
@@ -30,5 +29,4 @@
         {/foreach}
     </ul>
 {/if}
-{/strip}
 </div>

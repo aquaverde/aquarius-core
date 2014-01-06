@@ -74,7 +74,7 @@ class DBwrap {
     }
 
     /** Execute query and map results into hash */
-    function queryhash($query, $data) {
+    function queryhash($query, $data=array()) {
         $entries = array();
         $res = $this->query($query, $data=array());
         while ($entry = $res->fetchRow(DB_FETCHMODE_ASSOC)) {

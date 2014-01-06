@@ -25,9 +25,9 @@
                 {include file="filemgr_thumbnail.tpl"}
 			</td>
     		<td width="15">
-                <a href="{$fileinfo.publicpath|download}"><img src="picts/download.gif" alt="Download" title="Download"/></a>
+                <a href="{$fileinfo.publicpath|download}" title="Download" data-toggle="tooltip"><span class="glyphicon glyphicon-download"></span></a>
 			</td>
-    		<td><a href="{$fileinfo.publicpath}" target="_blank">{$file->name()}</a></td>
+    		<td><a href="{$fileinfo.publicpath}" target="_blank" title="{#s_open#}" data-toggle="tooltip">{$file->name()}</a></td>
 		 	<td>{if $fileinfo.type == "image"}{$fileinfo.size.0}x{$fileinfo.size.1}px{else}&nbsp;{/if}</td>
     		<td>{$file->size('kB')}&nbsp;kB</td>
     		<td>

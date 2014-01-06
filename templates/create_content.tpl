@@ -69,7 +69,7 @@ function nodes_selected(_, selected_nodes) {
 <div class="bigbox" style="margin-top:10px;">
 <div class="bigboxtitle"><h2>3. {#menu_super_createcontent#}</h2></div>
 {action action="create_content:create:`$lg`"}
-<input type="submit" name="{$action}" value="{#menu_super_createcontent#}"/>
+<input type="submit" name="{$action}" value="{#menu_super_createcontent#}" class="btn btn-default" />
 {/action}
 </div>
 </form>

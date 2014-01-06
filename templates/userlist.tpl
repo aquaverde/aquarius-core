@@ -32,20 +32,15 @@
                     {$smarty.config.$adminlg}
                 </td>
 				<td align="right">
-					<input 	type="image"
-							name="{$editaction}"
-							src="buttons/edit.gif"
-							class="imagebutton" />
+					<button name="{$editaction}" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-pencil"></button>
 					&nbsp;
                     {confirm
                         yes="user:deleteUser:`$user->id`"
                         title=$smarty.config.s_delete_user
                         message=$smarty.config.s_delete_user_confirm|sprintf:$user->name
                     }
-					<input 	type="image"
-							name="{$action}"
-							src="buttons/delete.gif"
-							class="imagebutton" />
+                    <button name="{$action}" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-trash"></button>
+
 					&nbsp;
                     {/confirm} 
 				</td>
@@ -54,7 +49,7 @@
 		{/foreach}
 		</table>
         {action action="user:editUser:new"}
-            <button name="{$action}" type="submit" class="btn btn-sm btn-default btn-success">
+            <button name="{$action}" type="submit" class="btn btn-default btn-success">
                 <span class="glyphicon glyphicon-neg glyphicon-plus-sign white"></span> {#s_new#}
             </button>
         {/action}

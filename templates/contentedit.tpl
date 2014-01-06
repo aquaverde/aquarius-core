@@ -12,13 +12,13 @@
 
 {assign var=title value=$node->get_contenttitle($content->lg)}
 {if $title}
-    <h1 title="Node-ID: {$node->id} | Content-ID: {$content->id}">{$title|strip_tags|truncate:38}
+    <h1 title="Node-ID: {$node->id} | Content-ID: {$content->id}" data-toggle="tooltip">{$title|strip_tags|truncate:38}
 {else}
-    <h1 title="Node-ID: {$node->id} | Content-ID: {$content->id}">{#s_new_child#}
+    <h1 title="Node-ID: {$node->id} | Content-ID: {$content->id}" data-toggle="tooltip">{#s_new_child#}
 {/if}
     
 {if $node->access_restricted == 1} 
-    <img src="buttons/lock_on.gif" alt="{#s_access_restricted#}" title="{#s_access_restricted#}" />
+    <span title="{#s_access_restricted#}" class="glyphicon glyphicon-lock" data-toggle="tooltip"></span>
 {/if}
 </h1>
 
@@ -66,27 +66,20 @@
 
     {foreach from=$fields key=field_id item=field}
             <div class='contentedit contentedit_{$field.template_name}' id='box{$field.formfield->name}' style="display: {if !$active_fields || $field.formfield->name|@in_array:$active_fields}block{else}none{/if}">
-                <label for="{$field.htmlid}" title="{$field.formfield->name}" class="permission_level{$field.formfield->permission_level}{if $langlinks|@count > 1}{if $field.formfield->language_independent} language_independent{/if}{/if}">{formfield_title f=$field.formfield}
-                    {if $langlinks|@count > 1}{if $field.formfield->language_independent} <img src="buttons/multilang.gif" alt="{#multi_language#}" title="{#multi_language#}" class="label_img" />{/if}{/if}
-                </label>
-
-        {include file=$field.template_file}
-
+ {if $langlinks|@count > 1}{if $field.formfield->language_independent} <span title="{#s_multi_language#}" class="right_icons glyphicon glyphicon-globe pull-right" data-toggle="tooltip"></span>{/if}{/if}
+                    {if $field.formfield->permission_level != 2}<span title="{#s_may_edit#}: {if $field.formfield->permission_level == 1}Siteadmin{elseif $field.formfield->permission_level == 0}Superadmin{/if}" class="right_icons glyphicon glyphicon-user pull-right" data-toggle="tooltip"></span>{/if}
+                <label for="{$field.htmlid}" title="{$field.formfield->name}" data-toggle="tooltip">{formfield_title f=$field.formfield}</label>
+                {include file=$field.template_file}
             </div>
     {/foreach}
-    {strip}
-
-            <hr>
             {action action=$saveaction}
                 <input type='hidden' name='tab' value='{$active_tab_id}' id='active_tab_id'/>
                 <input type="hidden" name="check" value="{$content->node_id}{$content->lg}"/>
                 <input type="submit" name="{$doneaction}" value="{#s_done#}" class="btn btn-primary" />&nbsp;
                 <input type="submit" name="{$saveaction}" value="{#s_save#}" class="btn btn-default" id="savebutton"/>&nbsp;
             {/action}
-                <input type="submit" class="btn btn-default"  name="" value="{#s_cancel#}"/>
-
+            <input type="submit" class="btn btn-default"  name="" value="{#s_cancel#}"/>
         </form>
-    {/strip}
     </div>
 </div>
 
@@ -107,12 +100,11 @@
     <link rel="stylesheet" href="css/nodetree.css" type="text/css" />
     <div class="bigbox" id="boxform">
         <div class="bigboxtitle"><h2>{#s_subcontents#}</h2></div>
-        {strip}
         <form action="{url action0=$lastaction}" id="nodetree" method="post">
             <div style="padding-left: 0; padding-top: 10px" class="nodetree_container" id="nodetree_entry_{$entry.node->id}">
-                {include file='nodetree_container.tpl' hide_root=true}
+            {include file='nodetree_container.tpl' hide_root=true}
             </div>&nbsp;
-            <div style="text-align: right">
+            <div class="right">
                 <select name="command">
                 {foreach from=$forallaction->commands() key=command item=text}
                     <option value="{$command}">{$smarty.config.$text}</option>
@@ -121,7 +113,6 @@
                 <button type="submit" name="{$forallaction}" class="btn btn-default btn-xs">OK</button>
             </div>
         </form>
-        {/strip}
     </div>
 
     <script type="text/javascript">

@@ -61,8 +61,7 @@
     </div>
 {/strip}
 </div>
-<br/>
-<input type="submit" name="" value="{#s_close#}" onclick="window.close()" class="button" style="float: right"/>
+<input type="submit" name="" value="{#s_close#}" onclick="window.close()" class="btn btn-default pull-right"/>
 
 <script type="text/javascript">
 /* <![CDATA[ */

@@ -17,6 +17,7 @@
 	</head>
 
 <body {if $isPopup}onload="getSelectedFromOpener();"{/if} bgcolor="#FFFFFF">
+<div class="wrapper">
 {include file='messages.tpl'}
 <script language="JavaScript" type="text/javascript">
 <!--
@@ -73,10 +74,11 @@
 
     <div style="float:right; {if $isPopup}margin-top: -20px;{/if}">
         <a href="{url action=$browseaction}">
-            <img src="buttons/browser_thumb{if $managerStyle == "browse" }-on{/if}.gif" align="absmiddle" alt="Thumbnail View" title="Thumbnail View" />
+            <span class="glyphicon glyphicon-th{if $managerStyle == "browse" } on{/if}"></span>
+
         </a>&nbsp;
         <a href="{url action=$listaction}">
-            <img src="buttons/browser_list{if $managerStyle == "list"}-on{/if}.gif" align="absmiddle" alt="Icons" title="Icons" />
+            <span class="glyphicon glyphicon-th-list {if $managerStyle == "list"}on{/if}"></span>
         </a>
     </div>
 

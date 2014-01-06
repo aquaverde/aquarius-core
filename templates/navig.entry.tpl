@@ -1,4 +1,4 @@
-{strip}<ul class="level{$level}">
+<ul class="level{$level}">
 {foreach from=$menu item='entry'}
     {assign var='name' value=$entry->name}
 
@@ -25,7 +25,8 @@
                 <a href="{url url=$adminurl action=$action}">
                 {/if}
                 {if $entry->icon != ""}
-                    <img src="{$entry->icon}" alt="{$smarty.config.$name}" />
+                    {*<img src="{$entry->icon}" alt="{$smarty.config.$name}" />
+                    <span class="glyphicon glyphicon-globe"></span>*}
                 {/if}
                 {if $entry->action && $entry->action->get_title()}
                     {$entry->action->get_title()|str}
@@ -43,4 +44,4 @@
         </li>
     {/if}
 {/foreach}
-</ul>{/strip}
+</ul>

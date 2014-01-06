@@ -17,4 +17,3 @@ function smarty_modifier_email($email, $linktext)
 	
 	return '<span class="shield" data-local="'.$name.'" data-domain="'.$domain.'" data-tld="'.$tld.'" data-linktext="'.$linktext.'"></span>';
 }
-?>

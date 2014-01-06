@@ -1,4 +1,4 @@
-<?
+<?php
 $url = new Url('admin.php');
 ?>
 
