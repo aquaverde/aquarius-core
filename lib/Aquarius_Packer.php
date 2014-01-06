@@ -4,19 +4,19 @@ class Aquarius_Packer {
     static $export_aliases = array(
         'bare' => array('aquarius/core'),
         'full' => array('bare', '?aquarius/config.php', '?aquarius/ckconfig.js', '?aquarius/dbadmin'),
-        'site' => array('interface', 'lib', 'css', 'download', 'pictures', 'aquarius/templates', 'robots.txt', '.htaccess', 'favicon.ico', 'aquarius/init'),
+        'site' => array('interface', 'js', 'css', 'download', 'pictures', 'aquarius/templates', 'robots.txt', '.htaccess', 'favicon.ico', 'aquarius/init'),
         'all'  => array('full', 'site'),
     );
 
     var $ignore = array('.git', 'adminer');
-    
+
     var $message_handler;
-    
+
     static function exec_enabled() {
         $disabled = explode(', ', ini_get('disable_functions'));
         return !in_array('exec', $disabled);
     }
-    
+
     function message($msg, $continued = false) {
         if ($this->message_handler) $this->message_handler->message($msg, $continued);
     }
@@ -26,10 +26,10 @@ class Aquarius_Packer {
         $coredir = $aquarius->core_path;
         $changed = chdir($coredir);
         if (!$changed) throw new Exception("Unable to change dir to $coredir");
-        
-        
+
+
         $version = false;
-        
+
         if (self::exec_enabled()) {
             // Try to detect the installation version
             $version = exec('git describe 2>&1', $_, $version_error);
@@ -44,21 +44,21 @@ class Aquarius_Packer {
         if ($version === false) {
             $version = 'unspecified';
         }
-        
+
         $this->message("Version: $version");
-        
+
         // Build list of names to go into filename
         date_default_timezone_set('UTC');
         $export_names = array('aquarius');
         $export_names []= date("Ymd-Hi");
         $export_names []= $version;
-        
+
         // Preset options
         $options = array_merge(array(
             'inline' => false,
             'compress' => 'bz'
         ), $options);
-        
+
         // Do we include the archive in the installer file?
         $inline = $options['inline'];
 
@@ -66,7 +66,7 @@ class Aquarius_Packer {
         $rootdir = $aquarius->root_path;
         $changed = chdir($rootdir);
         if (!$changed) throw new Exception("Unable to change dir to $rootdir");
-        
+
         $exports = array();
         $export_names []= join('.', $targets);
         while($desired_export = array_shift($targets)) {
@@ -79,7 +79,7 @@ class Aquarius_Packer {
                 // Read 'optional' flag
                 $is_optional = $desired_export[0] == '?';
                 if ($is_optional) $desired_export = substr($desired_export, 1);
-                
+
                 // Remove trailing slash if there is one (common source of problems)
                 if (substr($desired_export, -1) == DIRECTORY_SEPARATOR) {
                     $desired_export = substr($desired_export, 0, -1);
@@ -87,29 +87,29 @@ class Aquarius_Packer {
                 if (!file_exists($desired_export)) {
                     if (!$is_optional) throw new Exception("Path does not exist: $desired_export");
                 } else {
-                    $exports []= $desired_export;      
+                    $exports []= $desired_export;
                 }
             }
         }
-        
+
         $exports = array_unique($exports);
         sort($exports);
-        
+
         if (empty($exports)) throw new Exception("No exports.");
 
         // Create a somewhat unique tag so we don't overwrite other files
         $export_tag = substr(uniqid(), -5);
         $this->message("Export tag: $export_tag");
-        
+
         // Get a location we can export to
         $export_dir = sys_get_temp_dir().DIRECTORY_SEPARATOR.'Aquarius-Export-'.$export_tag;
         mkdir($export_dir);
         $work_dir = getcwd();
-        
+
         $this->message("Creating export in $export_dir");
-        
+
         $export_names []= $export_tag;
-        
+
         $this->message("Exporting: ", true);
         $file_list = array();
         foreach($exports as $i => $base) {
@@ -130,7 +130,7 @@ class Aquarius_Packer {
             } catch(Exception $e) { throw new Exception("failed exporting $base: ".$e->getMessage()); }
         }
         $this->message(".");
-        
+
         include 'Tar.php';
 
         $export_name = join('_', $export_names);
@@ -154,8 +154,8 @@ class Aquarius_Packer {
         default:
             throw new Exception("Invalid compression format '$archive_format'.\n");
         }
-        
-        
+
+
         $tar_name = $export_name.'.tar'.$archive_suffix;
         $this->message("Creating $tar_name\n", true);
         $tar_path = $export_dir.DIRECTORY_SEPARATOR.$tar_name;
@@ -183,12 +183,12 @@ class Aquarius_Packer {
 
         $export_pack_basename = $work_dir.DIRECTORY_SEPARATOR.$export_name;
         $export_pack_instname = $export_pack_basename.'.php';
-        
+
         // Writing scripts that write scripts is one of my favourite pastimes.
         // It got out of hand here. Could use some templating love.
         $tar_lib_path = dirname(__FILE__).DIRECTORY_SEPARATOR.'Packer_Tar.php';
-        $wrote = file_put_contents($export_pack_instname, "<?php 
-/* Aquarius installer pack 
+        $wrote = file_put_contents($export_pack_instname, "<?php
+/* Aquarius installer pack
  * Date: $build_date
  * Host: $build_host
  * Tag: $export_tag
@@ -371,7 +371,7 @@ if ($op == "replaced") {
     </form>
     \';
 } else {
-    
+
     $test_file = __FILE__.".test";
     @unlink($test_file);
     $write_success = touch($test_file);
@@ -380,7 +380,7 @@ if ($op == "replaced") {
     $test_perms = stat($test_file);
     @unlink($test_file);
     $upload_perms = stat(__FILE__);
-    
+
     $suggested_mode = "";
     $perm_warning = "";
     if ($test_perms["uid"] == $upload_perms["uid"]) {
@@ -393,9 +393,9 @@ if ($op == "replaced") {
         $perm_warning = "<div style=\'margin-bottom: 5px;\' class=\'dim\'>Based on a quick check, this installer assumes that files <b class=\'dim\'>must be created world-readable and writable</b> so that both user and web-server can read and write to installed files. Depending on your setup, <b>this may be stupid if not incredibly, stupendously dangerous</b>. </div>";
         $suggested_mode = "0777";
     }
-    
-    
-    
+
+
+
     echo \'
 <h1>Install aquarius CMS</h1>
 <div class="bigbox">
@@ -448,7 +448,7 @@ echo "
         } else {
             $archivename = $export_pack_basename.'.tar'.$archive_suffix;
             $this->message("Copying archive: $archivename", true);
-            
+
             $success = copy($tar_path, $archivename);
             if (!$success) throw new Exception("Unable to write to $archivename");
         }
@@ -467,13 +467,13 @@ echo "
             include 'file_mgmt.lib.php';
             $removed = rmall($export_dir);
         }
-        
+
         if (!$removed) {
             // Oh well, the pack was generated so we don't fail here.
             // Somebody else gets paid to pick up the garbage, right?
             $this->message("Error while deleting $export_dir");
         }
-        
+
         return $export_pack_instname;
     }
 
@@ -483,7 +483,7 @@ echo "
         if ($name == '.' || $name == '..' || in_array($name, $exclude)) {
             return 0;
         }
-        
+
         $rsrc = realpath($src);
         if (!$rsrc) throw new Exception("Nonexisting source path '$src'");
 
