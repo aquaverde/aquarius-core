@@ -53,7 +53,7 @@
                 <input type="hidden" name="firelevel" value="1000"/>
             </form>
         {/if}
-            <a href="{$smarty.const.PROJECT_URL}{$lg}/" target="_blank" class="site_title" title="Open Website">{$smarty.const.PROJECT_TITLE}</a>
+            <a href="{$smarty.const.PROJECT_URL}/{$lg}" target="_blank" class="site_title" title="Open Website">{$smarty.const.PROJECT_TITLE}</a>
         </div>
     </div>		
     <div id="navig">
