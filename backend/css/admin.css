@@ -168,7 +168,6 @@ div.topbar { margin: 0; padding: 15px; background-color: #e0e0e0; margin-bottom:
 div.topbar img, div.topbar input { vertical-align: middle; }
 .spiner, .action { margin: 3px 0; padding: 0; }
 .littleflag { width: 5px;}
-.glyphicon.dim { font-size: 10px !important;}
 
 
 /* toolbar */
