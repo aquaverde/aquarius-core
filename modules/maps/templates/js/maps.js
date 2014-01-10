@@ -325,7 +325,6 @@ function initmap(config, markers_in) {
             
             if (!icon) {
                 // just take any
-                console.log('hola marker ' + kat)
                 icon = config.icon_types[Object.keys(config.icon_types)[0]]
             }
             
