@@ -1,11 +1,10 @@
 <?php 
 
 require 'lib/formtype_googlemaps.php';
-require_once "lib/template.lib.php";
 
 class Maps extends Module {
 
-    var $register_hooks = array('menu_init', 'init_form', 'smarty_config', 'smarty_config_backend', 'smarty_config_frontend');
+    var $register_hooks = array('init_form', 'smarty_config', 'smarty_config_backend', 'smarty_config_frontend');
     
     var $short = "maps";
     var $name  = "Google Maps fields";
@@ -46,17 +45,6 @@ class Maps extends Module {
     }
 
 
-    function menu_init($menu, $lg) {
-        $menu->add_entry(
-            'menu_modules',
-            300,
-            new Menu('maps_menu', false, false, array(
-                1 => new Menu('maps_edit', Action::make('maps','showmap', $lg))
-            ))
-        );
-    }
-
-    
     function create_marker($point, $node_id, $cache_title, $lg) {
  
 		if(empty($point['type'])) continue;
