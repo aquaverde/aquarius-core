@@ -1,34 +1,29 @@
-<?
+maps_menu						= "Google Maps"
+maps_edit						= "Carte"
 
-	//MODULE
-    maps_menu						= "Google Maps"
-    maps_edit						= "Carte"
-    
-	//FORMTYPE
-    formtype_gmap					= "Google Maps"
-	search_by_address				= "Recherche par adresse"
-	search							= "Rechercher"
-	way								= "Parcours"
-	point							= "Point"
-	is_on_way						= " le point appartient au parcours"
-	edit_poly						= "Editer le parcours"
-	titel							= "Titre:"
-	beschreibung					= "Texte:"
-	kategorie						= "Type de point:"
-	link							= "Lien:"
-	delete_instance					= "Effacer"
-	load_external_xml				= "Load external XML-File"
-	
-	//MAPS EDIT
-	points							= "Points"
-	title							= "Titre"
-	description						= "Texte"
-	picture							= "Image"
-	category						= "Type de point"
-	polylines						= "Lignes"
-	map								= "Carte"
-	no_categorised                  = "Non classés"
+//FORMTYPE
+formtype_gmap					= "Google Maps"
+search_by_address				= "Recherche par adresse"
+search							= "Rechercher"
+way								= "Parcours"
+point							= "Point"
+is_on_way						= " le point appartient au parcours"
+edit_poly						= "Editer le parcours"
+titel							= "Titre:"
+beschreibung					= "Texte:"
+kategorie						= "Type de point:"
+link							= "Lien:"
+delete_instance					= "Effacer"
+load_external_xml				= "Load external XML-File"
 
-    help_delete_point               = "Clic-droit pour effacer un point"
+//MAPS EDIT
+points							= "Points"
+title							= "Titre"
+description						= "Texte"
+picture							= "Image"
+category						= "Type de point"
+polylines						= "Lignes"
+map								= "Carte"
+no_categorised                  = "Non classés"
 
-?>
+help_delete_point               = "Clic-droit pour effacer un point"

@@ -1,35 +1,28 @@
-<?
-	//MODULE
-    maps_menu						= "Google Maps"
-    maps_edit						= "Karte"
-    
-	//FORMTYPE
-    formtype_gmap					= "Google Maps"
-	search_by_address				= "Nach Adresse suchen"
-	search							= "suche"
-	way								= "Strecke"
-	point							= "Punkt"
-	is_on_way						= "Punkt gehört zu strecke"
-	edit_poly						= "Linie Bearbeiten"
-	titel							= "Titel:"
-	beschreibung					= "Beschreibung:"
-	kategorie						= "Punkttyp:"
-	link							= "Link:"
-	delete_instance					= "Löschen"
-	load_external_xml				= "Lade externe XML-Datei"
-	
-	//MAPS EDIT
-	points							= "Punkte"
-	title							= "Titel"
-	description						= "Beschreibung"
-	picture							= "Bild"
-	category						= "Punkttyp"
-	polylines						= "Linien"
-	map								= "Karte"
-	no_categorised                  = "Nicht Kategorisiert"
+maps_menu						= "Google Maps"
+maps_edit						= "Karte"
+
+formtype_gmap					= "Google Maps"
+search_by_address				= "Nach Adresse suchen"
+search							= "suche"
+way								= "Strecke"
+point							= "Punkt"
+is_on_way						= "Punkt gehört zu strecke"
+edit_poly						= "Linie Bearbeiten"
+titel							= "Titel:"
+beschreibung					= "Beschreibung:"
+kategorie						= "Punkttyp:"
+link							= "Link:"
+delete_instance					= "Löschen"
+load_external_xml				= "Lade externe XML-Datei"
+
+points							= "Punkte"
+title							= "Titel"
+description						= "Beschreibung"
+picture							= "Bild"
+category						= "Punkttyp"
+polylines						= "Linien"
+map								= "Karte"
+no_categorised                  = "Nicht Kategorisiert"
 
 
-    help_delete_point               = "Recht-click zum Punkt löschen"
-
-
-?>
+help_delete_point               = "Recht-click zum Punkt löschen"
