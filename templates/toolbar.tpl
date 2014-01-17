@@ -3,7 +3,7 @@
 
     	<div class="separator iconbar">
 
-            <a href="#" onclick="document.getElementById('savebutton').click();return false;" data-toggle="tooltip" title="{#s_save#}"><span class="glyphicon glyphicon-floppy-open"></span></a>&nbsp;
+            <a href="#" onclick="document.getElementById('savebutton').click();return false;" data-toggle="tooltip" title="{#s_save#}"><span class="glyphicon glyphicon-floppy-disk"></span></a>&nbsp;
 
             {if $preview_uri}
                 <a target="_new" href="{$preview_uri}" data-toggle="tooltip" title="{#s_page_view#}"><span class="glyphicon glyphicon-eye-open"></span></a>
