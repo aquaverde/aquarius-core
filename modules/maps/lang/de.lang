@@ -17,6 +17,7 @@
 	link							= "Link:"
 	delete_instance					= "Löschen"
 	load_external_xml				= "Lade externe XML-Datei"
+location_search = "Suche"
 	
 	//MAPS EDIT
 	points							= "Punkte"
