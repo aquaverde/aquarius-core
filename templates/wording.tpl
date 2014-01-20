@@ -15,7 +15,7 @@
                 {/action}
                 {if $lang->lg == $current_lg}</b>{/if} &nbsp;
             {/foreach}
-             <button name="{$saveaction}" title="{#s_save#}" class="btn-link"><span class="glyphicon glyphicon-floppy-open"></span></button>
+             <button name="{$saveaction}" title="{#s_save#}" class="btn-link"><span class="glyphicon glyphicon-floppy-disk"></span></button>
         </div>
 
 
@@ -82,7 +82,7 @@
         </table>
         
         <input type="submit" name="{$saveaction}" value="{#s_save#}" class="btn btn-primary" />
-        {actionlink action="wording:port"}
+        <div class="pull-right"><span class="glyphicon glyphicon-sort"></span> {actionlink action="wording:port"}</div>
         
 	</div>
 </form>
