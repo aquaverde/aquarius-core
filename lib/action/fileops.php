@@ -50,7 +50,7 @@ class action_fileops_remove_by_pattern extends action_fileops implements Display
         if ($file == '.' || $file == '..') return array();
 
         $full_path = realpath($dir.$file);
-        if (!$full_path) throw new Exception("File '$dir$file' not valid");
+        if (!$full_path) Log::warn("Could not expand '$dir$file', ignoring");
         $matches = array();
 
         if (preg_match($pattern, $full_path)) {
