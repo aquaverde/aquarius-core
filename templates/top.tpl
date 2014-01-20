@@ -6,38 +6,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" href="css/top.css" type="text/css"></link>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-	<script language="JavaScript" type="text/javascript">
-	<!--
-	{literal}
-	var actualSelected;
-	//v2.0
-	function openBrWindow(theURL,winName,features) { 
-		mypop = window.open(theURL,winName,features);
-		mypop.focus();  //fixed focus bug ..gruss gc
-	}
-    
-    $(document).ready (function() {
-        // input text label
-        $(":input[title]").each(function() {
-            var $this = $(this);
-            if($this.val() === '') {
-                $this.val($this.attr('title'));
-            }
-            $this.focus(function() {
-                if($this.val() === $this.attr('title')) {
-                    $this.val('');
-                }
-            });
-            $this.blur(function() {
-                if($this.val() === '') {
-                    $this.val($this.attr('title'));
-                }
-            });
-        });
-    });
-	{/literal}
-	-->
-	</script>
 </head>
 <body {$showSupportMessage}>
     <div id="header">
@@ -81,7 +49,7 @@
             </div>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <form method="post" action="{url action="search:"}" target="mainFrame">
-                <input type="text" name="search" value="{$lastSearch}" title="{#s_suche#}" style="height: 12px;vertical-align: middle;" />&nbsp;&nbsp;|&nbsp;
+                <input type="text" name="search" value="" placeholder="{#s_suche#}" title="{#s_suche#}" style="height: 12px; vertical-align: middle;" />&nbsp;&nbsp;|&nbsp;
             </form>
             hello, {$user->name}&nbsp;&nbsp;|
             <form action="{url action0="logout:now"}" method="post" target="mainFrame">
