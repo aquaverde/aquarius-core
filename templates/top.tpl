@@ -15,10 +15,8 @@
         <div class="title">
        {if $user->isSuperadmin()}
             <form action="{url url=$url action="nodetree:show:super:"}" method="post" target="mainFrame">{* Insane... in the mainFrame.            Sorry could not resist. *}
-                {actionlink action="cache_cleaner:all"}
-                {actionlink action="echo_cookie:set"}
-                <input type="hidden" name="loglevel" value="20"/>
-                <input type="hidden" name="firelevel" value="1000"/>
+                {actionlink action=$clean_cache}
+                {actionlink action=$set_debug}
             </form>
         {/if}
             <a href="{$smarty.const.PROJECT_URL}/{$lg}" target="_blank" class="site_title" title="Open Website">{$smarty.const.PROJECT_TITLE}</a>
