@@ -5,7 +5,7 @@
 
 <div id="line_length"></div>
 
-<input id="location_search_input" type="text" placeholder="{#location_search#}">
+<input class="location_search" id="location_search_input" type="text" placeholder="{#location_search#}">
 <div class="map" id="map_{$field.htmlid}"></div>
 
 {js}

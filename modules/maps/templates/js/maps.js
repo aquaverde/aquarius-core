@@ -36,7 +36,7 @@ function initmap(config, markers_in) {
     
     /* Add a search box */
     var location_search_input = document.getElementById('location_search_input')
-    map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(location_search_input)
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(location_search_input)
     
     var searchBox = new google.maps.places.SearchBox(location_search_input);
 
@@ -433,6 +433,6 @@ function initmap(config, markers_in) {
         map.setCenter(center);
     }
     
-    map.fitBounds(bounds)
+    if (fit_bounds) map.fitBounds(bounds)
     return resize;
 }
