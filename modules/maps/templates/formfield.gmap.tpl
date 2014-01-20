@@ -5,6 +5,7 @@
 
 <div id="line_length"></div>
 
+<input id="location_search_input" type="text" placeholder="{#location_search#}">
 <div class="map" id="map_{$field.htmlid}"></div>
 
 {js}
@@ -24,7 +25,7 @@
     var script = document.createElement("script");
     script.type = "text/javascript";
     script.defer = true;
-    script.src = "http://maps.googleapis.com/maps/api/js?key={$key}&libraries=drawing&sensor=false&callback=initmap_{$field.htmlid}";
+    script.src = "http://maps.googleapis.com/maps/api/js?key={$key}&libraries=drawing,places&sensor=false&callback=initmap_{$field.htmlid}";
     document.body.appendChild(script);
     
     // Callback that loads the map

@@ -20,6 +20,7 @@ function initmap(config, markers_in) {
 
     var map = new google.maps.Map(map_container, mapOptions)
 
+    /* Add the existing markers */
     for (var i = 0; i < markers_in.length; i++) {
         var m = markers_in[i];
         (function() { // scoping the id for the closures, sorry
@@ -32,6 +33,45 @@ function initmap(config, markers_in) {
             box_handlers(id)                 
         })()
     }
+    
+    /* Add a search box */
+    var location_search_input = document.getElementById('location_search_input')
+    map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(location_search_input)
+    
+    var searchBox = new google.maps.places.SearchBox(location_search_input);
+
+    searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+        
+        for (var i = 0, place; place = places[i]; i++) {
+            if (config.multi == 0) {
+                // There can be only one
+                remove_all()
+            }
+            
+            var marker = new google.maps.Marker({
+                map: map,
+                icon: config.icon_types[Object.keys(config.icon_types)[0]],
+                title: place.name,
+                position: place.geometry.location
+            });
+
+        
+            var type = "point";
+            var id = markers.length
+            markers.push(marker)
+            create_new_instance(id, type, place.geometry.location.lat(), place.geometry.location.lng(), place.name)
+            show_box(id)
+            map.panTo(place.geometry.location)
+        }
+    })
+    
+    // Bias location search towards locations that are close to the current area
+    google.maps.event.addListener(map, 'bounds_changed', function() {
+        var bounds = map.getBounds();
+        searchBox.setBounds(bounds);
+    })
+
 
     var drawingManager = new google.maps.drawing.DrawingManager({
         drawingMode: null,
@@ -71,12 +111,9 @@ function initmap(config, markers_in) {
         
         var type = "point";
         var id = markers.length
-        markers.push(marker)                                                   
-        create_new_instance(id, type);
+        markers.push(marker)
+        create_new_instance(id, type, marker.getPosition().lat(), marker.getPosition().lng());
         show_box(id);
-        
-        document.getElementById(html_id + "_" + id + "_lat").value = marker.getPosition().lat();
-        document.getElementById(html_id + "_" + id + "_lng").value = marker.getPosition().lng();
     })
     
     
@@ -183,7 +220,7 @@ function initmap(config, markers_in) {
     }
 
 
-    function create_new_instance(index, type) {
+    function create_new_instance(index, type, lat, lng, title) {
         var formname = config.formname
         
         /* this was written by one code soldier, takin the DOM and runnin with it
@@ -201,7 +238,7 @@ function initmap(config, markers_in) {
         newinput_lat.setAttribute("type", "hidden");
         newinput_lat.setAttribute("name", formname + "[" + index + "]" + "[lat]");
         newinput_lat.setAttribute("id", html_id + "_" + index + "_lat");
-        newinput_lat.setAttribute("value", "");
+        newinput_lat.setAttribute("value", lat);
         newdiv.appendChild(newinput_lat);
         
         //LNG
@@ -209,7 +246,7 @@ function initmap(config, markers_in) {
         newinput_lng.setAttribute("type", "hidden");
         newinput_lng.setAttribute("name", formname + "[" + index + "]" + "[lng]");
         newinput_lng.setAttribute("id", html_id + "_" + index + "_lng");
-        newinput_lng.setAttribute("value", "");
+        newinput_lng.setAttribute("value", lng);
         newdiv.appendChild(newinput_lng);
         
         //TYPE
@@ -269,7 +306,7 @@ function initmap(config, markers_in) {
         newinput_title.setAttribute("name", formname + "[" + index + "]" + "[title]");
         newinput_title.setAttribute("id", html_id + "_" + index + "_title");
         newinput_title.className = "gmap-textfield";
-        newinput_title.setAttribute("value", "");
+        newinput_title.setAttribute("value", title == undefined ? '' : title);
         newdiv.appendChild(newinput_title);
         
         var brbr = document.createElement("br");
@@ -396,5 +433,6 @@ function initmap(config, markers_in) {
         map.setCenter(center);
     }
     
+    map.fitBounds(bounds)
     return resize;
 }
