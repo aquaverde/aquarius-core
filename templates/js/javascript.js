@@ -188,7 +188,7 @@ jQuery( document ).ready(function() {
     jQuery('[data-toggle]').addClass('tooltipp').tooltip();
     
     window.setTimeout(function() {
-        jQuery(".alert-dismissable").fadeTo(500, 0).slideUp(500, function(){
+        jQuery(".alert-success").fadeTo(500, 0).slideUp(500, function(){
             jQuery(this).remove(); 
         });
     }, 2500);
