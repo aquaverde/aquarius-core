@@ -296,6 +296,11 @@ class Action implements BasicAction {
         return false;
     }
 
+    /** Whether this action changes things */
+    function is_change() {
+        return $this instanceOf ChangeAction;
+    }
+    
 }
 
 // PHP doesn't allow function calls in static var initializers. Workaround:
