@@ -18,10 +18,11 @@ class action_email_test_form extends action_email_test  implements DisplayAction
 }
 
 class action_email_test_send extends action_email_test  implements ChangeAction {
-    
+
     function php_mail($from, $to, $subject, $body) {
-        return mail($to, $subject, $body, "From: $from");
+        return mail($to, $subject, strip_tags($body), "From: $from");
     }
+
 
     function swift_html($from, $to, $subject, $body) {
         require_once 'lib/swift/swift_required.php';
@@ -34,14 +35,27 @@ class action_email_test_send extends action_email_test  implements ChangeAction 
         $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
         return $mailer->send($message);
     }
-    
+
+
+    function aquamail($from, $to, $subject, $body) {
+        global $aquarius;
+        $smarty = $aquarius->get_smarty_backend_container();
+        $smarty->assign('subject', $subject);
+        $smarty->assign('from', $from);
+        $smarty->assign('body', $body);
+        $mail = new AquaMail($smarty, 'email_test.txt.tpl', 'email_test.html.tpl');
+        $mail->set('to', $to);
+        return $mail->send();
+    }
+
+
     function process($aquarius, $post, $result) {
         $to   = get($post, 'to');
         $from = get($post, 'from');
         if (strlen($from) < 1) $from = $to;
         $subject = "";
         $body = <<<MARKOV4_FTW
-aquaverde, agence web individuelle à ces questions primordiales.
+<h1>aquaverde, agence web individuelle à ces questions primordiales.</h1>
 conception
 Le point fort du tourisme et modules développés en seront mis en page automatiquement.
 
@@ -66,7 +80,7 @@ MARKOV4_FTW;
         $ok_message = AdminMessage::with_html('ok', "Sending test mails to $to");
         $fail = 0;
         $fail_message = AdminMessage::with_html('warn', "Sending test mails to $to");
-        foreach(array('php_mail', 'swift_html') as $method) {
+        foreach(array('php_mail', 'swift_html', 'aquamail') as $method) {
             $success = $this->$method($from, $to, $method.': '.$subject, $body);
             if ($success) {
                 $ok_message->add_html("Method $method reported success");
