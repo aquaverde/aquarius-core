@@ -14,7 +14,7 @@
         </div>
         <div class="title">
        {if $user->isSuperadmin()}
-            <form action="{url url=$url action="nodetree:show:super:"}" method="post" target="mainFrame">{* Insane... in the mainFrame.            Sorry could not resist. *}
+            <form action="{url url=$url action="nodetree:show:$lg:sitemap"}" method="post" target="mainFrame">{* Insane... in the mainFrame.            Sorry could not resist. *}
                 {actionlink action=$clean_cache}
                 {actionlink action=$set_debug}
             </form>
