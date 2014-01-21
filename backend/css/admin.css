@@ -216,8 +216,8 @@ input.imagebutton { border: none; margin: 0; padding: 0; vertical-align:middle; 
 input.rooticon { margin-left: -5px; }
 label { display: block; padding-top: 3px; padding-bottom: 3px; margin-right: 5px; font-weight: normal; margin-bottom: 0;}
 label.inline { display: inline; border: none;padding-top: 0;}
-.ef, .mle, .code { width: 99%; border: 1px solid #8f8f8f; }
-.code { font-family: Monaco, "Courier New", Courier, monospace; font-size: 11px; }
+.ef, .mle, .code { width: 99%; }
+.code { font-family: Consolas, Monaco, "Courier New", Courier, monospace; font-size: 12px; }
 input.checkbox { border: none; vertical-align:middle; }	
 .inputsmall { font-size: 13px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 2px; color: #555; }
 img.label_img {vertical-align: middle; cursor:help; float:right; margin-right: 5px; margin-top: 1px;}
