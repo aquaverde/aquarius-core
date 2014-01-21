@@ -120,6 +120,7 @@ formtype_rte = "Richtext"
 Anzahl_Zeichen = "Nb. car."
 formtype_int = "Numéro"
 formtype_code = "Code"
+formtype_markdown = "Markdown"
 
 s_wording_admin = "Wording: administration"
 s_to_contents = "Accéder aux sous-pages"
