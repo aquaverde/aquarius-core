@@ -167,7 +167,7 @@ $config['admin']['allow_languageadmin'] = false;
   * "www." stripped off.
   */
 $config['email'] = array(
-    'sender_address' => 'info',
+    'sender' => 'info',
     'smtp' => false
 );
 
@@ -182,7 +182,6 @@ $config['email']['smtp'] = array(
 
 // Testing config for perl fakesmtpd.pl
 $config['email']['smtp'] = array(
-    'type'     => 'smtp',
     'host'     => 'localhost',
     'port'     => '2525'
 );
