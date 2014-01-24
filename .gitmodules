@@ -1,3 +1,0 @@
-[submodule "components/adminer"]
-	path = components/adminer
-	url = https://github.com/vrana/adminer.git

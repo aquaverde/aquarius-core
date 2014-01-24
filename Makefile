@@ -13,7 +13,7 @@ bare: $(VENDOR)
 $(VENDOR): $(COMPOSER) composer.json $(wildcard composer.lock)
 	php $(COMPOSER) update
 
-$(ADMINER):
+$(ADMINER): $(VENDOR)
 	sh bin/compile_adminer
 
 $(COMPOSER):

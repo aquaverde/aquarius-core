@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "5c3b3f72e2a070279b326d913c987ecc",
+    "hash": "0d6fe20e3b51dce66f1431d1a973ccc8",
     "packages": [
         {
             "name": "mrclay/minify",
@@ -35,7 +35,7 @@
             ],
             "authors": [
                 {
-                    "name": "Stephen Clay",
+                    "name": "Steve Clay",
                     "email": "steve@mrclay.org",
                     "homepage": "http://www.mrclay.org/",
                     "role": "Developer"
@@ -47,11 +47,11 @@
         },
         {
             "name": "smarty/smarty",
-            "version": "v3.1.15",
+            "version": "v3.1.16",
             "source": {
                 "type": "svn",
                 "url": "http://smarty-php.googlecode.com/svn",
-                "reference": "/tags/v3.1.15/@4782"
+                "reference": "/tags/v3.1.16/@4802"
             },
             "require": {
                 "php": ">=5.2"
@@ -87,7 +87,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-10-01 21:08:54"
+            "time": "2013-12-17 16:56:58"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -137,6 +137,17 @@
                 "mailer"
             ],
             "time": "2013-04-11 10:22:09"
+        },
+        {
+            "name": "vrana/adminer",
+            "version": "1",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/vrana/adminer/archive/master.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library"
         }
     ],
     "packages-dev": [

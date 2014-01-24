@@ -2,6 +2,20 @@
     "require": {
         "smarty/smarty": "3.*",
         "mrclay/minify": "2.*",
-        "swiftmailer/swiftmailer": "4.*"
-    }
+        "swiftmailer/swiftmailer": "4.*",
+        "vrana/adminer": "1"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "vrana/adminer",
+                "version": "1",
+                "dist": {
+                    "url": "https://github.com/vrana/adminer/archive/master.zip",
+                    "type": "zip"
+                }
+            }
+        }
+    ]
 }
