@@ -280,14 +280,7 @@ class Dynform extends Module
 
 
                         case "TargetEmail":
-                            $options = array_filter(array_map('trim', explode("\n", $options)), 'empty');
-                            $field['options'] = array();
-                            foreach ($options as $email_label) {
-                                $parts = explode(',', $email_label);
-                                $email = trim(get($parts, 0));
-                                $label = trim(get($parts, 1));
-                                $field['options'][$email] = $label;
-                            }
+                            $field['options'] = get($this->target_emails($options), 'labels');
                             break;
 
                         /* Show input field for each node in the tree rooted at
@@ -426,7 +419,15 @@ class Dynform extends Module
                         }
                     }
                 } elseif ($ftype == "TargetEmail") {
-                    $target_email = $value; 
+                   $target_emails = get($this->target_emails($DL->get_field_options($field->id, $lg)), 'emails');
+                   
+                    if (isset($target_emails[$value])) {
+                        $target_email = $target_emails[$value];
+                    } else {
+                        // Use first entry when none was chosen
+                        $target_email = first($target_emails);
+                    }
+                    Log::debug("Using target email $target_email");
                 } elseif ($ftype == "Checkbox") {
                     if (isset ($post_vars['field_'.$field->id])) {
                         $value = implode ('; ', $post_vars['field_'.$field->id]) ;
@@ -534,6 +535,25 @@ class Dynform extends Module
             );
             return NodeTree::build($node, array(), Nodefilter::create('and', $filters));
         }
+    }
+    
+    /** Parse the option string of the target email field */
+    function target_emails($optionstr) {
+        $options = array_filter(array_map('trim', explode("\n", $optionstr)));
+        $emails = array();
+        $labels = array();
+        foreach ($options as $email_label) {
+            $parts = array_filter(array_map('trim', explode(',', $email_label)));
+            if (count($parts) == 2) {
+                list($label, $email) = $parts;
+                $labels []= $parts[0];
+                $emails []= $parts[1];
+            } else {
+                // Ignore whatever invalid data is on this line
+            }
+        }
+
+        return compact('emails', 'labels');
     }
 }
 
