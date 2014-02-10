@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "0d6fe20e3b51dce66f1431d1a973ccc8",
+    "hash": "32bd92272207745124507f02851e4a52",
     "packages": [
         {
             "name": "mrclay/minify",
@@ -140,12 +140,11 @@
         },
         {
             "name": "vrana/adminer",
-            "version": "1",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/vrana/adminer/archive/master.zip",
-                "reference": null,
-                "shasum": null
+            "version": "4.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vrana/adminer.git",
+                "reference": "v4.0.3"
             },
             "type": "library"
         }
