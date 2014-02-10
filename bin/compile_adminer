@@ -5,7 +5,6 @@ cd `dirname $0`/..
 
 mkdir -p ../dbadmin
 cd ../dbadmin
-pwd
-php ../core/vendor/vrana/adminer/compile.php mysql
-mv adminer-mysql.php index.php
+php ../core/vendor/vrana/adminer/compile.php mysql 2> /dev/null
+mv adminer-*-mysql.php index.php
 rm -f editor-mysql.php
