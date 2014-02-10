@@ -8,7 +8,7 @@ class Aqua_Smarty extends SmartyBC {
       * Otherwise same as addTemplateDir()
       */
     function insertTemplateDir($dir) {
-        $dirs = $this->getTemplateDirs();
+        $dirs = $this->getTemplateDir();
         array_unshift($dirs, $dir);
         $this->setTemplateDir($dirs);
     }
