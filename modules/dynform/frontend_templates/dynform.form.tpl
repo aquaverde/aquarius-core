@@ -14,7 +14,7 @@
                     {$field.title|escape}
                     {if $field.required}&nbsp;*{/if}
                     </label>
-                    {include file=dynform.`$field.type`.tpl}
+                    {include file="dynform.`$field.type`.tpl"}
                 </div>
             {/foreach}
             
