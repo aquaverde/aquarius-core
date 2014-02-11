@@ -56,7 +56,7 @@ function smarty_function_actionlink($params, $smarty) {
         if (get($params, 'show_icon', true)) $icon = $action->get_icon();
         $icon_placement = get($params, 'icon_placement', 'before');
 
-        $button = get($params, 'button', $action instanceof ChangeAction);
+        $button = get($params, 'button', $action->is_change());
         if ($button) {
             if ($icon) return "<button name='".str($action)."' data-toggle='tooltip' title='".$title."' class='btn btn-link' $onclick><span class='glyphicon glyphicon-".$icon."'></span></button>";
             else return "<input type='submit' name='".str($action)."' value='$title' data-toggle='tooltip' class='btn btn-default' $onclick/>";

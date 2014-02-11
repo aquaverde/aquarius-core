@@ -96,7 +96,6 @@ class MailForm extends Module {
         $smarty = $aquarius->get_smarty_frontend_container(false, $node);
         $smarty->assign('formfields', $formfields);
 
-        require_once "lib/aquamail.php";
         $mail = new AquaMail($smarty, get($formspec, 'text_template'), get($formspec, 'html_template'));
         $mail->set('to', $target_address);
         $mail->set('from', $formspec['sender_address']);

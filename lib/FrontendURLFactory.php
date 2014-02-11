@@ -156,6 +156,9 @@ class FrontendUrlFactory {
     /** Turn path_parts into path and add it to URI */
     static function build_path($options, $uri) {
         $uri->path = '/'.implode('/', $options->path_parts);
+        
+        // HACK: add a slash after lone language
+        if (count($options->path_parts) == 1) $uri->path .= '/';
     }
 
     /** URI construction step for plain URI (not rewritten) */

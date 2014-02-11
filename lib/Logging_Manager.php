@@ -72,9 +72,8 @@ class Logging_Manager {
         $hmac           = get($parts, 0, '');
         if ($timestamp < time() || $timestamp > strtotime('+2 days')) return false;
         if ($this->hmac($overridestr, $timestamp) !== $hmac) return false;
-        $override_obj = json_decode($overridestr);
-        if (!($override_obj instanceof stdClass)) return false;
-        $overrides = object_to_array($override_obj);
+        $overrides = json_decode($overridestr, true);
+        if (!is_array($overrides)) return false;
         $overrides = array_filter(validate($overrides, array(
             'file' => 'int notset',
             'echo' => 'int notset',

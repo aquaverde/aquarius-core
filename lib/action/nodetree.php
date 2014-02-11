@@ -17,7 +17,12 @@ class action_nodetree extends AdminAction {
     }
 }
 
-
+/** nodetree:show a tree of nodes starting from root
+ * 
+  * Params:
+  *   lg: language to use in titles and edit actions
+  *   section: layout and what type of actions to add, one of 'none', 'sitemap', 'contentedit' or 'super' (see NodeTree.php type aprameter)
+  */
 class action_nodetree_show extends action_nodetree implements DisplayAction {
 
     var $props = array('class', 'command', 'lg', 'section');

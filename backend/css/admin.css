@@ -186,7 +186,7 @@ div.topbar img, div.topbar input { vertical-align: middle; }
 
 
 /* toolbox */
-.toolbox { float: right; margin-top: -25px; margin-bottom: 5px !important; margin-bottom: 1px; padding: 2px; vertical-align: bottom; z-index: 10; text-align: right; margin-right: -11px; }
+.toolbox { float: right; margin-top: -30px; margin-bottom: 5px !important; margin-bottom: 1px; padding: 2px; vertical-align: bottom; z-index: 10; text-align: right; margin-right: -11px; }
 .toolbox .button, #toolbar .button { font-size: 11px; font-weight: normal; padding: 0px 4px; background-color: #F2F2F2; border-top: 1px solid #CCCCCC; border-right: 1px solid #666666; border-bottom: 1px solid #666666; border-left: 1px solid #CCCCCC; }
 .toolbox a.dim { /*color: #000;*/ }
 .toolbox img { padding-top: 2px; margin-right: 5px; vertical-align: middle; }
@@ -208,15 +208,15 @@ input.savebutton { position:absolute; right:28px; top:41px	 }
 form { padding: 0; margin: 0; }
 input, img { vertical-align: middle; }
 input, textarea { font-size: 13px; margin: 0; padding: 2px; color: black; }
-input[type="radio"], input[type="checkbox"], input.checkbox { border: none; margin: 6px 0 0; }
+input[type="radio"], input[type="checkbox"], input.checkbox { border: none; margin: 0; }
+#contentedit-form input[type="radio"], #contentedit-form input[type="checkbox"], #contentedit-form input.checkbox { margin-top: 6px; }
 input[type="image"], .imagebutton { border: none; margin: 0; padding: 0; vertical-align:middle; background-color: transparent; cursor: pointer; }
 input[type="file"] { background-color: transparent; cursor: pointer;}
 input.imagebutton { border: none; margin: 0; padding: 0; vertical-align:middle; margin-top: -1px; margin-bottom: -1px;    }
 input.rooticon { margin-left: -5px; }
 label { display: block; padding-top: 3px; padding-bottom: 3px; margin-right: 5px; font-weight: normal; margin-bottom: 0;}
 label.inline { display: inline; border: none;padding-top: 0;}
-.ef, .mle, .code { width: 99%; border: 1px solid #8f8f8f; }
-.code { font-family: Monaco, "Courier New", Courier, monospace; font-size: 11px; }
+.code { font-family: 'Source Code Pro Medium', Consolas, Monaco, 'Courier New', Courier, monospace; font-size: 13px; }
 input.checkbox { border: none; vertical-align:middle; }	
 .inputsmall { font-size: 13px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 2px; color: #555; }
 img.label_img {vertical-align: middle; cursor:help; float:right; margin-right: 5px; margin-top: 1px;}
@@ -406,6 +406,7 @@ div.odd { background-color: transparent; }
 div.nodetree_node:hover { background-color: #fff; }
 .nodetree_icon { background-color: white; vertical-align: middle; }
 #nodetree div.nodetree_row { vertical-align: middle; }
+div.nodetree_row input[type="checkbox"] { border: none; margin: -5px 3px 0 0 ; }
 #nodetree span.title { padding: 0; margin: 0; vertical-align: middle; }
 #nodetree span.nodetree_title img { padding: 0; margin: 0; vertical-align: middle; }
 #nodetree span.contenttitle { padding-top: 0px; }

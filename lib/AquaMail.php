@@ -89,8 +89,8 @@ class AquaMail {
         $sender = get($this->values, 'sender');
         if (!$sender) {
             global $aquarius;
-            $sender = $aquarius->conf('email/sender_address');
-            if (strpos('@', $sender) === false) {
+            $sender = $aquarius->conf('email/sender');
+            if (strpos('@', $sender) === -1) {
                 $sender .= '@'.preg_replace('/^www./', '', $_SERVER['SERVER_NAME']);
             }
         }
@@ -112,7 +112,17 @@ class AquaMail {
 
         $logstr = "mail to $to on behalf of ".$_SERVER['REMOTE_ADDR']."\n".$message->getHeaders()->toString()."\n\n".$this->text_body;
 
-        $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance(''));
+        $smtp = $aquarius->conf('email/smtp');
+        $transport = false;
+        if ($smtp) { 
+            $transport = Swift_SmtpTransport::newInstance(get($smtp, 'host', 'localhost'), get($smtp, 'port', 25));
+            if ($user = get($smtp, 'user')) $transport->setUsername($user);
+            if ($password = get($smtp, 'pass')) $transport->setPAssword($password);
+        } else {
+            $transport = Swift_MailTransport::newInstance('');
+        }
+        
+        $mailer = Swift_Mailer::newInstance($transport);
         $success = $mailer->send($message);
         if ($success) {
             Log::info("Sent $logstr");

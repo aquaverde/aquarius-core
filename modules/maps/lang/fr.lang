@@ -16,6 +16,7 @@ link							= "Lien:"
 delete_instance					= "Effacer"
 load_external_xml				= "Load external XML-File"
 
+
 //MAPS EDIT
 points							= "Points"
 title							= "Titre"

@@ -51,8 +51,8 @@ class action_fieldgroup_edit extends action_fieldgroup {
         return ($this->id=='new'? "New" : "Edit")." $this->topic";
     }
     function get_icon() {
-        return $this->id=='new'?'buttons/new.gif'
-                               :'buttons/edit.gif';
+        return $this->id=='new'?'new'
+                               :'pencil';
     }
 }
 
@@ -121,7 +121,7 @@ class action_fieldgroup_edit_group extends action_fieldgroup_edit implements Cha
             $group->weight = 10000;
         }
 
-        if (isset($post['save_group_'.$this->id])) {
+        if(isset($post['save_group_'.$this->id])) {
             $group->name = get($post, 'name');
             $group->display_name = get($post, 'display_name');
             $group->visibility_level = intval(get($post, 'visibility_level'));
@@ -144,7 +144,7 @@ class action_fieldgroup_edit_group extends action_fieldgroup_edit implements Cha
 class action_fieldgroup_delete_group extends action_fieldgroup implements ChangeAction {
     var $props = array("class", "command", "id");
     function get_title() { return "Delete Group"; }
-    function get_icon() { return 'buttons/delete.gif'; }
+    function get_icon() { return 'trash'; }
     function process($aquarius, $post, $result) {
         $group = $this->load('fieldgroup');
         $group->delete();
@@ -156,7 +156,7 @@ class action_fieldgroup_delete_group extends action_fieldgroup implements Change
 class action_fieldgroup_delete_selection extends action_fieldgroup implements ChangeAction {
     var $props = array("class", "command", "id");
     function get_title() { return "Delete Selection"; }
-    function get_icon() { return 'buttons/delete.gif'; }
+    function get_icon() { return 'trash'; }
     function process($aquarius, $post, $result) {
         $selection = $this->load('fieldgroup_selection');
         if (!$selection) throw new Exception("Invalid fieldgroup selection id '$this->id'");
@@ -169,7 +169,7 @@ class action_fieldgroup_delete_selection extends action_fieldgroup implements Ch
 class action_fieldgroup_move_group extends action_fieldgroup implements ChangeAction {
     var $props = array("class", "command", "id", "direction");
     function get_title() { return "Move group $this->direction"; }
-    function get_icon() { return "buttons/df_move_$this->direction.gif"; }
+    function get_icon() { return "chevron-".$this->direction; }
     function process($aquarius, $post, $result) {
         $group = $this->load('fieldgroup');
         $group->weight += 15 * ($this->direction == "up" ? -1 : 1);

@@ -1,9 +1,7 @@
 <?php 
 
-/**
-Add a cookie that enables debugging
-*/
-
+/** Set a cookie that enables debugging
+  */
 class action_echo_cookie extends AdminAction {
 
     var $props = array('class', 'command');
@@ -40,21 +38,24 @@ class action_echo_cookie_unset extends action_echo_cookie implements ChangeActio
     }
 
     function process($aquarius, $post, $result) {
-        $aquarius->logging_manager->override_with_cookie(array());
+        $aquarius->logging_manager->override_with_cookie(array_to_object(array()));
     }
 }
 
 class action_echo_cookie_set extends action_echo_cookie implements ChangeAction {
+    var $named_props = array('loglevel', 'firelevel');
+    var $logelevel = false;
+    var $firelevel = false;
     function get_title() {
         return new FixedTranslation("Set Cookie");
     }
     function process($aquarius, $post, $result) {
-        $loglevel = requestvar('loglevel');
-        $firelevel = requestvar('firelevel');
+        $loglevel  = $this->loglevel  !== null ? $this->loglevel  : requestvar('loglevel');
+        $firelevel = $this->firelevel !== null ? $this->firelevel : requestvar('firelevel');
         $aquarius->logging_manager->override_with_cookie(array('echo' => $loglevel, 'fire' => $firelevel));
         $result->add_message(new FixedTranslation("Set log echo cookie to $loglevel, $firelevel"));
         
-        // HACK: Directly set logging levels so they are active from now
+        // HACK: Directly set logging levels so they are active in this request as well
         $aquarius->logger->echolevel = $loglevel;
         $aquarius->logger->firelevel = $firelevel;
     }

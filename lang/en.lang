@@ -119,6 +119,7 @@ formtype_rte = "Richtext"
 Anzahl_Zeichen = "Charcount"
 formtype_int = "Number"
 formtype_code = "Code"
+formtype_markdown = "Markdown"
 
 s_wording_admin = "Wording administration"
 s_to_contents = "Go to sub-pages"

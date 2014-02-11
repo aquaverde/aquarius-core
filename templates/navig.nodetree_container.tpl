@@ -7,7 +7,7 @@
     {if $action}<a href="{url url=$adminurl action=$action action2=$lastaction|default:false}" title="{$nodetitle}: {#s_edit#} ({$tree.node->id})">{/if}
     <span class="glyphicon glyphicon-file{if !$tree.node->active} off{/if}"></span>
     <span class="nodetree_title{if $tree.node->is_content()} nodetree_title_content{/if}{if !$tree.node->get_content($lg)} dim{/if}">
-        {$nodetitle|truncate:30}
+        {$nodetitle|truncate:38}
         {if $tree.node->access_restricted == 1} 
             &nbsp;<span class="glyphicon glyphicon-lock" title="{#s_access_restricted#}"></span>
         {/if}

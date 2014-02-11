@@ -77,13 +77,12 @@
             </a>
         {else}
             <span class="glyphicon glyphicon-file{if !$entry.node->active} off{/if}"></span>
-            {$entry.title|truncate:50}&nbsp;<button name="{$entry.actions.contentedit}" class="btn btn-xs btn-link" data-toggle="tooltip"><span class="glyphicon glyphicon-pencil"></span></button>
+            {$entry.title|truncate:75}
         {/if}
 
         {if $entry.node->access_restricted == 1} 
             &nbsp;<span class="glyphicon glyphicon-lock" title="{#s_access_restricted#}" data-toggle="tooltip"></span>
         {/if}
-
         </span>
     {/if}
 </div>

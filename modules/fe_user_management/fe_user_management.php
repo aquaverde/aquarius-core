@@ -87,7 +87,6 @@ class Fe_user_management extends Module {
             $address_id = $this->save_address();
             $challenge = $this->create_token($address_id);
 
-            require_once('lib/aquamail.php');
             global $aquarius;
             $smarty = $aquarius->get_smarty_frontend_container();
             $smarty->caching = false;
@@ -162,7 +161,6 @@ class Fe_user_management extends Module {
 
         // Send mail
         if (!$error) {
-            require_once('lib/aquamail.php');
             global $aquarius;
             $smarty = $aquarius->get_smarty_frontend_container();
             $smarty->caching = false;
@@ -214,8 +212,7 @@ class Fe_user_management extends Module {
         
         if (!$error) {
             $challenge = $this->create_token($address);
-        
-            require_once('lib/aquamail.php');
+
             global $aquarius;
             $smarty = $aquarius->get_smarty_frontend_container();
             $smarty->caching = false;
@@ -258,7 +255,6 @@ class Fe_user_management extends Module {
         }
 
         if (!$error) {
-            require_once('lib/aquamail.php');
             global $aquarius;
             $smarty = $aquarius->get_smarty_frontend_container();
             $smarty->caching = false;

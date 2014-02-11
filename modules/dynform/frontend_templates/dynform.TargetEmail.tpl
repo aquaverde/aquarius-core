@@ -3,9 +3,12 @@
             {if $field.required}class="require_pulldown"{/if}
             size="1"
     >
-        <option value="0">{wording please_choose}</option>
-        {foreach from=$options key=email item=option}
-            <option value="{$email|escape}">{$option|escape}</option>
+        <option value="">{wording please_choose}</option>
+        {foreach from=$field.options key=index item=label}
+            <option
+                value="{$index|escape}"
+                {if $field.options|@count == 1}selected="selected"{/if}
+            >{$label|escape}</option>
         {/foreach}
     </select>
 </div>

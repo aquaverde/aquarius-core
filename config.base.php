@@ -166,7 +166,26 @@ $config['admin']['allow_languageadmin'] = false;
   * specified. In this case the request-hostname will be used, with the
   * "www." stripped off.
   */
-$config['email']['sender_address'] = 'info';
+$config['email'] = array(
+    'sender' => 'info',
+    'smtp' => false
+);
+
+/*
+// Example SMTP config
+$config['email']['smtp'] = array(
+    'host' => 'smtp.bulkspam.example',
+    'port' => 25,
+    'user' => 'egg@bulkspam.example',
+    'pass' => 'ham'
+);
+
+// Testing config for perl fakesmtpd.pl
+$config['email']['smtp'] = array(
+    'host'     => 'localhost',
+    'port'     => '2525'
+);
+*/
 
 
 /** PDF generator settings.

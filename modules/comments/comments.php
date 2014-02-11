@@ -158,8 +158,7 @@ class Comments extends Module {
                 $mailc = $this->aquarius->get_smarty_backend_container('de'); // FIXME: The whole world doesn't speak german
                 $mailc->assign('new_comment', $new_comment);
                 $mailc->assign('to', $send_notice_to);
-                
-                require_once "lib/aquamail.php";
+
                 $mail = new AquaMail($mailc, 'new_comment_notice_mail.tpl');
                 $mail->send();
             }

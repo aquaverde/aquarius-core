@@ -121,6 +121,7 @@ formtype_int = "Nummer"
 formtype_xref = "Xref"
 formtype_xref_selection = "Xref Auswahl"
 formtype_code = "Code"
+formtype_markdown = "Markdown"
 
 s_wording_admin = "Wording bearbeiten"
 s_wording_keyword = "Wording"
