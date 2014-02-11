@@ -42,11 +42,20 @@ class Aqua_Smarty extends SmartyBC {
         restore_error_handler();
         return $result;
     }
-    
+
+
     function receive_error($errno, $errstr, $errfile, $errline, $errcontext) {
-        Log::debug(compact('errno', 'errstr', 'errfile', 'errline'));
+        $msg = compact('errno', 'errstr', 'errfile', 'errline');
+        if (isset($errcontext['smarty'])) {
+            $msg['errincfile'] = $errcontext['smarty']->template_resource;
+        }
+        if (isset($errcontext['_smarty_tpl'])) {
+            $msg['errincfile'] = $errcontext['_smarty_tpl']->template_resource;
+        }
+        Log::debug($msg);
         return true;
     }
+
 
     /** Custom error logging over the use of the {php} tag */
     function eval_php($params, $content, $template, &$repeat) {
