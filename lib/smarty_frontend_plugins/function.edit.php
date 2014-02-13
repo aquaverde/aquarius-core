@@ -30,7 +30,7 @@ function smarty_function_edit($params, &$smarty) {
 
     // Build
     if ($editaction) {
-        $editlink = '<a class="edit-link" href="#" onclick="window.open(\'/aquarius/admin/admin.php?lg='.$lg.'&amp;'.urlencode(str($closeaction)).'&amp;'.urlencode(str($editaction)).'\',\'directedit\',\'height=600,width=750,top=100,left=200,status=yes,resizable=yes,scrollbars=yes\'); return false;">
+        $editlink = '<a class="edit-link" href="#" onclick="window.open(\'/aquarius/admin/admin.php?lg='.$lg.'&amp;'.urlencode(str($closeaction)).'&amp;'.urlencode(str($editaction)).'\',\'directedit\',\'height=600,width=900,top=100,left=200,status=yes,resizable=yes,scrollbars=yes\'); return false;">
             <img src="/aquarius/admin/buttons/fe_edit.gif" alt="edit" title="edit"/>
         </a>';
     }
