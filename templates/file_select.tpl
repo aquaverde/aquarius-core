@@ -60,7 +60,7 @@
     </form>
     <div class="clear"> </div>
 </div>
-{include file=page_select.tpl lastaction=false}
+{include file="page_select.tpl" lastaction=false}
 {if $browse}
 <div id="browse">
     <div style="padding: 5px; padding-left: 8px">
@@ -116,5 +116,5 @@
 </table>
 {/if}
 <input type="submit" name="" value="{#s_close#}" onclick="window.close()" class="btn btn-sm btn-default" style="margin: 10px 0 15px 0; float:right"/>
-{include file=page_select.tpl lastaction=false}
+{include file="page_select.tpl" lastaction=false}
 {include file="footer.tpl"}
