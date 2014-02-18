@@ -43,8 +43,6 @@ class AquaMail {
 
     /** Create a mail */
     function __construct($smarty, $text_template, $html_template=false) {
-        require_once 'lib/swift/swift_required.php';
-
         if ($text_template) {
             if (!$smarty->template_exists($text_template)) throw new Exception("Missing template $text_template");
             $this->text_body = $smarty->fetch($text_template);

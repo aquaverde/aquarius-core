@@ -62,8 +62,6 @@ class FormattedTextMail {
         $to = $this->targetAddress;
         if (empty($to)) throw new Exception("Error sending Mail: targetEmail empty!");
         
-        require_once 'lib/swift/swift_required.php';
-        
         $message = Swift_Message::newInstance();
 
         $text = $this->mailText;
@@ -153,8 +151,6 @@ class FormattedHTMLMail extends FormattedTextMail {
     public function sendMail() {
         $to = $this->targetAddress;
         if (empty($to)) throw new Exception("Error sending Mail: targetEmail empty!");
-        
-        require_once 'lib/swift/swift_required.php';
         
         $message = Swift_Message::newInstance();
 

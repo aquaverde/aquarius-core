@@ -1,5 +1,4 @@
-<?
-    
+
     newsletter_menu                 = "Newsletter"
     newsletter                      = "Newsletter"
     newsletters                     = "Newsletters"
@@ -51,5 +50,3 @@
     newsletter_sent_n_lg            = "Newsletter sent to %d recipients (%s)."
     newsletter_failed_sending       = "Failure to send to the following recipients:"
     newsletter_sent_to_n            = "Newsletter sent to %d recipients in total."
-    
-?>

@@ -28,12 +28,12 @@
   *    </div>
   *  {/if}
   */
-function smarty_function_pagednodes($params, &$smarty) {
+function smarty_function_pagednodes($params, $smarty) {
     global $DB;
     global $aquarius;
 
 
-    require_once $smarty->_get_plugin_filepath('function','loadnodes');
+    $smarty->loadPlugin('smarty_function_loadnodes');
     $params['return_list'] = true;
     $nodes = smarty_function_loadnodes($params, $smarty);
 
@@ -67,5 +67,3 @@ class PagedURL {
         return str($this->base_url->with_param($this->page_request_name, $this->page));
     }
 }
-
-?>

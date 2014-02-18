@@ -8,7 +8,7 @@
   *     width, height (in pixels, optional): passed to resize function if set 
   */
 function smarty_function_thumbnail($params, $smarty) {
-    require_once $smarty->_get_plugin_filepath('modifier','truncate');
+    $smarty->loadPlugin('smarty_modifier_truncate');
     extract(validate_or_die($params, array(
         'file'          => 'object string notset',
         'link'          => 'bool notset',

@@ -68,4 +68,3 @@ class Formtype_Date extends Formtype {
         return array(intval($values));
     }
 }
-?>

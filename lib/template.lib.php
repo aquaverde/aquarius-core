@@ -176,6 +176,11 @@ function smarty_function_resize($params, $smarty) {
        $slir_options ['c']= "$width:$height"; 
     }
     
+    // Use maximum compression for PNG always
+    if (preg_match('%.png$%i', $image)) {
+        $quality = 10;
+    }
+    
     if ($quality !== false) {
         $slir_options ['q']= $quality;
     }

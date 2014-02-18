@@ -6,10 +6,7 @@
   * Assigns nothing
   */
   
-function smarty_function_dynform_fieldtype($params, &$smarty) 
-{
-    require_once $smarty->_get_plugin_filepath('modifier','makeaction') ;
-    
+function smarty_function_dynform_fieldtype($params, $smarty) {
     $id = get($params, 'id') ;
     if (!$id) $smarty->trigger_error("dynform_fieldtype: require parameter id missing") ;
         
@@ -22,6 +19,3 @@ function smarty_function_dynform_fieldtype($params, &$smarty)
 		return str(new Translation($type->name)) ;     
 	}    
 }
-
-
-?>

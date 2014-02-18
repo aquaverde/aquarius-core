@@ -61,4 +61,3 @@
     newsletter_sent_n_lg            = "Newsletter an %d Empfänger (%s) verschickt."
 	newsletter_failed_sending       = "Versand an folgende Empfänger fehlgeschlagen:"
 	newsletter_sent_to_n            = "Newsletter an total %d Empfänger verschickt."
-?>

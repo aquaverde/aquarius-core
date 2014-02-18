@@ -568,7 +568,10 @@ abstract class SLIRImage
     $this->crop()
       ->grayscale()
       ->sharpen()
-      ->interlace()
-      ->optimize();
+      ->interlace();
+
+    if (!$this->getGrayscale()) {
+      $this->optimize();
+    }
   }
 }

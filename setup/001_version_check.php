@@ -1,5 +1,6 @@
 <?php 
 
+// left-overs in PHP 5.3
 $rg = strtolower(ini_get('register_globals'));
 if ((bool) $rg && $rg !== "off") {
     // What is this I don't even
@@ -7,10 +8,11 @@ if ((bool) $rg && $rg !== "off") {
     $halt = true;
 }
 
-// Just a month ago, we had a request to install Aquarius for PHP4. In 2011.
-$required_php_version = '5.2.0';
-if (version_compare(PHP_VERSION, $required_php_version) < 0) {
-    message('warn', "PHP version ".PHP_VERSION." is too old, please upgrade. Aquarius requires PHP version $required_php_version or higher.  As a gentle reminder: PHP 5.2 was released in 2006, or just about ".floor((time() - strtotime('2006-11-02'))/(60*60*24)).' days ago.');
+
+$required_php_version = '5.3.0';
+$actual_php_version = PHP_VERSION;
+if (version_compare($actual_php_version, $required_php_version) < 0) {
+    message('warn', "PHP version ".$actual_php_version." is not supported anymore, please upgrade. Aquarius requires PHP version $required_php_version or newer.");
     $halt = true;
 }
 

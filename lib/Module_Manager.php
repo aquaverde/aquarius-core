@@ -1,5 +1,5 @@
-<?php 
-require_once 'lib/db/Modules.php';
+<?php
+require_once 'db/Modules.php';
 
 /** Instantiate active modules and update the list of available modules
   */

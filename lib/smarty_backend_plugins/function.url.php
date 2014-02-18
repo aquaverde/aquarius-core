@@ -8,9 +8,9 @@ Params:
     - delimiter: in case you want to change the delimiter for actions strings, default is ':'.
     - url: in case you want to use a another url, instead of the default 'url' from the template
 */
-function smarty_function_url($params, &$smarty) {
-    require_once $smarty->_get_plugin_filepath('modifier','makeaction');
-    $url = get($params, 'url', $smarty->get_template_vars('url'));
+function smarty_function_url($params, $template) {
+    $template->loadPlugin('smarty_modifier_makeaction');
+    $url = get($params, 'url', $template->get_template_vars('url'));
     $escape = get($params, 'escape', true);
     $delimiter = get($params, 'delimiter', ':');
     

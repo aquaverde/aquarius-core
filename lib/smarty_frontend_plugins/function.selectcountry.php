@@ -8,7 +8,7 @@
   *
   */
 function smarty_function_selectcountry($params, &$smarty) {
-    require_once $smarty->_get_plugin_filepath('function','html_options');
+    $smarty->loadPlugin('smarty_function_html_options');
     
     $selected = strtoupper(get($params, 'selected'));
     $lg = get($params, 'lg', $smarty->get_template_vars('lg'));

@@ -1,12 +1,12 @@
 
-    // Menu
+    # Menu
     
     dynform				= "Dynform"  
     dynform_forms		= "Forms"
     dynform_data		= "Data" 
     
     
-    // Field and Blocks
+    # Field and Blocks
     
     Singleline			= "Singleline"
     Multiline			= "Multiline"
@@ -42,7 +42,7 @@
     delete_block_msg	= "All attached lines will be deleted."
     delete_field_msg	= "This line will be removed for all languages."
     
-    // Backend
+    # Backend
     
     forms_overview		= "Forms overview"
     forms_manager		= "Forms manager"

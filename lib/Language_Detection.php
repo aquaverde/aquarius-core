@@ -13,7 +13,6 @@ class Language_Detection {
     * @param $detector_names is an optional list of builtin detector names to add.
     * */
     function __construct($detector_names = array()) {
-        require_once "lib/Named_List.php";
         $this->language_detectors = new Named_List;
         foreach($detector_names as $detector_name) $this->add_detector($detector_name);
     }

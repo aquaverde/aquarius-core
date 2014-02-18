@@ -20,8 +20,7 @@ class Custom_Templates extends Module {
       */
     function smarty_config_backend($smarty, $admin_lg) {
         $templates_dir = $this->path."templates/";
-        array_unshift($smarty->template_dir, $templates_dir);
+        $smarty->insertTemplateDir($templates_dir);
         Log::debug("NOTE: Using cutom templates in ".$templates_dir);
     }
 }
-?>

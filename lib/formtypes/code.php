@@ -6,4 +6,3 @@ class Formtype_Code extends Formtype {
         $valobject->rows = max(3, $formfield->sup1); // Make it at least three lines
     }
 }
-?>

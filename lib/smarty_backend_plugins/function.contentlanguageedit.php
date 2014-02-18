@@ -9,7 +9,8 @@
   * The function shows nothing if there's only one lang.
   */
 function smarty_function_contentlanguageedit($params, &$smarty) {
-    require_once $smarty->_get_plugin_filepath('modifier','makeaction');
+    $smarty->loadPlugin('smarty_modifier_makeaction');
+    
     $node_id = get($params, 'node');
     $currentlg = get($params, 'currentlg');
     if (!intval($node_id)) $smarty->trigger_error("content-language-edit: missing 'node' parameter, got '$nodeid'");

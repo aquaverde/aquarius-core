@@ -8,7 +8,7 @@
 
     - {#delete_entries#}:&nbsp;|&nbsp;
     
-    {foreach_language node=$node}
+    {foreach_language}
         {actionlink action="dynform_data:delete_entries_dialog:`$form_id`:`$entry.lang->lg`" title=$entry.lang->lg} |
     {/foreach_language}
 {/if}

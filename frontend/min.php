@@ -1,5 +1,5 @@
 <?php
-define('MINIFY_MIN_DIR', dirname(__DIR__).'/components/minify/min/lib');
+define('MINIFY_MIN_DIR', dirname(__DIR__).'/vendor/mrclay/min/lib');
 define('CACHE_DIR', dirname(dirname(__DIR__)).'/cache/min');
 
 // setup include path

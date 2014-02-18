@@ -108,14 +108,18 @@ $config['frontend']['domains'] = array();
 
 /* Frontend redirects to proper URI if this is enabled. May lead to redirect loops, surprising behaviour and overall confusion. Required to please the holy GOOG. */
 $config['frontend']['uri_correction'] = true;
+
 /* Automagically assign content fields for each item in the smarty {list} block. */
 $config['frontend']['loadcontent'] = false;
+
+/* Automagically escape every variable in templates */
+$config['frontend']['smarty']['auto_escape'] = false;
 
 /* Enable caching of template output.
  * This is generally a very good idea. */
 $config['frontend']['cache']['templates'] = true;
 
-/** How long to keep cache output, in seconds */
+/* How long to keep cache output, in seconds */
 $config['frontend']['cache']['lifetime'] = 86400; // One day
 
 /* Enable caching of compiled templates.
