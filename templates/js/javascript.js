@@ -183,7 +183,9 @@ jQuery( document ).ready(function() {
     
     /*jQuery('.tooltip').tooltip();*/
     
-    jQuery('.dropdown-toggle').dropdown();
+    jQuery('.dropdown-toggle').dropdown()
+    
+    jQuery("ul.nodetree_children").sortable()
     
     window.setTimeout(function() {
         jQuery(".alert-success").fadeTo(500, 0).slideUp(500, function(){

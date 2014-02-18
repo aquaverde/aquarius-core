@@ -8,7 +8,7 @@
 		<title>{$htmltitle|default:"aquarius cms"}</title>
         <script src="https://code.jquery.com/jquery.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>          
-        
+        {include_javascript file="jquery-sortable.js"}
         {include_javascript file="javascript.js"}
         {if $page_requisites|default:false}
             {foreach from=$page_requisites->load_js_lib() item=script}
