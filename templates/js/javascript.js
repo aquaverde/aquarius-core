@@ -167,14 +167,6 @@ function check_all(element, state){
     })
 }
 
-function hideOuter() {
-    document.getElementById('outer').style.display = "none";
-    document.getElementById('outer-closed').style.display = "block";		
-}
-function showOuter() {
-    document.getElementById('outer').style.display = "block";
-    document.getElementById('outer-closed').style.display = "none";		
-}
 
 function clean_dict(dict) {
     var clean = {}
@@ -184,8 +176,14 @@ function clean_dict(dict) {
     return clean
 }
 
+
+
+
 jQuery( document ).ready(function() {
-    jQuery('[data-toggle]').addClass('tooltipp').tooltip();
+    
+    /*jQuery('.tooltip').tooltip();*/
+    
+    jQuery('.dropdown-toggle').dropdown();
     
     window.setTimeout(function() {
         jQuery(".alert-success").fadeTo(500, 0).slideUp(500, function(){

@@ -182,7 +182,7 @@ div.topbar img, div.topbar input { vertical-align: middle; }
 #toolbar .glyphicon { font-size: 12px; margin-right: 8px; line-height: 22px; }
 #toolbar .btn-link { margin-top: -9px !important;}
 #toolbar .btn.btn-xs { margin-right: 0 !important; margin-top: 2px; font-size:11px !important; }
-.tooltipp { display:inline-block !important;}
+.tooltipp, .dropdown { display:inline-block !important;}
 
 
 /* toolbox */
@@ -202,6 +202,12 @@ input.savebutton { position:absolute; right:28px; top:41px	 }
 		
 #goto2 { float: left; margin:0; padding: 0; background-color: #e0e7ec;	 }
 .lastchange { float: right; font-size: 11px; color: #ADADAD; } 
+
+.dropdown-menu { font-size: 13px; border-radius: 0; }
+.dropdown-menu .btn { font-weight: normal; padding: 3px 20px; font-size: 13px;}
+.dropdown-menu .btn:hover { text-decoration: none; }
+.dropdown-menu .glyphicon { margin-right: 5px;}
+.dropdown-menu .divider { margin: 4px 0; }
 
 
 /* form elements */
@@ -437,3 +443,4 @@ div.nodetree_container+div.right { margin-top: -20px;}
 /* file selection popup */
 body.file_select { min-width: 300px; }
 body.file_select .wrapper { padding: 5px 15px 15px 15px; border: 0; margin-right: 5px;}
+

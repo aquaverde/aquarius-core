@@ -11,19 +11,26 @@ function smarty_function_activationbutton($params, $smarty) {
     $action = smarty_modifier_makeaction(get($params, 'action'));
     if (get($params, 'active')) {
         $class = "on";
+        $class2 = "off";
         $de = "de";
         $in = "";
     } else {
         $class = "off";
+        $class2 = "on";
         $de = "";
         $in = "in";
     }
     
     if ($action) {
         $alt = $smarty->get_config_vars($de.'activate');
-        return '<button name="'.str($action).'" class="btn btn-xs btn-link" data-toggle="tooltip" title="'.$alt.'"><span class="glyphicon glyphicon-flag '.$class.'" title="'.$alt.'"></span></button>';
+        
+        if (get($params, 'show_title', false))
+            return '<button name="'.str($action).'" class="btn btn-link"><span class="glyphicon glyphicon-flag '.$class2.'"></span>'.$alt.'</button>';
+        else
+            return '<button name="'.str($action).'" class="btn btn-xs btn-link" data-toggle="tooltip" title="'.$alt.'"><span class="glyphicon glyphicon-flag '.$class.'" title="'.$alt.'"></span></button>';
+            
     } elseif (get($params, 'show_noedit', true)) {
         $alt = $smarty->get_config_vars($in.'active');
-        return "<span class='glyphicon glyphicon-flag $class' title='$alt'></span>";
+        return "<span class='glyphicon glyphicon-flag $class' title='$alt'></span>".$alt;
     }
 }
