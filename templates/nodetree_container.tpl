@@ -20,8 +20,8 @@
         
         <div style="float: right; padding: 0 5px;">
             <div class="dropdown pull-right">
-                <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#" title="Settings">
-                    <span class="glyphicon glyphicon-cog"></span></span>
+                <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#" title="{#s_node_dropdown#}...">
+                    <span class="glyphicon glyphicon-cog"></span><span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <li>
@@ -41,7 +41,7 @@
                     <li class="divider"></li>
                     <li>
                     {if $entry.actions.editprop}
-                        <button name="{$entry.actions.editprop}" class="btn btn-link"><span class="glyphicon glyphicon-wrench"></span> Node properties</button>
+                        <button name="{$entry.actions.editprop}" class="btn btn-link"><span class="glyphicon glyphicon-wrench"></span> {#s_node_properties#}</button>
                     {/if}
                     
                     </li>
@@ -54,7 +54,7 @@
         </div>
 
         <div style="float: right; width: 30px;">
-            <span class="glyphicon glyphicon-move"></span>
+            <span class="glyphicon glyphicon-move" title="{#s_update_weights#}"></span>
         </div>
     
         <div style="float: right; padding-top: 1px; padding-right: 55px;">

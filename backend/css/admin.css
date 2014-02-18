@@ -208,6 +208,7 @@ input.savebutton { position:absolute; right:28px; top:41px	 }
 .dropdown-menu .btn:hover { text-decoration: none; }
 .dropdown-menu .glyphicon { margin-right: 5px;}
 .dropdown-menu .divider { margin: 4px 0; }
+.caret { color: #666;}
 
 
 /* form elements */

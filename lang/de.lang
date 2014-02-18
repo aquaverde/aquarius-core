@@ -282,6 +282,9 @@ s_moveorcopy_target = "Wählen Sie eine neue Rubrik"
 s_move_copy = "Klonen/Verschieben"
 s_move_copy_title = "(Kopie)"
 
+s_node_dropdown = "Aktion wählen"
+s_node_properties = "Node settings"
+
 
 s_link = "Link"
 s_link_text = "Linktext"

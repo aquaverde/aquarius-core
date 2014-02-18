@@ -285,6 +285,9 @@ s_moveorcopy_target = "Changer de rubrique"
 s_move_copy = "Déplacer/cloner"
 s_move_copy_title = "(copie)"
 
+s_node_dropdown = "Réglages"
+s_node_properties = "Node settings"
+
 s_link = "Lien"
 s_link_text = "Intitulé"
 s_link_target = "Type"

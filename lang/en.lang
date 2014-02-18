@@ -279,6 +279,8 @@ s_moveorcopy_target = "Choose a new location"
 s_move_copy = "Move/Copy"
 s_move_copy_title = "(copy)"
 
+s_node_dropdown = "Perform task"
+s_node_properties = "Node settings"
 
 s_link = "Link"
 s_link_text = "Linktext"
