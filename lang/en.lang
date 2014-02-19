@@ -67,7 +67,6 @@ menu_nodetree = "Webpages"
 menu_filemgr_browse = "Browser"
 menu_filemgr_upload = "Upload"
 menu_filemgr_dir_settings = "Directory Settings"
-menu_filemgr_update_thumbnails = "Update thumbnails"
 
 menu_config_cmsuser = "CMS users"
 menu_config_wording = "Wording"
@@ -481,7 +480,6 @@ s_message_must_save_first = "Must save first"
 s_message_generated_classes = "Regenerated DB_DataObject classes"
 s_message_node_cache_rebuilt = "Rebuilt node cache"
 s_message_file_deleted = "Removed file '%s'"
-s_message_update_thumbnails = "Thumbnails updated"
 s_message_permissions_fixed = "Permissions fixed"
 
 # SEARCH

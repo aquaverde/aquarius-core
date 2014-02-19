@@ -148,13 +148,6 @@ $config['admin']['rte']['browse_path_img'] = 'pictures/richtext';
 $config['admin']['rte']['browse_path_file'] = 'download';
 
 
-
-/** Generate thumbnail-sized and alt-sized files on upload.
-  * Also provide an action to regenerate those files. Some legacy templates and
-  * plugins may require this, though it is recommended to fix them instead. */
-$config['legacy']['generate_thumbs'] = false;
-
-
 /** Allow administrators to manage languages
   *
   * Preset is false.
