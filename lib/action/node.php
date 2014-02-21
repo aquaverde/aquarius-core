@@ -253,7 +253,8 @@ class action_node_moveorder extends action_node_move implements ChangeAction {
     }
     
     function process($aquarius, $post, $result) {
-        $this->node_id = $post['node']; // action_node expects action parameter node_id which we can't provide from JS, use POST parameter instead and inject it :-|
+        $node_id = $post['node']; 
+        $this->node_id = $node_id; // action_node expects action parameter node_id which we can't provide from JS, use POST parameter instead and inject it :-|
         $node = $this->load_node();
             
         // Hack: check whether user is permitted now and swallow
@@ -265,10 +266,32 @@ class action_node_moveorder extends action_node_move implements ChangeAction {
         $parent_id = $post['node_target'];
         $prev_id = $post['prev'];
         
-        $parent_changed = $node->parent_id != $parent_id
+        
+        $siblings = db_Node::get_node($parent_id)->children();
+        $weight = 10;
+        if ($prev_id == 0) {
+            $node->weight = $weight;
+            $node->update();
+            $weight += 10;
+        }
+        foreach($siblings as $sibling) {
+            if ($sibling->id != $node->id) {
+            $sibling->weight = $weight;
+            $sibling->update();
+            $weight += 10;
+            }
+            if ($sibling->id == $prev_id) {
+                $node->weight = $weight;
+                $node->update();
+                $weight += 10;
+            }
+        }
+        
+        $parent_changed = $node->parent_id != $parent_id;
         if ($parent_changed) {
             $this->move($node, $post, $result);
         }
+        
     }
 }
 
