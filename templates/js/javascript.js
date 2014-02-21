@@ -16,17 +16,6 @@ function open_attached_popup(url, title, params) {
     return false
 }
 
-/* ??? find out where this is used */
-function updateList(list, textBox) {
-  textBox.value = '';
-  for(i = 0; i < list.options.length; i++) {
-    if (i == 0) {
-      textBox.value += list.options[i].value;
-    } else {
-      textBox.value += ';' + list.options[i].value;
-    }
-  }
-}
 
 /* checks or unchecks all checkboxes of a given form */
 function selectAll(myForm, myChk) {
