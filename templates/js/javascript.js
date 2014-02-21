@@ -177,21 +177,25 @@ function clean_dict(dict) {
 }
 
 
-// jQuery section
-jQuery(function($) {
-    
-    /* $('.tooltip').tooltip(); */
-    
-    $(".dropdown-toggle").dropdown();
-    
-    $("#sortable_list").sortable({
-        itemSelector: '.nodetree_connection'
-    });
-    
-    window.setTimeout(function() {
-        $(".alert-success").fadeTo(500, 0).slideUp(500, function() {
-            $(this).remove(); 
+// jQuery noConflict section
+;(function($) {
+	$(function() {
+        
+		/* $('.tooltip').tooltip(); */
+        
+        $(".nodetree_root").sortable({
+            items: ".nodetree_connection",
+            revert: true,
+            axis: "y"
         });
-    }, 2500);
-    
-});
+		
+		$(".dropdown-toggle").dropdown();
+		
+		window.setTimeout(function() {
+			$(".alert-success").fadeTo(500, 0).slideUp(500, function() {
+				$(this).remove(); 
+			});
+		}, 2500);
+        
+	});
+})(jQuery);

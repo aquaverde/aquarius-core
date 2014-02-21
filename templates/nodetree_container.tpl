@@ -74,14 +74,14 @@
         {/if}
 
         {if $entry.node->access_restricted == 1} 
-            &nbsp;<span class="glyphicon glyphicon-lock" title="{#s_access_restricted#}" ></span>
+            &nbsp;<span class="glyphicon glyphicon-lock" title="{#s_access_restricted#}"></span>
         {/if}
         </span>
     {/if}
 </div>
 {/if}
 {if $entry.open}
-    <ul {if $base}id="sortable_list" {/if}class="nodetree_children">
+    <ul class="{if $base}nodetree_root{else}nodetree_children{/if}">
     {foreach from=$entry.children item=childentry}
         <li class="nodetree_entry{if !$childentry@last} nodetree_connection{/if}">
         {if $childentry@last}
