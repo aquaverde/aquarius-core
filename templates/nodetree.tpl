@@ -13,7 +13,7 @@
     {strip}
     <form action="{url action0=$lastaction}" id="nodetree" method="post">
         <div class="nodetree_container" id="nodetree_entry_{$entry.node->id}" style="margin: 15px 0 0 -15px;">
-            {include file='nodetree_container.tpl'}
+            {include file='nodetree_container.tpl' base=true}
         </div>
     {/strip}
         &nbsp;

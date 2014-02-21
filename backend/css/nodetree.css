@@ -27,6 +27,20 @@ li.nodetree_connection {
     background: url(../picts/line_nav.gif) repeat-y;
 }
 
+li.nodetree_entry.dragged {
+    position: fixed;
+}
+
+li.placeholder {
+    width: 100%;
+    height: 28px;
+    display: block;
+    position: relative;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
 .nodetree_container {
     border: 0;
     padding: 0;

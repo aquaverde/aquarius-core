@@ -81,7 +81,7 @@
 </div>
 {/if}
 {if $entry.open}
-    <ul class="nodetree_children">
+    <ul {if $base}id="sortable_list" {/if}class="nodetree_children">
     {foreach from=$entry.children item=childentry}
         <li class="nodetree_entry{if !$childentry@last} nodetree_connection{/if}">
         {if $childentry@last}
@@ -90,7 +90,7 @@
             <img class="nodetree_connection" src="picts/join.gif" alt="" />
         {/if}
             <div class="nodetree_container" {if $childentry.node->id} id="nodetree_entry_{$childentry.node->id}"{/if}>
-                {include file="nodetree_container.tpl" entry=$childentry hide_root=false}
+                {include file="nodetree_container.tpl" entry=$childentry hide_root=false base=false}
             </div>
         </li>
     {/foreach}

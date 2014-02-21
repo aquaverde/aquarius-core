@@ -177,19 +177,20 @@ function clean_dict(dict) {
 }
 
 
-
-
-jQuery( document ).ready(function() {
+// jQuery section
+jQuery(function($) {
     
-    /*jQuery('.tooltip').tooltip();*/
+    /* $('.tooltip').tooltip(); */
     
-    jQuery('.dropdown-toggle').dropdown()
+    $(".dropdown-toggle").dropdown();
     
-    jQuery("ul.nodetree_children").sortable()
+    $("#sortable_list").sortable({
+        itemSelector: '.nodetree_connection'
+    });
     
     window.setTimeout(function() {
-        jQuery(".alert-success").fadeTo(500, 0).slideUp(500, function(){
-            jQuery(this).remove(); 
+        $(".alert-success").fadeTo(500, 0).slideUp(500, function() {
+            $(this).remove(); 
         });
     }, 2500);
     
