@@ -26,7 +26,6 @@ class action_dir_settings_edit extends action_dir_settings implements DisplayAct
         $smarty->assign("typeOptions", array('m' => 'm', 'w' => 'w', 'h' => 'h'));
         $smarty->assign("dirData", $dirs);
         $smarty->assign("resize", PICTURE_RESIZE == 'm' ? 'MaxSize' : 'Width');
-        $smarty->assign('show_resize_option', $aquarius->conf('legacy/generate_thumbs'));
         $result->use_template("directory_settings.tpl");
     }
 }
@@ -45,11 +44,7 @@ class action_dir_settings_save extends action_dir_settings implements ChangeActi
             $changed = $dir_props != $original_props;
             if ($changed) {
                 $loaded ? $dir_props->update() : $dir_props->insert();
-                    $result->add_message(new FixedTranslation("Saved changes to ".$dir_props->directory_name));
-                if (isset($post['update_thumbnails'])) {
-                    update_directory_thumbnails($dir_props->directory_name, true);
-                    $result->add_message(new FixedTranslation("Regenerated thumbnails in ".$dir_props->directory_name));
-                }
+                $result->add_message(new FixedTranslation("Saved changes to ".$dir_props->directory_name));
             }
         }
     }

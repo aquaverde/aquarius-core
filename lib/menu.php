@@ -69,10 +69,6 @@ class Menu {
                 '90' => new Menu('menu_super_links', false, false)
             ))
         ));
-        
-        if ($aquarius->conf('legacy/generate_thumbs')) {
-            $menu->add_entry('menu_filemgr', false, new Menu(false,                        Action::make('update_thumbnails', 'prompt')));
-        }
 
         // Add menu link entries from config
         foreach($aquarius->conf('admin/menu_links', array()) as $link) {

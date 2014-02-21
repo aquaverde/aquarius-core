@@ -67,7 +67,6 @@ menu_nodetree = "Webseiten"
 menu_filemgr_browse = "Übersicht"
 menu_filemgr_upload = "Upload"
 menu_filemgr_dir_settings = "Verzeichnisse"
-menu_filemgr_update_thumbnails = "Vorschaubilder aktualisieren"
 
 menu_config_cmsuser = "CMS Benutzer"
 menu_config_wording = "Wording"
@@ -416,7 +415,6 @@ s_message_must_save_first = "Bitte zuerst speichern"
 s_message_generated_classes = "DataObject Klassen generiert"
 s_message_node_cache_rebuilt = "Node Cache aktualisiert"
 s_message_file_deleted = "Datei %s gelöscht"
-s_message_update_thumbnails = "Thumbnails generiert"
 s_message_permissions_fixed = "Berechtigungen angepasst"
 
 # SEARCH

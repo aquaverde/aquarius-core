@@ -151,11 +151,11 @@ class action_filemgr_upload extends action_filemgr implements DisplayAction {
 class action_filemgr_upload_files extends action_filemgr implements ChangeAction {
     function process($aquarius, $request, $result) {
         require_once "lib/file_mgmt.lib.php";
-        check_for_failed_file_uploads();           
+        check_for_failed_file_uploads();
 
         $selected_dir = $_REQUEST['selectedDir'];
 
-        foreach($_FILES as $key => $upload_info) {                      
+        foreach($_FILES as $key => $upload_info) {
             $unzip = isset($_REQUEST[$key.'_zip']);
             $upresult = process_upload($upload_info, $selected_dir, $unzip);
             $result->add_message($upresult['message']);

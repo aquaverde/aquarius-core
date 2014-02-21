@@ -54,10 +54,6 @@
     {action action="dir_settings:save"}
 		<input type="submit" name="{$action}" value="Save" class="btn btn-primary" />
         &nbsp;
-        {if $show_resize_option}
-        <input id="update_thumbnails_check" type="checkbox" name="update_thumbnails" value="1" checked="checked" class="checkbox" />
-        <label for="update_thumbnails_check" class="inline">Update thumbnails</label>
-        {/if}
     {/action}
 	</form>
 

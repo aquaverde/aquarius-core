@@ -79,9 +79,10 @@ function smarty_block_usecontent($params, $content, &$smarty, &$repeat) {
         }
     } else {
         /* End of block */
-        // Reload the original vars
-        $template_vars = &$smarty->get_template_vars();
-        $template_vars = array_pop($replace_stack);
+        // HACK galore
+        $smarty->clearAllAssign(); // Clean the plate
+        $smarty->assign('smarty', $smarty); // Smarty needs itself in the variables
+        $smarty->assign(array_pop($replace_stack)); // Now put back what was there before
     }
     return $content;
 }

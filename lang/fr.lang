@@ -67,7 +67,6 @@ menu_nodetree = "Website"
 menu_filemgr_browse = "Liste des fichiers"
 menu_filemgr_upload = "Envoi de fichiers"
 menu_filemgr_dir_settings = "Répertoires"
-menu_filemgr_update_thumbnails = "Actualiser les images"
 
 menu_config_cmsuser = "Utilisateurs CMS"
 menu_config_wording = "Wording"
@@ -534,8 +533,7 @@ s_message_content_deleted = "Page '%s' effacée."
 s_message_uploaded  = "Fichier %s envoyé"
 s_message_generated_classes = "DataObject Class generated"
 s_message_node_cache_rebuilt = "Node Cache régénéré" 
-s_message_file_deleted = "Fichier %s effacé" 
-s_message_update_thumbnails = "Image de prévisualisation à jour"
+s_message_file_deleted = "Fichier %s effacé"
 s_message_permissions_fixed = "Autorisations corrigées"
 
 # NEWSLETTER
