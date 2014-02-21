@@ -81,9 +81,9 @@
 </div>
 {/if}
 {if $entry.open}
-    <ul class="{if $base}nodetree_root{else}nodetree_children{/if}">
+    <ul class="{if $base}nodetree_root{else}nodetree_children{/if}" data-parent="{$entry.node->id}">
     {foreach from=$entry.children item=childentry}
-        <li class="nodetree_entry{if !$childentry@last} nodetree_connection{/if}">
+        <li class="nodetree_entry{if !$childentry@last} nodetree_connection{/if}" data-node="{$childentry.node->id}">
         {if $childentry@last}
             <img class="nodetree_connection join_bottom" src="picts/joinbottom.gif" alt="" />
         {else}

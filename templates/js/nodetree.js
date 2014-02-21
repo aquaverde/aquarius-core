@@ -3,7 +3,7 @@
  * Construction parameter 'request_url' is used to request an update for a section of the tree.
  * On construction, and after each update, the class 'odd' is added to every second element of class 'nodetree_row' (and removed from the others)
  */
-function NodeTree(request_url) {
+function NodeTree(request_url, move_url) {
     /* Load subtree via HTTP
      * node_id: the node to be updated
      * params: Request parameters to send. If 'node' parameter is undefined, the node_id is assigned to it. If 'open' is undefined, the current state is assigned.
@@ -37,6 +37,24 @@ function NodeTree(request_url) {
         )
     }
 
+    this.moveorder = function(node, parent, prev) {
+        /* DON'T JUDGE ME <DEITY> WILL */
+        /* There has to be a better way than to build and submit a form?! */
+        var form = jQuery('<form/>', {
+            action: move_url,
+            method: 'POST'
+        })
+        jQuery.each({node: node, node_target: parent, prev: prev}, function(key) {
+            form.append(jQuery('<input/>', {
+                type: 'hidden',
+                name: key,
+                value: this
+            }));
+        });
+        form.appendTo('body').submit();
+    }
+    
+    
     // Add class 'odd' to every second row of the nodetree
     // This not only allows us to alternate row colors, it also forces IE6 to rebuild the layout (Fixing browser issues by adding functionality!).
     this.fix_row_oddities = function() {
@@ -48,6 +66,7 @@ function NodeTree(request_url) {
         })
 
     }
+
 
     this.fix_row_oddities();
 }

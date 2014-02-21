@@ -176,8 +176,13 @@ function clean_dict(dict) {
             items: ".nodetree_connection",
             revert: true,
             axis: "y"
-        });
-		
+        }).on('sortstop', function(event, ui) {
+            var moved = ui.item.data('node')
+            var new_parent = ui.item.parent().closest('ul').data('parent')
+            var new_prev = ui.item.prev().data('node')
+            nodetree.moveorder(moved, new_parent, new_prev)
+        })
+        
 		$(".dropdown-toggle").dropdown();
 		
 		window.setTimeout(function() {

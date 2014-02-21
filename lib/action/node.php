@@ -22,7 +22,7 @@ class action_node extends AdminAction {
         if ($this->command == 'toggle_active') return $user->may_activate($node);
         
         // Normal users may move nodes within boxes if they have edit permission on them. Siteadmins may copy everything except the root node.
-        if (in_array($this->command, array('moveorcopy', 'move', 'copy'))) {
+        if (in_array($this->command, array('moveorcopy', 'move', 'copy', 'moveorder'))) {
             return !$node->is_root() && (($node->is_boxed() && $user->may_edit($node) && $user->copy_permission) || $user->isSiteadmin());
         }
 
@@ -236,6 +236,38 @@ class action_node_move extends action_node implements ChangeAction {
             $result->touch_region(Node_Change_Notice::structural_change_to($node));
 
             $result->add_message(AdminMessage::with_line('ok', "s_message_node_moved", $node->get_contenttitle(), $new_parent->get_contenttitle()));
+        }
+    }
+}
+
+/** POST Params:
+  * node: Node to be moved
+  * node_target: id of new parent
+  * prev: order node after this node
+  */
+class action_node_moveorder extends action_node_move implements ChangeAction {
+    var $props = array("class", "command");
+    
+    function permit_user($user) {
+        return true; // Can't know before it's attempted
+    }
+    
+    function process($aquarius, $post, $result) {
+        $this->node_id = $post['node']; // action_node expects action parameter node_id which we can't provide from JS, use POST parameter instead and inject it :-|
+        $node = $this->load_node();
+            
+        // Hack: check whether user is permitted now and swallow
+        if (!parent::permit_user($user = db_Users::authenticated())) {
+            $result->add_message(AdminMessage::with_html('warn', "THOU MAY NOT MOVE ".$node->get_contenttitle()." THERE"));
+            return;
+        }
+
+        $parent_id = $post['node_target'];
+        $prev_id = $post['prev'];
+        
+        $parent_changed = $node->parent_id != $parent_id
+        if ($parent_changed) {
+            $this->move($node, $post, $result);
         }
     }
 }
