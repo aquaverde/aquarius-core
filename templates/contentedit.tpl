@@ -1,5 +1,5 @@
 {include file=header.tpl}
-{include_javascript file='javascript.js'}
+{* {include_javascript file='javascript.js'} *}
 {include_javascript file='prototype.js' lib=true}
 
 {if $last_update}
@@ -101,7 +101,7 @@
         <div class="bigboxtitle"><h2>{#s_subcontents#}</h2></div>
         <form action="{url action0=$lastaction}" id="nodetree" method="post">
             <div style="padding-left: 0; padding-top: 10px" class="nodetree_container" id="nodetree_entry_{$entry.node->id}">
-            {include file='nodetree_container.tpl' hide_root=true}
+            {include file='nodetree_container.tpl' hide_root=true base=true}
             </div>&nbsp;
             <div class="right">
                 <select name="command">

@@ -13,6 +13,7 @@
     <!--[if IE 6]>
        <link type="text/css" rel="stylesheet" href="css/ie_hacks.css">
     <![endif]-->
+    {include_javascript file="jquery-ui-1.10.4.sortable.min.js"}
     {include_javascript file="javascript.js"}
     <base target="mainFrame" />
 </head>
