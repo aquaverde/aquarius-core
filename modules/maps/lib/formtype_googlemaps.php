@@ -18,7 +18,7 @@ class Formtype_googlemaps extends Formtype {
         $our_presets = clone $this->presets;
         foreach(array('lat', 'lon', 'zoom') as $var) {
             $form_preset = array_shift($form_presets);
-            if (is_numeric($form_preset)) $our_presets = $form_preset;
+            if (is_numeric($form_preset)) $our_presets->$var = $form_preset;
         }
         
         $marker_types = $this->presets->marker_types($content->lg);
