@@ -30,9 +30,6 @@ function NodeTree(request_url, move_url) {
             request_url,
             {   method: 'get'
             ,   parameters: params
-            ,   onComplete: function(transport) {
-                    this.fix_row_oddities()
-                }.bind(this)
             }
         )
     }
@@ -53,22 +50,6 @@ function NodeTree(request_url, move_url) {
         });
         form.appendTo('body').submit();
     }
-    
-    
-    // Add class 'odd' to every second row of the nodetree
-    // This not only allows us to alternate row colors, it also forces IE6 to rebuild the layout (Fixing browser issues by adding functionality!).
-    this.fix_row_oddities = function() {
-        var odd = false
-        $$('.nodetree_row').each(function(row) {
-            if (odd) row.addClassName('odd')
-            else row.removeClassName('odd')
-            odd = !odd
-        })
-
-    }
-
-
-    this.fix_row_oddities();
 }
 
 /* An AJAX updater subclass that shows a 'wait' cursor as long as the request is going on
