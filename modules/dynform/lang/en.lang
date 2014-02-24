@@ -74,7 +74,7 @@
     
     target_email		= "Possible target-e-mails for the form. Format: Name, E-Mail. One entry per line."
 
-	// Export
+	# Export
 	export				= "export"
 	welche_felder		= "please select the fields you want to export"
 	
