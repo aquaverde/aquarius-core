@@ -276,9 +276,9 @@ class action_node_moveorder extends action_node_move implements ChangeAction {
         }
         foreach($siblings as $sibling) {
             if ($sibling->id != $node->id) {
-            $sibling->weight = $weight;
-            $sibling->update();
-            $weight += 10;
+                $sibling->weight = $weight;
+                $sibling->update();
+                $weight += 10;
             }
             if ($sibling->id == $prev_id) {
                 $node->weight = $weight;
