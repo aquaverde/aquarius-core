@@ -173,7 +173,7 @@ function clean_dict(dict) {
 		/* $('.tooltip').tooltip(); */
         
         $(".nodetree_root").sortable({
-            items: ".nodetree_connection",
+            items: ".nodetree_entry",
             revert: true,
             axis: "y"
         }).on('sortstop', function(event, ui) {

@@ -115,8 +115,9 @@
     </div>
 
     <script type="text/javascript">
-        var request_url = '{url escape=false action0=$lastaction action1="nodetree:children:$lg:contentedit"}'
-        var nodetree = new NodeTree(request_url)
+        var load_url = '{url escape=false action0=$lastaction action1="nodetree:children:$lg:contentedit"}'
+        var move_url = '{url escape=false action0=$lastaction action1="node:moveorder"}'
+        var nodetree = new NodeTree(load_url, move_url)
     </script>
 {/if}
 
