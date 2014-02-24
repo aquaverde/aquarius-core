@@ -69,7 +69,7 @@ class action_node extends AdminAction {
         $relative_depth = $parent_depth - $box_node->depth();
 
         // Only nodes below categories can be moved
-        if ($relative_depth < 1) return false;
+        if ($relative_depth < 1) return $as_list ? array() : false;
 
         // Make filter that selects possible parents
         $possible_parent_filter = new NodeFilter(create_function('$node, $parent_depth', 'return $node->depth() == $parent_depth;'), $parent_depth);
@@ -226,7 +226,7 @@ class action_node_move extends action_node implements ChangeAction {
             $user = db_Users::authenticated();
 
             if (!$user->isSiteadmin() && !in_array($new_parent->id, $this->_possible_parents($node, true))) {
-                throw new Exception("Parent ".$node->idstr()." not permitted for ".$node->idstr());
+                throw new Exception("Parent ".$new_parent->idstr()." not permitted for ".$node->idstr());
             }
             
             $old_parent = $node->get_parent();
@@ -256,14 +256,17 @@ class action_node_moveorder extends action_node_move implements ChangeAction {
         $node_id = $post['node']; 
         $this->node_id = $node_id; // action_node expects action parameter node_id which we can't provide from JS, use POST parameter instead and inject it :-|
         $node = $this->load_node();
-            
-        // Hack: check whether user is permitted now and swallow
-        if (!parent::permit_user($user = db_Users::authenticated())) {
-            $result->add_message(AdminMessage::with_html('warn', "THOU MAY NOT MOVE ".$node->get_contenttitle()." THERE"));
+
+        $parent_id = $post['node_target'];
+
+        $parent_changed = $node->parent_id != $parent_id;
+        
+        // Hack: check whether user is permitted now
+        if (!parent::permit_user(db_Users::authenticated()) || ($parent_changed && !in_array($parent_id, $this->_possible_parents($node, true)))) {
+            $result->add_message(AdminMessage::with_line('warn', 's_message_node_younomove', $node->get_contenttitle()));
             return;
         }
 
-        $parent_id = $post['node_target'];
         $prev_id = $post['prev'];
         
         
@@ -287,7 +290,6 @@ class action_node_moveorder extends action_node_move implements ChangeAction {
             }
         }
         
-        $parent_changed = $node->parent_id != $parent_id;
         if ($parent_changed) {
             $this->move($node, $post, $result);
         }
