@@ -10,15 +10,16 @@ class Formtype_googlemaps extends Formtype {
     function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
         // Lift to array
         if(!$formfield->multi) {
-            $valobject->value = array($valobject->value); // lift
+            $valobject->value = array_filter(array($valobject->value)); // lift
         }
         
         // Read preset lat,lon,zoom from sup3 or use default config values
         $form_presets = explode(',', $formfield->sup3);
         $our_presets = clone $this->presets;
+
         foreach(array('lat', 'lon', 'zoom') as $var) {
             $form_preset = array_shift($form_presets);
-            if (is_numeric($form_preset)) $our_presets->$var = $form_preset;
+            if (is_numeric($form_preset)) $our_presets->position[$var] = floatval($form_preset);
         }
         
         $marker_types = $this->presets->marker_types($content->lg);
@@ -26,7 +27,6 @@ class Formtype_googlemaps extends Formtype {
         foreach($marker_types as $marker) { 
             $icon_types[$marker['id']] = $marker['icon'];
         }
-        
         $map_options = array(
             'data'      => $valobject->value,
             'multi'     => $formfield->multi,
