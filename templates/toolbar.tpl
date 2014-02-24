@@ -51,8 +51,9 @@
         </div>
        {/if}
  
-        {if $form->template}<div class="separator dim"><a href="{url action0=$lastaction action1=$formedit}" title="Template: {$form->template}"  data-toggle="tooltip">Template</a></div>{/if}
-
+        {if $formedit && $form->template}
+            <div class="separator dim"><a href="{url action0=$lastaction action1=$formedit}" title="Template: {$form->template}"  data-toggle="tooltip">Template</a></div>
+        {/if}
         
         {if $content->lg != $primary_lang->lg}
     	<div class="separator">
