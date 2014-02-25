@@ -258,11 +258,11 @@ class action_node_moveorder extends action_node_move implements ChangeAction {
         $node = $this->load_node();
 
         $parent_id = $post['node_target'];
-
         $parent_changed = $node->parent_id != $parent_id;
         
         // Hack: check whether user is permitted now
-        if (!parent::permit_user(db_Users::authenticated()) || ($parent_changed && !in_array($parent_id, $this->_possible_parents($node, true)))) {
+        $user = db_Users::authenticated();
+        if (!parent::permit_user($user) || ($parent_changed && !$user->isSiteadmin() && !in_array($parent_id, $this->_possible_parents($node, true)))) {
             $result->add_message(AdminMessage::with_line('warn', 's_message_node_younomove', $node->get_contenttitle()));
             return;
         }
