@@ -90,7 +90,7 @@ class AquaMail {
         if (!$sender) {
             global $aquarius;
             $sender = $aquarius->conf('email/sender');
-            if (strpos('@', $sender) === -1) {
+            if (strpos('@', $sender) === false) {
                 $sender .= '@'.preg_replace('/^www./', '', $_SERVER['SERVER_NAME']);
             }
         }
