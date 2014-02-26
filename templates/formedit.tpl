@@ -12,8 +12,8 @@ html, body {height: 95%} body {max-width: none;}
 {/literal}</style>
 <h1>Pagetype "{$form->title}"</h1>
 <form action="{url action="formedit:save:`$form->id`"}" method="post" style="display: inline">
-    
     <div id="outer">
+
         <h2>Settings</h2>
         <label>Title</label> <input type="text" name="formtitle" value="{$form->title}" class="form-control"/>
         <label>Template</label> <input type="text" name="formtemplate" value="{$form->template}" class="form-control"/>
@@ -85,9 +85,20 @@ html, body {height: 95%} body {max-width: none;}
         {/foreach}
         </tr>
 {/foreach}
-  </table>
+  </table>  
+      <div>
+        <h2>Child types selection</h2>
+        {foreach from=$form_children item=form_child}
+            <input type='radio' name='form_child_preset' value='{$form_child.id}' {if $form_child.preset}checked{/if} style="display: inline">
+            <label  style="display: inline">
+                <input type='checkbox' name='form_children[]' value='{$form_child.id}'{if $form_child.checked}checked{/if}>{$form_child.title}{if $form_child.template} ({$form_child.template}){/if}
+            </label>
+            <br/>
+        {/foreach}
+    </div>
   <input type="submit" name="{$action}" value="{#s_done#}" class="btn btn-primary"/>
   <input type="submit" name="{$lastaction}" value="{#s_save#}" class="btn btn-default"/>
+
 </form>
 <form action="{url}" method="post" style="display: inline">
   &nbsp;

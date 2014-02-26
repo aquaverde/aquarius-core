@@ -44,6 +44,13 @@ class action_formedit_save extends action_formedit implements ChangeAction {
             $form->update();
         }
 
+        $aquarius->db->query("START TRANSACTION");
+        $aquarius->db->query("DELETE FROM form_child WHERE parent_id = ?", array($form->id));
+        foreach(get($post, 'form_children', array()) as $form_child) {
+            $aquarius->db->query("INSERT INTO form_child SET parent_id = ?, child_id = ?, preset = ?", array($form->id, intval($form_child), get($post, 'form_child_preset') == $form_child));
+        }
+        $aquarius->db->query("COMMIT");
+
         // Save fields
         $fielddata = get($post, "field");
         $maxweight = 0;
@@ -126,7 +133,7 @@ class action_formedit_edit extends action_formedit implements DisplayAction {
         $fields = $form->get_fields();
 
         // Add ten empty fields at the end
-        for($i = 0; $i < 10; $i++) {
+        for($i = 0; $i < 5; $i++) {
             $newfield = DB_DataObject::factory('form_field');
             $newfield->id = 'new'.$i;
             $newfield->permission_level=2;
@@ -146,6 +153,13 @@ class action_formedit_edit extends action_formedit implements DisplayAction {
             $selections[$selection->fieldgroup_selection_id] = $selection->name;
         }
         $smarty->assign('fieldgroup_selections', $selections);
+        
+        $smarty->assign('form_children', $aquarius->db->queryhash("
+            SELECT f.id, f.title, template, fc.parent_id AS checked, fc.preset AS preset
+            FROM form f
+            LEFT JOIN form_child fc ON f.id = fc.child_id AND fc.parent_id = ?
+            ORDER BY f.title
+        ", array($form->id)));
 
         $smarty->assign('formtypes', $aquarius->get_formtypes()->get_formtypes());
 

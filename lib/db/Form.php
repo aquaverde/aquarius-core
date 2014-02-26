@@ -9,11 +9,11 @@ class db_Form extends DB_DataObject
 
     public $__table = 'form';                            // table name
     public $id;                              // int(11)  not_null primary_key unsigned auto_increment group_by
-    public $title;                           // varchar(150)  not_null
-    public $template;                        // varchar(150)  
-    public $sort_by;                         // varchar(30)  
+    public $title;                           // varchar(450)  not_null
+    public $template;                        // varchar(450)  
+    public $sort_by;                         // varchar(90)  
     public $sort_reverse;                    // tinyint(1)  not_null group_by
-    public $fall_through;                    // char(8)  not_null
+    public $fall_through;                    // char(24)  not_null
     public $show_in_menu;                    // tinyint(1)  not_null multiple_key group_by
     public $fieldgroup_selection_id;         // int(11)  multiple_key group_by
     public $permission_level;                // int(11)  not_null group_by
@@ -93,5 +93,29 @@ class db_Form extends DB_DataObject
             $newchild->form_id = $newid;
             $newchild->insert();
         }
+    }
+    
+    function child_forms() {
+        $form_child = DB_DataObject::factory('form_child');
+        $form_child->parent_id = $this->id;
+        
+        $form_child->find();
+        $form_children = array();
+        while($form_child->fetch()) {
+            $child_form = DB_DataObject::factory('form');
+            $found = $child_form->get($form_child->child_id);
+            if ($found) $form_children []= $child_form;
+        }
+        return $form_children;
+    }
+    
+    function preset_child() {
+        $form_child = DB_DataObject::factory('form_child');
+        $form_child->parent_id = $this->id;
+        $form_child->preset = 1;
+
+        $found = $form_child->find(true);
+        if ($found) return $form_child;
+        else return array_shift($this->child_forms());
     }
 }
