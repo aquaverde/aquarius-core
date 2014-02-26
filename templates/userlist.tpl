@@ -32,8 +32,6 @@
                     {$smarty.config.$adminlg}
                 </td>
 				<td align="right">
-					<button name="{$editaction}" class="btn btn-xs btn-link"><span class="glyphicon glyphicon-pencil"></button>
-					&nbsp;
                     {confirm
                         yes="user:deleteUser:`$user->id`"
                         title=$smarty.config.s_delete_user
