@@ -349,7 +349,7 @@ class action_node_editprop_save extends action_node implements ChangeAction {
         $node = $this->load_node(true);
         $valid = true;
         // Read string values from POST
-        $fields = array("name", "form_id", "childform_id", "contentform_id", "box_depth", "weight", "title");
+        $fields = array("name", "form_id", "childform_id", "contentform_id", "box_depth", "title");
         if (!$node->is_root()) $fields []= "parent_id";
         foreach ($fields as $field) {
             $tmp = get($post, $field);

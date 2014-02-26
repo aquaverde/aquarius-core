@@ -92,11 +92,6 @@ function nodes_selected(_, selected_nodes) {
         </label>
 
         <label>
-            {#s_weight#}<br/>
-            <input class="form-control short" type="text" name="weight" value="{$node->weight|escape}" id="nodedit_weight"/>
-        </label>
-        
-        <label>
             <input class="checkbox" type="checkbox" name="active"  value="1" {if $node->active}checked="checked"{/if} id="nodedit_active"/>
             {#s_active#}
         </label>

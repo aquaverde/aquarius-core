@@ -114,7 +114,6 @@ class action_nodetree_navig_children extends action_nodetree implements DisplayA
 class action_nodetree_forall extends action_nodetree implements ChangeAndDisplayAction {
     /** List of commands the forall action supports */
     var $commands = array(
-        'weights' => 's_update_weights',
         'activate' => 's_activate',
         'deactivate' => 's_deactivate',
         'delete' => 's_delete',
@@ -167,26 +166,6 @@ class action_nodetree_forall extends action_nodetree implements ChangeAndDisplay
             } else {
                 $change_result->add_message(new Translation("s_message_no_selected_nodes"));
             }
-            break;
-        case "weights":
-            $newweights = get($post, 'weight', array());
-            if (is_array($newweights)) {
-                foreach($newweights as $nodeid => $newweight) {
-                    $node = db_Node::get_node($nodeid);
-                    if ($node) {
-                        $newweight = max(0, intval($newweight));
-                        if ($newweight != $node->weight) {
-                            if (!$user->may_change_weight($node)) throw new Exception('User '.$user->idstr().' is not allowed to update weight for node '.$node->idstr());
-                            $node->weight = max(0, intval($newweight));
-                            $node->update();
-                            
-                            $change_result->touch_region(Node_Change_Notice::structural_change_to($node->get_parent()));
-                        }
-                    }
-                }
-                $change_result->add_message(new Translation("s_message_node_changed_weights"));
-            }
-            $change_result->touch_region('content');
             break;
         case "delete":
             $nodenames = array();
