@@ -66,7 +66,7 @@ class DBwrap {
     /** Execute query and map results into hash by index */
     function mapqueryhash($index, $query, $data=array()) {
         $entries = array();
-        $res = $this->query($query, $data=array());
+        $res = $this->query($query, $data);
         while ($entry = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
                 $entries[$entry->$index] = $entry;
         }
@@ -76,7 +76,7 @@ class DBwrap {
     /** Execute query and map results into hash */
     function queryhash($query, $data=array()) {
         $entries = array();
-        $res = $this->query($query, $data=array());
+        $res = $this->query($query, $data);
         while ($entry = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
                 $entries []= $entry;
         }
