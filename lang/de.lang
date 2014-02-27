@@ -262,8 +262,6 @@ s_deactivate = "Deaktivieren"
 s_expand = "Öffnen"
 s_close = "Schliessen"
 s_expandclose = "Öffnen/Schliessen"
-s_update = "Erneuern"
-s_regenerate = "Neu generieren"
 filemanager_fix_permissions = "Berechtigungen korrigieren"
 inherited = Vererbt
 
