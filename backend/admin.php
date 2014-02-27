@@ -66,9 +66,9 @@ try {
         if ($region instanceof Node_Change_Notice) {
             $touched_content = true;
             $change = $region;
+            
             // When a change to a node affects its children, the cached fields of that node and its children must be rebuilt
-
-            if ($change->affects_children) $change->changed_node->update_cache();
+            $change->changed_node->update_cache($change->affects_children);
 
             // When the tree structure is changed, the index fields must be rebuilt
             if ($change->structural) db_Node::update_tree_index();
@@ -128,10 +128,12 @@ try {
     // Loop until we have a template to display
     $lastaction = false;
     while(!$displayresult->template) {
-        $action = array_shift($display_actions);
-
+        if ($displayresult->inject_actions) {
+            $action = array_shift($displayresult->inject_actions);
+        } else {
+            $action = array_shift($display_actions);
+        }
         if (!$action) throw new Exception("No displayable actions.".($lastaction ? " Last action: $lastaction" : ''));
-        //if (!$action) $action = Action::make('nodetree', 'show', $lg, 'sitemap');
 
         // Check permissions (they are checked on construction, but something could have changed)
         if (!$action->permit()) {

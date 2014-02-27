@@ -22,7 +22,7 @@ class db_Node extends DB_DataObject
 
     public $__table = 'node';                            // table name
     public $id;                              // int(10)  not_null primary_key unsigned auto_increment group_by
-    public $name;                            // varchar(250)  multiple_key
+    public $name;                            // varchar(750)  multiple_key
     public $parent_id;                       // int(10)  not_null multiple_key unsigned group_by
     public $form_id;                         // int(10)  multiple_key unsigned group_by
     public $childform_id;                    // int(10)  multiple_key unsigned group_by
@@ -33,7 +33,7 @@ class db_Node extends DB_DataObject
     public $created;                         // timestamp(19)  not_null unsigned zerofill
     public $last_change;                     // int(10)  unsigned group_by
     public $active;                          // tinyint(1)  not_null multiple_key group_by
-    public $title;                           // varchar(250)  
+    public $title;                           // varchar(750)  
     public $cache_active;                    // tinyint(1)  multiple_key group_by
     public $cache_childform_id;              // int(11)  multiple_key group_by
     public $cache_contentform_id;            // int(11)  multiple_key group_by
@@ -214,7 +214,7 @@ class db_Node extends DB_DataObject
 
         
     /** Load the form for this node (maybe inherited from a parent)
-      * Inherits "contentform" or "childform" from parent. */
+      * Inherits "contentform" or "childform" from parent or uses the preset childform from the parent node's form. */
     function get_form($formtype = 'form') {
         $idname = $formtype.'_id';
         $cachename = 'cache_'.$idname;
@@ -229,16 +229,17 @@ class db_Node extends DB_DataObject
         if ($form_id) {
             return DB_DataObject::staticGet('db_Form', $form_id);
         } else {
-            if ($formtype == 'form') {
-                // Now the nontrivial: If we're a content node inherit contentform instead of childform
-                if ($this->is_content()) {
-                    $formtype = 'contentform';
-                } else {
-                    $formtype = 'childform';
-                }
-            }
             $parent = $this->get_parent();
             if ($parent) {
+                // Check whether we can inherit from a parent
+                if ($formtype == 'form') {
+                    // Now the nontrivial: If we're a content node inherit contentform instead of childform
+                    if ($this->is_content()) {
+                        $formtype = 'contentform';
+                    } else {
+                        $formtype = 'childform';
+                    }
+                }
                 return $parent->get_form($formtype);
             } else {
                 return false;
@@ -547,12 +548,12 @@ class db_Node extends DB_DataObject
     /** Update cached fields and those of all children
         The cache update is done in an SQL session (not that this helps in the usual MySQL setup)
     */
-    function update_cache() {
+    function update_cache($recurse = true) {
         global $DB;
 
         $DB->query("START TRANSACTION");
         
-        $this->_update_cache();
+        $this->_update_cache($recurse);
             
         // Preemptively cancel the DataObject cache (I'm sorry to mess with their internals, there is nothing in the API to do this)
         $GLOBALS['_DB_DATAOBJECT']['CACHE'] = array();
@@ -563,7 +564,7 @@ class db_Node extends DB_DataObject
     }
 
     /** Update cached fields recursively */
-    function _update_cache() {
+    function _update_cache($recurse) {
         // Updating the cached values works by clearing the cache and then just using the standard method to recalculate the value
 
         $this->cache_childform_id = null;
@@ -593,11 +594,13 @@ class db_Node extends DB_DataObject
 
         $this->update();
 
-        $child = DB_DataObject::factory('node');
-        $child->parent_id = $this->id;
-        $found = $child->find();
-        while ($child->fetch()) {
-            $child->_update_cache($this);
+        if ($recurse) {
+            $child = DB_DataObject::factory('node');
+            $child->parent_id = $this->id;
+            $found = $child->find();
+            while ($child->fetch()) {
+                $child->_update_cache(true);
+            }
         }
     }
 
