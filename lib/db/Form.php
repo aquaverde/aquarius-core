@@ -98,6 +98,7 @@ class db_Form extends DB_DataObject
     function child_forms() {
         $form_child = DB_DataObject::factory('form_child');
         $form_child->parent_id = $this->id;
+        $form_child->orderBy('preset DESC');
         
         $form_child->find();
         $form_children = array();
@@ -113,9 +114,12 @@ class db_Form extends DB_DataObject
         $form_child = DB_DataObject::factory('form_child');
         $form_child->parent_id = $this->id;
         $form_child->preset = 1;
-
         $found = $form_child->find(true);
-        if ($found) return $form_child;
-        else return array_shift($this->child_forms());
+        if ($found) {
+            return $form_child;
+        } else {
+            $available = $this->child_forms();
+            return array_shift($available);
+        }
     }
 }

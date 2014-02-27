@@ -83,13 +83,13 @@
 {if $entry.open}
     <ul class="{if $base}nodetree_root{else}nodetree_children{/if}" data-parent="{$entry.node->id}">
     {foreach from=$entry.children item=childentry}
-        <li class="nodetree_entry{if !$childentry@last} nodetree_connection{/if}" data-node="{$childentry.node->id}">
+        <li class="nodetree_entry{if !$childentry@last} nodetree_connection{/if}" data-node="{$childentry.node->id|default:0}">
         {if $childentry@last}
             <img class="nodetree_connection join_bottom" src="picts/joinbottom.gif" alt="" />
         {else}
             <img class="nodetree_connection" src="picts/join.gif" alt="" />
         {/if}
-            <div class="nodetree_container" {if $childentry.node->id} id="nodetree_entry_{$childentry.node->id}"{/if}>
+            <div class="nodetree_container" {if $childentry.node} id="nodetree_entry_{$childentry.node->id}"{/if}>
                 {include file="nodetree_container.tpl" entry=$childentry hide_root=false base=false}
             </div>
         </li>

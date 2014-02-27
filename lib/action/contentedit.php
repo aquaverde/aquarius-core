@@ -10,32 +10,36 @@ require_once("lib/db/Fieldgroup_selection.php");
 abstract class action_contentedit extends AdminAction {
 
     var $props = array('class', 'command', 'node_id', 'lg');
-    var $named_props = array('tab');
+    var $named_props = array('tab', 'form');
     
     /** Allows site admins and users that have permission to edit the node in that language.
       * New nodes may only be created inside boxes.
       */
     function permit_user($user) {
-        // First of all, load the node in question (edit permissions are attached to nodes, not content)
+        // Load the node in question (edit permissions are attached to nodes, not content)
         $node = false;
         if ($this->node_id == 'new') {
             $parentid = get($this->params, 0, 0);
             // The parent node must exist
-            $node = DB_DataObject::staticGet('db_Node', $parentid);
-            if (!$node) {
+            $parent = DB_DataObject::staticGet('db_Node', $parentid);
+            if (!$parent) {
                 return false;
             } else {
-                if ($user->isSuperadmin()) {
-                    if ($node->is_content()) return false;
-                } else {
-                    // Users may not create nodes outside boxes
-                    if (!($node->is_box() || $node->is_category())) return false;
-                }
+                $node = new db_Node();
+                $node->parent_id = $parentid;
+                
+                // Node must have at least one available form, else the user is not allowed to create it
+                if (!$this->forms_available($parent)) return false;
+                
+                // User must be able to edit parent to be allowed creating a child
+                if (!$user->may_edit($parent)) return false;
             }
         } else {
             // Check that the node exists
             $node = DB_DataObject::staticGet('db_Node', $this->node_id);
             if (!$node) return false;
+            
+            if (!$user->may_edit($node)) return false;
         }
 
         // See if we have content
@@ -49,10 +53,7 @@ abstract class action_contentedit extends AdminAction {
 
         // Ensure user has permission to edit content in given language
         if (!in_array($this->lg, $user->getAccessableLanguages())) return false;
-        
-        // Finally, ensure that the user has permission to edit this node
-        if (!$user->may_edit($node)) return false;
-        
+
         return true; // E made it
     }
 
@@ -97,8 +98,14 @@ abstract class action_contentedit extends AdminAction {
             $node->parent_id = $parent->id;
         } else throw new Exception("Invalid node id: '$this->node_id'");
         
-        // Load associated form
-        $form = $node->get_form();
+        $form = false;
+        if ($this->form) {
+            $form = DB_DataObject::staticGet('db_Form', $this->form);
+            if (!$form) throw new Exception("Unable to load form override $this->form");
+        } else {
+            $form = $node->get_form();
+            if (!$form) throw new Exception("Unable to load form for node $this->node_id");
+        }
         if (!$form)  throw new Exception("No form for node '$this->node_id'");
         $formfields = $form->get_fields();
 
@@ -110,6 +117,24 @@ abstract class action_contentedit extends AdminAction {
         $user = db_Users::authenticated();
         
         return compact('content', 'node', 'exists', 'form', 'formfields', 'user');
+    }
+
+    // Whether there are forms available for the given parent node
+    function forms_available($parent) {
+        // Check for form inherited from parent nodes
+        $node = new db_Node();
+        $node->parent_id = $parent->id;
+        if ($node->box_depth() >= 0) {
+            if ($node->get_form()) return true;
+        }
+
+        // Check that there's a form available
+        $parent_form = $parent->get_form();
+        if (!$parent_form) {
+            Log::warn("Node ".$parent." has no form!");
+            return false;
+        }
+        return (bool)$parent_form->preset_child();
     }
 }
 
@@ -124,6 +149,82 @@ class action_contentedit_toggle_active extends action_contentedit implements Cha
         $result->touch_region(Node_Change_Notice::concerning($content->get_node()));
         $result->touch_region('db_dataobject');
         $result->add_message(new Translation('s_message_changed_active'));
+    }
+}
+
+
+/** Create a new node selecting from the available forms
+  */
+class action_contentedit_create extends action_contentedit implements DisplayAction {
+    var $props = array('class', 'command', 'parent_id', 'lg');
+
+    function get_title() {
+        return new Translation('s_new_child');
+    }
+    
+    function available_forms($parent) {
+        // Use the form inherited from the node if available
+        $node = new db_Node();
+        $node->parent_id = $parent->id;
+        if ($node->box_depth() >= 0) {
+            $inherited_form = $node->get_form();
+            if ($inherited_form) return array($inherited_form);
+        }
+
+        // Rely on the parent's form to give us a form
+        $parent_form = $parent->get_form();
+        return $parent_form->child_forms();
+    }
+
+    function permit_user($user) {
+        $parent = DB_DataObject::staticGet('db_Node', $this->parent_id);
+        if (!$parent) {
+            throw new Exception("Unable to load parent node $this->parent_id");
+        }
+
+        // Node must have at least one available form, else the user is not allowed to create it
+        if (!$this->forms_available($parent)) return false;
+
+        // We have a loaded node, let's check whether the user has permission to edit it
+        if ($user->isSiteadmin()) return true; // Siteadmins can edit everything
+
+        // Ensure user has permission to edit content in given language
+        if (!in_array($this->lg, $user->getAccessableLanguages())) return false;
+
+        // Finally, ensure that the user has permission to edit its parent
+        if (!$user->may_edit($parent)) return false;
+
+        return true; // E made it
+    }
+
+    function process($aquarius, $request, $smarty, $result) {
+        $parent = DB_DataObject::staticGet('db_Node', $this->parent_id);
+        if (!$parent) {
+            throw new Exception("Unable to load parent node $this->parent_id");
+        }
+
+        $options = array();
+        foreach($this->available_forms($parent) as $child_form) {
+            $action = Action::build(array('contentedit', 'edit', 'new', $this->lg, $this->parent_id), array('form' => $child_form->id));
+            if ($action) {
+                $options []= array(
+                    'action' => $action,
+                    'title' => $child_form->title,
+                );
+            }
+        }
+
+        if (count($options) < 1) {
+            return; // Abandon this quest
+        }
+
+        if (count($options) == 1) {
+            // Jump directly to editing when there is only one option
+            $result->inject_action($options[0]['action']);
+        } else {
+            $smarty->assign('options', $options);
+            $result->use_template('choose_template.tpl');
+        }
     }
 }
 
@@ -152,7 +253,7 @@ class action_contentedit_edit extends action_contentedit implements DisplayActio
         $val->template_name = $formtype->template_name();
         $val->template_file = 'formfield.'.$val->template_name.'.tpl';
 
-        // Let the formtype add stuff to to the container
+        // Let the formtype add stuff to the container
         $formtype->pre_contentedit($node, $content, $formtype, $formfield, $val, $page_requisites);
 
         // Convert it to a dictionary, because that's nicer to use in smarty templates
@@ -163,7 +264,7 @@ class action_contentedit_edit extends action_contentedit implements DisplayActio
         require_once "lib/file_mgmt.lib.php";
         $page_requisites = new Page_Requisites();
         extract($this->load_common());
-        
+
         // if requested, replace content with content from primary language
         if (isset($_REQUEST['copy-primary']) && $node->id != "new") {
             $primary_lg = db_Languages::getPrimary()->lg;
@@ -368,14 +469,19 @@ class action_contentedit_save extends action_contentedit implements ChangeAction
 
         $structural_change = false;
 
+        // Make sure the node remembers what form to use
+        $node->form_id = $form->id;
+
         // Insert new node first of all
         if ($this->node_id == 'new') {
             $node->insert();
             $content->node_id = $node->id; // link
             Log::debug('Inserted new node id '.$node->id.' for new content');
             $structural_change = true;
+        } else {
+            $node->update();
         }
-        
+
         $result->touch_region(new Node_Change_Notice($node, $structural_change, false));
 
         $fieldvals = requestvar("field", array());

@@ -134,7 +134,7 @@ class NodeTree {
     /** Add virtual 'new' nodes to children (This is a dummy object that has the 'newaction' property set to an action that will create a new child) */
     static function add_new(&$entry, $lg) {
         $node = $entry["node"];
-        $newaction = Action::make("contentedit", "edit", "new", $lg, $node->id);
+        $newaction = Action::make("contentedit", "create", $node->id, $lg);
         if ($newaction) {
             $new = new stdClass();
             $new->newaction = $newaction;
