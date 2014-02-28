@@ -27,10 +27,9 @@ abstract class action_contentedit extends AdminAction {
             } else {
                 $node = new db_Node();
                 $node->parent_id = $parentid;
-                
-                // Node must have at least one available form, else the user is not allowed to create it
-                if (!$this->forms_available($parent)) return false;
-                
+
+                if (!$parent->children_allowed()) return false;
+
                 // User must be able to edit parent to be allowed creating a child
                 if (!$user->may_edit($parent)) return false;
             }
@@ -97,7 +96,7 @@ abstract class action_contentedit extends AdminAction {
             $node->active = ADMIN_INIT_NODE_ACTIVE;
             $node->parent_id = $parent->id;
         } else throw new Exception("Invalid node id: '$this->node_id'");
-        
+
         $form = false;
         if ($this->form) {
             $form = DB_DataObject::staticGet('db_Form', $this->form);
@@ -115,26 +114,8 @@ abstract class action_contentedit extends AdminAction {
             if (is_numeric($node->id)) $content->load_language_independent();
         }
         $user = db_Users::authenticated();
-        
+
         return compact('content', 'node', 'exists', 'form', 'formfields', 'user');
-    }
-
-    // Whether there are forms available for the given parent node
-    function forms_available($parent) {
-        // Check for form inherited from parent nodes
-        $node = new db_Node();
-        $node->parent_id = $parent->id;
-        if ($node->box_depth() >= 0) {
-            if ($node->get_form()) return true;
-        }
-
-        // Check that there's a form available
-        $parent_form = $parent->get_form();
-        if (!$parent_form) {
-            Log::warn("Node ".$parent." has no form!");
-            return false;
-        }
-        return (bool)$parent_form->preset_child();
     }
 }
 
@@ -161,20 +142,6 @@ class action_contentedit_create extends action_contentedit implements DisplayAct
     function get_title() {
         return new Translation('s_new_child');
     }
-    
-    function available_forms($parent) {
-        // Use the form inherited from the node if available
-        $node = new db_Node();
-        $node->parent_id = $parent->id;
-        if ($node->box_depth() >= 0) {
-            $inherited_form = $node->get_form();
-            if ($inherited_form) return array($inherited_form);
-        }
-
-        // Rely on the parent's form to give us a form
-        $parent_form = $parent->get_form();
-        return $parent_form->child_forms();
-    }
 
     function permit_user($user) {
         $parent = DB_DataObject::staticGet('db_Node', $this->parent_id);
@@ -182,8 +149,7 @@ class action_contentedit_create extends action_contentedit implements DisplayAct
             throw new Exception("Unable to load parent node $this->parent_id");
         }
 
-        // Node must have at least one available form, else the user is not allowed to create it
-        if (!$this->forms_available($parent)) return false;
+        if (!$parent->children_allowed()) return false;
 
         // We have a loaded node, let's check whether the user has permission to edit it
         if ($user->isSiteadmin()) return true; // Siteadmins can edit everything
@@ -204,7 +170,7 @@ class action_contentedit_create extends action_contentedit implements DisplayAct
         }
 
         $options = array();
-        foreach($this->available_forms($parent) as $child_form) {
+        foreach($parent->available_childforms() as $child_form) {
             $action = Action::build(array('contentedit', 'edit', 'new', $this->lg, $this->parent_id), array('form' => $child_form->id));
             if ($action) {
                 $options []= array(

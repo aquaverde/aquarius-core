@@ -37,7 +37,6 @@ class db_Node extends DB_DataObject
     public $cache_active;                    // tinyint(1)  multiple_key group_by
     public $cache_childform_id;              // int(11)  multiple_key group_by
     public $cache_contentform_id;            // int(11)  multiple_key group_by
-    public $cache_form_id;                   // int(11)  multiple_key group_by
     public $cache_depth;                     // int(11)  multiple_key group_by
     public $cache_box_depth;                 // int(11)  multiple_key group_by
     public $cache_access_restricted_node_id;    // int(11)  multiple_key group_by
@@ -212,39 +211,91 @@ class db_Node extends DB_DataObject
         
     }
 
-        
-    /** Load the form for this node (maybe inherited from a parent)
-      * Inherits "contentform" or "childform" from parent or uses the preset childform from the parent node's form. */
-    function get_form($formtype = 'form') {
-        $idname = $formtype.'_id';
-        $cachename = 'cache_'.$idname;
-        $form_id = false;
-        if ($this->$cachename !== null) {
-            $form_id = $this->$cachename;
-        } else {
-            if ($this->$idname) {
-                $form_id = $this->$idname;
-            }
-        }
-        if ($form_id) {
-            return DB_DataObject::staticGet('db_Form', $form_id);
-        } else {
+
+    /** Load the form for this node */
+    function get_form() {
+        $form = DB_DataObject::factory('Form');
+        $found = $form->get($this->form_id);
+        if (!$found) {
+            // This is not supposed to happen...
+            if ($this->is_root()) throw new Exception("No form set on root node $this");
             $parent = $this->get_parent();
-            if ($parent) {
-                // Check whether we can inherit from a parent
-                if ($formtype == 'form') {
-                    // Now the nontrivial: If we're a content node inherit contentform instead of childform
-                    if ($this->is_content()) {
-                        $formtype = 'contentform';
-                    } else {
-                        $formtype = 'childform';
-                    }
-                }
-                return $parent->get_form($formtype);
-            } else {
-                return false;
-            }
+            $form = array_shift($parent->available_childforms());
+            if (!$form) $form = $parent->get_form();
+            Log::warn("Node $this begging form $form from $parent");
         }
+        return $form;
+    }
+    
+    /** Find the available forms for children
+      * @return list of avialable forms for children, empty list means no
+      *         children permitted
+      * 
+      * If this node is a box or a boxed category, the children will inherit the
+      * childform (box category) or the contentform (box content) from this node
+      * or any ancestor. In these 'boxed' cases, when the form is inherited from
+      * a node, only one form will be returned. This allows restricting choice
+      * in certain areas, without creating excess form copies that differ in
+      * childforms only.
+      * 
+      * For unboxed nodes, or nodes where there are no forms specified in
+      * ancestor nodes, the available forms are specified in this node's form.
+      */
+    function available_childforms($formtype = 'form') {
+        // Find out whether children are boxed
+        $inherited_form = false;
+        $child_box_depth = $this->box_depth() - 1;
+        if ($child_box_depth > 0) {
+            // Boxed category
+            $inherited_form = $this->inherited_form('child');
+        } elseif($child_box_depth == 0) {
+            // Boxed content
+            $inherited_form = $this->inherited_form('content');
+        }
+
+        if ($inherited_form) {
+            $form = DB_DataObject::staticGet('db_Form', $inherited_form);
+            if (!$form) {
+                Log::warn("Inherited form $inherited_form in $this does not exist");
+                return array();
+            }
+            return array($form);
+        }
+
+        $form = $this->get_form();
+        if ($form) {
+            return $form->child_forms();
+        }
+        return array();
+    }
+
+    /** Whether the current node may have children
+      */
+    function children_allowed() {
+        // Find out whether children are boxed
+        $inherited_form = false;
+        $child_box_depth = $this->box_depth() - 1;
+        if ($child_box_depth > 0) {
+            // Boxed category
+            $inherited_form = $this->inherited_form('child');
+        } elseif($child_box_depth == 0) {
+            // Boxed content
+            $inherited_form = $this->inherited_form('content');
+        }
+
+        if ($inherited_form) {
+            return (bool)$inherited_form;
+        }
+
+        return (bool)$this->get_form()->preset_child();
+    }
+
+
+    private function inherited_form($type) {
+        $fieldname = $type.'form_id';
+        if ($this->{$fieldname}) return $this->{$fieldname};
+        if ($this->is_root()) return false;
+        return $this->get_parent()->inherited_form($type);
     }
 
     /** Get array of children, content-sorted.
@@ -567,14 +618,6 @@ class db_Node extends DB_DataObject
     function _update_cache($recurse) {
         // Updating the cached values works by clearing the cache and then just using the standard method to recalculate the value
 
-        $this->cache_childform_id = null;
-        $childform = $this->get_form('childform');
-        $this->cache_childform_id = $childform ? $childform->id : 0;
-        
-        $this->cache_contentform_id = null;
-        $contentform = $this->get_form('contentform');
-        $this->cache_contentform_id = $contentform ? $contentform->id : 0;
-
         $this->cache_depth = null;
         $this->cache_depth = $this->depth();
         
@@ -587,10 +630,6 @@ class db_Node extends DB_DataObject
         $this->cache_access_restricted_node_id = null;
         $restriction_node = $this->access_restricted_node();
         $this->cache_access_restricted_node_id = $restriction_node ? $restriction_node->id : 0;
-
-        $this->cache_form_id = null;
-        $form = $this->get_form();
-        $this->cache_form_id = $form ? $form->id : 0;
 
         $this->update();
 
