@@ -175,14 +175,24 @@ function clean_dict(dict) {
         $(".nodetree_root").sortable({
             items: ".nodetree_entry",
             revert: true,
-            axis: "y"
-        }).on('sortstop', function(event, ui) {
-            var moved = ui.item.data('node')
-            var new_parent = ui.item.parent().closest('ul').data('parent')
-            var new_prev = ui.item.prev().data('node')
-            nodetree.moveorder(moved, new_parent, new_prev)
+            axis: "y",
+            start: function(event, ui) {
+                var moved = ui.item.data('node')
+
+                var req_class = '.accepts_' + ui.item.data('form')
+                jQuery(req_class).css({border: '1px dashed green'});
+            },
+            beforeStop: function(event, ui) {
+                var moved = ui.item.data('node')
+                var new_parent = ui.item.parent().closest('ul').data('parent')
+                var new_prev = ui.item.prev().data('node')
+                
+                var container = ui.item.parent().closest('.nodetree_root')
+                container.find('ul').css({'border': 'none'})
+                
+                nodetree.moveorder(moved, new_parent, new_prev)
+            }
         })
-        
 		$(".dropdown-toggle").dropdown();
 		
 		window.setTimeout(function() {

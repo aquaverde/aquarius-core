@@ -241,6 +241,14 @@ class NodeTree {
         // Determine whether we show a open/close toggle
         if ($open) {
             $entry['show_toggle'] = !empty($entry['children']);
+            if ($type != 'none') {
+                $accepted_forms = $node->available_childforms();
+                $accepted_ids = array();
+                foreach($node->available_childforms() as $cf) {
+                    $accepted_ids []= 'accepts_'.$cf->id;
+                }
+                $entry['accepted_children'] = join(' ', $accepted_ids);
+            }
         } else {
             // There are two cases where we have to add a toggle
             //  - The node has children
