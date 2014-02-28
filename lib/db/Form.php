@@ -122,4 +122,8 @@ class db_Form extends DB_DataObject
             return array_shift($available);
         }
     }
+
+    function __toString() {
+        return "'".$this->title."' (".$this->id.")";
+    }
 }
