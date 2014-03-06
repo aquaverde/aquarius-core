@@ -169,23 +169,19 @@ function clean_dict(dict) {
 // jQuery noConflict section
 ;(function($) {
 	$(function() {
-        
-        $("[title]").tooltip({
-            placement: 'top',
-            delay: {show: 500, hide: 100}
-        });
-        
+                
+        // sortable items
         var is_dragging = false;
         $(".nodetree_root").sortable({
             items: "li:not(:last)",
-            helper: function(e, elem) { 
-                return $(elem).clone().appendTo('.nodetree_root');
-            },
             tolerance: 'pointer',
             axis: "y",
             grid: [0,30],
             cursor: "move",
             handle: ".move",
+            helper: function(e, elem) { 
+                return $(elem).clone().appendTo('.nodetree_root');
+            },
             start: function(event, ui) {
                 is_dragging = true;
                 
@@ -195,7 +191,9 @@ function clean_dict(dict) {
             },
             stop: function(event, ui) {
                 is_dragging = false;
-                                
+
+                // TODO: fix moveorder function
+                
                 var moved = ui.item.data('node')
                 var new_parent = ui.item.parents('ul').data('parent')
                 var new_prev = ui.item.prev().data('node')
@@ -204,10 +202,10 @@ function clean_dict(dict) {
                 container.find('ul').css({'border': 'none'})
                 
                 //nodetree.moveorder(moved, new_parent, new_prev)
-            },
-        }).on('mousemove', function(e) {
-            // horizontal offset
+            }
             
+        // horizontal adjustment of dragged item over subitems
+        }).on('mousemove', function() {
             if (is_dragging) {
                 var dragOverSub = $('.nodetree_children', this).map(function() {
                     var thisPosTop = $(this).offset().top,
@@ -224,8 +222,12 @@ function clean_dict(dict) {
             }
         });
         
+        // expand/contract items
         $(".nodetree_toggle").on('click', function() {
             var $this = $(this);
+            
+            // TODO: function nodetree.update() is not available:
+            // console.log(jQuery.isFunction(nodetree.update()))
             
             if ($this.hasClass('expand')) {
                 nodetree.update($this.data('node'), {open: 0});
@@ -237,8 +239,16 @@ function clean_dict(dict) {
             }
         });
 
+        // tooltip
+        $("[title]").tooltip({
+            placement: 'top',
+            delay: {show: 500, hide: 100}
+        });
+        
+        // dropdown
         $(".dropdown-toggle").dropdown();
 		
+        // alert box
 		window.setTimeout(function() {
 			$(".alert-success").fadeTo(500, 0).slideUp(500, function() {
 				$(this).remove(); 

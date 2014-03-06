@@ -76,11 +76,6 @@
 {if $entry.open}
     <ul class="{if $base}nodetree_root{else}nodetree_children{/if} {$entry.accepted_children}" data-parent="{$entry.node->id}">
     {foreach from=$entry.children item=childentry}
-        {*
-    {if $childentry@last}
-        <li class="nodetree_helper"></li>
-    {/if}
-        *}
         <li class="nodetree_entry {if !$childentry@last}nodetree_connection{else}nodetree_plus{/if}" data-form="{$childentry.node->form_id}">
             {include file="nodetree_container.tpl" entry=$childentry hide_root=false base=false}
         </li>    
