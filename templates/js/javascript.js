@@ -170,30 +170,82 @@ function clean_dict(dict) {
 ;(function($) {
 	$(function() {
         
-		/* $('.tooltip').tooltip(); */
+        $("[title]").tooltip({
+            placement: 'top',
+            delay: {show: 500, hide: 100}
+        });
         
+        var is_dragging = false;
         $(".nodetree_root").sortable({
-            items: ".nodetree_entry",
+            items: "li:not(.nodetree_plus)",
             revert: true,
             axis: "y",
+            grid: [30,15],
+            cursor: "move",
+            handle: ".move",
             start: function(event, ui) {
-                var moved = ui.item.data('node')
-
+                is_dragging = true;
+                
+                var moved = ui.item.data('node');
                 var req_class = '.accepts_' + ui.item.data('form')
-                jQuery(req_class).css({border: '1px dashed green'});
+                //$(req_class).css({border: '1px dashed green'});
             },
-            beforeStop: function(event, ui) {
+            stop: function(event, ui) {
+                is_dragging = false;
+                $(".nodetree_helper").hide();
+                
                 var moved = ui.item.data('node')
-                var new_parent = ui.item.parent().closest('ul').data('parent')
+                var new_parent = ui.item.parents('ul').data('parent')
                 var new_prev = ui.item.prev().data('node')
                 
                 var container = ui.item.parent().closest('.nodetree_root')
                 container.find('ul').css({'border': 'none'})
                 
-                nodetree.moveorder(moved, new_parent, new_prev)
+                //nodetree.moveorder(moved, new_parent, new_prev)
+            },
+            beforeStop: function(event, ui) {
+                $(".nodetree_helper").hide();
+            },
+        }).on('mousemove', function(e) {
+            $("ul", this).each(function() {
+                var $this = $(this),
+                    thisPosTop = $this.offset().top,
+                    thisH = $this.height(),
+                    $helper = $this.find(".nodetree_helper"),
+                    $nodetreePlus = $this.find(".nodetree_plus");
+
+                if (is_dragging) {
+                    var $sorthelper = $(".ui-sortable-helper"),
+                        helperPosTop = $sorthelper.offset().top;
+                                        
+                    if (helperPosTop >= thisPosTop && helperPosTop <= parseInt(thisPosTop + thisH)) {
+                        //if ($this.children().length < 3) $nodetreePlus.removeClass('nodetree_plus');
+                        $sorthelper.css('left', $this.children().offset().left -15)
+                        console.log('in')
+                    }
+                    else {
+                        //if ($this.children().length < 3) $nodetreePlus.addClass('nodetree_plus');
+                        $sorthelper.css('left','auto')
+                        console.log('out')
+                    }
+                }
+            });
+        });
+        
+        $(".nodetree_toggle").on('click', function() {
+            var $this = $(this);
+            
+            if ($this.hasClass('expand')) {
+                nodetree.update($this.data('node'), {open: 0});
+                $this.removeClass('expand').addClass('contract');
             }
-        })
-		$(".dropdown-toggle").dropdown();
+            else {
+                nodetree.update($this.data('node'), {open: 1});
+                $this.removeClass('contract').addClass('expand');
+            }
+        });
+
+        $(".dropdown-toggle").dropdown();
 		
 		window.setTimeout(function() {
 			$(".alert-success").fadeTo(500, 0).slideUp(500, function() {
