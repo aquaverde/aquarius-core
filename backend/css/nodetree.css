@@ -1,74 +1,63 @@
+#nodetree { width: 100%; }
 
-#nodetree {
-    width: 100%;
-}
+div.nodetree_container { position: relative; margin: 10px 0 0; padding: 0 !important; }
 
-#nodetree input {
-    padding: 0;
-    margin: 0;
-}
+ul.nodetree_root, ul.nodetree_children { padding: 0 0 0 15px; margin: 0; }
 
-#nodetree ul {
-    border: 0;
-    padding: 0;
-    margin: 0;
-}
+ul.nodetree_root:before, ul.nodetree_children:before { content: ""; position: absolute; top: 30px; left: 5px; bottom: 15px; width: 0; height: auto; border-left: 1px #ccc solid; }
 
-li.nodetree_entry {
-    width: 100%;
-    display: block;
-    position: relative;
-    border: 0;
-    padding: 0;
-    margin: 0;
-}
+li.ui-sortable-helper { position: absolute !important; right: 0 !important; }
 
-li.nodetree_connection {
-    background: url(../picts/line_nav.gif) repeat-y;
-}
+li.nodetree_entry { width: 100%; display: block; position: relative; border: 0; padding: 0; margin: 0; }
 
-li.nodetree_entry.dragged {
-    position: fixed;
-}
-/*
-li.ui-sortable-placeholder {
-    width: 100%;
-    height: 0 !important;
-    display: block;
-    position: relative;
-    border: 0;
-    padding: 0;
-    margin: 0;
-}
-*/
+li.nodetree_entry:before { content: ""; position: absolute; top: 15px; left: -10px; width: 8px; height: 0; border-top: 1px #ccc solid; }
 
-.nodetree_container {
-    border: 0;
-    padding: 0;
-    margin: 0;
-    padding-left: 15px;
-}
+li.nodetree_helper { width: 100%; height: 30px; display: block; border: 0; padding: 0; margin: 0; display: none; }
 
-.nodetree_container table {
-    width: 100%;
-    border: 0;
-    padding: 0;
-    margin: 0;
-}
+div.nodetree_row { padding: 6px 0 5px; border-top: 1px solid #ccc; background: transparent; clear: both; }
 
-img.nodetree_connection {
-    position: absolute;
-    left: 0;
-    top: 4px;
-}
+div.nodetree_row a:link, div.nodetree_row a:active, div.nodetree_row a:visited { color: #000; text-decoration: none; }
 
-img.nodetree_toggle {
-    position: absolute;
-    left: 0;
-    cursor: pointer;
-    cursor: hand;
-}
+div.nodetree_row a:hover { color: #009de5; text-decoration: none; }
 
-img.nodetree_connection.join_bottom { top: 0;  }
+div.nodetree_row span.nodetree_title a:hover span, div.nodetree_row a:hover span:before { color: #009DE5 !important; }
 
-.glyphicon-move { cursor: move; }
+div.nodetree_row div.controls { float: right; width: 250px; }
+
+div.nodetree_row div.controls div.left { float: left; }
+
+div.nodetree_row div.controls div.right { float: right; }
+
+div.nodetree_row div.controls > div > div { float: left; }
+
+div.nodetree_row div.controls > div > div + div { margin: 0 0 0 20px; }
+
+div.nodetree_row div.controls > div > div.move { cursor: move; }
+
+div.nodetree_row div.controls > div > div.dropdown > a { display: block; }
+
+div.nodetree_row div.controls > div > div.dropdown > a:hover span { color: #009DE5; }
+
+div.nodetree_row div.controls > div > div.dropdown ul.dropdown-menu li { text-align: left !important; }
+
+div.nodetree_row div.controls > div > div.dropdown ul.dropdown-menu li button { display: block; width: 100%; text-align: left; }
+
+div.nodetree_row div.controls > div > div.dropdown ul.dropdown-menu li button:hover { background: #f5f5f5; }
+
+div.nodetree_row div.controls > div > div.dropdown ul.dropdown-menu li button:hover span:before { color: #009DE5; }
+
+div.nodetree_row div.controls > div > div.dropdown ul.dropdown-menu li a:hover { background: #f5f5f5; }
+
+div.nodetree_row div.controls > div > div.dropdown ul.dropdown-menu li a:hover span:before { color: #009DE5; }
+
+div.nodetree_row a.nodetree_toggle { position: absolute; top: 10px; left: -15px; width: 12px; height: 12px; display: block; margin: 0; padding: 0; background: #f5f5f5; cursor: pointer; }
+
+div.nodetree_row a.nodetree_toggle.expand:before { content: ""; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #535353; display: block; margin: 4px 0 0 1px; }
+
+div.nodetree_row a.nodetree_toggle.contract:before { content: ""; width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid #535353; display: block; margin: 1px 0 0 4px; }
+
+div.nodetree_node:hover { background: #fff; }
+
+img.nodetree_connection { position: absolute; left: 0; top: 4px; }
+
+img.nodetree_connection.join_bottom { top: 0; }

@@ -12,11 +12,11 @@
 
     {strip}
     <form action="{url action0=$lastaction}" id="nodetree" method="post">
-        <ul class="nodetree_container" id="nodetree_entry_{$entry.node->id}" style="margin: 15px 0 0 -15px;" data-parent="{$entry.node->id}">
+        <div class="nodetree_container" id="nodetree_entry_{$entry.node->id}" data-parent="{$entry.node->id}">
             {include file='nodetree_container.tpl' base=true}
-        </ul>
+        </div>
     {/strip}
-        &nbsp;
+
         <div class="action pull-right">
             <select name="command">
             {foreach from=$forallaction->commands() key=command item=text}

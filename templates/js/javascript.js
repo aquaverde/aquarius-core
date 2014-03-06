@@ -177,10 +177,13 @@ function clean_dict(dict) {
         
         var is_dragging = false;
         $(".nodetree_root").sortable({
-            items: "li:not(.nodetree_plus)",
-            revert: true,
+            items: "li:not(:last)",
+            helper: function(e, elem) { 
+                return $(elem).clone().appendTo('.nodetree_root');
+            },
+            tolerance: 'pointer',
             axis: "y",
-            grid: [30,15],
+            grid: [0,30],
             cursor: "move",
             handle: ".move",
             start: function(event, ui) {
@@ -192,8 +195,7 @@ function clean_dict(dict) {
             },
             stop: function(event, ui) {
                 is_dragging = false;
-                $(".nodetree_helper").hide();
-                
+                                
                 var moved = ui.item.data('node')
                 var new_parent = ui.item.parents('ul').data('parent')
                 var new_prev = ui.item.prev().data('node')
@@ -203,33 +205,23 @@ function clean_dict(dict) {
                 
                 //nodetree.moveorder(moved, new_parent, new_prev)
             },
-            beforeStop: function(event, ui) {
-                $(".nodetree_helper").hide();
-            },
         }).on('mousemove', function(e) {
-            $("ul", this).each(function() {
-                var $this = $(this),
-                    thisPosTop = $this.offset().top,
-                    thisH = $this.height(),
-                    $helper = $this.find(".nodetree_helper"),
-                    $nodetreePlus = $this.find(".nodetree_plus");
+            // horizontal offset
+            
+            if (is_dragging) {
+                var dragOverSub = $('.nodetree_children', this).map(function() {
+                    var thisPosTop = $(this).offset().top,
+                        thisPosBottom = thisPosTop + $(this).height(),
+                        helperPosTop = $(".ui-sortable-helper").offset().top;
 
-                if (is_dragging) {
-                    var $sorthelper = $(".ui-sortable-helper"),
-                        helperPosTop = $sorthelper.offset().top;
-                                        
-                    if (helperPosTop >= thisPosTop && helperPosTop <= parseInt(thisPosTop + thisH)) {
-                        //if ($this.children().length < 3) $nodetreePlus.removeClass('nodetree_plus');
-                        $sorthelper.css('left', $this.children().offset().left -15)
-                        console.log('in')
-                    }
-                    else {
-                        //if ($this.children().length < 3) $nodetreePlus.addClass('nodetree_plus');
-                        $sorthelper.css('left','auto')
-                        console.log('out')
-                    }
-                }
-            });
+                    if (helperPosTop >= thisPosTop && helperPosTop < thisPosBottom) 
+                        return this;
+                });
+                dragOverSub = dragOverSub[dragOverSub.length-1];
+                
+                var dragOverSubLevel = dragOverSub != undefined ? $(dragOverSub).parents('ul').length : 0;
+                $(".ui-sortable-helper").css({width: $(this).width() - (dragOverSubLevel * 15) + 'px'});
+            }
         });
         
         $(".nodetree_toggle").on('click', function() {
