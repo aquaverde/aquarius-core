@@ -24,8 +24,8 @@
   *   {actionlink action="contentedit:123"}
   */
 
-function smarty_function_actionlink($params, &$smarty) {
-    require_once $smarty->_get_plugin_filepath('modifier','makeaction');
+function smarty_function_actionlink($params, $smarty) {
+    $smarty->loadPlugin('smarty_modifier_makeaction');
 
     $action = smarty_modifier_makeaction(get($params, 'action'));
 

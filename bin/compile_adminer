@@ -2,12 +2,9 @@
 set -e
 
 cd `dirname $0`/..
-git submodule init
-git submodule update
 
 mkdir -p ../dbadmin
 cd ../dbadmin
-pwd
-php ../core/components/adminer/compile.php mysql
-mv adminer-mysql.php index.php
-rm editor-mysql.php
+php ../core/vendor/vrana/adminer/compile.php mysql 2> /dev/null
+mv adminer-*-mysql.php index.php
+rm -f editor-mysql.php

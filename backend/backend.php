@@ -11,7 +11,7 @@ Log::backtrace('backend');
 
 
 /* Process logins & load logged in user */
-    require_once "lib/db/Users.php";
+    require_once "db/Users.php";
     $login_status = db_Users::authenticate();
                 
     // Redirect to frontend if user wants to
@@ -37,7 +37,6 @@ Log::backtrace('backend');
         if ($user) return $user->defaultLanguage;
     }
 
-    require_once "lib/Language_Detection.php";
     $language_detection = new Language_Detection;
     $language_detection->add_detector('request_parameter');
     $language_detection->add_detector('backend_lg_user_default_lang', 'backend_lg_user_default_lang');

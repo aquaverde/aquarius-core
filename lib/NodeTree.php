@@ -236,11 +236,6 @@ class NodeTree {
                 self::add_controls($child, $open_nodes, $type, $add_new, $lg);
             }
             if ($add_new) self::add_new($entry, $lg);
-
-            // Hack: Add 'last' indicator to last entry in children. The reason we do this here is because the foreach we use in smarty does not easily provide this information when using the template recursively
-            if (!empty($entry['children'])) {
-                $entry['children'][count($entry['children'])-1]['last'] = true;
-            }
         }
 
         // Determine whether we show a open/close toggle

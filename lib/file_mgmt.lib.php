@@ -108,7 +108,6 @@ function ensure_filebasedir_path($path) {
   * The following things will be ignored:
   *   - Dot-files (those starting with a dot)
   *   - directories (not really, see below)
-  *   - filenames starting with 'th_' or 'alt_' (legacy files)
   *   - files not matching the regexp in $filter (if given)
   * 
   * WARNING This function tries to be fast. It sacrifices accuracy (the ideal)
@@ -131,8 +130,6 @@ function listFiles($directory, $filter = '') {
             // This heuristic saves syscalls but may wrongly list directories as files.
             if(  substr($file, 0, 1) != "."
                 && (substr($file, -4, 1) == '.' || $dir->isFile()) // <-- heuristic
-                && substr($file, 0, 3) != "th_"
-                && substr($file, 0, 4) != "alt_"
                 && ($filter == '' || preg_match("/".$filter."/i", $file))
             )
                 $files[$file] = $file;
@@ -359,76 +356,6 @@ function fix_file_permissions($filepath) {
     return chmod($filepath, $aquarius->conf('filemanager/upload_mode', 0777));
 }
 
-/** Generate thumbnails for an image.
-  * Original picture is resized to max size specified in directory settings.
-  * Both a thumbnail and an alt image are generated with prefixes 'th_' and 'alt_' respectively, sizes depend on the configured sizes in the directoy settings.
-  * Thumbs are updated only if modification time is older than original image.
-  * @param $image path to the file, relative from FILEBASEDIR
-  * @param $force Whether to regenerate the thumbnails if they exist and are newer than the image
-  * @return error code, error code is negative if file isn't an image in a supported format, 0 if the thumbs were generated successfully, >0 if there was an error. */
-function update_thumbnails($image, $force=false) {
-    $error = 0;
-    
-    // Ensure that the file exists
-    $filepath = FILEBASEDIR.$image;
-    if (!file_exists($filepath)) $error = 1;
-
-    // Ensure it's a supported image type
-    $type = false;
-    if (!$error) {
-        $type = image_type($filepath);
-        if (!image_type($filepath)) $error = -1;
-    }
-    
-    if (!$error) {
-        // Load directory specific settings
-        $settings = DB_DataObject::factory('directory_properties');
-        $settings->load(dirname($image));
-
-        // Load the image
-        $loaded = image_load($filepath);
-        if (!$loaded) $error = 1;
-    }
-    if (!$error) {
-        $size = $loaded['size'];
-        $type = $size[2];
-        $image = $loaded['image'];
-
-        // Downsize image to max_size
-        if ($settings->max_size > 0) {
-            $downsized = image_downsize($size, $image, $settings->resize_type, $settings->max_size, $type);
-
-            // Overwrite original if it was resized
-            if ($downsized) {
-                image_save($downsized, $type, $filepath);
-                imagedestroy($downsized);
-            }
-        }
-
-        // Update alt and th image if a size is set
-        foreach(array('th_', 'alt_') as $thumb) {
-            $thumb_size = $settings->{$thumb.'size'};
-            if ($thumb_size > 0) {
-                $newpath = file_prefix($filepath, $thumb);
-
-                // Update only if original's modification date is newer than alt mdate
-                if ($force || file_compare_mtime($newpath, $filepath) < 0) {
-                    $downsized = image_downsize($size, $image, $settings->resize_type, $thumb_size, $type);
-
-                    // If the image was downsized, we write the resized copy, else we can use the original
-                    if ($downsized) {
-                        image_save($downsized, $type, $newpath);
-                        imagedestroy($downsized);
-                    } else {
-                        copy($filepath, $newpath);
-                    }
-                }
-            }
-        }
-        imagedestroy($image);
-    }
-    return $error;
-}
 
 /** Did you know that when the webserver hits the POST size limit, it
   * doesn't tell you, but just gives you an empty POST? Yeah, that's what
@@ -545,7 +472,6 @@ function move_upload($tmp_name,$name,$target_directory) {
     $error = false;
     // See whether we have an image
     $image_type = image_type($tmp_name);
-    $is_image = (bool)$image_type;
         
     $new_name = properName($name,$image_type);
         
@@ -563,17 +489,12 @@ function move_upload($tmp_name,$name,$target_directory) {
         $message = array('s_upload_error_failed_moving', $name, $new_path);
     }
 
-    if (!$error) {
-        global $aquarius;
-        if ($is_image && $aquarius->conf('legacy/generate_thumbs')) update_thumbnails($target_directory.'/'.$new_name);
-    }
-
     $result = compact('new_name', 'new_path', 'error', 'message');
     return $result;
 }
 
 function properName($name,$image_type) {
-		// Sanitize filename by replacing special chars
+        // Sanitize filename by replacing special chars
         $new_name = convert_chars(basename($name)); // Sanitize filename
 
         // If it's an image, ensure correct extension
@@ -582,10 +503,6 @@ function properName($name,$image_type) {
             $new_name = $new_name.image_type_to_extension_compat($image_type);
         }
 
-        // Hackedei: avoid prefixes we use for generated files
-        $new_name = ereg_replace('^th_', 'th-', $new_name);
-        $new_name = ereg_replace('^alt_', 'alt-', $new_name);
-        
         return $new_name;
 }
 

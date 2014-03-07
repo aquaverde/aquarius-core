@@ -1,9 +1,9 @@
-{include file=header.tpl}
+{include file='header.tpl'}
 
 <link rel="stylesheet" href="css/nodetree.css" type="text/css" />
 
-{include_javascript file=prototype.js lib=true}
-{include_javascript file=nodetree.js}
+{include_javascript file='prototype.js' lib=true}
+{include_javascript file='nodetree.js'}
 
 <h1>Sitemap</h1>
 
@@ -13,7 +13,7 @@
     {strip}
     <form action="{url action0=$lastaction}" id="nodetree" method="post">
         <div class="nodetree_container" id="nodetree_entry_{$entry.node->id}" style="margin: 15px 0 0 -15px;">
-            {include file=nodetree_container.tpl}
+            {include file='nodetree_container.tpl'}
         </div>
     {/strip}
         &nbsp;
@@ -33,4 +33,4 @@
     var nodetree = new NodeTree(request_url)
 </script>
 
-{include file=footer.tpl}
+{include file='footer.tpl'}

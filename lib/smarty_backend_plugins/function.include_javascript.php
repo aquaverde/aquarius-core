@@ -6,15 +6,16 @@
   * @param lib optional flag to use the lib dir (templates/js/lib), default false
   * @param defer optional flag to enable deferred loading
 */
-function smarty_function_include_javascript($params, &$smarty) {
-    if (!isset($smarty->_included_javascript)) $smarty->_included_javascript = array();
+function smarty_function_include_javascript($params, $template) {
+    $included = $template->getTemplateVars('included_js');
+    if (!is_array($included)) $included = array();
 
     $file = get($params, 'file');
     $inline = get($params, 'inline', false);
     $multiple = get($params, 'multiple', false);
 
     $result = '';
-    if ($multiple || !in_array($file, $smarty->_included_javascript)) {
+    if ($multiple || !in_array($file, $included)) {
         $lib = get($params, 'lib', false);
         $location = $lib ? 'jslib' : 'js';
 
@@ -30,7 +31,10 @@ function smarty_function_include_javascript($params, &$smarty) {
 
         $result = '<script type="text/javascript" src="'.str($url).'"'.$defer.'></script>';
 
-        if (!$multiple) $smarty->_included_javascript[] = $file;
+        if (!$multiple) {
+            $included []= $file;
+            $template->assign('included_js', $file);
+        }
     }
     return $result;
 }

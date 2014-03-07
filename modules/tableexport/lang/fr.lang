@@ -1,12 +1,10 @@
-<?
-	tableexport_menu         	= "Export des données"
-	
-    tableexport_export       	= "Exporter"
-    tableexport_view			= "Liste des données"
-    tableexport_exported  		= "Export réussi"
-    tableexport_download_csv 	= "Télécharger au format CSV"
-    tableexport_deleteall    	= "Effacer toutes les données"
-    tableexport_delete    		= "Effacer"
-    tableexport_entries    		= "entrées"
-    tableexport_deleteall_confirm = "Êtes-vous sur de effacer toutes les données?"
-?>
+tableexport_menu         	= "Export des données"
+
+tableexport_export       	= "Exporter"
+tableexport_view			= "Liste des données"
+tableexport_exported  		= "Export réussi"
+tableexport_download_csv 	= "Télécharger au format CSV"
+tableexport_deleteall    	= "Effacer toutes les données"
+tableexport_delete    		= "Effacer"
+tableexport_entries    		= "entrées"
+tableexport_deleteall_confirm = "Êtes-vous sur de effacer toutes les données?"

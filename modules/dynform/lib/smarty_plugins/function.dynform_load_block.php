@@ -4,10 +4,7 @@
   * It assigns "block_fields".
   */
   
-function smarty_function_dynform_load_block($params, &$smarty) 
-{
-    require_once $smarty->_get_plugin_filepath('modifier','makeaction') ;
-    
+function smarty_function_dynform_load_block($params, &$smarty) {
     $smarty->assign('block_fields', null) ; 
     $block_id = get($params, 'block_id') ;
     
@@ -29,4 +26,3 @@ function smarty_function_dynform_load_block($params, &$smarty)
 		$smarty->assign('block_fields', $fields) ; 
 	}
 }
-?>

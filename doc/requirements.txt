@@ -15,7 +15,6 @@ The following features are required for a minimal install of Aquarius3
     - version 5.3 or newer
     - required extensions: GD2, zip, bzip2, mbstring, mysqli, bcmath
     - register_globals must be disabled
-    - short_open_tag on
     - sending mails using the mail() function (alternatively an SMTP relay can
       be configured)
     - set_include_path() supported

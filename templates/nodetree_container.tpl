@@ -3,13 +3,14 @@
 <div class="nodetree_row {if !$entry.node->newaction}nodetree_node{/if}" style="clear:both">
     {if $entry.show_toggle}
         {if $entry.open}
-            <img class="nodetree_toggle" src="picts/toggle-open.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, {ldelim}open: 0{rdelim})" alt="{#s_close#}"/>
+            <img class="nodetree_toggle" src="picts/toggle-open.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, { open: 0 })" alt="{#s_close#}"/>
         {else}
-            <img class="nodetree_toggle" src="picts/toggle-closed.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, {ldelim}open: 1{rdelim})" alt="{#s_open#}"/>
+            <img class="nodetree_toggle" src="picts/toggle-closed.gif" onclick="this.src='picts/lapse-loading-white.gif'; nodetree.update({$entry.node->id}, { open: 1 })" alt="{#s_open#}"/>
         {/if}
     {/if}
     {if $entry.node->newaction}
-        <a href="{url action=$lastaction action1=$entry.node->newaction}" title="{#s_new_child#}" data-toggle="tooltip">
+        <a href="{url action=$lastaction|default:false action1=$entry.node->newaction}" title="{#s_new_child#}" data-toggle="tooltip">
+
             <span class="glyphicon glyphicon-file"></span>
             <span class="glyphicon glyphicon-plus"></span>
         </a>
@@ -70,7 +71,7 @@
 
         <span class="nodetree_title{if $entry.node->is_content()} nodetree_title_content{/if}">
         {if $entry.actions.contentedit}
-            <a href="{url action0=$lastaction action1=$entry.actions.contentedit}" title="{$altedittitle}" data-toggle="tooltip">
+            <a href="{url action0=$lastaction|default:false action1=$entry.actions.contentedit}" title="{$altedittitle}" data-toggle="tooltip">
                 <span class="glyphicon glyphicon-file{if !$entry.node->active} off{/if}"></span>
                 <span class="contenttitle{if !$entry.has_content} dim{/if}">{$entry.title|truncate:75}</span>
             </a>
@@ -89,8 +90,8 @@
 {if $entry.open}
     <ul class="nodetree_children">
     {foreach from=$entry.children item=childentry}
-        <li class="nodetree_entry{if !$childentry.last} nodetree_connection{/if}">
-        {if $childentry.last}
+        <li class="nodetree_entry{if !$childentry@last} nodetree_connection{/if}">
+        {if $childentry@last}
             <img class="nodetree_connection join_bottom" src="picts/joinbottom.gif" alt="" />
         {else}
             <img class="nodetree_connection" src="picts/join.gif" alt="" />

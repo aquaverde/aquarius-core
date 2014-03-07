@@ -1,12 +1,12 @@
 
-   	// Menu
+    # Menu
     
     dynform				= "Dynform"  
     dynform_forms		= "Formulaires"
     dynform_data		= "Données" 
     
     
-    // Field and Blocks
+    # Field and Blocks
     
     Singleline			= "Champ simple"
     Multiline			= "Champ multiligne"
@@ -42,7 +42,7 @@
     delete_block_msg	= "Tous les champs du bloc vont être effacés."
     delete_field_msg	= "Ce champ sera effacé dans toutes les langues."
     
-    // Backend
+    # Backend
     
     forms_overview		= "Formulaires"
     forms_manager		= "Gestion des formulaires"
@@ -74,7 +74,7 @@
     
     target_email		= "Adresses cibles possibles. Format: Nom, E-Mail. Nouvelle ligne pour chaque entrée."
 
-	// Export
+	# Export
 	export				= "Exporter"
 	welche_felder		= "Veuillez sélectionner les champs à exporter"
 	

@@ -40,7 +40,7 @@ class Shop_Frontend {
       *   )
       * </code> */
     function load_attributes($params, $smarty) {
-        require_once $smarty->_get_plugin_filepath('modifier','shop_currency_format');
+        $smarty->loadPlugin('smarty_modifier_shop_currency_format');
 
         // Load attributes for product
         $product = db_Node::get_node(get($params, 'product'));
@@ -574,4 +574,3 @@ class Shop_Frontend {
     }
     
 }
-?>

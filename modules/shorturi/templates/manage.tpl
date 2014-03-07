@@ -1,6 +1,6 @@
 {include file='header.tpl'}
 
-{include_javascript file=prototype.js lib=true}
+{include_javascript file='prototype.js' lib=true}
 {include_javascript file='module.shorturi.js'}
 
 <h1>{#Shorturi#}</h1><br/>

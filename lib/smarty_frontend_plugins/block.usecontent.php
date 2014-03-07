@@ -71,7 +71,7 @@ function smarty_block_usecontent($params, $content, &$smarty, &$repeat) {
         }
 
         if ($load) {
-            $replace_stack []= $smarty->get_template_vars();
+            $replace_stack []= $smarty->tpl_vars;
             $smarty->assign($content->get_fields());
         } else {
             Log::debug("Usecontent block not executed: $reason");
@@ -79,9 +79,7 @@ function smarty_block_usecontent($params, $content, &$smarty, &$repeat) {
         }
     } else {
         /* End of block */
-        // Reload the original vars
-        $template_vars = &$smarty->get_template_vars();
-        $template_vars = array_pop($replace_stack);
+        $smarty->tpl_vars = array_pop($replace_stack); // HACK back
     }
     return $content;
 }

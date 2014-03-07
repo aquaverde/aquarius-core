@@ -1,12 +1,10 @@
-<?
-    tableexport_menu         	= "Tabellen Export"
-    
-    tableexport_export       	= "Exportieren"
-    tableexport_view			= "Übersicht"
-    tableexport_exported  		= "Exportiert"
-    tableexport_download_csv 	= "Download CSV-Datei"
-    tableexport_deleteall    	= "Alle Einträge löschen"
-    tableexport_delete    		= "Löschen"
-    tableexport_entries    		= "Einträge"
-    tableexport_deleteall_confirm = "Wollen Sie wirklich alle Einträge löschen?"
-?>
+tableexport_menu         	= "Tabellen Export"
+
+tableexport_export       	= "Exportieren"
+tableexport_view			= "Übersicht"
+tableexport_exported  		= "Exportiert"
+tableexport_download_csv 	= "Download CSV-Datei"
+tableexport_deleteall    	= "Alle Einträge löschen"
+tableexport_delete    		= "Löschen"
+tableexport_entries    		= "Einträge"
+tableexport_deleteall_confirm = "Wollen Sie wirklich alle Einträge löschen?"

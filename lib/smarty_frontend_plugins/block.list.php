@@ -63,7 +63,7 @@ function smarty_block_list($params, $content, $smarty, &$repeat) {
 
     if ($repeat) {
         /* Load the list of nodes */
-        require_once $smarty->_get_plugin_filepath('function','loadnodes');
+        $smarty->loadPlugin('smarty_function_loadnodes');
         $params['return_list'] = true;
         $lists[] = smarty_function_loadnodes($params, $smarty);
         if ($loadcontent) {

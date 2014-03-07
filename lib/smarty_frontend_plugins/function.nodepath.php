@@ -14,7 +14,7 @@ function smarty_function_nodepath($params, &$smarty) {
     
     $path = "";
     $parents = $node->get_parents(true);
-    require_once $smarty->_get_plugin_filepath('function','href');
+    $smarty->loadPlugin('smarty_function_href');
     foreach($parents as $parent) {
         if(! in_array($parent->id, $exclude)) {
             // Generate href using the href plugin
