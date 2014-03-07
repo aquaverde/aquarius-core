@@ -67,7 +67,7 @@ function smarty_block_list($params, $content, $smarty, &$repeat) {
         $params['return_list'] = true;
         $lists[] = smarty_function_loadnodes($params, $smarty);
         if ($loadcontent) {
-            $replace_stack []= $smarty->get_template_vars();
+            $replace_stack []= $smarty->tpl_vars;
         }
     }
     
@@ -106,9 +106,7 @@ function smarty_block_list($params, $content, $smarty, &$repeat) {
     } else {
         /* End of block */
         if ($loadcontent) {
-            // Reload the original vars
-            $template_vars = &$smarty->get_template_vars();
-            $template_vars = array_pop($replace_stack); // Mucking about with references
+            $smarty->tpl_vars = array_pop($replace_stack); // HACK back
         }
     }
     

@@ -6,6 +6,7 @@
   *   lg: Which language to link. Default is the current language.
   *   on: A node. Links that lead to this node or one of its parents will have $on==true in the block. Template variable 'node' will be used if this is not specified.
   *   class: Class attribute of the a tag. A second class may be specified after a comma, it will be used if $on is true
+  *   loadcontent: load the content of the linked node inside the block, like {usecontent}
   * The parameters of the href plugin can be used as well
   *
   * Note: Which class is used is decided after execution of the block content. Thus, you may reset the $on flag within the block to change the class.
@@ -15,7 +16,7 @@
   * would be translated to something like:
   *   <a href=".../index.php?id=123">go to node id 123</a>
   */
-function smarty_block_link($params, $content, &$smarty, &$repeat) {
+function smarty_block_link($params, $content, $smarty, &$repeat) {
     static $lg;
     static $node;
     
@@ -37,6 +38,9 @@ function smarty_block_link($params, $content, &$smarty, &$repeat) {
         // The link is on if either the node we're linking to is the same that is $on or we're linking to one of its parents
         $smarty->assign('on', $on && ($on->id == $node->id || indexOfAttr($on->get_parents(), 'id', $node->id) >= 0));
         
+        $smarty->loadPlugin('smarty_block_usecontent');
+        if ($repeat && get($params, 'loadcontent')) smarty_block_usecontent($params, $content, $smarty, $repeat);
+
     } else {
     
         /* Wrap block content in <a> tag */
@@ -56,8 +60,10 @@ function smarty_block_link($params, $content, &$smarty, &$repeat) {
 
         // Wrap the content in a link
         $content = '<a href="'.$href.'"'.$classstr.'>'.$content.'</a>';
+        
+        if (get($params, 'loadcontent')) smarty_block_usecontent($params, $content, $smarty, $repeat);
     }
 
     return $content;
 }
-?>
+
