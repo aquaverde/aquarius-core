@@ -172,14 +172,14 @@ function clean_dict(dict) {
                 
         // sortable items
         var is_dragging = false;
-        $(".nodetree_root").sortable({
+        $(".nodetree_root:not(.left_nav)").sortable({
             items: "li:not(:last)",
             tolerance: 'pointer',
             axis: "y",
             grid: [0,30],
             cursor: "move",
             handle: ".move",
-            helper: function(e, elem) { 
+            helper: function(e, elem) {
                 return $(elem).clone().appendTo('.nodetree_root');
             },
             start: function(event, ui) {
@@ -212,7 +212,7 @@ function clean_dict(dict) {
                         thisPosBottom = thisPosTop + $(this).height(),
                         helperPosTop = $(".ui-sortable-helper").offset().top;
 
-                    if (helperPosTop >= thisPosTop && helperPosTop < thisPosBottom) 
+                    if (helperPosTop >= thisPosTop && helperPosTop <= thisPosBottom) 
                         return this;
                 });
                 dragOverSub = dragOverSub[dragOverSub.length-1];
@@ -225,10 +225,10 @@ function clean_dict(dict) {
         // expand/contract items
         $(".nodetree_toggle").on('click', function() {
             var $this = $(this);
-            
+
             // TODO: function nodetree.update() is not available:
             // console.log(jQuery.isFunction(nodetree.update()))
-            
+
             if ($this.hasClass('expand')) {
                 nodetree.update($this.data('node'), {open: 0});
                 $this.removeClass('expand').addClass('contract');

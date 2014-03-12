@@ -2,19 +2,37 @@
 
 div.nodetree_container { position: relative; margin: 10px 0 0; padding: 0 !important; }
 
+form#leftnav { margin: 0 0 0 10px; }
+
+form#leftnav div.nodetree_container { margin: 0; }
+
 ul.nodetree_root, ul.nodetree_children { padding: 0 0 0 15px; margin: 0; }
+
+form#leftnav ul.nodetree_children { padding: 3px 0 0 15px; }
+
+form#leftnav ul.nodetree_children:before { top: 25px; }
 
 ul.nodetree_root:before, ul.nodetree_children:before { content: ""; position: absolute; top: 30px; left: 5px; bottom: 15px; width: 0; height: auto; border-left: 1px #ccc solid; }
 
+ul.single_element:before { bottom: auto; height: 14px; }
+
+div.no_root ul.nodetree_root:before { top: 0; }
+
 li.ui-sortable-helper { position: absolute !important; right: 0 !important; }
+
+li.ui-sortable-helper div.nodetree_node, li.ui-sortable-helper li.nodetree_plus div.nodetree_row { background: #fff !important; }
 
 li.nodetree_entry { width: 100%; display: block; position: relative; border: 0; padding: 0; margin: 0; }
 
 li.nodetree_entry:before { content: ""; position: absolute; top: 15px; left: -10px; width: 8px; height: 0; border-top: 1px #ccc solid; }
 
-li.nodetree_helper { width: 100%; height: 30px; display: block; border: 0; padding: 0; margin: 0; display: none; }
+form#leftnav li.nodetree_entry:before { top: 12px; }
 
 div.nodetree_row { padding: 6px 0 5px; border-top: 1px solid #ccc; background: transparent; clear: both; }
+
+form#leftnav div.nodetree_row { padding: 4px 0 3px; border-top: 0 none; }
+
+form#leftnav ul ul div.nodetree_row { padding: 4px 0 0; }
 
 div.nodetree_row a:link, div.nodetree_row a:active, div.nodetree_row a:visited { color: #000; text-decoration: none; }
 
@@ -51,6 +69,8 @@ div.nodetree_row div.controls > div > div.dropdown ul.dropdown-menu li a:hover {
 div.nodetree_row div.controls > div > div.dropdown ul.dropdown-menu li a:hover span:before { color: #009DE5; }
 
 div.nodetree_row a.nodetree_toggle { position: absolute; top: 10px; left: -15px; width: 12px; height: 12px; display: block; margin: 0; padding: 0; background: #f5f5f5; cursor: pointer; }
+
+form#leftnav div.nodetree_row a.nodetree_toggle { top: 6px; }
 
 div.nodetree_row a.nodetree_toggle.expand:before { content: ""; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #535353; display: block; margin: 4px 0 0 1px; }
 

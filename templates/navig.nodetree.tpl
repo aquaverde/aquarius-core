@@ -7,7 +7,7 @@
 
 <form id="leftnav">
     <div class="nodetree_container" id="nodetree_entry_{$tree.node->id}">
-        {include file='navig.nodetree_container.tpl'}
+        {include file='navig.nodetree_container.tpl' base=true}
     </div>
 </form>
 

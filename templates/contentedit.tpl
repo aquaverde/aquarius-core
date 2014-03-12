@@ -100,7 +100,7 @@
     <div class="bigbox" id="boxform">
         <div class="bigboxtitle"><h2>{#s_subcontents#}</h2></div>
         <form action="{url action0=$lastaction}" id="nodetree" method="post">
-            <div style="padding-left: 0; padding-top: 10px" class="nodetree_container" id="nodetree_entry_{$entry.node->id}">
+            <div class="nodetree_container no_root" id="nodetree_entry_{$entry.node->id}">
             {include file='nodetree_container.tpl' hide_root=true base=true}
             </div>&nbsp;
             <div class="right">
