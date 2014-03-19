@@ -174,7 +174,8 @@ $config['email']['smtp'] = array(
     'host' => 'smtp.bulkspam.example',
     'port' => 25,
     'user' => 'egg@bulkspam.example',
-    'pass' => 'ham'
+    'pass' => 'ham',
+    'sender' => 'egg@bulkspam.example' // Force the mail sender to be this address
 );
 
 // Testing config for perl fakesmtpd.pl
