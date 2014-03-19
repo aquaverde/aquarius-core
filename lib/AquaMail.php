@@ -117,7 +117,7 @@ class AquaMail {
         if ($smtp) { 
             $transport = Swift_SmtpTransport::newInstance(get($smtp, 'host', 'localhost'), get($smtp, 'port', 25));
             if ($user = get($smtp, 'user')) $transport->setUsername($user);
-            if ($password = get($smtp, 'pass')) $transport->setPAssword($password);
+            if ($password = get($smtp, 'pass')) $transport->setPassword($password);
         } else {
             $transport = Swift_MailTransport::newInstance('');
         }
