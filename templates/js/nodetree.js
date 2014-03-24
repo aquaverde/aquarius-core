@@ -1,7 +1,5 @@
 /* Manage a nodetree page.
- * Currently, only one tree per page is supported because the containers are loaded directly by id.
  * Construction parameter 'request_url' is used to request an update for a section of the tree.
- * On construction, and after each update, the class 'odd' is added to every second element of class 'nodetree_row' (and removed from the others)
  */
 function NodeTree(root, request_url, move_url) {
     var self = this
