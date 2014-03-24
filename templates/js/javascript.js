@@ -191,17 +191,13 @@ function clean_dict(dict) {
             },
             stop: function(event, ui) {
                 is_dragging = false;
-
-                // TODO: fix moveorder function
-                
                 var moved = ui.item.data('node')
                 var new_parent = ui.item.parents('ul').data('parent')
                 var new_prev = ui.item.prev().data('node')
                 
                 var container = ui.item.parent().closest('.nodetree_root')
                 container.find('ul').css({'border': 'none'})
-                
-                //nodetree.moveorder(moved, new_parent, new_prev)
+                nodetree.moveorder(moved, new_parent, new_prev)
             }
             
         // horizontal adjustment of dragged item over subitems
