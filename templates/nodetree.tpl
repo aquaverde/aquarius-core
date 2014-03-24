@@ -2,7 +2,6 @@
 
 <link rel="stylesheet" href="css/nodetree.css" type="text/css" />
 
-{include_javascript file='prototype.js' lib=true}
 {include_javascript file='nodetree.js'}
 
 <h1>Sitemap</h1>
@@ -31,7 +30,8 @@
 <script type="text/javascript">
     var load_url = '{url escape=false action0=$lastaction action1="nodetree:children:$lg:`$lastaction->section`"}'
     var move_url = '{url escape=false action0=$lastaction action1="node:moveorder"}'
-    var nodetree = new NodeTree(load_url, move_url)
+    var root = document.getElementById('nodetree_entry_{$entry.node->id}')
+    var nodetree = new NodeTree(root, load_url, move_url)
 </script>
 
 {include file='footer.tpl'}

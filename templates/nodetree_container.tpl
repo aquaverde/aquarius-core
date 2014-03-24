@@ -1,9 +1,9 @@
 
 {if !$hide_root}
-    <div class="nodetree_row {if !$entry.node->newaction}nodetree_node{/if}" data-node="{$childentry.node->id|default:0}">
+    <div class="nodetree_row {if !$entry.node->newaction}nodetree_node{/if}">
 
         {if $entry.show_toggle}
-            <a class="nodetree_toggle {if $entry.open}expand{else}contract{/if}" data-node="{$entry.node->id}"></a>
+            <a class="nodetree_toggle {if $entry.open}expand{else}contract{/if} {if $entry.open}open{/if}"></a>
         {/if}
 
         {if $entry.node->newaction}
@@ -76,7 +76,7 @@
 {if $entry.open}
     <ul class="{if $base}nodetree_root{else}nodetree_children{/if} {$entry.accepted_children}" data-parent="{$entry.node->id}">
     {foreach from=$entry.children item=childentry}
-        <li class="nodetree_entry {if !$childentry@last}nodetree_connection{else}nodetree_plus{/if}" data-form="{$childentry.node->form_id}">
+        <li class="nodetree_container nodetree_entry {if !$childentry@last}nodetree_connection{else}nodetree_plus{/if}" data-form="{$childentry.node->form_id}" data-node="{$childentry.node->id}">
             {include file="nodetree_container.tpl" entry=$childentry hide_root=false base=false}
         </li>    
     {/foreach}

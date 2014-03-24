@@ -221,23 +221,6 @@ function clean_dict(dict) {
                 $(".ui-sortable-helper").css({width: $(this).width() - (dragOverSubLevel * 15) + 'px'});
             }
         });
-        
-        // expand/contract items
-        $(".nodetree_toggle").on('click', function() {
-            var $this = $(this);
-
-            // TODO: function nodetree.update() is not available:
-            // console.log(jQuery.isFunction(nodetree.update()))
-
-            if ($this.hasClass('expand')) {
-                nodetree.update($this.data('node'), {open: 0});
-                $this.removeClass('expand').addClass('contract');
-            }
-            else {
-                nodetree.update($this.data('node'), {open: 1});
-                $this.removeClass('contract').addClass('expand');
-            }
-        });
 
         // tooltip
         $("[title]").tooltip({
