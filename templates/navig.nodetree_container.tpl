@@ -1,7 +1,7 @@
-<div class="nodetree_row {if $tree.open}open{/if}">
+<div class="nodetree_row">
     
     {if $tree.show_toggle}
-        <a class="nodetree_toggle {if $tree.open}expand{else}contract{/if}" id="nodetree_toggle_{$tree.node->id}" data-node="{$tree.node->id}"></a>
+        <a class="nodetree_toggle {if $tree.open}expand{else}contract{/if} {if $tree.open}open{/if}" id="nodetree_toggle_{$tree.node->id}" data-node="{$tree.node->id}"></a>
     {/if}
     
     {assign var="nodetitle" value=$tree.node->get_contenttitle()|strip_tags}
@@ -19,10 +19,8 @@
 {if $tree.children|@count > 0}
     <ul class="{if $base}nodetree_root{else}nodetree_children{/if} left_nav{if $tree.children|@count < 2} single_element{/if}">
         {foreach item="child_tree" from=$tree.children name="child_tree"}
-            <li class="nodetree_entry{if !$child_tree@last} nodetree_connection{/if}">
-                <div class="nodetree_container" id="nodetree_entry_{$child_tree.node->id}">
-                    {include file="navig.nodetree_container.tpl" tree=$child_tree base=false}
-                </div>
+            <li class="nodetree_entry{if !$child_tree@last} nodetree_connection{/if} nodetree_container" data-node="{$child_tree.node->id}">
+                {include file="navig.nodetree_container.tpl" tree=$child_tree base=false}
             </li>
         {/foreach}
     </ul>
