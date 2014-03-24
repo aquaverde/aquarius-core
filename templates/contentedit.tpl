@@ -117,7 +117,8 @@
     <script type="text/javascript">
         var load_url = '{url escape=false action0=$lastaction action1="nodetree:children:$lg:contentedit"}'
         var move_url = '{url escape=false action0=$lastaction action1="node:moveorder"}'
-        var nodetree = new NodeTree(load_url, move_url)
+        var root = document.getElementById("nodetree_entry_{$entry.node->id}")
+        var nodetree = new NodeTree(root, load_url, move_url)
     </script>
 {/if}
 
