@@ -225,7 +225,7 @@ with (FileSelector) {
     }
     
     prototype.clear_description = function (event) {
-        if (this.description.hasClassName('empty_legend')) {
+        if (this.description && this.description.hasClassName('empty_legend')) {
             this.description.value = ""
             this.description.removeClassName('empty_legend');
         }

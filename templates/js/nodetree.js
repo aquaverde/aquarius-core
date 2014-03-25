@@ -3,10 +3,11 @@
  */
 function NodeTree(root, request_url, move_url) {
     var self = this
+    var $root = jQuery(root)
     
     // Register click handlers on the open/close toggle
     this.register_handlers = function(root) {
-        jQuery(root).find('.nodetree_container').addBack('.nodetree_container').each(function() { // addBack() because root could be a container itself
+        $root.find('.nodetree_container').addBack('.nodetree_container').each(function() { // addBack() because root could be a container itself
             var container = this
             jQuery(container).children('.nodetree_row').children('.nodetree_toggle').first().click(function() {
                 var do_open = jQuery(this).hasClass('open') ? 0 : 1
@@ -14,9 +15,9 @@ function NodeTree(root, request_url, move_url) {
             })
         })
     }
-    
+
     this.register_handlers(root)
-    
+
     /* Load subtree via HTTP
      * container: the node container with a nodetree_row and maybe nodetree_children inside
      * open: whether to include children
@@ -26,14 +27,22 @@ function NodeTree(root, request_url, move_url) {
         var $container = jQuery(container)
 
         params = {
-            node: $container.data('node'),
-            open: open
+            node: $container.data('node')
+        }
+        
+        if (open !== undefined) {
+            params.open = open ? 1: 0
         }
         
         jQuery.get(request_url, params, function(replacement){
             $container.html(replacement)
             self.register_handlers(container)
         })
+    }
+    
+    this.refresh = function(node_id) {
+        var container = $root.find('.container_'+node_id).get(0)
+        if (container) this.update(container)
     }
 
     this.moveorder = function(node, parent, prev) {

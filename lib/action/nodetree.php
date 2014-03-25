@@ -78,20 +78,23 @@ class action_nodetree_navig_children extends action_nodetree implements DisplayA
 
     function process($aquarius, $request, $smarty, $result) {
 
-        $open = requestvar('open');
         $node_id = requestvar('node');
         $node = DB_DataObject::staticGet('db_Node', $node_id);
         if (!$node) throw new Exception("Invalid node id: '$node_id'");
 
         $open_nodes = NodeTree::get_open_nodes('navig');
 
-        // Add or remove the node to/from the list of open nodes in this section
-        if ($open) {
-            array_unshift($open_nodes, $node->id);
-        } else {
-            $open_nodes = array_diff($open_nodes, array($node->id));
+        if (isset($request['open'])) {
+            // Add or remove the node to/from the list of open nodes in this section
+            $open = $request['open'];
+            if ($open) {
+                array_unshift($open_nodes, $node->id);
+            } else {
+                $open_nodes = array_diff($open_nodes, array($node->id));
+            }
+
+            NodeTree::set_open_nodes('navig', $open_nodes);
         }
-        NodeTree::set_open_nodes('navig', $open_nodes);
 
         $tree = NodeTree::editable_tree($node, $this->lg, $open_nodes);
         NodeTree::add_controls($tree, $open_nodes, 'none', false, $this->lg);

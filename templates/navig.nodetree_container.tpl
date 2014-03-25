@@ -19,7 +19,7 @@
 {if $tree.children|@count > 0}
     <ul class="{if $base}nodetree_root{else}nodetree_children{/if} left_nav{if $tree.children|@count < 2} single_element{/if}">
         {foreach item="child_tree" from=$tree.children name="child_tree"}
-            <li class="nodetree_entry{if !$child_tree@last} nodetree_connection{/if} nodetree_container" data-node="{$child_tree.node->id}">
+            <li class="nodetree_entry{if !$child_tree@last} nodetree_connection{/if} nodetree_container container_{$child_tree.node->id}" data-node="{$child_tree.node->id}">
                 {include file="navig.nodetree_container.tpl" tree=$child_tree base=false}
             </li>
         {/foreach}

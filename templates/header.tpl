@@ -28,14 +28,14 @@
         <![endif]-->
 		<link rel="stylesheet" href="css/dynform.css" type="text/css" />
 		<link rel="shortcut icon" type="image/png" href="./favicon.png" />
-
 	</head>
 	<body class="{$bodyclass|default:'admin'}">
     <div class="wrapper">
 	{include file='messages.tpl'}
     {if $navig_reload_node}
         {js navig_reload_node=$navig_reload_node->id}{literal}
-            if (parent && parent.leftFrame && parent.leftFrame.nodetree)
-            parent.leftFrame.nodetree.update($navig_reload_node, {})
+            if (parent && parent.leftFrame && parent.leftFrame.nodetree) {
+                parent.leftFrame.nodetree.refresh($navig_reload_node)
+            }
         {/literal}{/js}
     {/if}
