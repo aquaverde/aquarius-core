@@ -185,7 +185,6 @@ class action_nodetree_forall extends action_nodetree implements ChangeAndDisplay
                 $smarty->assign('list', $nodelist);
                 $smarty->assign('actions', array($delete_action, Action::make('cancel')));
                 $display_result->use_template('confirm_list.tpl');
-                $display_result->skip_return();
             } else {
                 $change_result->add_message(new Translation("s_message_no_selected_nodes"));
             }
@@ -222,7 +221,6 @@ class action_nodetree_forall extends action_nodetree implements ChangeAndDisplay
                 $smarty->assign('list', $nodelist);
                 $smarty->assign('actions', array($move_action, Action::make('cancel')));
                 $display_result->use_template('nodetree_nodes_move.tpl');
-                //$display_result->skip_return();
             } else {
                 $change_result->add_message(new Translation("s_message_no_selected_nodes"));
             }
