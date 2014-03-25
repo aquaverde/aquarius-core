@@ -34,6 +34,7 @@ class Formtypes {
             'code' => 'Formtype_Code',
             'date' => 'Formtype_Date',
             'file' => 'Formtype_File',
+            'markdown' => 'Formtype_Markdown',
             'int' => 'Formtype_Int',
             'link' => 'Formtype_Link',
             'mle' => 'Formtype_Mle',
