@@ -4,7 +4,7 @@
 {include_javascript file='nodetree.js'}
 
 <form id="leftnav">
-    <div class="nodetree_container container_{$child_tree.node->id}" id="root_{$tree.node->id}">
+    <div class="nodetree_container container_{$tree.node->id}" id="root_{$tree.node->id}" data-node="{$tree.node->id}">
         {include file='navig.nodetree_container.tpl' base=true}
     </div>
 </form>

@@ -3,11 +3,10 @@
  */
 function NodeTree(root, request_url, move_url) {
     var self = this
-    var $root = jQuery(root)
     
     // Register click handlers on the open/close toggle
     this.register_handlers = function(root) {
-        $root.find('.nodetree_container').addBack('.nodetree_container').each(function() { // addBack() because root could be a container itself
+        jQuery(root).find('.nodetree_container').addBack('.nodetree_container').each(function() { // addBack() because root could be a container itself
             var container = this
             jQuery(container).children('.nodetree_row').children('.nodetree_toggle').first().click(function() {
                 var do_open = jQuery(this).hasClass('open') ? 0 : 1
@@ -40,9 +39,17 @@ function NodeTree(root, request_url, move_url) {
         })
     }
     
-    this.refresh = function(node_id) {
-        var container = $root.find('.container_'+node_id).get(0)
-        if (container) this.update(container)
+    this.refresh = function(node_id, open) {
+        var $root = jQuery(root)
+        var cont_class = '.container_'+node_id
+        var container = undefined
+        if ($root.is(cont_class)) {
+            container = $root.get(0)
+            open = true // root is always open (You assumed? You know what happens when you assume!)
+        } else {
+            container = jQuery(root).find(cont_class).get(0)
+        }
+        if (container) this.update(container, open)
     }
 
     this.moveorder = function(node, parent, prev) {
