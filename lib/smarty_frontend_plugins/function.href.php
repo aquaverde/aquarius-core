@@ -55,7 +55,7 @@ function smarty_function_href($params, $smarty) {
             if (is_array($val)) $url->add_params($val);
             else {
                 // UBW, the params may be of the form 'name=value' in which case we don't want the '=' to be escaped by the URL class. However, 'param' and 'value' should be escaped.
-                @list($key, $value) = split('=', $val, 2);
+                @list($key, $value) = explode('=', $val, 2);
                 $url->add_param($key, $value);
             }
         }

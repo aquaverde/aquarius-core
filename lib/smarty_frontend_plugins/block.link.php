@@ -6,6 +6,8 @@
   *   lg: Which language to link. Default is the current language.
   *   on: A node. Links that lead to this node or one of its parents will get the second class. Template variable 'node' will be used if this is not specified.
   *   class: Class attribute of the a tag. A second class may be specified after a comma to be used when the link is 'on'
+  *   loadcontent: load the content of the linked node inside the block, like {usecontent}
+  *
   * The parameters of the href plugin can be used as well
   *
   * Example:
@@ -13,7 +15,7 @@
   * would be translated to something like:
   *   <a href=".../index.php?id=123">go to node id 123</a>
   */
-function smarty_block_link($params, $content, &$smarty, &$repeat) {
+function smarty_block_link($params, $content, $smarty, &$repeat) {
     static $lg;
     static $node;
     
@@ -25,6 +27,10 @@ function smarty_block_link($params, $content, &$smarty, &$repeat) {
 
         // Execute block contents only when node and language are valid
         $repeat = (bool)($lg && $node && (!$smarty->require_active || $node->active()) && $node->get_content($lg, $smarty->require_active) );
+
+        $smarty->loadPlugin('smarty_block_usecontent');
+        if ($repeat && get($params, 'loadcontent')) smarty_block_usecontent($params, $content, $smarty, $repeat);
+
     } else {
         /* Wrap block content in <a> tag */
 
@@ -52,7 +58,10 @@ function smarty_block_link($params, $content, &$smarty, &$repeat) {
 
         // Wrap the content in a link
         $content = '<a href="'.$href.'"'.$classstr.'>'.$content.'</a>';
+        
+        if (get($params, 'loadcontent')) smarty_block_usecontent($params, $content, $smarty, $repeat);
     }
 
     return $content;
 }
+

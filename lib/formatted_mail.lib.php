@@ -77,8 +77,11 @@ class FormattedTextMail {
         $message->setTo($tos);
 
         $logstr = "mail to $to \n".$message->getHeaders()->toString()."\n\n".$text;
+        
+        global $aquarius;
+        if ($sender = $aquarius->conf('email/smtp/sender')) $message->setFrom($sender);
+        $mailer = $aquarius->mailer();
 
-        $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
         $success = $mailer->send($message);
 
         if ($success) {
@@ -169,8 +172,11 @@ class FormattedHTMLMail extends FormattedTextMail {
         $message->setTo($tos);
 
         $logstr = "mail to $to \n".$message->getHeaders()->toString()."\n\n".$text;
+        
+        global $aquarius;
+        if ($sender = $aquarius->conf('email/smtp/sender')) $message->setFrom($sender);
+        $mailer = $aquarius->mailer();
 
-        $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
         $success = $mailer->send($message);
 
         if ($success) {

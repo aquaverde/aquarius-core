@@ -67,7 +67,7 @@ function smarty_block_list($params, $content, $smarty, &$repeat) {
         $params['return_list'] = true;
         $lists[] = smarty_function_loadnodes($params, $smarty);
         if ($loadcontent) {
-            $replace_stack []= $smarty->get_template_vars();
+            $replace_stack []= $smarty->tpl_vars;
         }
     }
     
@@ -106,10 +106,7 @@ function smarty_block_list($params, $content, $smarty, &$repeat) {
     } else {
         /* End of block */
         if ($loadcontent) {
-            // HACK galore
-            $smarty->clearAllAssign(); // Clean the plate
-            $smarty->assign('smarty', $smarty); // Smarty needs itself in the variables
-            $smarty->assign(array_pop($replace_stack)); // Now put back what was there before
+            $smarty->tpl_vars = array_pop($replace_stack); // HACK back
         }
     }
     

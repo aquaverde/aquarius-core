@@ -100,6 +100,9 @@ class Archiver extends Module {
         $archiving_delay = $this->conf('archiving_delay');
         
         $some_changed = false;
+        $have_archiving_date = 0;
+        $deactivated = 0;
+        $moved = 0;
         foreach($archiveresult as $id=>$val) {
             $archive_date = $val['archive_date'];
 
@@ -107,6 +110,8 @@ class Archiver extends Module {
             if (!is_numeric($archive_date) || $archive_date == 0) {
                 continue;
             }
+            
+            $have_archiving_date += 1;
             
             if ($archiving_delay) {
                 $archive_date = strtotime($archiving_delay, $archive_date);
@@ -142,12 +147,14 @@ class Archiver extends Module {
                         }
                         $node->parent_id = $parent->id;
                         $changed = true;
+                        $moved += 1;
                     }
                 }
                 if($node->active && $val['sup1'] == 1) {
                     Log::info("deactivate archived node ".$node->idstr());
                     $node->active = 0;
                     $changed = true;
+                    $deactivated += 1;
                 }
                 if ($changed) {
                     $some_changed = true;
@@ -159,6 +166,9 @@ class Archiver extends Module {
         if ($some_changed) {
             db_Node::update_tree_index();
         }
+        
+        Log::debug("$have_archiving_date nodes have archiving date, $deactivated newly deactivated, $moved moved, ".count($archived)." currently archived");
+        
         return $archived;
     }
     

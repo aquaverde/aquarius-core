@@ -423,6 +423,7 @@ class Aquarius {
         return $this->formtypes;
     }
     
+    
     /** Get a caching path
       * @param subdir Optional, append this subdir. Create it if it doesn't exist.
       * @return Absolute path to cache directory, including trailing slash. */
@@ -434,6 +435,22 @@ class Aquarius {
         }
         return realpath($cache_path).'/';
     }
+    
+    
+    function mailer() {
+        $smtp = $this->conf('email/smtp');
+        $transport = false;
+        if ($smtp) { 
+            $transport = Swift_SmtpTransport::newInstance(get($smtp, 'host', 'localhost'), get($smtp, 'port', 25));
+            if ($user = get($smtp, 'user')) $transport->setUsername($user);
+            if ($password = get($smtp, 'pass')) $transport->setPassword($password);
+        } else {
+            $transport = Swift_MailTransport::newInstance('');
+        }
+
+        return Swift_Mailer::newInstance($transport);
+    }
+    
     
     /** Returns true when debugging information should be output */
     function debug() {
