@@ -1,6 +1,5 @@
 <h1 >{#edit#}: {dynform_fieldtype id=$field_type}</h1>
-<div id="outer">
-    <h2>&nbsp;</h2>
+<div id="outer"><br>
     <div class="toolbox">
         {action action="dynform:changefieldtype:`$content->id`:`$content->lg`:`$node->id`:`$block->id`:`$field->id`"}
             <form action="{url action=$lastaction}"  style="display: inline" method="post">
@@ -12,5 +11,5 @@
     <form action="{url action=$saveaction}" method="post" id="dynformform" style="display: inline">
 		<div class='contentedit contentedit_ef'> 
 			<label for="name" title="name">{#name#}</label>
-			<input class="ef" type="text" name="field[name]" value="{$field->name}" id="name"/>
+			<input class="form-control" type="text" name="field[name]" value="{$field->name}" id="name"/>
 		</div>
