@@ -1,11 +1,11 @@
 <?php
-define('MINIFY_MIN_DIR', dirname(__DIR__).'/vendor/mrclay/min/lib');
-define('CACHE_DIR', dirname(dirname(__DIR__)).'/cache/min');
+$coredir = dirname(__DIR__);
+require_once $coredir.'/vendor/autoload.php';
+define('MINIFY_MIN_DIR', $coredir.'/vendor/mrclay/minify/min/lib');
+define('CACHE_DIR', dirname($coredir).'/cache/min');
 
 // setup include path
 set_include_path(MINIFY_MIN_DIR . PATH_SEPARATOR . get_include_path());
-
-require 'Minify.php';
 
 Minify::setCache(CACHE_DIR, true);
 
