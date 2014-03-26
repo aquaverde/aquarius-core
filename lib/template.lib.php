@@ -173,7 +173,7 @@ function smarty_function_resize($params, $smarty) {
     if ($crop_ratio !== false) {
         $slir_options ['c']= $crop_ratio;
     } elseif ($crop && $width !== false && $height !== false) {
-       $slir_options ['c']= "$width:$height"; 
+       $slir_options ['c']= "{$width}x{$height}"; 
     }
     
     // Use maximum compression for PNG always
