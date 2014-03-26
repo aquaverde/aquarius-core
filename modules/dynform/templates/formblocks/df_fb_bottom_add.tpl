@@ -7,6 +7,6 @@
 			<input type="submit" name="{$action}" value="{#s_save#}" class="submit" />
 		{/action}
 		
-		<input type="submit" name="" value="{#s_cancel#}" class="cancel" />
+		<input type="submit" name="" value="{#s_cancel#}" class="btn" />
 	</div>
  </form>

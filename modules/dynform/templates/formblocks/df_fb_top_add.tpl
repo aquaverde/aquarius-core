@@ -3,5 +3,5 @@
 	<div id="outer">
 		<div class='contentedit contentedit_ef'> 
 			<label for="name" title="name">{#name#}</label>
-			<input class="ef" type="text" name="field[name]" value="" id="name"/>
+			<input class="form-control" type="text" name="field[name]" value="" id="name"/>
 		</div>
