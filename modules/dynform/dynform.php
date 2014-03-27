@@ -199,7 +199,7 @@ class Dynform extends Module
                     $field['labeltofieldid'] = $field['id'];
                     $field['title'] = $DL->get_field_name($dfield->id, $lg);
                     $field['required'] = $dfield->required;
-                    $field['width'] = $field->width;
+                    $field['width'] = $dfield->width;
                     
                     $options = $DL->get_field_options($dfield->id, $lg);
                     $field['options'] = $options;
