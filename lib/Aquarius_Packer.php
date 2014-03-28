@@ -231,7 +231,7 @@ echo "<html>'.addslashes($css).'
 ?>'.file_get_contents($tar_lib_path).'
 
 // tell PEAR to tell us
-PEAR::setErrorHandling(PEAR_ERROR_TRIGGER);
+@PEAR::setErrorHandling(PEAR_ERROR_TRIGGER);
 
 if (in_array("puttar", $ops)) {
     $tar_name = '.var_export($tar_name, true).';
@@ -347,16 +347,16 @@ if (in_array("replace", $ops)) {
 if (in_array("undo", $ops)) {
     foreach($file_list as $file_names) {
     $base_name = $file_names["base"];
-    if (file_exists($base_name)) {
-        $new_name = $file_names["new"];
-        $success = rename($base_name, $new_name);
-        if ($success === FALSE) echo("Failed moving $base_name to $new_name\n");
-        else echo "<!-- Moved $base_name to $new_name -->\n";
-    }
-    $old_name = $file_names["old"];
-    $success = rename($old_name, $base_name);
-    if ($success === FALSE) echo("Unable to move $old_name to $base_name\n");
-    else echo "<!-- Moved $old_name to $base_name -->\n";
+        if (file_exists($base_name)) {
+            $new_name = $file_names["new"];
+            $success = rename($base_name, $new_name);
+            if ($success === FALSE) echo("Failed moving $base_name to $new_name\n");
+            else echo "<!-- Moved $base_name to $new_name -->\n";
+        }
+        $old_name = $file_names["old"];
+        $success = rename($old_name, $base_name);
+        if ($success === FALSE) echo("Unable to move $old_name to $base_name\n");
+        else echo "<!-- Moved $old_name to $base_name -->\n";
     }
     $op = "undone";
 }
@@ -497,7 +497,6 @@ echo "
         $srclen = strlen($src);
         foreach($exclude as $excluded) {
             $matchpos = strrpos($src, $excluded);
-            if ($matchpos !== false) echo "$src $matchpos $excluded \n";
             if ($matchpos !== false && $srclen == $matchpos + strlen($excluded)) {
                 return 0;
             }
