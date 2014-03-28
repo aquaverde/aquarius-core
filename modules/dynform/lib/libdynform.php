@@ -283,7 +283,7 @@ class Dynformlib
 	function is_dynform_node($node)
 	{
 		$nodeform = new db_Form ; 
-		$nodeform->id = $node->cache_form_id ; 
+		$nodeform->id = $node->form_id ; 
 		$found = $nodeform->find() ; 
 		if ($found) {
 			$nodeform->fetch() ; 

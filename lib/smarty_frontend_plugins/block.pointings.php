@@ -48,7 +48,7 @@ function smarty_block_pointings($params, $content, &$smarty, &$repeat) {
             $query = "
                 SELECT DISTINCT node.id
                 FROM form_field
-                JOIN node ON form_field.form_id = node.cache_form_id
+                JOIN node ON form_field.form_id = node.form_id
                 JOIN content ON node.id = content.node_id
                 JOIN content_field ON content.id = content_field.content_id
                 JOIN content_field_value ON content_field.id = content_field_value.content_field_id
@@ -98,7 +98,7 @@ function smarty_block_pointings($params, $content, &$smarty, &$repeat) {
                 $query = "
                     SELECT DISTINCT node.id
                     FROM form_field
-                    JOIN node ON form_field.form_id = node.cache_form_id
+                    JOIN node ON form_field.form_id = node.form_id
                     JOIN content ON node.id = content.node_id
                     JOIN content_field ON content.id = content_field.content_id
                     JOIN content_field_value ON content_field.id = content_field_value.content_field_id

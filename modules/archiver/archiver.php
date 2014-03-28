@@ -43,7 +43,7 @@ class Archiver extends Module {
             JOIN content ON node.id = content.node_id
             JOIN content_field ON content.id = content_field.content_id
             JOIN content_field_value ON content_field.id = content_field_value.content_field_id
-            JOIN form ON node.cache_form_id = form.id
+            JOIN form ON node.form_id = form.id
             JOIN form_field ON form.id = form_field.form_id
             WHERE form_field.type = 'archiver_publish_date' 
             AND form_field.name = content_field.name";
@@ -90,7 +90,7 @@ class Archiver extends Module {
             JOIN content ON node.id = content.node_id
             JOIN content_field ON content.id = content_field.content_id
             JOIN content_field_value ON content_field.id = content_field_value.content_field_id
-            JOIN form ON node.cache_form_id = form.id
+            JOIN form ON node.form_id = form.id
             JOIN form_field ON form.id = form_field.form_id
             WHERE form_field.type = 'archiver_archive_date' 
             AND form_field.name = content_field.name";

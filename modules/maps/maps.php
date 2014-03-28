@@ -163,7 +163,7 @@ class Maps extends Module {
     	$query = "SELECT 
     				content.id
     			FROM form_field
-    			JOIN node ON node.cache_form_id = form_field.form_id
+    			JOIN node ON node.form_id = form_field.form_id
  				JOIN content ON content.node_id = node.id
     			WHERE form_field.type = 'gmap' 
 				AND form_field.name = 'gmap'
