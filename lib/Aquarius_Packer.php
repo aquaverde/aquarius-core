@@ -8,7 +8,13 @@ class Aquarius_Packer {
         'all'  => array('full', 'site'),
     );
 
-    var $ignore = array('.git', 'adminer');
+    var $ignore = array(
+        '.git', '.svn',
+        'vrana/adminer',
+        'swiftmailer/notes', 'swiftmailer/test-suite', 'swiftmailer/tests',
+        'smarty/development', 'smarty/documentation',
+        'min_unit_tests'
+    );
 
     var $message_handler;
 
@@ -111,6 +117,7 @@ class Aquarius_Packer {
         $export_names []= $export_tag;
 
         $this->message("Exporting: ", true);
+        
         $file_list = array();
         foreach($exports as $i => $base) {
             $this->message(($i==0?'':', ').$base, true);
@@ -125,7 +132,7 @@ class Aquarius_Packer {
             }
             $export_new_dir = $export_dir.DIRECTORY_SEPARATOR.$new;
             try {
-                $num = $this->cp($base, $export_new_dir);
+                $num = $this->cp($base, $export_new_dir, $this->ignore);
                 $this->message("($num)", true);
             } catch(Exception $e) { throw new Exception("failed exporting $base: ".$e->getMessage()); }
         }
@@ -480,12 +487,21 @@ echo "
 
     function cp($src, $dst, $exclude=array()) {
         $name = basename($src);
-        if ($name == '.' || $name == '..' || in_array($name, $exclude)) {
+        if ($name == '.' || $name == '..') {
             return 0;
         }
 
         $rsrc = realpath($src);
         if (!$rsrc) throw new Exception("Nonexisting source path '$src'");
+
+        $srclen = strlen($src);
+        foreach($exclude as $excluded) {
+            $matchpos = strrpos($src, $excluded);
+            if ($matchpos !== false) echo "$src $matchpos $excluded \n";
+            if ($matchpos !== false && $srclen == $matchpos + strlen($excluded)) {
+                return 0;
+            }
+        }
 
         if(is_file($src)) {
             if(copy($rsrc, $dst)) {
