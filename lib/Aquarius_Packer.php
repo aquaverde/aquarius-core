@@ -221,6 +221,10 @@ if (in_array("setup", $ops)) {
     exit;
 }
 
+function jlog($line) {
+    echo "<script>console.log(".json_encode($line).")</script>";
+}
+
 
 echo "<html>'.addslashes($css).'
     <body>
@@ -258,7 +262,7 @@ if (in_array("puttar", $ops)) {
     if ($actual_md5sum != $expected_md5sum) {
         die("Install-archive $tar_name damaged. (Expected MD5 sum: $expected_md5sum, actual: $actual_md5sum. Make sure to use binary mode when uploading via FTP)");
     } else {
-        echo "<!-- Verfied MD5 sum: $expected_md5sum -->\n";
+        jlog("Verfied MD5 sum: $expected_md5sum");
     }
 
     $op = "puttard";
@@ -266,16 +270,18 @@ if (in_array("puttar", $ops)) {
 
 $file_list = '.var_export($file_list, true).';
 
+
+
 if (in_array("unpack", $ops)) {
 
     $tar_name = '.var_export($tar_name, true).';
-    echo "<!-- Unpacking $tar_name ... ";
+    jlog("Unpacking $tar_name ... ");
     $tar = new Archive_Tar($tar_name, '.var_export($archive_format, true).');
     $success = $tar->extract();
     if (!$success) {
         die("-->Failed extracting $tar_name");
     }
-    echo "done. -->\n";
+    jlog("done $tar_name");
     $op = "unpacked";
 
     $mode = octdec($_POST["mode"]);
@@ -308,12 +314,11 @@ if (in_array("unpack", $ops)) {
 
         foreach($file_list as $file_names) {
             $path = $file_names["new"];
-            echo "<!-- Chmodding ".decoct($mode)." $path:";
+            jlog("Chmodding ".decoct($mode)." $path");
             $fails = array();
             chmod(dirname($path), $mode);
             $success = chmodr($path, $mode, $fails);
             if ($success) {
-                echo "done. -->\n";
             } else {
                 echo "failed setting permissions in ".join(", ", $fails)."-->\n";
             }
@@ -323,21 +328,19 @@ if (in_array("unpack", $ops)) {
 
 
 
-
-
 if (in_array("replace", $ops)) {
     foreach($file_list as $file_names) {
-    $base_name = $file_names["base"];
-    if (file_exists($base_name)) {
-        $old_name = $file_names["old"];
-        $success = rename($base_name, $old_name);
-        if ($success === FALSE) die("Unable to move $base_name to $old_name");
-        else echo "<!-- Moved $base_name to $old_name -->\n";
-    }
-    $new_name = $file_names["new"];
-    $success = rename($new_name, $base_name);
-    if ($success === FALSE) die("Unable to move $new_name to $base_name");
-    else echo "<!-- Moved $new_name to $base_name -->\n";
+        $base_name = $file_names["base"];
+        if (file_exists($base_name)) {
+            $old_name = $file_names["old"];
+            $success = rename($base_name, $old_name);
+            if ($success === FALSE) die("Unable to move $base_name to $old_name");
+            else jlog("Moved $base_name to $old_name");
+        }
+        $new_name = $file_names["new"];
+        $success = rename($new_name, $base_name);
+        if ($success === FALSE) die("Unable to move $new_name to $base_name");
+        else jlog("Moved $new_name to $base_name");
     }
     $op = "replaced";
 }
@@ -351,14 +354,22 @@ if (in_array("undo", $ops)) {
             $new_name = $file_names["new"];
             $success = rename($base_name, $new_name);
             if ($success === FALSE) echo("Failed moving $base_name to $new_name\n");
-            else echo "<!-- Moved $base_name to $new_name -->\n";
+            else jlog("Moved $base_name to $new_name");
         }
         $old_name = $file_names["old"];
         $success = rename($old_name, $base_name);
         if ($success === FALSE) echo("Unable to move $old_name to $base_name\n");
-        else echo "<!-- Moved $old_name to $base_name -->\n";
+        else jlog("Moved $old_name to $base_name");
     }
     $op = "undone";
+}
+
+$may_undo = false;
+foreach ($file_list as $file_names) {
+    if (file_exists($file_names["old"])) {
+        $may_undo = true;
+        break;
+    }
 }
 
 echo "</div>";
@@ -415,6 +426,9 @@ if ($op == "replaced") {
     </form>
 </div>
 <br/>
+\';
+
+if ($may_undo) echo \'
 <div class="bigbox">
     <h2>Undo</h2>
     If you find that the files installed by this pack create problems, you can move
@@ -424,6 +438,9 @@ if ($op == "replaced") {
     </form>
 </div>
 <br/>
+\';
+
+echo \'
 <div class="bigbox">
     <h2>Install pack information</h2>
     <table>
