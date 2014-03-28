@@ -2451,7 +2451,7 @@ class Archive_Tar extends PEAR
         }
 
         // ----- Extract the properties
-        $v_header['filename'] = $v_data['filename'];
+        $v_header['filename'] = str_replace("\0", "", $v_data['filename']);
         if ($this->_maliciousFilename($v_header['filename'])) {
             $this->_error('Malicious .tar detected, file "' . $v_header['filename'] .
                 '" will not install in desired directory tree');
