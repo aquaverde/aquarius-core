@@ -22,7 +22,7 @@
 	<form style="display: inline" name="entryForm" method="post" action="{url action0=$lastaction action1=$action}"  enctype="multipart/form-data">
 	<table border="0" cellpadding="0" cellspacing="0" class="table">
 		<tr class="header">
-			<td nowrap="nowrap"><input type="checkbox" onChange="selectAll(this)" class="button" />&nbsp;</td>
+			<td nowrap="nowrap"><input type="checkbox" onChange="selectAll(this)" class="button"  title="Select all" />&nbsp;</td>
 			{foreach from=$columntitles item=title}
 				<td nowrap="nowrap"><b>{$title|truncate:80:"..."}</b></td>
 			{/foreach}
@@ -32,9 +32,9 @@
 			<tr class="{cycle values='odd,even'}">
 				<td nowrap="nowrap">
 					<input type="checkbox" class="button" name="sel_records[]" value="{$id}"/>&nbsp;&nbsp;
-				{action action="dynform_data:edit_entry:`$id`:`$lg_filter`"}
-					<a href="{url action0=$lastaction action1=$action}"><img src="buttons/df_edit.gif" alt="" title="" /></a>
-				{/action}
+                        {action action="dynform_data:edit_entry:`$id`:`$lg_filter`"}
+                            <a href="{url action0=$lastaction action1=$action}" title="Edit entry"><span class="glyphicon glyphicon-pencil"></span></a>
+                        {/action}
 					
 				&nbsp;&nbsp;
 				{actionlink action="dynform_data:delete_dialog:`$id`:" show_title=false}

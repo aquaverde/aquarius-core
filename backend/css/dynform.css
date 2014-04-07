@@ -3,39 +3,14 @@
 
 .form-block {
 	margin-top: 15px ; 
-	width: 414px ; 
-	color: white ; 
-}
-
-.form-block table.talon { 
-	border-style: none ;
-	width: 450px ; 
 }
 
 .form-block col.talon-left { 
-	width: 30% ; 	
+	width: 20% ; 	
 }
 
 .form-block col.talon-right { 
-	width: 70% ; 
-}
-
-.form-block tr {
-	vertical-align: top ; 
-}
-
-.form-block input, textarea {
-	border: 1px solid black ; 
-}
-
-.form-block td {
-	padding-bottom: 5px ; 
-}
-
-.form-block .checkfield {
-	width: 325px;
-	height: 15px;
-	padding: 1px;
+	width: 80% ; 
 }
 
 .form-block .errorInvisible {
@@ -63,14 +38,6 @@
     color: #c00;
 }
 
-.form-block textarea {
-	/*font-size: 10px ; */
-	width: 325px;
-}
-
-.form-block textarea.checkfield {
-	height: 100px;
-}
 
 .form-block input.button {
 	display: block;

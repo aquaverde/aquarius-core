@@ -52,7 +52,7 @@ function smarty_function_render_form_entry($params, &$smarty) {
 		}
 		
 		$str .= '
-		<table class="talon" cellspacing="0" cellspacing="0">
+		<table class="table">
 			<colgroup>
 				<col class="talon-left" />
 				<col class="talon-right" />
@@ -93,7 +93,7 @@ function smarty_function_render_form_entry($params, &$smarty) {
 						case "Pulldown":
 							$str .= '
 							<td class="formInput">
-								<input type="text" name="field_'.$field->id.'" id="field_'.$field->id.'" class="checkfield ' ; 
+								<input type="text" name="field_'.$field->id.'" id="field_'.$field->id.'" class="form-control' ; 
 								$str .='" value="'.$DL->get_entry_value_for_field($entry->id, $field->id).'" ' ; 
 								if ($field->width) {
 									$str .= 'style="width:'.($field->width * 10).'px;" maxlength="'.$field->width.'"' ; 
@@ -105,7 +105,7 @@ function smarty_function_render_form_entry($params, &$smarty) {
 						case "Multiline":
 							$str .= '
 							<td class="formInput">
-								<textarea type="text" name="field_'.$field->id.'" id="field_'.$field->id.'"' ; 
+								<textarea type="text" class="form-control" name="field_'.$field->id.'" id="field_'.$field->id.'"' ; 
 								$str .= '" ' ; 
 								if ($field->num_lines) {
 									$str .= 'style="height:'.($field->num_lines * 13).'px;" ' ; 
@@ -130,19 +130,9 @@ function smarty_function_render_form_entry($params, &$smarty) {
 	$saveaction = Action::make("dynform_data", "edit_entry_submit", $entry_id, $fallback_lg) ; 
 		
 	$str .= '			
-			<tr>
-				<td colspan="2">
-					<div class="formSubmit">
-						<br />
-						<input type="submit" name="'.str($saveaction).'" value="'.str(new Translation('s_save')).'" class="submit"/>
-						<input type="submit" name="" value="'.str(new Translation('s_cancel')).'" class="cancel"/>
-
-
-					</div>
-				</td>
-			</tr>
-
-		</table>' ; 
+		</table>
+        <input type="submit" name="'.str($saveaction).'" value="'.str(new Translation('s_save')).'" class="btn btn-primary"/>
+		<input type="submit" name="" value="'.str(new Translation('s_cancel')).'" class="btn btn-default"/>' ; 
 		
 	$str .= '</div>' ; 
 	$str .= '</form>' ; 
