@@ -1,7 +1,6 @@
 maps_menu						= "Google Maps"
 maps_edit						= "Carte"
 
-//FORMTYPE
 formtype_gmap					= "Google Maps"
 search_by_address				= "Recherche par adresse"
 search							= "Rechercher"
@@ -16,8 +15,6 @@ link							= "Lien:"
 delete_instance					= "Effacer"
 load_external_xml				= "Load external XML-File"
 
-
-//MAPS EDIT
 points							= "Points"
 title							= "Titre"
 description						= "Texte"
