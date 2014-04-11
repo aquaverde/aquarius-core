@@ -12,6 +12,10 @@ class Formtype_googlemaps extends Formtype {
         if(!$formfield->multi) {
             $valobject->value = array_filter(array($valobject->value)); // lift
         }
+        foreach($valobject->value as &$mark) {
+            $mark['kat'] = get($mark, 'kat'); // Avoid warnings
+            $mark['link'] = get($mark, 'link'); // Avoid warnings
+        }
         
         // Read preset lat,lon,zoom from sup3 or use default config values
         $form_presets = explode(',', $formfield->sup3);
