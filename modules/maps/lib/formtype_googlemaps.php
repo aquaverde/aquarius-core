@@ -29,7 +29,7 @@ class Formtype_googlemaps extends Formtype {
         $marker_types = $this->presets->marker_types($content->lg);
         $icon_types = array();
         foreach($marker_types as $marker) { 
-            $icon_types[$marker['id']] = $marker['icon'];
+            $icon_types[$marker['id']] = $marker;
         }
         $map_options = array(
             'data'      => $valobject->value,

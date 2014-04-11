@@ -56,17 +56,17 @@
             </label>
             {/if}
             
-            <label class="clear">
-            <p style="min-width:100px; float: left">{#titel#}</p>
+            <label>
+            <p style="min-width:100px;">{#titel#}</p>
             <input type="text" name="{$field.formname}[{$index}][title]" value="{$gmap_data.title|escape}" id="{$field.htmlid}_{$index}_title" class="gmap-textfield" />
             </label>
-            <label class="clear">
-            <p style="min-width:100px; float: left">{#beschreibung#}</p>
+            <label>
+            <p style="min-width:100px;">{#beschreibung#}</p>
             <textarea name="{$field.formname}[{$index}][beschr]" id="{$field.htmlid}_{$index}_beschr" rows="8" cols="40">{$gmap_data.beschr|escape}</textarea>
             </label>
 
-            <label class="clear">
-            <p style="min-width:100px; float: left">{#link#}</p>
+            <label>
+            <p style="min-width:100px;>{#link#}</p>
             <input type="text" name="{$field.formname}[{$index}][link]" value="{$gmap_data.link|escape}" id="{$field.htmlid}_{$index}_link" class="gmap-textfield" />
             </label>
         </div>

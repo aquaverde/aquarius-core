@@ -18,3 +18,11 @@ $config['maps']['position'] = array(
     'zoom' => 19
 );
 
+/* Configure marker classes */
+$config['maps']['marker_classes'] = array(
+    'default' => array(
+        'size' => array(44,45),
+        'anchor' => array(22,46) // Bottom center
+    )
+);
+

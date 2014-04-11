@@ -11,11 +11,12 @@ class Maps_Presets {
             'icon' => 'default.png'
     );
     
-    function __construct($api_key, $position, $polyline, $markers_in) {
+    function __construct($api_key, $position, $polyline, $markers_in, $marker_classes) {
         $this->api_key = $api_key;
         $this->position = $position;
         $this->polyline = $polyline;
         $this->markers_in = $markers_in;
+        $this->marker_classes = $marker_classes;
     }
     
     function marker_types($lg) {
@@ -29,10 +30,19 @@ class Maps_Presets {
         $nodelist = NodeTree::build_flat($markers_in, array('active'));
         array_shift($nodelist); // remove category node from list
         
+        
         $marker_types = array();
         foreach ($nodelist as $nodeinfo) {
             $id = $nodeinfo['node']->id;
             $content = $nodeinfo['node']->get_content($lg);
+            
+            $class = $content->class;
+            if (isset($this->marker_classes[$class])) {
+                $marker_class = $this->marker_classes[$class];
+            } else {
+                $marker_class = $this->marker_classes['default'];
+            }
+            
             if ($content && $content->active) {
                 $name = $content->title();
                 $selection_name = str_repeat("&nbsp;&nbsp;", count($nodeinfo['connections'])).$content->title();
@@ -43,7 +53,9 @@ class Maps_Presets {
                     'value' => $id, // deprecated
                     'selection_name' => $selection_name,
                     'name' => $name,
-                    'icon' => $icon
+                    'icon' => $icon,
+                    'size' => $marker_class['size'],
+                    'anchor' =>  $marker_class['anchor']
                 );
             }
         }

@@ -26,7 +26,7 @@ function initmap(config, markers_in) {
         (function() { // scoping the id for the closures, sorry
             var id = i
             if(m["type"] == "point") {
-                add_marker(m["lat"], m["lng"], m["kat"], id);
+                add_marker(m, id);
             } else {
                 add_poly(m["lat"], m["lng"], id);
             }
@@ -161,17 +161,17 @@ function initmap(config, markers_in) {
     
     function mkIcon(icon) {
         return new google.maps.MarkerImage(
-            icon,
-            new google.maps.Size(25, 29), // size
+            icon.icon,
+            new google.maps.Size(icon.size[0], icon.size[1]), // size
             new google.maps.Point(0,0),   // origin
-            new google.maps.Point(12, 29) // anchor
+            new google.maps.Point(icon.anchor[0], icon.anchor[1]) // anchor
         )
     }
     
-    function add_marker(lat, lng, kat, id) {
-        var point = new google.maps.LatLng(lat, lng);
+    function add_marker(m, id) {
+        var point = new google.maps.LatLng(m.lat, m.lng);
         
-        var icon = config.icon_types[kat];
+        var icon = config.icon_types[m.kat];
         if (!icon) {
             icon = default_icon
         }
