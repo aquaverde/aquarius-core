@@ -47,7 +47,7 @@
         
         <input type="hidden" name="command" value="update-weights">
         {action action="languageAdmin:setWeighting:null"}
-            <button type="submit" name="{$forallaction}" class="btn btn-default btn-xs pull-right">{#s_update_weights#}</button>
+            <button type="submit" name="{$action}" class="btn btn-default btn-xs pull-right">{#s_update_weights#}</button>
         {/action}
         
     </div>
