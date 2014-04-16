@@ -1,6 +1,6 @@
 {include_javascript file="scriptaculous.js" lib=true}
 {include_javascript file="effects.js" lib=true}
-{include_javascript file="maps.js" defer=true}
+{include_javascript file="maps.js"}
 {include_css file="maps.css"}
 
 <div id="line_length"></div>
