@@ -43,7 +43,7 @@
             <input type="hidden" name="{$field.formname}[{$index}][lng]" value="{$gmap_data.lng|escape}" id="{$field.htmlid}_{$index}_lng" />
             <input type="hidden" name="{$field.formname}[{$index}][type]" value="{$gmap_data.type|escape}" id="{$field.htmlid}_{$index}_type" />
 
-            <input type="button" name="delete_instance_button_{$index}" value="{#delete_instance#}" id="{$field.formname}_{$index}_delete"" class="button">
+            <button name="delete_instance_button_{$index}" value="{#delete_instance#}" id="{$field.formname}_{$index}_delete"" class="btn btn-link pull-right"><span class="glyphicon glyphicon-trash"></span></button>
 
             {if $gmap_data.type == 'point'}
             <label>
@@ -55,22 +55,34 @@
             </select>
             </label>
             {/if}
+
+            {if $gmap_data.type == 'point'}
+            <label>
+                    {#kategorie#}<br>
+                <select name="{$field.formname}[{$index}][kat]" id="{$field.formname}_{$index}_kat">
+                    {foreach from=$field.marker_types item=marker}
+                        <option value="{$marker.id}" {if $gmap_data.kat|default:'' == $marker.id}selected="selected"{/if}>{$marker.selection_name}</option>
+                    {/foreach}
+                </select>
+            </label>
+            {/if}
             
             <label>
-            <p style="min-width:100px;">{#titel#}</p>
-            <input type="text" name="{$field.formname}[{$index}][title]" value="{$gmap_data.title|escape}" id="{$field.htmlid}_{$index}_title" class="gmap-textfield" />
+                {#titel#}<br>
+                <input type="text" name="{$field.formname}[{$index}][title]" value="{$gmap_data.title|escape}" id="{$field.htmlid}_{$index}_title" class="form-control" />
             </label>
+            
             <label>
-            <p style="min-width:100px;">{#beschreibung#}</p>
-            <textarea name="{$field.formname}[{$index}][beschr]" id="{$field.htmlid}_{$index}_beschr" rows="8" cols="40">{$gmap_data.beschr|escape}</textarea>
-            </label>
+                {#beschreibung#}<br>
+                <textarea name="{$field.formname}[{$index}][beschr]" id="{$field.htmlid}_{$index}_beschr" class="form-control">{$gmap_data.beschr|escape}</textarea>
+                </label>
 
             <label>
-            <p style="min-width:100px;>{#link#}</p>
-            <input type="text" name="{$field.formname}[{$index}][link]" value="{$gmap_data.link|escape}" id="{$field.htmlid}_{$index}_link" class="gmap-textfield" />
+                    {#link#}<br>
+                    <input type="text" name="{$field.formname}[{$index}][link]" value="{$gmap_data.link|escape}" id="{$field.htmlid}_{$index}_link" class="form-control" />
             </label>
         </div>
-    {/foreach}
+	{/foreach}
 </div>
 
 
