@@ -47,17 +47,6 @@
 
             {if $gmap_data.type == 'point'}
             <label>
-            <style="min-width:100px;">{#kategorie#}</p>
-            <select name="{$field.formname}[{$index}][kat]" id="{$field.formname}_{$index}_kat">
-                {foreach from=$field.marker_types item=marker}
-                    <option value="{$marker.id}" {if $gmap_data.kat|default:'' == $marker.id}selected="selected"{/if}>{$marker.selection_name}</option>
-                {/foreach}
-            </select>
-            </label>
-            {/if}
-
-            {if $gmap_data.type == 'point'}
-            <label>
                     {#kategorie#}<br>
                 <select name="{$field.formname}[{$index}][kat]" id="{$field.formname}_{$index}_kat">
                     {foreach from=$field.marker_types item=marker}
