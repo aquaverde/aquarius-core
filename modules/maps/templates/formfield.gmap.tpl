@@ -43,7 +43,7 @@
             <input type="hidden" name="{$field.formname}[{$index}][lng]" value="{$gmap_data.lng|escape}" id="{$field.htmlid}_{$index}_lng" />
             <input type="hidden" name="{$field.formname}[{$index}][type]" value="{$gmap_data.type|escape}" id="{$field.htmlid}_{$index}_type" />
 
-            <button name="delete_instance_button_{$index}" value="{#delete_instance#}" id="{$field.formname}_{$index}_delete"" class="btn btn-link pull-right"><span class="glyphicon glyphicon-trash"></span></button>
+            <button name="delete_instance_button_{$index}" value="{#delete_instance#}" id="{$field.formname}_{$index}_delete"" class="btn btn-link"><span class="glyphicon glyphicon-trash"></span></button>
 
             {if $gmap_data.type == 'point'}
             <label>
