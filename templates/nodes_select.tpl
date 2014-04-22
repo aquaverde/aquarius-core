@@ -9,7 +9,6 @@
     {/literal}
 </style>
 
-{include_javascript file='prototype.js' lib=true}
 {include_javascript file='nodetree.js'}
 
 {js target_id=$target_id callback=$callback}
@@ -64,10 +63,8 @@
 <input type="submit" name="" value="{#s_close#}" onclick="window.close()" class="btn btn-default pull-right"/>
 
 <script type="text/javascript">
-/* <![CDATA[ */
-    var request_url = '{url escape=false action=$subtree_action}'
-    var nodetree = new NodeTree(request_url)
-/* ]]> */
+    var root = document.getElementById('nodetree_entry_{$entry.node->id}')
+    var nodetree = new NodeTree(root, '{url escape=false action=$subtree_action}', null, function() { return { selected: selected_ids() } })
 </script>
 
 {include file=footer.tpl}

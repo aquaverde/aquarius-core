@@ -1,7 +1,9 @@
 /* Manage a nodetree page.
  * Construction parameter 'request_url' is used to request an update for a section of the tree.
+ * Optional construction parameter 'move_url' is used to submit changes to the node order.
+ * Optional construction parameter 'pass_params' is called to retrieve params that will be sent to the subtree-building action.
  */
-function NodeTree(root, request_url, move_url) {
+function NodeTree(root, request_url, move_url, pass_params) {
     var self = this
     
     // Register click handlers on the open/close toggle
@@ -25,10 +27,10 @@ function NodeTree(root, request_url, move_url) {
     this.update = function(container, open) {
         var $container = jQuery(container)
 
-        params = {
-            node: $container.data('node')
-        }
         
+        var params = pass_params ? pass_params() : {}
+        params.node = $container.data('node')
+
         if (open !== undefined) {
             params.open = open ? 1: 0
         }
