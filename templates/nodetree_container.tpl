@@ -78,7 +78,7 @@
     {foreach from=$entry.children item=childentry}
         <li class="nodetree_container nodetree_entry {if !$childentry@last}nodetree_connection{else}nodetree_plus{/if}" data-form="{$childentry.node->form_id}" data-node="{$childentry.node->id}">
             {include file="nodetree_container.tpl" entry=$childentry hide_root=false base=false}
-        </li>    
+        </li>
     {/foreach}
     </ul>
 {/if}
