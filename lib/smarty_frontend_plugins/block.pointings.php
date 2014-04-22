@@ -4,7 +4,7 @@
 Params:
     to: The node which we are searching pointings for
     lg: 
-    children_of: To limit the search to children of a node
+    childrenof: To limit the search to children of a node (deprecated name for this option is children_of)
     limit: Optional limit of iterations (default: unlimited)
     shuffle: randomize list before display
     search_parents: look up pointings in parents (default: true)
@@ -24,7 +24,7 @@ function smarty_block_pointings($params, $content, &$smarty, &$repeat) {
        
         $inherit = (bool)get($params, 'inherit');
         $search_parents = (bool)get($params, 'search_parents', true);
-        $children_of = db_Node::get_node(get($params, 'children_of'));
+        $children_of = db_Node::get_node(get($params, 'childrenof', get($params, 'children_of')));
         $depth = get($params, 'depth', false);
         $lg = db_Languages::ensure_code(get($params, 'lg', $smarty->get_template_vars('lg')));
         $custom_filter_sentence = get($params, 'filter');
