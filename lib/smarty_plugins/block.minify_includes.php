@@ -25,14 +25,16 @@ function smarty_block_minify_includes($params, $content, $smarty, &$repeat) {
         // Degenerate SCSS into CSS
         if ($scss_files) {
             $scss_compiler = new scssc();
+
             foreach($scss_files as $scss_file) {
                 $css_file = substr($scss_file, 0, -5).'.css';
                 $css_files []= $css_file;
-                
+
                 $scss_path = $root.$scss_file;
                 $css_path = $root.$css_file;
-                print_r(array(filemtime($css_path), filemtime($scss_path)));
+
                 if (filemtime($css_path) < filemtime($scss_path)) {
+                    $scss_compiler->setImportPaths(dirname($scss_path));
                     $source = file_get_contents($scss_path);
                     if ($source === false) throw new Exception("Unable to read SCSS file $scss_path");
                     $comp = "/* Generated ".date(DATE_W3C)." from $scss_file */\n".$scss_compiler->compile($source);
@@ -53,7 +55,7 @@ function smarty_block_minify_includes($params, $content, $smarty, &$repeat) {
             global $aquarius;
             if ($aquarius->debug()) $css_min_url->add_param('debug', 1);
             $links .= "<link href='$css_min_url' rel='stylesheet' type='text/css' />";
-        }       
+        }
         if ($js_files) {
             $js_min_url = new Url('/min/');
             $js_min_url->add_param('f', join(',', $js_files));
