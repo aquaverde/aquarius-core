@@ -12,9 +12,14 @@ Minify::setCache(CACHE_DIR, true);
 require_once 'Minify/DebugDetector.php';
 $debug =  Minify_DebugDetector::shouldDebugRequest($_COOKIE, $_GET, $_SERVER['REQUEST_URI']);
 
+if (!$debug) {
+    ini_set('display_errors', 0);
+}
+
 $min_serveOptions = array(
     'bubbleCssImports' => true,
-    'debug' => $debug
+    'debug' => $debug,
+    'fileLocking' => false
 );
 
 if ($debug) {

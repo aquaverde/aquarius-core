@@ -3,7 +3,8 @@
         "smarty/smarty": "3.*",
         "mrclay/minify": "2.*",
         "swiftmailer/swiftmailer": "4.*",
-        "vrana/adminer": "4.*"
+        "vrana/adminer": "4.*",
+        "leafo/scssphp": "0.0.*"
     },
     "repositories": [
         {
