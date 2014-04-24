@@ -504,7 +504,7 @@ class Dynform extends Module
             else $conf_sender = "info@".$_SERVER['SERVER_NAME'] ;
             $newMail->setSenderAddress($conf_sender) ; 
             $newMail->setTargetAddress($client_email);
-            $newMail->setReplyAddress($target_email);
+            $newMail->setReplyAddress($conf_sender);
             if ($content->email_confirmation_subject) $newMail->setSubject($content->email_confirmation_subject) ; 
             $newMail->sendMail() ; 
         }
