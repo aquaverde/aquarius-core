@@ -244,4 +244,3 @@ function smarty_function_subscribe($params, &$smarty)
     			'unsubscriptionConfirmOK'));
     return '';
 }
-?>

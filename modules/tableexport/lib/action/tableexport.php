@@ -159,4 +159,3 @@ class action_tableexport extends ModuleAction {
     }
 }
 
-?>

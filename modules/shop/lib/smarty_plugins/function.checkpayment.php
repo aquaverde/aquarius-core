@@ -105,4 +105,3 @@ function smarty_function_checkpayment($params, &$smarty) {
 
     return;
 }
-?>

@@ -79,4 +79,3 @@ class Newsletter_Edition {
         $smarty->assign('unsubscribe_link', $unsubscribe_uri);
     }
 }
-?>

@@ -35,4 +35,3 @@ class Tableexport extends Module {
         ));
     }
 }
-?>

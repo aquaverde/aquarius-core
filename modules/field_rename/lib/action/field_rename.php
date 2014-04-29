@@ -106,4 +106,3 @@ class action_field_rename_rename extends action_field_rename implements ChangeAc
     }
 }
 
-?>

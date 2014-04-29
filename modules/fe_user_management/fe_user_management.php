@@ -394,4 +394,3 @@ class Edit_Address_Action_Generator {
 		return Action::make('Fe_address', $cmd, $id);
 	}
 }
-?>

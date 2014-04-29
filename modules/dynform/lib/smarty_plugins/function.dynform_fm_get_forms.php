@@ -38,4 +38,3 @@ function smarty_function_dynform_fm_get_forms($params, &$smarty)
 	
 	$smarty->assign("dynforms", $dynforms) ;
 }
-?>

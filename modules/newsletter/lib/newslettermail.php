@@ -56,4 +56,3 @@ function newslettermail($from, $to, $bcc, $subject, $content)
 function newslettermassmail($from, $to, $bcc, $subject, $content) {
     return newslettermail($from, $to, $bcc, $subject, $content);
 }
-?>

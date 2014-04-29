@@ -28,4 +28,3 @@ class action_archiver_run extends action_archiver implements ChangeAction {
     }
 }
 
-?>

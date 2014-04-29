@@ -224,4 +224,3 @@ class Formtype_shop_attr extends Formtype {
     }
 
 }
-?>

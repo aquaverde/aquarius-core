@@ -52,4 +52,3 @@ function smarty_block_listmethods($params, $content, &$smarty, &$repeat) {
 
 }
 
-?>

@@ -78,4 +78,3 @@ class Maps_Xml extends Module {
 		}
 	}
 }
-?>

@@ -106,4 +106,3 @@ class Shorturi_Detection_Step {
         return $modified_params;
     }
 }
-?>

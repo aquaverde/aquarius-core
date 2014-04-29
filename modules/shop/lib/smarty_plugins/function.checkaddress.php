@@ -82,4 +82,3 @@ function smarty_function_checkaddress($params, &$smarty) {
     
     return;
 }
-?>

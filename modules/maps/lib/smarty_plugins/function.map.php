@@ -180,4 +180,3 @@ function init_map() {
 
 
 
-?>

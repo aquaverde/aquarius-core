@@ -221,4 +221,3 @@ class SitemapDom extends DomDocument {
         $parent->appendChild($elm);
     }
 }
-?>

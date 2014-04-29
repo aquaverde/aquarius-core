@@ -14,4 +14,3 @@ class Field_rename extends Module {
         ));
     }
 }
-?>

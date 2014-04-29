@@ -18,4 +18,3 @@ function smarty_function_dynform_block_name($params, &$smarty)
     $DL = new Dynformlib ; 
     return $DL->get_block_name($bid, $lg) ; 
 }
-?>

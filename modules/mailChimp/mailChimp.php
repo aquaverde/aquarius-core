@@ -20,4 +20,3 @@ class mailChimp extends Module
     }	
 }
 
-?>

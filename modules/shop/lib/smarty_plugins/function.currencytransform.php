@@ -36,4 +36,3 @@ function smarty_function_currencytransform($params, &$smarty) {
 
     return $result;
 }
-?>

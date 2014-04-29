@@ -137,4 +137,3 @@ class action_fe_address extends ModuleAction {
     }
 }
 
-?>

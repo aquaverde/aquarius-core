@@ -130,4 +130,3 @@ class MailForm extends Module {
         return $this->sent_status[$form_name];
     }
 }
-?>

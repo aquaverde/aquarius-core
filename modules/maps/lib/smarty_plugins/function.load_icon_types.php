@@ -24,4 +24,3 @@ function smarty_function_load_icon_types($params, &$smarty) {
 
 	$smarty->assign('my_icons', $my_icons);
 }
-?>

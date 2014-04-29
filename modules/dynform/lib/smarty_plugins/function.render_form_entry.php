@@ -139,4 +139,3 @@ function smarty_function_render_form_entry($params, &$smarty) {
 	
 	echo $str ; 
 }
-?>

@@ -48,4 +48,3 @@ function smarty_function_mapmenu($params, &$smarty) {
 	}
 	echo '</div>';
 }
-?>

@@ -66,4 +66,3 @@ class Agenda extends Module {
 	}
 }
 
-?>

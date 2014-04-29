@@ -170,4 +170,3 @@ class Subsites extends Module {
         }
     }
 }
-?>

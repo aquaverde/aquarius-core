@@ -25,4 +25,3 @@ function smarty_modifier_shop_currency_format($value, $show_code=true) {
     if ($show_code) $str = $code." ".$str;
     return $str;
 }
-?>

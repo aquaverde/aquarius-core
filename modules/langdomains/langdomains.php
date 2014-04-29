@@ -34,4 +34,3 @@ class Langdomains extends Module {
         }
     }
 }
-?>

@@ -94,4 +94,3 @@ function smarty_function_getmethods($params, &$smarty) {
 
     return;
 }
-?>

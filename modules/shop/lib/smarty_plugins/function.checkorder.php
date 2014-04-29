@@ -203,4 +203,3 @@ function smarty_function_checkorder($params, &$smarty) {
     $smarty->assign("cart",$cart);
     return;
 }
-?>

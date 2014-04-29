@@ -25,4 +25,3 @@ class action_newsletter_edit extends AdminAction implements DisplayAction {
         $result->use_template("nodetree.tpl");
     }
 }
-?>

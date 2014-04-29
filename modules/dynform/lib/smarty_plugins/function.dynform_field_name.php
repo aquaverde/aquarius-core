@@ -21,4 +21,3 @@ function smarty_function_dynform_field_name($params, &$smarty)
     $DL = new Dynformlib ;    
     return $DL->get_field_name($fid, $lg, $length) ; 
 }
-?>

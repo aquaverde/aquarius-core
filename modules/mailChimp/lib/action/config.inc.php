@@ -9,4 +9,3 @@
     $my_email   = '';
     $my_name    = '';
     
-?>

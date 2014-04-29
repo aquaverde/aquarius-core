@@ -49,4 +49,3 @@ class action_sqlInput_showInput extends action_sqlInput implements DisplayAction
 		$result->use_template("sql_show.tpl");
 	}
 }
-?>

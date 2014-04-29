@@ -36,4 +36,3 @@ function smarty_function_dynform_fieldtypes_popup($params, &$smarty)
 }
 
 
-?>

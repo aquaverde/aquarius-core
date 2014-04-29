@@ -46,4 +46,3 @@ $config['shop']['paypal']['connection_sandbox'] = array(
 );
 
 
-?>

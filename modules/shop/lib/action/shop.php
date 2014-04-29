@@ -244,4 +244,3 @@ class action_shop extends ModuleAction {
     }
 }
 
-?>

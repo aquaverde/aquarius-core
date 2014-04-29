@@ -14,4 +14,3 @@ class Email_Test extends Module {
         ));
     }
 }
-?>

@@ -32,4 +32,3 @@ function smarty_block_listcart($params, $content, &$smarty, &$repeat) {
 
 }
 
-?>

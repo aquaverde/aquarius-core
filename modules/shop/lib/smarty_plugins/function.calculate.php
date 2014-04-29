@@ -25,4 +25,3 @@ function smarty_function_calculate($params, &$smarty) {
     
     return $result;
 }
-?>

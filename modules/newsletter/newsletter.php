@@ -69,4 +69,3 @@ class Newsletter extends Module {
         return new Mail_Transport_Chunked($transport, $max_rcpt, $from, $delay_per_rcpt);
     }
 }
-?>

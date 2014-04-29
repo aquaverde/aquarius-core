@@ -63,4 +63,3 @@ function smarty_function_calcprice($params, &$smarty) {
     $smarty->assign("total_price",$total_price);
     return;
 }
-?>

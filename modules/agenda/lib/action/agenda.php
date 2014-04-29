@@ -71,4 +71,3 @@ class action_agenda_dayagenda extends action_agenda implements DisplayAction {
 	}
 }
 
-?>

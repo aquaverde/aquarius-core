@@ -139,4 +139,3 @@ function smarty_block_listattr($params, $content, &$smarty, &$repeat) {
     
     return $content;
 }
-?>
