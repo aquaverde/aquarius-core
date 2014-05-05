@@ -1,5 +1,5 @@
 {include file='header.tpl'}
-<form method="post" name="userAdmin" action="{url}">
+<form method="post" name="userAdmin" action="{url action=$lastaction}">
 	<h1>{#s_usr_user#} {#s_usr_manage#}</h1>
 	
 	<div class="topbar">
@@ -60,11 +60,8 @@
 			<tr>
 				<td nowrap="nowrap">
 					&nbsp;
-				  {action action="feuser:toggle_active:`$user->id`:"}
-					<a href="{url action=$action action1=$lastaction}">
-						<img src="buttons/flag_{$user->getActiveState()}.gif" border="0" alt="on" />
-					</a>&nbsp;&nbsp;
-				  {/action}
+                  {activationbutton action="feuser:toggle_active:`$user->id`:" active=$user->active class=imagebutton}
+
 				  {action action="feuser:edit:`$user->id`:"}
 					<a href="{url action=$action action1=$lastaction}" title="ID {$user->id}">
 						{$user->name} <img src="buttons/edit.gif" border="0" alt="edit" />
