@@ -157,11 +157,7 @@ try {
             $displayresult->messages = array_merge($displayresult->messages, get($result, 'messages', array()));
             $own_smarty = get($result, 'smarty'); // Legacy actions build their own containers
             if ($own_smarty) {
-                $smarty = $own_smarty;
-                $displayresult->template = $smarty->tmplname;
-                $smarty->assign('lg', $lg);
-                $smarty->assign('primary_lang', db_Languages::getPrimary());
-                $smarty->assign('lang', $lg);
+                throw new Exception("Legacy actions not supported anymore, update module action ".$action);
             }
 
             // See if execution yielded another action to be executed
