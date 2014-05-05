@@ -2,6 +2,7 @@
 
 <h1>{#s_groups#}</h1>
 
+<form action="{url action0=$lastaction}" method="post">
 <div class="">
 	<div class="bigboxtitle"><h2>{#s_groups#}</h2></div>
 
@@ -11,12 +12,8 @@
 			<tr>
 				<td nowrap="nowrap" align="left">
 					&nbsp;
-				  {action action="fegroup:toggle_active:`$group->id`:0}
-					<a href="admin.php{url action=$action action1=$lastaction}">
-						<img src="buttons/flag_{$group->getActiveState()}.gif" border="0" alt="on" />
-					</a>&nbsp;&nbsp;
-				  {/action}
-				  
+                  {activationbutton action="fegroup:toggle_active:`$group->id`:0" active=$group->active class=imagebutton}
+				  &nbsp;&nbsp;
 				  {action action="fegroup:edit:`$group->id`:"}
 					<a href="admin.php{url action=$action action1=$lastaction}">{$group->name} ({$group->id})</a>
 				  {/action}
@@ -47,5 +44,5 @@
     {/action}
 
 </div>
-
+</form>
 {include file='footer.tpl'}
