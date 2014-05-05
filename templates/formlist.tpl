@@ -54,11 +54,12 @@
         </table>
     </form>
     <br>
+        
     <a href="{url action1=$lastaction action='form:import'}" class="btn btn-default btn-sm pull-right"><span class="glyphicon glyphicon-download-alt"></span> Import</a>
 
     
     <form action="{url action=$lastaction}" method="post">
-        <button type="submit" name="{$action}" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus-sign"></span> {#s_new#}</button>
+        <button type="submit" name="{$action_new}" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus-sign"></span> {#s_new#}</button>
     </form>
 
     
