@@ -86,14 +86,14 @@ html, body {height: 95%} body {max-width: none;}
         </tr>
 {/foreach}
   </table>  
-      <div>
+       <br><div id="outer">
         <h2>Child types selection</h2>
         {foreach from=$form_children item=form_child}
-            <input type='radio' name='form_child_preset' value='{$form_child.id}' {if $form_child.preset}checked{/if} style="display: inline">
-            <label  style="display: inline">
-                <input type='checkbox' name='form_children[]' value='{$form_child.id}'{if $form_child.checked}checked{/if}>{$form_child.title}{if $form_child.template} ({$form_child.template}){/if}
+            <label>
+                <input type='radio' name='form_child_preset' value='{$form_child.id}' {if $form_child.preset}checked{/if}>
+                <input type='checkbox' name='form_children[]' value='{$form_child.id}'{if $form_child.checked}checked{/if}>
+                &nbsp;{$form_child.title}{if $form_child.template} ({$form_child.template}){/if}
             </label>
-            <br/>
         {/foreach}
     </div>
   <input type="submit" name="{$action}" value="{#s_done#}" class="btn btn-primary"/>
