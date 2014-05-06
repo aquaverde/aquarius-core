@@ -176,7 +176,7 @@ form_import_parse_error = "Failed reading import: %s"
 form_import_success = "Import successful: %s"
 
 s_new_child = "New element"
-s_choose_template = "Choose template"
+s_choose_template = "Choose page type"
 
 s_no_wordings_found  = "No wording found"
 s_pointings_selected = "Selected"
