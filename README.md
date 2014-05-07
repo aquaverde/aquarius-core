@@ -11,6 +11,8 @@ see doc/requirements.txt
 Have a look at the [blank aquarius template](http://github.com/aquaverde/aquarius-blank)
 repository. Installing from scratch is not documented.
 
+# Easy Installation
+[Download installer here](http://www.aquarius-cms.com/en/download.html)
 
 # Documentation
 see doc/aquadoc.txt
