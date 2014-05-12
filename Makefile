@@ -4,11 +4,11 @@ ADMINER=../dbadmin/index.php
 
 all: $(VENDOR) $(ADMINER)
 
-full: $(VENDOR)
-	php bin/packer full
+full: $(VENDOR) $(ADMINER)
+	php bin/packer --inline full
 
 bare: $(VENDOR)
-	php bin/packer core
+	php bin/packer --inline bare
 
 $(VENDOR): $(COMPOSER) composer.json $(wildcard composer.lock)
 	php $(COMPOSER) update
