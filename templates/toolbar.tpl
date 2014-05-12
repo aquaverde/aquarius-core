@@ -30,7 +30,7 @@
         {/if}
 
         {if $formedit}
-    	    <a href="{url action0=$lastaction action1=$formedit}" title="Pagetype: {$form->title}"  data-toggle="tooltip">Pagetype:</a>
+    	    <a href="{url action0=$lastaction action1=$formedit}" title="{#s_form#}: {$form->title}"  data-toggle="tooltip">{#s_form#}:</a>
         {/if}
         {if $change_form}
             {if !$is_super}{#choose_form#}:&nbsp;{/if}
@@ -44,7 +44,7 @@
                 {/foreach}
                 {/strip}
             </select>
-            <input type="submit" name="{$change_form}" value="set" class="button" />
+            <input type="submit" name="{$change_form}" value="{#change_form_submit#}" class="button" />
         {/if}
         
         {if $formedit || $change_form}
