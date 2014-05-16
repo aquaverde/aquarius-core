@@ -12,7 +12,7 @@
 class Formtype_RTE extends Formtype {
     /** Load FCKEditor */
     function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisits) {
-		$page_requisits->add_js_lib('ckeditor/ckeditor.js');
+		$page_requisits->add_js_lib('rte/ckeditor.js');
 		
 		if($formfield->sup1)
 		    $backendRTE = new BackendRTE(db_Users::authenticated()->adminLanguage, $content->lg, $formfield->sup1);

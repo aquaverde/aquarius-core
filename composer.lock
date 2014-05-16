@@ -3,8 +3,49 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "754627916fab99b7f61d421fd2ade03d",
+    "hash": "2f52c2364abda3a6e52d370dcf7664d2",
     "packages": [
+        {
+            "name": "ckeditor/ckeditor",
+            "version": "4.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ckeditor/ckeditor-releases.git",
+                "reference": "7d88a6ab0efe61890edb131420a53dc8c7568a74"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ckeditor/ckeditor-releases/zipball/7d88a6ab0efe61890edb131420a53dc8c7568a74",
+                "reference": "7d88a6ab0efe61890edb131420a53dc8c7568a74",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+",
+                "LGPL-2.1+",
+                "MPL-1.1+"
+            ],
+            "authors": [
+                {
+                    "name": "CKSource - Frederico Knabben",
+                    "homepage": "http://cksource.com"
+                }
+            ],
+            "description": "JavaScript WYSIWYG web text editor.",
+            "homepage": "http://ckeditor.com",
+            "keywords": [
+                "CKEditor",
+                "editor",
+                "fckeditor",
+                "html",
+                "javascript",
+                "richtext",
+                "text",
+                "wysiwyg"
+            ],
+            "time": "2014-04-24 14:05:16"
+        },
         {
             "name": "leafo/scssphp",
             "version": "0.0.10",
@@ -93,11 +134,11 @@
         },
         {
             "name": "smarty/smarty",
-            "version": "v3.1.17",
+            "version": "v3.1.18",
             "source": {
                 "type": "svn",
                 "url": "http://smarty-php.googlecode.com/svn",
-                "reference": "/tags/v3.1.17/@4818"
+                "reference": "/tags/v3.1.18/@4839"
             },
             "require": {
                 "php": ">=5.2"
@@ -133,7 +174,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-03-12 20:51:46"
+            "time": "2014-05-08 18:38:30"
         },
         {
             "name": "swiftmailer/swiftmailer",

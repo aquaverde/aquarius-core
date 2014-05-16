@@ -4,7 +4,8 @@
         "mrclay/minify": "2.*",
         "swiftmailer/swiftmailer": "4.*",
         "vrana/adminer": "4.*",
-        "leafo/scssphp": "0.0.*"
+        "leafo/scssphp": "0.0.*",
+        "ckeditor/ckeditor": "4.4.*"
     },
     "repositories": [
         {
