@@ -1,146 +1,78 @@
 <?php
+
 /** Provide frontend user management functions
   *
-  * From the user's perspective, the process to register a new user looks as follows:
-  *   1. Send account request via web form
-  *   2. recieve verification email, click contained link
-  *
-  * Usually, it would be enough to mail a verification token to the user's mail address. A user entry will be created when the user can produce the token. This is not enough in our scenario since the user may give his full address on signup. This address must be stored until the user verified the token. The following process was chosen:
-  *
-  *   PERSONAE:
-  *    DB: the database
-  *    SITE: the server-side code
-  *    CLIENT: User with HTTP/SMTP User agent
-  *
-  *        SITE <- CLIENT  account request for address $a
-  *  DB <- SITE            store $a
-  *  DB -> SITE            stored address with id $i
-  *        SITE            create token $t for $i
-  *        SITE -> CLIENT  send $t over SMTP mail
-  *        SITE <- CLIENT  recieved $t
-  *        SITE            verify $t, extract $i
-  *  DB <- SITE            create user for address $i
-  *  DB -> SITE            created user with id $ui
-  *        SITE            log-in user $ui
+  * Create and update user account and associated address data from the frontend
+  * Backend user management is extended to include operations on user's address data
   */
 class Fe_user_management extends Module {
-    var $register_hooks = array('frontend_page', 'smarty_config_frontend', 'smarty_config_backend', 'feuser_list_filteractions', 'feuser_list_actions');
+    var $register_hooks = array('smarty_config_frontend', 'smarty_config_backend', 'feuser_list_filteractions', 'feuser_list_actions');
     
     var $short = "fe_user_management";
     var $name  = "Frontend User Management";
 
-    /** assoc array with results of operations such as account_request */
-    var $results = array();
-
-    function frontend_interface() {
-        return $this;
-    }
-
-    /** Look for and execute requests */
-    function frontend_page($smarty) {
-        if (isset($_REQUEST['account_request'])) $this->account_request();
-        if (isset($_REQUEST['account_confirm'])) $this->account_confirm();
-        if (isset($_REQUEST['account_change'])) $this->account_change();
-        if (isset($_REQUEST['password_request'])) $this->password_request();
-        if (isset($_REQUEST['password_reset'])) $this->password_reset();
-        if (isset($_REQUEST['save_address'])) $this->save_address();
-    }
-
+    /** Provide action to export user addresses */
     function feuser_list_filteractions() {
         return Action::make('fe_address', 'export', false);
     }
 
+    /** Provide Object that supplies address viewing/editing actions */
     function feuser_list_actions() {
         return new Edit_Address_Action_Generator();
     }
 
-    /** get the result of an operation
-      * params:
-      *   operation: name of the operation
-      * False is returned if there are no results, likely because the operation was not executed */
-    function get_result($params) {
-        return get($this->results, get($params, 'operation'), false);
-    }
+    /** Create address object from given dict */
+    function read_address($params) {
+        return new Usermanagement_Address($params);
+    }    
 
-    /** Save address and send out an authentication token to the user
-      * The address is saved to the DB. With the id of the address a challenge token is built and sent to the user by email. */
-    function account_request() {
-        $mail_address = trim(requestvar('email'));
-        $error = false;
-        $sent = false;
 
-        if (!$this->valid_mail_address($mail_address)) {
-            $error = "usermanagement_invalid_email_Address";
+
+    /** Save address and create user
+     * The user's email address is used as id
+     * @param $params dictionary with fields 'email', 'password' and 'password_confirm'
+     * @return dict with 'user' and 'errors'
+     * The created user will be logged in for this session
+     */
+    function register($params) {
+        $errors = array();
+
+        $mail_address = get($params, 'email');
+        
+        require_once "lib/Usermanagement_Address.php";
+        if (!Usermanagement_Address::valid_mail_address($mail_address)) {
+            $errors['email'] = 'usermanagement_invalid_mail_address';
         }
 
-        // Ensure user doesn't exist already
-        if (!$error) {
-            $user = DB_DataObject::factory('fe_users');
-            $user->name = $mail_address;
-            if ($user->find()) {
-                $error = "usermanagement_user_exists";
-            }
+        $user = DB_DataObject::factory('fe_users');
+        $user->name = $mail_address;
+        if ($user->find()) {
+            $errors['email'] = 'usermanagement_user_exists';
         }
 
-        // Save address to DB, send challenge token by mail
-        if (!$error) {
-            $address_id = $this->save_address();
-            $challenge = $this->create_token($address_id);
-
-            global $aquarius;
-            $smarty = $aquarius->get_smarty_frontend_container();
-            $smarty->caching = false;
-            $smarty->assign('lg', $GLOBALS['lg']);
-            $smarty->assign('address', $mail_address);
-            $smarty->assign('challenge', $challenge);
-            $mail = new AquaMail($smarty, 'user_management.mail.account_request.tpl', 'user_management.mail.account_request.html.tpl');
-            $mail->set('to', $mail_address);
-            $sent = $mail->send();
-            if (!$sent) $error = "usermanagement_failed_sending_email";
+        $password = get($params, 'password');
+        if (empty($password)) {
+            $errors['password'] = 'usermanagement_password_missing';
         }
         
-        $sent = !$error;
-        $this->results['account_request'] = compact('sent', 'mail_address', 'error');
-    }
-    
-    /** Create an account for a user.
-      * The token in the 'account_confirm' request variable is read and validated.
-      * If the token is valid, either a user account for the name contained in the token is created or the user's password is reset if the user exists already
-      *  */
-    function account_confirm() {
-        $error = false;
-
-        $token = requestvar('challenge');
-        $address_id = $this->parse_token($token);
-
-        if (!$address_id) $error = 'usermanagement_invalid_token';
-
-        // Load address from DB
-        $address = false;
-        if (!$error) {
-            $address = DB_DataObject::factory('fe_address');
-            $found = $address->get($address_id);
-            if (!$found) throw new Exception("Encountered valid token with address id '$address_id' but no corresponding DB entry");
+        if (empty($errors)) {
+            $password_confirm = get($params, 'password_confirm');
+            if ($password_confirm !== $password) {
+                $errors['password_confirm'] = 'usermanagement_passwords_dont_match';
+            }
         }
-
-        // Prepare user object for this address
-        $user = false;
-        if (!$error) {
-            $user = DB_DataObject::factory('fe_users');
-            $user->name = $address->email;
-            if ($user->find()) $error = 'usermanagement_user_exists';
-        }
-
-        // Generate password, save to DB
-        if (!$error) {
-            $password = $this->generate_password();
+        
+        if (empty($errors)) {
             $user->password = md5($password);
             $user->active = true;
             $user->insert();
             Log::info("Added user $user->name($user->id)");
-            
+
+            // Log the user in
+            $user->login();
+
             // Add user to default groups
-            foreach(explode(',', FE_USER_MANAGEMENT_AUTOGROUPS) as $group_id) {
+            foreach($this->conf('autogroups', array()) as $group_id) {
                 if (!$user->in_group($group_id)) {
                     $rel = DB_DataObject::factory('fe_groups2user');
                     $rel->user_id = $user->id;
@@ -149,31 +81,41 @@ class Fe_user_management extends Module {
                 }
             }
             
-            // Join address to user
-            $user_address = DB_DataObject::factory('fe_user_address');
-            $user_address->fe_user_id = $user->id;
-            $user_address->fe_address_id = $address->id;
-            $user_address->insert();
-            
-            // Log him in already
-            $_SESSION['fe_user_id'] = $user->id;
+            // Add address entry
+            $address = db_Dataobject::factory('fe_address');
+            $inserted = $address->insert();
+            if (!$inserted) throw new Exception("Unable add address for $user->name ");
+            $fe_user_address = db_Dataobject::factory('fe_user_address');
+            $fe_user_address->fe_user_id = $user->id;
+            $fe_user_address->fe_address_id = $address->id;
+            $inserted = $fe_user_address->insert();
+            if (!$inserted) throw new Exception("Unable link address for $user->name ");
         }
 
-        // Send mail
-        if (!$error) {
-            global $aquarius;
-            $smarty = $aquarius->get_smarty_frontend_container();
-            $smarty->caching = false;
-            $smarty->assign('lg', $GLOBALS['lg']);
-            $smarty->assign('address', $user->name);
-            $smarty->assign('password', $password);
-            $mail = new AquaMail($smarty, 'user_management.mail.account_confirm.tpl', 'user_management.mail.account_confirm.html.tpl');
-            $mail->set('to', $user->name);
-            $sent = $mail->send();
-            if (!$sent) $error = "usermanagement_failed_sending_email";
-        }
-        
-        $this->results['account_confirm'] = compact('address', 'error');
+        return compact('user', 'errors');
+    }
+    
+    /** Prepare a basic mail instance
+      * @param $node the node  for this mail
+      * @param $template name of the template to be used
+      * @param $vars template variables for the mail templates
+      * */
+    function prepare_mail($node, $template, $vars) {
+        require_once('lib/aquamail.php');
+        global $aquarius;
+        $node = or_die(
+            db_Node::get_node($node),
+            "Unable to load node '$node' for mail"
+        );
+        $smarty = $aquarius->get_smarty_frontend_container($GLOBALS['lg'], $node);
+
+        $smarty->assign($vars);
+        $mail = new AquaMail($smarty, $template.'.tpl', $template.'.html.tpl');
+
+        $mail->set('from', $node->get_sender_email());
+        $mail->set('replyto', $node->get_sender_email());
+
+        return $mail;
     }
     
     /** Change account settings
@@ -182,130 +124,95 @@ class Fe_user_management extends Module {
       * Changing password is only attempted when password1 is not empty */
     function account_change() {
         $pw = requestvar('password');
+        $success = false;
+        $errors = array();
         if (strlen($pw) > 0) {
-            $success = false;
             if ($pw == requestvar('password_confirm')) {
                 $user = db_Fe_users::authenticated();
                 $user->password = md5($pw);
                 $user->update();
                 $success = true;
             } else {
-                $error = 'usermanagement_passwords_dont_match';
+                $errors ['password']= 'usermanagement_passwords_dont_match';
             }
-            $this->results['account_confirm'] = compact('success', 'error');
         }
+        return compact('success', 'errors');
     }
 
-    /** Sends a mail with a token that lets user reset his password to address in request variable 'email' */
-    function password_request() {
-        $error = false;
-        $address = requestvar('email');
-        if (!$this->valid_mail_address($address)) {
-            $error = "usermanagement_invalid_email_address";
-        }
+    
+    function new_password_mail($email, $link) {
+        $errors = array();
+        $success = false;
         
-        if (!$error) {
-            $user = DB_DataObject::factory('fe_users');
-            $user->name = $address;
-            if (!$user->find()) $error = 'usermanagement_no_such_user';
-        }
-        
-        if (!$error) {
-            $challenge = $this->create_token($address);
+        $user = DB_DataObject::factory('fe_users');
+        $user->name = trim($email);
+        if (!$user->find()) {
+            $errors['email'] = 'usermanagement_invalid_mail_address';
+        } else {
+            $user->fetch();
 
-            global $aquarius;
-            $smarty = $aquarius->get_smarty_frontend_container();
-            $smarty->caching = false;
-            $smarty->assign('lg', $GLOBALS['lg']);
-            $smarty->assign('address', $address);
-            $smarty->assign('challenge', $challenge);
-            $mail = new AquaMail($smarty, 'user_management.mail.password_request.tpl', 'user_management.mail.password_request.html.tpl');
-            $mail->set('to', $address);
-            $sent = $mail->send();
-            if (!$sent) $error = "usermanagement_failed_sending_email";
-        }
-        $this->results['password_request'] = compact('error');
-    }
+            $link->params['token'] = $this->create_token($user->name);
 
-        /** Expects a token with mail address (user name) in request variable 'challenge'
-          * Resets user's password and mails new credentials. */
-    function password_reset() {
-        $error = false;
-                
-        $token = requestvar('challenge');
-        $address = $this->parse_token($token);
-
-        if (!$address) $error = 'usermanagement_invalid_token';
-        
-        if (!$error) {
-            $user = DB_DataObject::factory('fe_users');
-            $user->name = $address;
-            if (!$user->find()) $error = 'usermanagement_no_such_user';
-            else $user->fetch();
-        }
-        
-        // Generate password, save to DB, log in
-        if (!$error) {
-            $password = $this->generate_password();
-            $user->password = md5($password);
-            $user->update();
-            Log::info("Reset password for user $user->name($user->id)");
+            $mail = $this->prepare_mail(
+                    'mail_new_password',
+                    'mail_new_password',
+                    compact('link')
+            );
             
-            $_SESSION['fe_user_id'] = $user->id;
+            $mail->set('to', $user->name);
+            
+            $success = $mail->send();
+        }
+        return compact('success', 'errors');
+    }
+    
+    function login_for_token($login_token) {
+        $email = $this->parse_token($login_token);
+        $user = DB_DataObject::factory('fe_users');
+        $user->name = $email;
+        $found = $user->find(true);
+        if ($found) $user->login();
+    }
+    
+    function change_password($user, $password, $password_confirm) {
+        $errors = array();
+        $success = false;
+        
+        if (strlen($password) < 1) {
+            $errors['password'] = 'usermanagement_password_missing';
+        }
+        if ($password !== $password_confirm) {
+            $errors['password_confirm'] = 'usermanagement_passwords_dont_match';
+        }
+        
+        if (!$errors) {
+            $user->password = md5($password);
+            $success = $user->update();
+            Log::info("Reset password for user $user->name($user->id)");
         }
 
-        if (!$error) {
-            global $aquarius;
-            $smarty = $aquarius->get_smarty_frontend_container();
-            $smarty->caching = false;
-            $smarty->assign('lg', $GLOBALS['lg']);
-            $smarty->assign('address', $address);
-            $smarty->assign('password', $password);
-            $mail = new AquaMail($smarty, 'user_management.mail.password_reset.tpl', 'user_management.mail.password_reset.html.tpl');
-            $mail->set('to', $address);
-            $sent = $mail->send();
-            if (!$sent) $error = "usermanagement_failed_sending_email";
-        }
-        $this->results['password_reset'] = compact('error');
+        return compact('success', 'errors');
     }
     
     /** Load address for logged in user
       * Returns empty address if there is no user or no address for that user. */
-    function get_address() {
+    function get_address($user = false) {
         global $DB;
-        $user = db_Fe_users::authenticated();
-        $address = DB_DataObject::factory('fe_address');
+        if (!$user) $user = db_Fe_users::authenticated();
+        $address = new Usermanagement_Address();
         if ($user) {
-            $addresses = $DB->listquery("SELECT id FROM fe_address JOIN fe_user_address ON fe_address_id = id WHERE fe_user_id = ".mysql_real_escape_string($user->id));
+            $userid = false;
+            if ($user instanceof db_Fe_Users) {
+                $userid = $user->id;
+            } else {
+                $userid = $user;
+            }
+            $addresses = $DB->listquery("SELECT id FROM fe_address JOIN fe_user_address ON fe_address_id = id WHERE fe_user_id = ".mysql_real_escape_string($userid));
             if (count($addresses)) {
                 $address->get(array_pop($addresses));
             }
         }
         return $address;
-    }
-
-    /** Read request variables and save them to address table
-      * The address of logged in users will be overwritten, else a new entry is created.
-      * Returns id of the address entry. */
-    function save_address() {
-        $address = $this->get_address();
-        $fields = array('firstname', 'lastname', 'firma', 'address', 'zip', 'city', 'country', 'phone', 'email');
-        foreach($fields as $field) {
-            $address->$field = requestvar($field);
-        }
-        if (!$address->id) {
-            $address->insert();
-            $user = db_Fe_users::authenticated();
-            if ($user) {
-                $user_address = DB_DataObject::factory('fe_user_address');
-                $user_address->fe_user_id = $user->id;
-                $user_address->fe_address_id = $address->id;
-                $user_address->insert();
-            }
-        } else {
-            $address->update();
-        }
-        return $address->id;
     }
 
     /** Return the currently logged in user, or false */
@@ -322,15 +229,9 @@ class Fe_user_management extends Module {
             $user->update();
         }
     }
-
-    private function generate_password() {
-        require_once('lib/libpwgen.php');
-        $pwgen = new PWGen(8,8);
-        return $pwgen->getPasswd();
-    }
     
     private function hmac($value, $expire) {
-        return sha1(FE_USER_MANAGEMENT_KEY.'/'.$value.'/'.$expire);
+        return hash_hmac('sha1', $value.'/'.$expire, AQUARIUS_SECRET_KEY);
     }
     
     /** Generate a challenge token
@@ -338,7 +239,7 @@ class Fe_user_management extends Module {
       *  @param $value value to be stored in the token
       *  @param $expire How long (in seconds) the token will be valid, 24 hours by default
       *  @return token string
-      * Valid tokens cannot be generated without the FE_USER_MANAGEMENT_KEY (according to my limited insight into cryptography) */
+      * Valid tokens cannot be generated without the secretkey (according to my limited insight into cryptography) */
     private function create_token($value, $expire=86400) {
         $expire = time() + $expire;
         $expire_enc = dechex($expire);
@@ -360,26 +261,26 @@ class Fe_user_management extends Module {
         }
         return false;
     }
-    
-    /** Ensure a string looks remotely like a plain mail address
-      * This method does not fully comply with the RFC, but it should be liberal enough to accept the worst addresses still in use. Quoted local parts are not accepted. */
-    private function valid_mail_address($address) {
-        // Yes, even braces '{}' are allowed in local parts of mail addresses
-        return eregi('^[-a-z0-9!#$%&*+/=?^_`{|}~.]+@([-a-z0-9]+\.)+[-a-z0-9]+$', $address);
-    }
+
 }
 
+/** Builds actions to add or edit user's addresses */
 class Edit_Address_Action_Generator {
 	function get_action($user) {
+        if (!$user) return false;
 		$user_address = DB_DataObject::factory('fe_user_address');
-        $user_address->fe_user_id = $user->id;
+		$userid = $user;
+		if ($user instanceof db_dataobject) {
+            $userid = $user->id;
+        }
+        $user_address->fe_user_id = $userid;
         $found = $user_address->find(true);
 		$cmd = false;
 		$id = false;
 		
 		if($found == 0) {
               $cmd = 'add';
-			  $id = $user->id;
+			  $id = $userid;
 		}
 
 		elseif($found > 0) {
@@ -388,9 +289,10 @@ class Edit_Address_Action_Generator {
 		}
 
 		if($found > 1) {
-			  Log::warn("$found found addresses for user $user->id");
+			  Log::warn("$found found addresses for user $userid");
 		}
 
 		return Action::make('Fe_address', $cmd, $id);
 	}
 }
+?>
