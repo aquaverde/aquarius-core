@@ -6,11 +6,11 @@
     data-errors="{wording Your form contains _n_ errors, see details below.}"
 >
 
-    {foreach from=$dynform.blocks item=block}
+    {foreach from=$dynform.blocks item='block'}
         <fieldset>
             {if $block.title}<legend>{$block.title}</legend>{/if}
             
-            {foreach from=$block.fields item=field}
+            {foreach from=$block.fields item='field'}
                 {include file=dynform.`$field.type`.tpl}
             {/foreach}
         </fieldset>
