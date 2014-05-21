@@ -11,7 +11,7 @@
             {if $block.title}<legend>{$block.title}</legend>{/if}
             
             {foreach from=$block.fields item='field'}
-                {include file='dynform.`$field.type`.tpl'}
+                {include file="dynform.`$field.type`.tpl"}
             {/foreach}
         </fieldset>
     {/foreach}
