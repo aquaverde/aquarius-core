@@ -1,5 +1,1 @@
-<div class="formInput">
-	<span class="formText">
-   		{$field.text}
-    </span>
-</div>
+<span class="field text">{$field.text}</span>
