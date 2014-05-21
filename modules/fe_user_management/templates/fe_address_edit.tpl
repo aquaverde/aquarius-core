@@ -11,7 +11,7 @@
         {strip}
         {if $form_field.type != "submit"}
             <label for="{$form_field.name}"{if $form_field.error} style="color: red"{/if}>
-                {$form_field.label}{if $form_field.required} *{/if}
+                {$form_field.label}
             </label>
 
             <div {if $form_field.error} style="border: 1px solid red;"{/if}>
@@ -21,8 +21,8 @@
         {/strip}
     {/foreach}
 
-    <input name="{$lastaction}" value="{#s_done#}" type="submit" class="submit"/>
-    <input name="cancel" value="{#s_cancel#}" type="submit" class="cancel"/>
+    <input name="insert" value="{$insert}" type="hidden"/>
+    {include file="select_buttons.tpl"}
   </form>
 </div>
 {include file='footer.tpl'}

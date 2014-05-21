@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once("pear/DB/DataObject/FormBuilder.php");
 require_once("pear/HTML/QuickForm/Renderer/ArraySmarty.php");
@@ -7,23 +7,17 @@ class action_fe_address extends ModuleAction {
     var $modname = "fe_user_management";
     var $props = array('class', 'op', 'id');
 
+    function valid($user) {
+        return true;
+    }
+
     function get_title() {
         switch($this->op) {
-        case 'edit':
-            return new Translation("fe_address_edit");
-        case 'add':
-            return new Translation("fe_address_add");
-		case 'export':
+        case 'export':
             return new Translation("fe_address_export");
         default:
             return null;
         }
-    }
-
-    /** No restrictions */
-    function valid($user) {
-        // Override the parent method which allows superadmins only.
-        return true;
     }
 
     function execute() {
@@ -36,17 +30,7 @@ class action_fe_address extends ModuleAction {
         $user = null;
         $address = DB_DataObject::factory('fe_address');
         switch($this->op) {
-        case 'edit':
-            $found = $address->get($this->id);
-            if (!$found) throw new Exception("Failed loading fe_address with ID '$this->id'");
-            break;
 
-        case 'add':
-            $insert = true;
-            $user = DB_DataObject::factory('fe_users');
-            $found = $user->get($this->id);
-            if (!$found) throw new Exception("Failed loading fe_user with ID '$this->id'");
-            break;
 
         case "export":
             // Read filter restrictions
@@ -112,28 +96,98 @@ class action_fe_address extends ModuleAction {
         default:
             throw new Exception("Operation unknown: '$this->op'");
         }
-
-        $formbuilder = DB_DataObject_FormBuilder::create($address);
-        $form = $formbuilder->getForm();
-        if ($form->validate()) {
-            $form->process(array($formbuilder,'processForm'), false);
-            if ($insert) {
-				$user_address = DB_DataObject::factory('fe_user_address');
-                $user_address->fe_user_id = $user->id;
-                $user_address->fe_address_id = $address->id;
-                $user_address->insert();
-			}
-            $messages[] = new Translation("fe_address_saved");
-        } else {
-            $renderer = new HTML_QuickForm_Renderer_Array();
-            $form->accept($renderer);
-
-            $smarty = $aquarius->get_smarty_backend_container();
-            $smarty->tmplname = "fe_address_edit.tpl";
-            $smarty->assign('form_data', $renderer->toArray());
-        }
-
-        return compact('messages', 'smarty');
     }
 }
 
+class action_fe_address_edit extends action_fe_address implements DisplayAction {
+
+
+    function get_title() {
+        return new Translation("fe_address_edit");
+    }
+
+    function process($aquarius, $request, $smarty, $result) {
+        $user = null;
+        $address = DB_DataObject::factory('fe_address');
+
+        $found = $address->get($this->id);
+        if (!$found) throw new Exception("Failed loading fe_address with ID '$this->id'");
+
+        $formbuilder = DB_DataObject_FormBuilder::create($address);
+        $form = $formbuilder->getForm();
+        $renderer = new HTML_QuickForm_Renderer_Array();
+        $form->accept($renderer);
+        $form->validate();
+        $result->use_template("fe_address_edit.tpl");
+        $smarty->assign('form_data', $renderer->toArray());
+        $smarty->assign('insert', false);
+        $smarty->assign('actions', [Action::make('fe_address', 'save', $this->id), Action::make('cancel')]);
+    }
+}
+
+
+class action_fe_address_add extends action_fe_address implements DisplayAction  {
+
+    function get_title() {
+        return new Translation("fe_address_add");
+    }
+
+    function process($aquarius, $request, $smarty, $result) {
+        $user = null;
+        $address = DB_DataObject::factory('fe_address');
+
+        $insert = true;
+        $user = DB_DataObject::factory('fe_users');
+        $found = $user->get($this->id);
+        if (!$found) throw new Exception("Failed loading fe_user with ID '$this->id'");
+
+        $formbuilder = DB_DataObject_FormBuilder::create($address);
+        $form = $formbuilder->getForm();
+
+        $renderer = new HTML_QuickForm_Renderer_Array();
+        $form->accept($renderer);
+
+        $result->use_template("fe_address_edit.tpl");
+        $smarty->assign('form_data', $renderer->toArray());
+        $smarty->assign('insert', true);
+        $smarty->assign('actions', [Action::make('fe_address', 'save', $this->id), Action::make('cancel')]);
+
+    }
+}
+
+
+class action_fe_address_save extends action_fe_address implements ChangeAction  {
+
+    function get_title() {
+        return new Translation("fe_address_edit");
+    }
+
+    function process($aquarius, $post, $result) {
+        $insert = get($post, 'insert');
+        $user = null;
+        $address = DB_DataObject::factory('fe_address');
+
+        if ($insert) {
+            $user = DB_DataObject::factory('fe_users');
+            $found = $user->get($this->id);
+            if (!$found) throw new Exception("Failed loading fe_user with ID '$this->id'");
+        } else {
+            $found = $address->get($this->id);
+            if (!$found) throw new Exception("Failed loading fe_address with ID '$this->id'");
+        }
+
+        $formbuilder = DB_DataObject_FormBuilder::create($address);
+        $form = $formbuilder->getForm();
+
+        $form->process(array($formbuilder,'processForm'), false);
+        if ($insert) {
+            $user_address = DB_DataObject::factory('fe_user_address');
+            $user_address->fe_user_id = $user->id;
+            $user_address->fe_address_id = $address->id;
+            $user_address->insert();
+        }
+        $result->add_message(new Translation("fe_address_saved"));
+
+
+    }
+}
