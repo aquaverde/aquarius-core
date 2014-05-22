@@ -4,7 +4,7 @@
 
 {include_javascript file='nodetree.js'}
 
-<h1>Sitemap</h1>
+<h1>{#s_sitemap#}</h1>
 
 <div class="bigbox">
     <div class="bigboxtitle"><h2>{$lg|language_name}</h2></div>
