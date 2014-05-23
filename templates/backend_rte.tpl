@@ -35,13 +35,9 @@
 <textarea name="{$RTEformname}" class="mle">
 	{$RTEformvalue}
 </textarea>
-<div id="counterDIV_{$RTEformname}" style="width:110px; padding-top:1px; font-size:11px; float:right; text-align:right;">
-    
-    <label style="float:left; font-size:11px;">{#Anzahl_Zeichen#}:</label>
-    <label id="counterDIV_label_{$RTEformname}" style="font-size:11px;font-weight:bold;"></label>
-    
-</div><div class="clear"></div>
+<div class="clear"></div>
 <script>
+    CKEDITOR.config.customConfig = '/aquarius/core/backend/ckeditor/config.js'
     CKEDITOR.config.language = {$rte_options.rte_lg|json};
     CKEDITOR.config.filebrowserImageBrowseUrl = {$rte_file_action_img->str(false)|json};
     CKEDITOR.config.filebrowserBrowseUrl = {$rte_file_action_file->str(false)|json};
@@ -49,7 +45,6 @@
     CKEDITOR.config.filebrowserWindowHeight = 600;
 
     var editor_{$RTEhtmlID} = CKEDITOR.replace({$RTEformname|json});
-    editor_{$RTEhtmlID}.config.counter = "counterDIV_label_{$RTEformname}";
     {if $rte_options.height > 50}
         editor_{$RTEhtmlID}.config.height = "{$rte_options.height}px";
     {/if}

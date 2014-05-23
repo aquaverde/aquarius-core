@@ -35,5 +35,5 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeDialogTabs = 'image:advanced;link:advanced';
     
     
-    config.skin = 'bootstrapck';
+    config.skin = '../../../../aquarius/core/backend/bootstrapck';
 };
