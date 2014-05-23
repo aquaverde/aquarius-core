@@ -186,7 +186,11 @@ class Aquarius_Packer {
         $content_list = join(' ', $exports);
 
         // Do I have style?
-        $css = '<style type="text/css">'.file_get_contents($aquarius->core_path.DIRECTORY_SEPARATOR.'backend'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'admin.css').'</style>';
+        $css = '
+        <style type="text/css">
+            '.file_get_contents($aquarius->core_path.DIRECTORY_SEPARATOR.'backend'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'admin.css').'
+            body { padding: 60px 90px; }
+        </style>';
 
         $export_pack_basename = $work_dir.DIRECTORY_SEPARATOR.$export_name;
         $export_pack_instname = $export_pack_basename.'.php';
@@ -381,11 +385,11 @@ if ($op == "replaced") {
     <h2>New files installed</h2>
     Check out the new installation<br/>
     <form method="post">
-        <input type="submit" name="setup"  value="Proceed to setup" class="submit"/>
+        <input type="submit" name="setup"  value="Proceed to setup" class="btn"/>
     </form>
     </div><br/>
     <form method="post">
-        <input type="submit" name="undo" value="Undo install" class="button"/>
+        <input type="submit" name="undo" value="Undo install" class="btn"/>
     </form>
     \';
 } else {
@@ -441,9 +445,9 @@ if ($may_undo) echo \'
 \';
 
 echo \'
-<div class="bigbox">
+<div class="dim">
     <h2>Install pack information</h2>
-    <table>
+    <table class="dim mini" cellpadding="0" cellspacing="0">
         <tr><td width="70">Build date</td><td>'.$build_date.'</td></tr>
         <tr><td>Build host</td><td>'.$build_host.'</td></tr>
         <tr><td>Build tag</td><td>'.$export_tag.'</td></tr>

@@ -85,10 +85,10 @@ foreach($paths as $path=>$info) {
 </ul>
 </div>
 <br/>
-<div class="bigbox">
-<h2>Enjoy the website</h2>
+<div class="topbar">
+<h2>Enjoy your website</h2>
 <p>
-<a href="./index.php">> Backend (admin)</a><br/>
+<a href="/admin">> Backend (admin)</a><br/>
 <a href="/">> Frontend (website)</a>
 </p>
 </div>
