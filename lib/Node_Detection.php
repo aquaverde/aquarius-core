@@ -174,7 +174,7 @@ class Node_Detection {
                 array_unshift($remaining_parts, $part);
             }
         }
-        $params = array('path_parts' => $remaining_parts);
+        $params['path_parts'] = $remaining_parts;
         if ($new_node) $params['current_node'] = $new_node;
         return $params;
     }
