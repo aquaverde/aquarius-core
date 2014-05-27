@@ -306,7 +306,7 @@ class Dynform extends Module
             $smarty = $aquarius->get_smarty_frontend_container($lg, $form_node);
 
             $templates_dir = $this->path."frontend_templates/";
-            $smarty->insertTemplateDir($templates_dir);
+            $smarty->addTemplateDir($templates_dir);
 
             $smarty->assign('dynform', $dynform_struct);
             $smarty->assign($params);
