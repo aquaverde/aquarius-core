@@ -1,38 +1,28 @@
-<form method="post" name="mailForm" action="" id="form" onsubmit="return checkFormSubmit(this);">
+<form method="post" name="mailForm" action="" id="form" 
+    data-required="{wording This field is required.}" 
+    data-email="{wording Please enter a valid email address.}" 
+    data-number="{wording Please enter a valid number.}" 
+    data-error="{wording Your form contains 1 error, see details below.}" 
+    data-errors="{wording Your form contains _n_ errors, see details below.}"
+>
 
-    <div class="formBlock clear">
-                
-        {foreach from=$dynform.blocks item=block}
-                {if $block.title}
-                    <div class="blockTitle">{$block.title}</div>
-                {/if}
-
+    {foreach from=$dynform.blocks item=block}
+        <fieldset>
+            {if $block.title}<legend>{$block.title}</legend>{/if}
             
             {foreach from=$block.fields item=field}
-                <div class="blockRow clear">
-                    <label for='{$field.labeltofieldid}' id='{$field.labeltofieldid}Label'>
-                    {$field.title|escape}
-                    {if $field.required}&nbsp;*{/if}
-                    </label>
-                    {include file="dynform.`$field.type`.tpl"}
-                </div>
+                {include file=dynform.`$field.type`.tpl}
             {/foreach}
-            
-        {/foreach}
-        
-        <div id="validateEmail">
-            {* spambot trap-field, must be hidden by CSS *}
-            <input type="text" name="email_validate" id="email_validate" class="email_validate" value="" />
-        </div>
-        
-        <span class="pleaseFill clear">* {wording these_fields_must_be_filled_in}</span>
-        
-        <span class="errorInvisible" id="errorMessage">{wording please_fill_in_required_fields}</span>
-        
-        <div class="formSubmit clear">
-            <input type="submit" name="dynform_submit" class="btn btn-primary" value="{wording send}">
-        </div>
-            
-	</div>
+        </fieldset>
+    {/foreach}
     
+    <input type="text" name="email_validate" id="email_validate" class="email_validate hidden" value="" />
+    
+    <span class="required">* {wording This field is required.}</span>
+    <div class="errorMessage"></div>
+    
+    <span class="submit">
+        <input type="submit" class="submit" name="dynform_submit" value="{wording send}">
+    </span>
+        
 </form>
