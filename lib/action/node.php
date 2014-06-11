@@ -294,7 +294,7 @@ class action_node_moveorder extends action_node_move implements ChangeAction {
         if ($parent_changed) {
             $this->move($node, $post, $result);
         } else {
-            $result->touch_region(Node_Change_Notice::structural_change_to($node));
+            $result->touch_region(new Node_Change_Notice($node, false, false));
         }
     }
 }
