@@ -157,6 +157,7 @@ class Node_Detection {
         $parts = $params['path_parts'];
         $remaining_parts = array();
         $new_node = false;
+        $params = array();
         while(!empty($parts)) {
             $part = array_pop($parts);
             preg_match('/\\.([0-9]+)$/', $part, $matches);  // See if there's a node id at the end of the urltitle
