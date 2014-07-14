@@ -549,7 +549,7 @@ function references($file) {
         JOIN content_field ON content.id = content_field.content_id
         JOIN content_field_value ON content_field.id = content_field_value.content_field_id
         WHERE (
-                form_field.type = 'file'
+                form_field.type IN ('file', 'global_legend_file')
             AND BINARY ? LIKE CONCAT(form_field.sup3, '%')
             AND form_field.name = content_field.name
             AND content_field_value.name = 'file'
