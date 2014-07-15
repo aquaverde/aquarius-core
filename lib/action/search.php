@@ -27,23 +27,22 @@ class action_search extends AdminAction implements DisplayAction {
             $searchlike = "'%".mysql_real_escape_string($searchstring)."%'";
             $searchagainst = "AGAINST ('".mysql_real_escape_string($searchstring)."')";
             $searchname = "'".mysql_real_escape_string($searchstring)."'";
-            $node_ids = $DB->listquery("
+            $node_ids = $aquarius->db->listquery("
                 SELECT node_id FROM (
                     SELECT
                         node.id as node_id,
-                        SUM(MATCH(content_field_value.value) $searchagainst + (content_field_value.value LIKE $searchlike)*0.1) + (node.name = $searchname) AS relevance
+                        SUM(MATCH(content_field_value.value) AGAINST (?) + (content_field_value.value LIKE ?)*0.1) + (IFNULL(node.name = ?, 0)) AS relevance
                     FROM          node
                         JOIN      content ON node.id = content.node_id
                         LEFT JOIN content_field ON content.id = content_field.content_id
                         LEFT JOIN content_field_value ON content_field.id = content_field_value.content_field_id
-                    WHERE content.lg = '$lg'
+                    WHERE content.lg = ?
                     GROUP BY content_field.content_id
                 ) AS hits
                 WHERE relevance > 0
                 ORDER BY relevance DESC"
-            );
+            , array($searchstring, '%'.$searchstring.'%', $searchstring, $lg));
         }
-
         // Load the content objects from the IDs, building edit actions (which conveniently checks permissions)
         $edit_content = array();
         foreach($node_ids as $node_id) {

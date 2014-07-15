@@ -37,7 +37,7 @@ function smarty_block_minify_includes($params, $content, $smarty, &$repeat) {
                     $scss_compiler->setImportPaths(dirname($scss_path));
                     $source = file_get_contents($scss_path);
                     if ($source === false) throw new Exception("Unable to read SCSS file $scss_path");
-                    $comp = "/* Generated ".date(DATE_W3C)." from $scss_file */\n".$scss_compiler->compile($source);
+                    $comp = "/* Generated ".date(DATE_W3C)." from $scss_file */\n".$scss_compiler->compile($source, $scss_file);
                     $tmp_css_path = $css_path.'.'.uniqid();
                     $result = file_put_contents($tmp_css_path, $comp);
                     if ($result === false)  throw new Exception("Unable to write to $tmp_css_path after compiling $scss_file");

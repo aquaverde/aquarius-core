@@ -15,7 +15,7 @@ function smarty_block_dynamic($param, $content, &$smarty) {
 }
 
 /** Load a content and assign its fields to the smarty container.
-  * Called from smarty plugins loadcontent and usecontent, returns the replaced vars */
+  * Called from smarty plugin loadcontent  */
 function assign_content_fields(&$smarty, &$params) {
     $load = true;
     $reason = false;
@@ -51,9 +51,7 @@ function assign_content_fields(&$smarty, &$params) {
     }
 
     if ($load) {
-        // Load the fields, put them in the smarty container, return the old ones
-        $template_vars = &$smarty->get_template_vars();
-        return array_replace_aqua($template_vars, $content->get_fields());
+        $smarty->assign($content->get_fields());
     } else {
         Log::debug("assign_content_fields unsuccessful: $reason");
         return false;
@@ -90,7 +88,7 @@ function clean_link($link) {
         $cleanedLink = "http://".$link;
     }
 
-	return $cleanedLink;
+    return $cleanedLink;
 }
 
 

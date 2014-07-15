@@ -258,7 +258,8 @@ class action_node_moveorder extends action_node_move implements ChangeAction {
         $node = $this->load_node();
 
         $parent_id = $post['node_target'];
-        $parent_changed = $node->parent_id != $parent_id;
+        $old_parent_id = $node->parent_id;
+        $parent_changed = $old_parent_id != $parent_id;
         
         // Hack: check whether user is permitted now
         $user = db_Users::authenticated();
@@ -292,8 +293,9 @@ class action_node_moveorder extends action_node_move implements ChangeAction {
         
         if ($parent_changed) {
             $this->move($node, $post, $result);
+        } else {
+            $result->touch_region(new Node_Change_Notice($node, false, false));
         }
-        
     }
 }
 
