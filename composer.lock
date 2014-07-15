@@ -7,16 +7,16 @@
     "packages": [
         {
             "name": "ckeditor/ckeditor",
-            "version": "4.4.0",
+            "version": "4.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ckeditor/ckeditor-releases.git",
-                "reference": "7d88a6ab0efe61890edb131420a53dc8c7568a74"
+                "reference": "e90a22b1e6957a3c85c097c85a194ecdec4c0e18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ckeditor/ckeditor-releases/zipball/7d88a6ab0efe61890edb131420a53dc8c7568a74",
-                "reference": "7d88a6ab0efe61890edb131420a53dc8c7568a74",
+                "url": "https://api.github.com/repos/ckeditor/ckeditor-releases/zipball/e90a22b1e6957a3c85c097c85a194ecdec4c0e18",
+                "reference": "e90a22b1e6957a3c85c097c85a194ecdec4c0e18",
                 "shasum": ""
             },
             "type": "library",
@@ -28,7 +28,7 @@
             ],
             "authors": [
                 {
-                    "name": "CKSource - Frederico Knabben",
+                    "name": "CKSource",
                     "homepage": "http://cksource.com"
                 }
             ],
@@ -44,20 +44,20 @@
                 "text",
                 "wysiwyg"
             ],
-            "time": "2014-04-24 14:05:16"
+            "time": "2014-06-24 15:50:15"
         },
         {
             "name": "leafo/scssphp",
-            "version": "0.0.10",
+            "version": "v0.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/scssphp.git",
-                "reference": "558357feceb9b932a192966945904414dc372e4d"
+                "reference": "ff76df3e45af45e808f3fcd516a2cb5cbc77f45e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/scssphp/zipball/558357feceb9b932a192966945904414dc372e4d",
-                "reference": "558357feceb9b932a192966945904414dc372e4d",
+                "url": "https://api.github.com/repos/leafo/scssphp/zipball/ff76df3e45af45e808f3fcd516a2cb5cbc77f45e",
+                "reference": "ff76df3e45af45e808f3fcd516a2cb5cbc77f45e",
                 "shasum": ""
             },
             "require": {
@@ -90,7 +90,7 @@
             ],
             "description": "scssphp is a compiler for SCSS written in PHP.",
             "homepage": "http://leafo.net/scssphp/",
-            "time": "2014-04-15 02:25:09"
+            "time": "2014-07-07 01:51:39"
         },
         {
             "name": "mrclay/minify",
