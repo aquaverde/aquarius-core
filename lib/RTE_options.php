@@ -1,0 +1,56 @@
+<?php
+/** Prepare RTE config options */
+class RTE_options implements ArrayAccess {
+    private $options = array();
+    
+    function __construct($conf) {
+	    if(!isset($conf['browse_path_img']) || !isset($conf['browse_path_file'])) {
+	    	throw new Exception("RTE config problems: 'browse_path_img' or 'browse_path_file' not set");
+	    }
+	    
+        $this['image_path'] = $conf['browse_path_img'];
+        $this['file_path']  = $conf['browse_path_file'];
+
+        //$this['popup_ilink_url']            = Action::build(array('nodes_select', 'tree', 0, $content_lg, 'root', false, '', false),array('callback' => 'ilink_callback'));
+    }
+    
+    function config_for($base_url) {
+        $config = array();
+        $config['customConfig'] = '/aquarius/core/backend/ckeditor/config.js';
+
+        $select_image_action = Action::build(array('file_select_rte', 0, $this['image_path'], '', '', 0, '', ''), array('callback' => 'rte_file_select_img'));
+        $config['filebrowserImageBrowseUrl'] = $base_url->with_param($select_image_action)->str(false);
+        
+        $select_file_action = Action::build(array('file_select_rte', 0, $this['file_path'], '', '', 0, '', ''), array('callback' => 'rte_file_select_file'));
+        $config['filebrowserBrowseUrl']      = $base_url->with_param($select_file_action)->str(false);
+
+        $config['language'] = $this['editor_lg'];
+        $config['filebrowserWindowWidth']  = 500;
+        $config['filebrowserWindowHeight'] = 600;
+
+        if (isset($this['height'])) $config['height'] = $this['height'].'px';
+
+        return $config;
+    }
+
+
+
+    // ---------------------- ArrayAccess boilerplate --------------------------
+
+    public function offsetSet($offset, $value) {
+        if (is_null($offset)) {
+            throw new Exception('Must provide a key to set an option, can\'t append');
+        } else {
+            $this->options[$offset] = $value;
+        }
+    }
+    public function offsetExists($offset) {
+        return isset($this->options[$offset]);
+    }
+    public function offsetUnset($offset) {
+        unset($this->options[$offset]);
+    }
+    public function offsetGet($offset) {
+        return isset($this->options[$offset]) ? $this->options[$offset] : null;
+    }
+}

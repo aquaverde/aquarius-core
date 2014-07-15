@@ -1,6 +1,6 @@
 <?php 
 /** Rich Text Edit formtype.
-  * This formtype stores HTML code. In the backend the FCKEditor is used to provide a WYSIWYG Text Editor.
+  * This formtype stores HTML code. In the backend CKEditor is used to provide a WYSIWYG Text Editor.
   * sup1 defines the height of the RTE, default is 180, minimum is 50.
   * sup3 may give an alternative toolbar set
   *   default: Basic toolbar
@@ -11,15 +11,19 @@
   */
 class Formtype_RTE extends Formtype {
     /** Load FCKEditor */
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisits) {
-		$page_requisits->add_js_lib('rte/ckeditor.js');
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
+		$page_requisites->add_js_lib('rte/ckeditor.js');
 		
-		if($formfield->sup1)
-		    $backendRTE = new BackendRTE(db_Users::authenticated()->adminLanguage, $content->lg, $formfield->sup1);
-        else
-            $backendRTE = new BackendRTE(db_Users::authenticated()->adminLanguage, $content->lg);
-        
-        $valobject->rte_options = $backendRTE->get_options();
+		global $aquarius;
+		$rte_options = new RTE_options($aquarius->conf('admin/rte'));
+        $rte_options['editor_lg'] = db_Users::authenticated()->adminLanguage;
+		$rte_options['content_lg'] = $content->lg;
+
+        if($formfield->sup1) {
+            $rte_options['height'] = max(intval($formfield->sup1), 50);
+        }
+
+        $valobject->rte_options = $rte_options;
     }
 
     /** Remove text if it consists of empty tags and whitespace only */
@@ -49,4 +53,3 @@ class Formtype_RTE extends Formtype {
 		}		
 	}
 }
-?>
