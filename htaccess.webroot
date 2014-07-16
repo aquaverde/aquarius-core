@@ -5,7 +5,6 @@
 # added a second time on the next update.)
 RewriteEngine on
 
-RewriteRule ^aquarius/admin/rte(/?.*) /aquarius/core/vendor/ckeditor/ckeditor$1 [qsappend,last]
 RewriteRule ^aquarius/admin(/?.*) /aquarius/core/backend$1 [qsappend,last]
 RewriteRule ^admin/? /aquarius/admin/ [R,last]
 RewriteRule ^min/ /aquarius/core/frontend/min.php [qsappend,last]
