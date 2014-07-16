@@ -12,7 +12,7 @@
 class Formtype_RTE extends Formtype {
     /** Load FCKEditor */
     function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
-		$page_requisites->add_js_lib('rte/ckeditor.js');
+		$page_requisites->add_js_lib('/aquarius/core/vendor/ckeditor/ckeditor/ckeditor.js');
 		
 		global $aquarius;
 		$rte_options = new RTE_options($aquarius->conf('admin/rte'));

@@ -34,7 +34,8 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
     
-    
-     config.skin = '../../../../aquarius/core/backend/ckeditor/skins/bootstrapck';
+    // The skin path is relative to the RTE core dir
+     config.skin = '../../../../backend/ckeditor/skins/bootstrapck';
 
+     config.customConfig = '../../../backend/ckeditor/config.js.php';
 };
