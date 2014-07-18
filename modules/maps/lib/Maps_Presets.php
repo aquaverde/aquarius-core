@@ -8,7 +8,8 @@ class Maps_Presets {
             'id' => false,
             'name' => 'default',
             'selection_name' => 'default',
-            'icon' => 'default.png'
+            'icon' => '/interface/marker.png',
+            'size' => array(45,45)
     );
     
     function __construct($api_key, $position, $polyline, $markers_in, $marker_classes) {
@@ -36,13 +37,17 @@ class Maps_Presets {
             $id = $nodeinfo['node']->id;
             $content = $nodeinfo['node']->get_content($lg);
             
-            $class = $content->class;
-            if (isset($this->marker_classes[$class])) {
-                $marker_class = $this->marker_classes[$class];
-            } else {
-                $marker_class = $this->marker_classes['default'];
+            $class = 'default';
+            if ($content) {
+                $content->load_fields();
+                $class = isset($content->class) ? $content->class : 'default';
+                if (!isset($this->marker_classes[$class])) {
+                    $class = 'default';
+                }
             }
             
+            $marker_class = $this->marker_classes[$class];
+
             if ($content && $content->active) {
                 $name = $content->title();
                 $selection_name = str_repeat("&nbsp;&nbsp;", count($nodeinfo['connections'])).$content->title();
@@ -53,7 +58,7 @@ class Maps_Presets {
                     'value' => $id, // deprecated
                     'selection_name' => $selection_name,
                     'name' => $name,
-                    'icon' => $icon,
+                    'icon' => $icon ? $icon : $this->default_marker['icon'],
                     'size' => $marker_class['size'],
                     'anchor' =>  $marker_class['anchor']
                 );

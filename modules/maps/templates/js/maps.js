@@ -72,7 +72,6 @@ function initmap(config, markers_in) {
         searchBox.setBounds(bounds);
     })
 
-
     var drawingManager = new google.maps.drawing.DrawingManager({
         drawingMode: null,
         drawingControl: true,
@@ -85,7 +84,7 @@ function initmap(config, markers_in) {
         },
         markerOptions: {
             animation: google.maps.Animation.DROP,
-            icon: new google.maps.MarkerImage(default_icon),
+            icon: mkIcon(default_icon),
             draggable: true,
             flat: true,
             raiseOnDrag: true
