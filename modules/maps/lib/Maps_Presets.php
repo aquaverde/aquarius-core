@@ -49,9 +49,9 @@ class Maps_Presets {
             $marker_class = $this->marker_classes[$class];
 
             if ($content && $content->active) {
-                $name = $content->title();
+                $name = $content->title;
                 $selection_name = str_repeat("&nbsp;&nbsp;", count($nodeinfo['connections'])).$content->title();
-                $symbol = $content->symbol();
+                $symbol = $content->symbol;
                 $icon   = $symbol['file'];
                 $marker_types[] = array(
                     'id' => $id, 

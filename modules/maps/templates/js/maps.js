@@ -355,7 +355,7 @@ function initmap(config, markers_in) {
     function box_handlers(id) {
         var marker = markers[id]
         var cat_select = document.getElementById(config.formname+'_'+id+'_kat')
-        if (cat_select) cat_select.onchange = function() { 
+        if (cat_select) cat_select.onchange = function() {
             var kat = this.value
             var icon = config.icon_types[kat];
             
@@ -364,7 +364,7 @@ function initmap(config, markers_in) {
                 icon = config.icon_types[Object.keys(config.icon_types)[0]]
             }
             
-            marker.setIcon(icon);
+            marker.setIcon(icon.icon);
         }
         
         document.getElementById(config.formname+'_'+id+'_delete').onclick = function() {
