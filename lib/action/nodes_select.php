@@ -23,6 +23,7 @@
   * An additional parameter may be given
   *
   *   - comma separated list of excluded nodes (these, and their children, will not show up in the tree)
+  * 
   *   callback:
   *		callback function called in the opener when a node is selected (default: nodes_selected)
   *
