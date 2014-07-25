@@ -10,7 +10,7 @@ function open_attached_popup(url, title, params) {
     if (opening_popup) return false /* double-click legacy */
     opening_popup = true
     var pop = window.open(url, title, params)
-    Event.observe(window, 'unload', function() { pop.close() })
+    jQuery(window).bind("beforeunload", pop.close.bind(pop))
     pop.focus()
     opening_popup = false
     return false
