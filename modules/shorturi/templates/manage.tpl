@@ -7,23 +7,28 @@
 
 <form action="{url action=$lastaction}" method="post">
 
-<table cellpadding="0" cellspacing="0" border="0" class="table darker" id="uri_table">
-	{foreach from=$uris item=uri key=myindex}
-		{include file='uritable.row.tpl'}
-	{/foreach}
+<table class="table" id="uri_table">
+    {foreach from=$uris item=uri key=myindex}
+        {include file='uritable.row.tpl'}
+    {/foreach}
     {include file='uritable.row.tpl' uri=$new_uri myindex=$uris|@count}
 
-	<script type="text/javascript">
-	<!--
-		uri_index = {$uris|@count};
-	// -->
-	</script>
+    <script type="text/javascript">
+    <!--
+        uri_index = {$uris|@count};
+    // -->
+    </script>
+    <tr>
+        <td colspan="4">
+            <button type="submit" name="save_button" class="btn btn-default btn-xs btn-success" onclick="add_row_shorturi();"><span class="glyphicon glyphicon-neg glyphicon-plus-sign white"></span>
+{#s_new#}</button>
+        </td>
+    </tr>
 
 </table>
 
-<img src="buttons/new.gif" alt="new" style="margin: 10px 0 0 -1px;padding:0; cursor:pointer;" onclick="add_row_shorturi();" /><br/>
 
-<input type="submit" name="save_button" class="submit" value="{#save#}" />
+<button type="submit" name="save_button" class="btn btn-primary">{#save#}</button>
 
 
 
