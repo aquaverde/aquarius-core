@@ -2,10 +2,6 @@
 /** Rich Text Edit formtype.
   * This formtype stores HTML code. In the backend CKEditor is used to provide a WYSIWYG Text Editor.
   * sup1 defines the height of the RTE, default is 180, minimum is 50.
-  * sup3 may give an alternative toolbar set
-  *   default: Basic toolbar
-  *   extended: More functions
-  *   picutres: With functionality to insert pictures
   *
   * More toolbars may be added in public_html/admin/fckconfig/fckconfig.js.
   */
