@@ -106,4 +106,3 @@ class Formtype_Pointing extends Formtype {
         return join(', ', array_filter($strs));
     }
 }
-?>
