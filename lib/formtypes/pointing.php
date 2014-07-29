@@ -93,7 +93,19 @@ class Formtype_Pointing extends Formtype {
     function cache_get($vals, $formfield, $lg) {
         return $this->db_get_field($vals, $formfield, $lg);
     }
-    
+
+
+    /** Read transported pointings */
+    function import($vals, $field, $lg, $idmap) {
+        // Convert from transport node ID to DB ID
+        $mpd_vals = [];
+        foreach($vals as $val) {
+            $mpd_vals []= array_map($idmap, $val);
+        }
+
+        return parent::import($mpd_vals, $field, $lg, $idmap);
+    }
+
     function to_string($values) {
         if (!is_array($values)) {
             $values = array($values);

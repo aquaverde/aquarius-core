@@ -16,42 +16,50 @@ class action_port_export extends action_port {
         $roots = array_filter(explode(',', $request['export_selected']));
         $recurse = (bool)$request['include_children'];
         
-        $id_base = uniqid();
-        $id_counter = 0;
-        $id_gen = function() use ($id_base, &$id_counter) {
-            return $id_base.$id_counter++;
-        };
-        
+        // Export nodes first
         $exported = [];
         foreach($roots as $root_str) {
-            $this->prepare_export($root_str, $recurse, null, $id_gen, function($export_item) use (&$exported) {
+            $this->export_node($root_str, $recurse, null, function($export_item) use (&$exported) {
                 $exported []= $export_item;
             });
         }
+        
         return $exported;
     }
     
-    function prepare_export($node_str, $recurse, $parent, $id_gen, $yield) {
+    function export_node($node_str, $recurse, $parent, $yield) {
         $node = db_Node::get_node($node_str);
         if (!$node) throw new Exception("Unable to load $node_str");
         
         $entry = [];
-        $entry['id'] = $id_gen();
+        $entry['id'] = $node->id;
         if ($parent) $entry['parent'] = $parent;
         if ($node->name) $entry['name'] = $node->name;
         $entry['form'] = $node->form_id;
         $entry['active'] = (bool)$node->active;
         
+        $form = $node->get_form();
+        $fields = $form->get_fields();
         $entry['content'] = [];
+        
         foreach($node->get_all_content() as $content) {
-            $entry['content'][$content->lg] = array_filter($content->get_fields(), function($f) { return $f !== null; });
+            $field_values = $content->get_fields();
+            $export_values = [];
+            foreach($fields as $field) {
+                if (isset($field_values[$field->name])) {
+                    $type = $field->get_formtype();
+                    $export_values[$field->name] = $type->db_set_field($field_values[$field->name], $field, $content->lg);
+                }
+            }
+
+            $entry['content'][$content->lg] = array_filter($export_values, function($f) { return !($f === null || (is_array($f) && count($f) == 0)); });
         }
-        
+
         $yield($entry);
-        
+
         if ($recurse) {
             foreach ($node->children() as $child) {
-                $this->prepare_export($child, true, $entry['id'], $id_gen, $yield);
+                $this->export_node($child, true, $entry['id'], $yield);
             }
         }
     }
@@ -151,9 +159,14 @@ class action_port_import extends action_port implements ChangeAction {
         
         $count = 0;
         foreach($imports as $import) {
+            // Import is done in two steps (nodes first, content later) so that
+            // the new node ID are available when pointings are resolved
             foreach($import as $entry) {
                 $this->import_node($entry, $import_parent->id, $idmap);
                 $count += 1;
+            }
+            foreach($import as $entry) {
+                $this->import_content($entry, $idmap);
             }
         }
         
@@ -169,8 +182,7 @@ class action_port_import extends action_port implements ChangeAction {
             // A previously inserted node is the parent
             $import_parent_id = $entry['parent'];
             $db_parent_id = $idmap($import_parent_id);
-            if (!$db_parent_id) throw new Exception("No previously inserted parent $import_parent_id found");
-
+            if (!$db_parent_id) throw new Exception("No previously inserted parent with transport id $import_parent_id found");
         } 
 
         $node->parent_id = $db_parent_id;
@@ -180,14 +192,24 @@ class action_port_import extends action_port implements ChangeAction {
         
         $node->insert();
         $idmap($entry['id'], $node->id);
-        
+    }
+    
+    
+    function import_content($entry, $idmap) {
+        $node_id = $idmap($entry['id']);
+        $node = db_Node::get_node($node_id);
+        $form = $node->get_form();
         foreach($entry['content'] as $lg => $entry_fields) {
             $content = new db_Content();
             $content->node_id = $node->id;
             $content->lg = $lg;
             $content->insert();
-            foreach($entry_fields as $key => $value) {
-                $content->$key = $value;
+            foreach($form->get_fields() as $field) {
+                if (isset($entry_fields[$field->name])) {
+                    $value = $entry_fields[$field->name];
+                    $type = $field->get_formtype();
+                    $content->{$field->name} = $type->import($value, $field, $content->lg, $idmap);
+                }
             }
             $content->save_content();
         }

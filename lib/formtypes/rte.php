@@ -41,6 +41,26 @@ class Formtype_RTE extends Formtype {
         $empty = $empty && stripos($val, '<iframe') === FALSE;
         
         return $empty ? array() : array($val);
+    } 
+
+
+    function import($vals, $field, $lg, $idmap) {
+        // Convert the transport ID in internal links
+        foreach($vals as &$val) {
+            foreach($val as &$str) {
+                // Ugly begets ugly
+                $str = preg_replace_callback(
+                    '/<[\s]*a[\s]+href=["\']aquarius-node:([0-9]+)["\']/',
+                    function($matches) use ($idmap) {
+                        $db_id = $idmap($matches[1]);
+                        if (!$db_id) return '<a href=""'; // No id? no link
+                        return '<a href="aquarius-node:'.$db_id.'"';
+                    },
+                    $str
+                );
+            }
+        }
+        return parent::import($vals, $field, $lg, $idmap);
     }
 
 	function db_get($values, $form_field) {
