@@ -14,16 +14,16 @@ class action_port_dialog extends ModuleAction implements DisplayAction {
 
     function process($aquarius, $request, $smarty, $result) {
         $smarty->assign('roots_select_action', Action::make('nodes_select', 'tree', 'export', $smarty->get_template_vars('lg'), 'root', false, '', true));
-        $smarty->assign('export_actions', [
+        $smarty->assign('export_actions', array(
             Action::make('port', 'export_show'),
             Action::make('port', 'export_download'),
             Action::make('cancel')
-        ]);
+        ));
         $smarty->assign('import_root_select_action', Action::make('nodes_select', 'tree', 'import', $smarty->get_template_vars('lg'), 'root', false, '', false));
-        $smarty->assign('import_actions', [
+        $smarty->assign('import_actions', array(
             Action::make('port', 'import'),
             Action::make('cancel')
-        ]);
+        ));
         $result->use_template('port_dialog.tpl');
     }
 }

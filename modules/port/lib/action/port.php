@@ -17,7 +17,7 @@ class action_port_export extends action_port {
         $recurse = (bool)$request['include_children'];
         
         // Export nodes first
-        $exported = [];
+        $exported = array();
         foreach($roots as $root_str) {
             $this->export_node($root_str, $recurse, null, function($export_item) use (&$exported) {
                 $exported []= $export_item;
@@ -31,7 +31,7 @@ class action_port_export extends action_port {
         $node = db_Node::get_node($node_str);
         if (!$node) throw new Exception("Unable to load $node_str");
         
-        $entry = [];
+        $entry = array();
         $entry['id'] = $node->id;
         if ($parent) $entry['parent'] = $parent;
         if ($node->name) $entry['name'] = $node->name;
@@ -40,11 +40,11 @@ class action_port_export extends action_port {
         
         $form = $node->get_form();
         $fields = $form->get_fields();
-        $entry['content'] = [];
+        $entry['content'] = array();
         
         foreach($node->get_all_content() as $content) {
             $field_values = $content->get_fields();
-            $export_values = [];
+            $export_values = array();
             foreach($fields as $field) {
                 if (isset($field_values[$field->name])) {
                     $type = $field->get_formtype();
@@ -78,10 +78,10 @@ class action_port_export_show extends action_port_export implements DisplayActio
             return;
         }
         $smarty->assign('export', json_encode($export, JSON_PRETTY_PRINT));
-        $smarty->assign('actions', [
+        $smarty->assign('actions', array(
             Action::make('port', 'export_download'),
             Action::make('cancel')
-        ]);
+        ));
 
         $result->use_template('port_export_show.tpl');
     }
@@ -115,7 +115,7 @@ class action_port_import extends action_port implements ChangeAction {
     }
     
     function process($aquarius, $request, $result) {
-        $imports = [];
+        $imports = array();
 
         if(isset($_FILES['import_file'])) {
             $file = $_FILES['import_file']['tmp_name'];
@@ -151,7 +151,7 @@ class action_port_import extends action_port implements ChangeAction {
             return;
         }
         
-        $id_mapping = [];
+        $id_mapping = array();
         $idmap = function($transport_id, $db_id = false) use (&$id_mapping) {
             if ($db_id) $id_mapping[$transport_id] = $db_id;
             return get($id_mapping, $transport_id, null);
