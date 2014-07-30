@@ -98,7 +98,7 @@ class Formtype_Pointing extends Formtype {
     /** Read transported pointings */
     function import($vals, $field, $lg, $idmap) {
         // Convert from transport node ID to DB ID
-        $mpd_vals = [];
+        $mpd_vals = array();
         foreach($vals as $val) {
             $mpd_vals []= array_map($idmap, $val);
         }

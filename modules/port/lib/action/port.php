@@ -77,7 +77,7 @@ class action_port_export_show extends action_port_export implements DisplayActio
             $result->add_message(new Translation("port_none_selected"));
             return;
         }
-        $smarty->assign('export', json_encode($export, JSON_PRETTY_PRINT));
+        $smarty->assign('export', json_encode($export, defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : null));
         $smarty->assign('actions', array(
             Action::make('port', 'export_download'),
             Action::make('cancel')
