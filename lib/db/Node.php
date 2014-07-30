@@ -215,7 +215,7 @@ class db_Node extends DB_DataObject
     /** Load the form for this node */
     function get_form() {
         $form = DB_DataObject::factory('Form');
-        $found = $form->get($this->form_id);
+        $found = $this->form_id && $form->get($this->form_id);
         if (!$found) {
             // This is not supposed to happen...
             if ($this->is_root()) throw new Exception("No form set on root node $this");
