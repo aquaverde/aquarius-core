@@ -7,16 +7,16 @@
     "packages": [
         {
             "name": "ckeditor/ckeditor",
-            "version": "4.4.2",
+            "version": "4.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ckeditor/ckeditor-releases.git",
-                "reference": "e90a22b1e6957a3c85c097c85a194ecdec4c0e18"
+                "reference": "7c4d8c1e91ba8d6d4e33574f59fc17586b10da1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ckeditor/ckeditor-releases/zipball/e90a22b1e6957a3c85c097c85a194ecdec4c0e18",
-                "reference": "e90a22b1e6957a3c85c097c85a194ecdec4c0e18",
+                "url": "https://api.github.com/repos/ckeditor/ckeditor-releases/zipball/7c4d8c1e91ba8d6d4e33574f59fc17586b10da1f",
+                "reference": "7c4d8c1e91ba8d6d4e33574f59fc17586b10da1f",
                 "shasum": ""
             },
             "type": "library",
@@ -44,7 +44,7 @@
                 "text",
                 "wysiwyg"
             ],
-            "time": "2014-06-24 15:50:15"
+            "time": "2014-07-15 15:06:48"
         },
         {
             "name": "leafo/scssphp",

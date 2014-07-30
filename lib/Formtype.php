@@ -109,4 +109,22 @@ class Formtype {
     function cache_set($vals, $formfield, $lg) {
         return $vals;
     }
+    
+    
+    /** Create transport representation of values */
+    function export($vals, $field, $lg) {
+        return $this->db_set_field($vals, $field, $lg);
+    }
+    
+    
+    /** Read transport representation of values
+      *
+      * @param $vals transported values
+      * @param $field form field options
+      * @param $lg do import in this lg (irrelevant for most fields)
+      * @param $idmap mapping function from transport ID to db ID for node ID
+      **/
+    function import($vals, $field, $lg, $idmap) {
+        return $this->db_get_field($vals, $field, $lg);
+    }
 }

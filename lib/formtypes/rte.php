@@ -2,10 +2,6 @@
 /** Rich Text Edit formtype.
   * This formtype stores HTML code. In the backend CKEditor is used to provide a WYSIWYG Text Editor.
   * sup1 defines the height of the RTE, default is 180, minimum is 50.
-  * sup3 may give an alternative toolbar set
-  *   default: Basic toolbar
-  *   extended: More functions
-  *   picutres: With functionality to insert pictures
   *
   * More toolbars may be added in public_html/admin/fckconfig/fckconfig.js.
   */
@@ -45,6 +41,26 @@ class Formtype_RTE extends Formtype {
         $empty = $empty && stripos($val, '<iframe') === FALSE;
         
         return $empty ? array() : array($val);
+    } 
+
+
+    function import($vals, $field, $lg, $idmap) {
+        // Convert the transport ID in internal links
+        foreach($vals as &$val) {
+            foreach($val as &$str) {
+                // Ugly begets ugly
+                $str = preg_replace_callback(
+                    '/<[\s]*a[\s]+href=["\']aquarius-node:([0-9]+)["\']/',
+                    function($matches) use ($idmap) {
+                        $db_id = $idmap($matches[1]);
+                        if (!$db_id) return '<a href=""'; // No id? no link
+                        return '<a href="aquarius-node:'.$db_id.'"';
+                    },
+                    $str
+                );
+            }
+        }
+        return parent::import($vals, $field, $lg, $idmap);
     }
 
 	function db_get($values, $form_field) {
