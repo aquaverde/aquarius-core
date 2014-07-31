@@ -97,7 +97,7 @@ class action_port_export_download extends action_port_export implements SideActi
         $export = $this->export($request);
 
         $first_content = first(get(first($export), 'content'));
-        $name = get($first_content, 'title', first($first_content));
+        $name = first(first(get($first_content, 'title', first($first_content))));
         $export_count = count($export);
 
         header('Content-type: application/json');
