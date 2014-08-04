@@ -2,18 +2,17 @@
 	<form name="groupForm" action="{url}" method="post">
 		{*// if the group already exists get their name*}
 		{if $group->id != 'null'}
-			<h1>{#s_usr_group#} {#s_usr_edit#}</h1>		
+			<h1>{$group->name}</h1>		
 		{else}
-			<h1>{#s_usr_group#} {#s_usr_edit#}</h1>
+			<h1>{#s_usr_group#}</h1>
 		{/if}
 		
-		<div id="outer">
-		
-			<h2>{#s_usr_groupname#}</h2>
-			<input type="hidden" name="groupId" value="{$group->id}" />
-			<input type="text" name="groupName" style="width:100%" maxlength="160" value="{$group->name}" />
-
-		</div>
+	<div id="outer">
+        <h2>{#s_usr_groupname#}</h2>
+        <input type="hidden" name="groupId" value="{$group->id}" />
+        <input type="text" name="groupName" class="form-control" maxlength="160" value="{$group->name}" />
+    </div>
+    
 		<div class="bigbox">
 		
 			<div class="bigboxtitle"><h2>{#s_usr_group_has_access#}</h2></div>

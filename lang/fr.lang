@@ -186,7 +186,7 @@ s_pointing_select_none = "Ne rien sélectionner"
 s_save = "Sauvegarder"
 s_sitemap  = "Arborescence"
 s_check_all  = "Tout sélectionner"
-s_uncheck_all = "tout délectionner"
+s_uncheck_all = "tout désélectionner"
 s_user_of_goup_only  = "Groupe:"
 s_username_contains  = "Le nom contient:"
 
