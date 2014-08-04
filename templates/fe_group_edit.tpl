@@ -47,10 +47,10 @@
 			</table>
 			
 			{action action="fegroup:save:`$group->id`:"}
-				<input type="submit" name="{$action}" value="{#s_save#}" class="submit" />
+				<input type="submit" name="{$action}" value="{#s_save#}" class="btn btn-primary" />
 			{/action}
 			
-			<input type="submit" name="cancel" value="{#s_cancel#}" class="cancel" />
+			<input type="submit" name="cancel" value="{#s_cancel#}" class="btn btn-default" />
 		</div>
 	
 		
