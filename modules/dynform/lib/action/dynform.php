@@ -33,11 +33,15 @@ class action_dynform extends ModuleAction {
         if ($smarty) {
             //LOAD RTE
             $page_requisites = new Page_Requisites();
-            $page_requisites->add_js_lib('ckeditor/ckeditor.js');
-            
-            $backendRTE = new BackendRTE(db_Users::authenticated()->adminLanguage, db_Users::authenticated()->adminLanguage);
-            $smarty->assign('rte_options', $backendRTE->get_options());
+            $page_requisites->add_js_lib('/aquarius/core/vendor/ckeditor/ckeditor/ckeditor.js');
             $smarty->assign('page_requisites', $page_requisites);
+            
+            global $aquarius;
+            $rte_options = new RTE_options($aquarius->conf('admin/rte'));
+            $rte_options['editor_lg'] = db_Users::authenticated()->adminLanguage;
+            $rte_options['content_lg'] = db_Users::authenticated()->adminLanguage;
+            $smarty->assign('rte_options', $rte_options);
+
         }
         
         return compact('content', 'lg', 'node', 'dynform');
