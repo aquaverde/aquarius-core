@@ -1,6 +1,6 @@
 {include file='header.tpl'}
 
-<h1>{#s_groups#}</h1>
+<h1>{#menu_config_feuser#}</h1>
 
 <form action="{url action0=$lastaction}" method="post">
 <div class="">
@@ -11,26 +11,19 @@
 		{foreach from=$groups item="group"}
 			<tr>
 				<td nowrap="nowrap" align="left">
-					&nbsp;
                   {activationbutton action="fegroup:toggle_active:`$group->id`:0" active=$group->active class=imagebutton}
-				  &nbsp;&nbsp;
+				  &nbsp;
 				  {action action="fegroup:edit:`$group->id`:"}
-					<a href="admin.php{url action=$action action1=$lastaction}">{$group->name} ({$group->id})</a>
+					<a href="admin.php{url action=$action action1=$lastaction}" title="Group {$group->id}">{$group->name}</a>
 				  {/action}
 				</td>
 				<td valign="middle" align="right">
-				  {action action="fegroup:edit:`$group->id`:"}
-					<a href="admin.php{url action=$action action1=$lastaction}">
-						<img src="buttons/edit.gif" border="0" alt="edit" />
-					</a>
-				  {/action}
-				
 				  {confirm 	yes="fegroup:delete:`$group->id`:"
 							no="fegroup:list::"
 							title="Delete Group"
 							message="<b>Delete group: `$group->name`?</b>"}
 					<a href="admin.php{url action=$action action1=$lastaction}">
-						<img src="buttons/delete.gif" border="0" alt="delete" />
+						<span class="glyphicon glyphicon-trash"></span>
 					</a>&nbsp;
 				  {/confirm}
 				</td>

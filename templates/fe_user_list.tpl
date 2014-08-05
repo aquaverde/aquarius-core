@@ -1,6 +1,6 @@
 {include file='header.tpl'}
 <form method="post" name="userAdmin" action="{url action=$lastaction}">
-	<h1>{#s_usr_user#} {#s_usr_manage#}</h1>
+	<h1>{#menu_config_feuser#}</h1>
 	
 	<div class="topbar">
 	
@@ -8,11 +8,11 @@
 
 	<table border="0">
 		<tr>
-			<td width="200">{#s_username_contains#}</td>
+			<td>{#s_username_contains#}</td>
 			<td>{#s_user_of_goup_only#}</td>
 		</tr>
 		<tr>
-			<td>
+			<td style="padding-right: 10px;">
 				<input type="text" name="user_search" value="{$user_search}" class="form-control" />
 			</td>
 			<td>
@@ -32,7 +32,7 @@
 			<td colspan="2">
 				<br/>
 				{action action="feuser:list::"}
-					<input type="submit" name="{$action}" value="{#s_search#}" class="btn btn-sm btn-default" />
+					<input type="submit" name="{$action}" value="{#s_search#}" class="btn btn-sm btn-primary" />
 				{/action}
 				{action action="feuser:list:::filter_reset"}
 				    <input type="submit" name="{$action}" value="{#s_filter_reset#}" class="btn btn-sm btn-default" />
@@ -51,7 +51,7 @@
 {/if}
 
 	<div class="">
-		<div class="bigboxtitle"><h2>{#s_users#} (Id)</h2></div>
+		<div class="bigboxtitle"><h2>{#s_users#}</h2></div>
 
 		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table" style="margin-top:10px;">
 
@@ -59,13 +59,11 @@
 			
 			<tr>
 				<td nowrap="nowrap">
-					&nbsp;
                   {activationbutton action="feuser:toggle_active:`$user->id`:" active=$user->active class=imagebutton}
-
+                  &nbsp;
 				  {action action="feuser:edit:`$user->id`:"}
 					<a href="{url action=$action action1=$lastaction}" title="ID {$user->id}">
-						{$user->name} <img src="buttons/edit.gif" border="0" alt="edit" />
-					
+						{$user->name}
 					</a>
 				  {/action}
 				 
@@ -88,9 +86,10 @@
 								no=""
 								title="Delete User"
 								message="Really delete this user?"}
-					<a href="{url action=$action action1=$lastaction}">
-						<img src="buttons/delete.gif" border="0" alt="delete" />
+					<a href="{url action=$action action1=$lastaction}" class="btn-link">
+						<span class="glyphicon glyphicon-trash"></span>
 					</a>&nbsp;
+                    
 				  {/confirm}
 				</td>
 			</tr>

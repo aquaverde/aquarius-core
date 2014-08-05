@@ -23,41 +23,47 @@
             <input type="file" id="input_file_upload" name="input_file_upload" />
             <button type="submit" name="btn_upload_file" value="{#upload_starten#}" id="btn_upload_file" class="btn btn-sm btn-primary" style="margin-top :8px" /><span class="glyphicon glyphicon-upload"></span> {#upload_starten#}</button>
         </form>
-	</div>
+    </div>
     <div class="clear"></div>
 </div>
-<h2>{#s_choose#}</h2>
+
 <div style="padding-bottom: 15px;">
     <div style="float:right">
         {foreach from=$view_actions item=view_action}
             {actionlink action=$view_action return=0 show_title=0}
         {/foreach}
     </div>
+
+    <form action="{url action=$change_action}" method="post">
+
+    {if $subdirs}
+        <div class="pull-right">
+            <select name="subdir" id="subdir_select" onchange="form.filter.value='';form.submit()" class="form-control">
+                <option value="">{#s_choose_dir#}</option>
+                <optgroup label="----">
+            {foreach from=$subdirs item=dir}
+                    <option value="{$dir}"{if $subdir == $dir} selected="selected"{/if}>{$dir}</option>
+            {/foreach}
+                </optgroup>
+            </select>
+        </div>
+    {/if}
+
     {if !$filter}
         <button id="show_filter" class="btn btn-default btn-sm" name="show_filter" value="{#s_search#}..." onclick="$('show_filter').hide(); $('filter_box').show(); return false"><span class="glyphicon glyphicon-search"></span> {#s_search#}</button>
     {/if}
-    <form action="{url action=$change_action}" method="post">
-        <div>            
-        {if $subdirs}
-            <div>
-                <label for="subdir_select" style="display: inline">{#s_directory#}</label>
-                <select name="subdir" id="subdir_select" onchange="form.filter.value='';form.submit()">
-                    <option value="">{#s_choose_dir#}</option>
-                    <optgroup label="----">
-                {foreach from=$subdirs item=dir}
-                        <option value="{$dir}"{if $subdir == $dir} selected="selected"{/if}>{$dir}</option>
-                {/foreach}
-                    </optgroup>
-                </select>
-            </div>
-        {/if}
-        </div>
-        <div style="{if $subdirs} margin-top: 10px;{/if}{if !$filter}display: none{/if}" id="filter_box">
-            <input placeholder="{#s_search#}" type="text" id='filterinput' name="filter" value="{$filter}" class="form-control" style="display:inline; width:30%;"/>
-            &nbsp;<input type="submit" name="doFilter" value="{#s_filter_it#}" class="btn btn-sm btn-default" />
-            &nbsp;<input type="submit" name="reset" value="{#s_filter_reset#}" onclick="form.filter.value='';form.submit()" class="btn btn-sm btn-default" />
-        </div>
+
+
+    <div style="{if $subdirs} margin-top: 10px;{/if}{if !$filter}display: none{/if}" id="filter_box">
+        <input placeholder="{#s_search#}" type="text" id='filterinput' name="filter" value="{$filter}" class="form-control" style="display:inline; width:30%;"/>
+        &nbsp;<input type="submit" name="doFilter" value="{#s_filter_it#}" class="btn btn-sm btn-default" />
+        &nbsp;<input type="submit" name="reset" value="{#s_filter_reset#}" onclick="form.filter.value='';form.submit()" class="btn btn-sm btn-default" />
+    </div>
+
+
+
     </form>
+
     <div class="clear"> </div>
 </div>
 {include file="page_select.tpl" lastaction=false}
