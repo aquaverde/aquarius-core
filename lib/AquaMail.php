@@ -13,7 +13,7 @@
   * Example, demonstrating that subject, from, to, etc. can be set anywhere:
   * <code>
   * File: html.tpl
-  *   {assign name="subject" var="Cool Subject!"}
+  *   {assign name="subject" var="Cool Subject!" scope=root}
   *   {assign name="html_image1" var="bildli.jpg"}
   *   <div>{$text} <img src="{$html_image1}"/></div>
   *   <div>{$moretext}</div>
