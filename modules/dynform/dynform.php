@@ -468,50 +468,55 @@ class Dynform extends Module
             throw new Exception("FATAL ERROR: Target email for form is missing!") ;
         }
         
+        // Take the first address as sender address if there are multiple
+        $sender = trim(first(explode(',', $target_email)));
+        
+        $this->send_mail($target_email, $client_email, $sender, $content, $submit_node_name, $mailtxt, $confirmation=false);
 
+        
+        if ($content->send_confirmation_mail && $client_email) {
+            if ($content->email_confirmation_sender) $conf_sender = $content->email_confirmation_sender ; 
+            else $conf_sender = "info@".$_SERVER['SERVER_NAME'];
+            $this->send_mail($client_email, $conf_sender, $conf_sender, $content, $submit_node_name, $mailtxt, $confirmation=true);
+        }
+
+        return nl2br($content->email_thanx); 
+    }
+
+
+    private function send_mail($recipient, $replyto, $sender, $content, $submit_node_name, $rows, $confirmation=false) {
         $subject = $content->email_subject;
         if (!empty($submit_node_name)) $subject .= ' | '.$submit_node_name;
 
-        // Take the first address as sender address if there are multiple
-        $sender_email = trim(first(explode(',', $target_email)));
-        
-        $newMail = new FormattedHTMLMail($target_email, $subject, $sender_email);
-        if ($client_email) $newMail->setReplyAddress($client_email);
-        if ($content->send_confirmation_mail) {
-            $newMail->addText($content->email_confirmation_text) ;
-            $newMail->addText("") ;
+        $newMail = new FormattedHTMLMail($recipient, $subject, $sender);
+        if ($replyto) $newMail->setReplyAddress($replyto);
+
+        if ($confirmation) {
+            $newMail->addText($content->email_confirmation_text);
+            $newMail->addText("");
+            if ($content->email_confirmation_subject) {
+                $newMail->setSubject($content->email_confirmation_subject); 
+            }
         } else {
             $newMail->addText($subject);
         }
-        
+
         $newMail->nextBlock(100, array(40, false));
-        $newMail->addDelimiter() ;
-        
-        foreach($mailtxt as $key => $txt) {
+        $newMail->addDelimiter();
+
+        foreach($rows as $key => $txt) {
             if (is_array($txt)) {
                 $newMail->addTextRow($txt[0], $txt[1]);
             } else {
-                $newMail->addText($txt) ;
+                $newMail->addText($txt);
             }
         }
-        $newMail->addDelimiter() ;
-        $newMail->sendMail() ; 
-        
-        if ($content->send_confirmation_mail && $client_email) {
-            $conf_sender = "" ; 
-            
-            if ($content->email_confirmation_sender) $conf_sender = $content->email_confirmation_sender ; 
-            else $conf_sender = "info@".$_SERVER['SERVER_NAME'] ;
-            $newMail->setSenderAddress($conf_sender) ; 
-            $newMail->setTargetAddress($client_email);
-            $newMail->setReplyAddress($conf_sender);
-            if ($content->email_confirmation_subject) $newMail->setSubject($content->email_confirmation_subject) ; 
-            $newMail->sendMail() ; 
-        }
-        
-        return nl2br($content->email_thanx) ; 
+
+        $newMail->addDelimiter();
+        return $newMail->sendMail(); 
     }
-    
+
+
     static function toMysqlDatetime($timestamp=''){
         // Array passed? convert server time and gmt_time in array
         if (is_array($timestamp) AND isset($timestamp['server_time']) AND isset($timestamp['gmt_time'])) {
