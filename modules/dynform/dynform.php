@@ -509,9 +509,6 @@ class Dynform extends Module
             $newMail->sendMail() ; 
         }
         
-        /*** unset the form token in the session ***/
-        unset($_SESSION['form_tokens'][$post_vars['form_token']]);
-        
         return nl2br($content->email_thanx) ; 
     }
     
