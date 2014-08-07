@@ -12,6 +12,7 @@ if (requestvar('change_db_settings')) {
     $config['host'] = requestvar('db_host');
     $config['name'] = requestvar('db_name');
     $config['user'] = requestvar('db_user');
+    $config['port'] = requestvar('db_port');
     $pass = requestvar('db_pass');
     if (!empty($pass)) $config['pass'] = $pass;
 }
@@ -21,11 +22,13 @@ $db_host = get($config, 'host');
 $db_name = get($config, 'name');
 $db_user = get($config, 'user');
 $db_pass = get($config, 'pass');
+$db_port = get($config, 'port');
 
 
 $db_connection = false;
 if (!empty($db_host) && !empty($db_name) && !empty($db_user) && !empty($db_pass)) {
-    $db_connection = mysql_connect($db_host, $db_user, $db_pass, true);
+    $srv = $db_host.($db_port ? ":$db_port" : "");
+    $db_connection = mysql_connect($srv, $db_user, $db_pass, true);
     if (!$db_connection) {
         message('warn', "Failed connecting to server $db_user@$db_host");
     }
@@ -50,7 +53,7 @@ if (!empty($db_host) && !empty($db_name) && !empty($db_user) && !empty($db_pass)
 
 if ($db_connection) {
     if (requestvar('change_db_settings')) {
-        foreach(array('host', 'name', 'user', 'pass') as $param) {
+        foreach(array('host', 'name', 'user', 'pass', 'port') as $param) {
             $localconf->set('db/'.$param, $config[$param]);
         }
         $result = $localconf->write();
@@ -79,11 +82,31 @@ if ($db_connection) {
     <div class='bigbox'>
     <h2>Database config</h2>
     <form action='' method='post' name='change_db_settings'>
-        <label>Hostname <input type='text' name='db_host' value='".htmlentities($db_host)."'/></label>
-        <label>Database name <input type='text' name='db_name' value='".htmlentities($db_name)."'/></label>
-        <label>Username <input type='text' name='db_user' value='".htmlentities($db_user)."'/></label>
-        <label>Password <input type='text' name='db_pass' value='".htmlentities($legacypass)."'/> (keeps old password when left empty)</label>
-        <input type='submit' name='change_db_settings' class='submit' value='Connect and write to config'/>
+        <table>
+            <tr>
+                <td><label for='db_host'>Hostname</label></td>
+                <td><input type='text' name='db_host' value='".htmlentities($db_host)."' id='db_host' size='8'/>:<input type='text' size='3' name='db_port' value='".htmlentities($db_port)."'/></td>
+                <td>(port optional)</td>
+            </tr>
+            <tr>
+                <td><label for='db_name'>Database name</label></td>
+                <td><input type='text' name='db_name' value='".htmlentities($db_name)."' id='db_name' size='15'/></td>
+            </tr>
+            <tr>
+                <td><label for='db_user'>Username</label></td>
+                <td><input type='text' name='db_user' value='".htmlentities($db_user)."' id='db_name' size='15'/></td>
+            </tr>
+            <tr>
+                <td><label for='db_pass'>Password</label></td>
+                <td><input type='text' name='db_pass' value='".htmlentities($legacypass)."' id='db_pass' size='15'/></td>
+                <td>(leave empty to keep unchanged)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan='2'><input type='submit' name='change_db_settings' class='submit' value='Connect and write to config'/></td>
+            </tr>
+        </table>
+        
     </form>
     </div>
     ";
