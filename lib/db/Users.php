@@ -333,8 +333,7 @@ class db_Users extends DB_DataObject
     
     function may_delete($node) {
         return ($this->isSiteadmin() || $this->delete_permission)
-            && $this->may_edit($node)
-            && ($this->isSiteadmin() || $node->is_boxed());
+            && $this->may_edit($node);
     }
 
     function idstr() {
