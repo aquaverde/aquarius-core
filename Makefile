@@ -2,8 +2,9 @@ COMPOSER=bin/composer.phar
 VENDOR=vendor/autoload.php
 ADMINER=../dbadmin/index.php
 CKEDITOR_ACCESS=vendor/ckeditor/ckeditor/.htaccess
+REVISION:=$(shell git describe --abbrev=4 --dirty --always)
 
-all: $(VENDOR) $(ADMINER) $(CKEDITOR_ACCESS)
+all: $(VENDOR) $(ADMINER) $(CKEDITOR_ACCESS) revision
 
 full: $(VENDOR) $(ADMINER)
 	php bin/packer --inline full
@@ -25,4 +26,7 @@ $(CKEDITOR_ACCESS): $(VENDOR)
 	
 clean:
 	rm -rf $(COMPOSER) vendor
-	
+
+.PHONY: revision
+revision:
+	echo $(REVISION) > $@
