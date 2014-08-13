@@ -34,19 +34,8 @@ class Aquarius_Packer {
         if (!$changed) throw new Exception("Unable to change dir to $coredir");
 
 
-        $version = false;
+        $version = @file_get_contents('revision');
 
-        if (self::exec_enabled()) {
-            // Try to detect the installation version
-            $version = exec('git describe 2>&1', $_, $version_error);
-
-            // Cache version information in file, or use that file if git didn't work
-            if ($version_error === 0) {
-                file_put_contents('revision', $version);
-            } else {
-                $version = @file_get_contents('revision');
-            }
-        }
         if ($version === false) {
             $version = 'unspecified';
         }
