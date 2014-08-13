@@ -312,6 +312,14 @@ class action_node_copy extends action_node_move implements ChangeAction {
         $result->add_message(AdminMessage::with_line('ok', "s_message_node_cloned", $node->get_contenttitle(), $newnode->get_contenttitle()));
         
         $this->move($newnode, $post, $result);
+        
+        // Bend edit actions that refer to the original to refer to the cloned node
+        $result->inject_action(new Fiddle_Each_Action(function($action) use ($node, $newnode) {
+            if ($action instanceof action_contentedit_edit
+             && $action->node_id == $node->id) {
+                 $action->node_id = $newnode->id;
+            } 
+        })); // I feel a bit dirty now
     }
 }
 
