@@ -309,17 +309,19 @@ Class Aqua_Update_SQL {
     }
 
     function apply($aquarius, $module) {
-        // This could take a while...
-        set_time_limit(0);
-        echo "Please wait...";
-        while(@ob_end_flush());
-        flush();
-        
         // Hack: Make sure all created tables are in UTF8
         $aquarius->db->query("ALTER DATABASE `".$aquarius->conf('db/name')."` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
         
         $sql_commands = file_get_contents($this->update_file);
         if ($sql_commands === false) throw new Exception("Unable to read ".$this->update_file);
+        
+        if (strlen($sql_commands) > 10**5) {
+            // This could take a while...
+            set_time_limit(0);
+            echo "Please wait...";
+            while(@ob_end_flush());
+            flush();
+        }
         
         $sql_reader = new SQL_Split($sql_commands);
         foreach($sql_reader as $idx => $sql_command) {
