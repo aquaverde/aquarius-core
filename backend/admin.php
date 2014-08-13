@@ -149,6 +149,9 @@ try {
             Log::debug("Processing ChangeAndDisplayAction $action");
             $action->process($aquarius, clean_magic($_POST), $smarty, $changeresult, $displayresult);
             $lastaction = $action;
+        } else if ($action instanceof FiddlingAction) {
+            Log::debug("Fiddling with actions");
+            $action->process($aquarius, $display_actions);
         } else {
             Log::debug("Executing legacy action: ".print_r($action,true));
             $result = $action->execute();

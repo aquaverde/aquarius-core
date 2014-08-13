@@ -47,6 +47,14 @@ interface ChangeAndDisplayAction {
     function process($aquarius, $post, $smarty, $change_result, $display_result);
 }
 
+/** Actions that modify the stack of pending actions */
+interface FiddlingAction {
+    /** The stack of actions is passed in as array and modified by reference
+      * @param $aquarius Aquarius instance for reference
+      * @param &$actions List of actions */
+    function process($aquarius, &$actions);
+}
+
 /** Container for actions to add results during their processing */
 class ActionResult {
     /** Messages to the user */
