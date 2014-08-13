@@ -13,7 +13,7 @@ bare: $(VENDOR)
 	php bin/packer --inline bare
 
 $(VENDOR): $(COMPOSER) composer.json $(wildcard composer.lock)
-	php $(COMPOSER) update
+	php $(COMPOSER) install
 
 $(ADMINER): $(VENDOR)
 	sh bin/compile_adminer
