@@ -533,6 +533,7 @@ class db_Node extends DB_DataObject
         $copy->weight = null;
         $copy->title = $copy->title.$title_append;
         if ($new_parent) $copy->parent_id = $new_parent->id;
+        $copy->name = ''; // Clones don't have names, duh
        
         $copy->insert();
         
