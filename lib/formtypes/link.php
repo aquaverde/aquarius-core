@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 class Formtype_Link extends Formtype {
 
     /** Apply formtype specific conversion prior to editing content
@@ -92,4 +93,3 @@ class Formtype_Link extends Formtype {
         return $value;
     }
 }
-?>
