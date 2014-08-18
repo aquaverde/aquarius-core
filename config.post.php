@@ -3,8 +3,6 @@
 
 
 /** Admin config */
-// Default language of the admin interface
-defined('ADMIN_DEFAULT_LANGUAGE') or define('ADMIN_DEFAULT_LANGUAGE', 'de');
 
 // Are new nodes active by default?
 defined('ADMIN_INIT_NODE_ACTIVE') or define('ADMIN_INIT_NODE_ACTIVE', true);

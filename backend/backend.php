@@ -22,35 +22,23 @@ Log::backtrace('backend');
 
     $user = db_Users::authenticated();
 
-    // Determine admin language
-    $admin_lg = false;
-    
-    if ($user) {
-        $admin_lg = $user->adminLanguage;
-    }
-    if (empty($admin_lg)) {
-        $admin_lg = ADMIN_DEFAULT_LANGUAGE;
-    }
-    /* Determine base language to use in backend */
-    function backend_lg_user_default_lang() {
-        global $user;
-        if ($user) return $user->defaultLanguage;
-    }
-
-    $language_detection = new Language_Detection;
+    $language_detection = new Language_Detection_Admin;
     $language_detection->add_detector('request_parameter');
-    $language_detection->add_detector('backend_lg_user_default_lang', 'backend_lg_user_default_lang');
+    $language_detection->add_detector('user_default_lang');
     $language_detection->add_detector('accepted_languages');
-    $language_detection->add_detector('primary');
+    $language_detection->add_detector('use_default');
 
     $request_params = array(
         'request' => clean_magic($_REQUEST),
         'server' => $_SERVER,
-        'require_active' => false
+        'require_active' => false,
+        'user' => $user
     );
 
     $lg = $language_detection->detect($request_params);
     Log::debug("Using language ".$lg);
+    
+    $admin_lg = $lg; // Legacy
 
     $aquarius->execute_hooks('backend_init');
     
