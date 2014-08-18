@@ -54,5 +54,4 @@ $smarty->assign('url', $url);
 $smarty->assign("defaultManagerSyle", DEFAULT_MANAGER_STYLE);
 $smarty->assign('menu', $menu_entry);
 $smarty->assign('display', $display);
-$smarty->assign('revision', $aquarius->revision());
 $smarty->display('navig.tpl');
