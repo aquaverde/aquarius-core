@@ -7,7 +7,7 @@
   * @param $detector_names is an optional list of builtin detector names to add.
   * */
 class Language_Detection {
-    private $language_detectors;
+    var $language_detectors;
 
     /** Create a language detection process
     * @param $detector_names is an optional list of builtin detector names to add.
@@ -23,6 +23,9 @@ class Language_Detection {
     function add_detector($name, $detector = null, $location = 'after', $relative_to = null) {
         if (!$detector) {
             $detector = array('Language_Detection', $name);
+        }
+        if (!is_callable($detector)) {
+            $detector = array($this, $name);
         }
         if (!is_callable($detector)) {
             throw new Exception("Detector '$name' not callable");
@@ -66,6 +69,7 @@ class Language_Detection {
         return $params['domain_conf']->get($params['uri']->host, 'lg');
     }
 
+
     /** Detect language by HTTP_ACCEPT_LANGUAGE header sent by browser */
     static function accepted_languages($params) {
         $accepted_languages = explode(",", get($params['server'], 'HTTP_ACCEPT_LANGUAGE'));
@@ -75,6 +79,7 @@ class Language_Detection {
            if ($lg) return $lg;
         }
     }
+
 
     /** Always return the primary language */
     static function primary($params) {
