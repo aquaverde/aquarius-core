@@ -54,7 +54,7 @@ class Language_Detection {
     static function request_parameter($params) {
         return get($params['request'], 'lg');
     }
-    
+
     /** Use the first path part if it's a valid language code  */
     static function request_path($params) {
         // Try to use the first path part as language code
@@ -70,7 +70,6 @@ class Language_Detection {
     static function accepted_languages($params) {
         $accepted_languages = explode(",", get($params['server'], 'HTTP_ACCEPT_LANGUAGE'));
 
-        $accepted_lgs = array();
         foreach ($accepted_languages as $langstr) {
            $lg = db_Languages::validate_code(substr($langstr, 0,2), get($params, 'require_active'));
            if ($lg) return $lg;
