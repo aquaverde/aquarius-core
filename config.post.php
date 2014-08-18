@@ -93,8 +93,5 @@ defined('DATE_FORMAT') or define('DATE_FORMAT', "%d.%m.%Y");
 
 defined('PEARLOGLEVEL') or define('PEARLOGLEVEL', 0);     // use 0 in production, 5 for all debug info you'll ever need
 
-// FIXME: Fix stuff to use DIRECTORY_SEPARATOR directly and remove this line
-define('FILE_SEPARATOR', DIRECTORY_SEPARATOR); 
 
 defined('PROJECT_TITLE') or define('PROJECT_TITLE', 'aquarius');
-?>
