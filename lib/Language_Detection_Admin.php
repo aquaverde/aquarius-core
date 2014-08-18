@@ -41,9 +41,9 @@ class Language_Detection_Admin extends Language_Detection {
     }
     
     /* Determine base language to use in backend */
-    function user_default_lang($params) {
+    function user_admin_lang($params) {
         $user = get($params, 'user');
-        if ($user) return $user->defaultLanguage;
+        if ($user) return $user->adminLanguage;
     }
     
     /* Use default admin language */

@@ -22,23 +22,36 @@ Log::backtrace('backend');
 
     $user = db_Users::authenticated();
 
-    $language_detection = new Language_Detection_Admin;
-    $language_detection->add_detector('request_parameter');
-    $language_detection->add_detector('user_default_lang');
-    $language_detection->add_detector('accepted_languages');
-    $language_detection->add_detector('use_default');
-
     $request_params = array(
         'request' => clean_magic($_REQUEST),
         'server' => $_SERVER,
         'require_active' => false,
         'user' => $user
     );
-
-    $lg = $language_detection->detect($request_params);
-    Log::debug("Using language ".$lg);
     
-    $admin_lg = $lg; // Legacy
+    // Determine the preset language for working with content
+    // Actions often override this and have their own lg specifiers
+    $lg_detection = new Language_Detection;
+    $lg_detection->add_detector('request_parameter');
+    $lg_detection->add_detector('backend_lg_user_default_lang', function() use ($user) {
+        // Right after login, we have no language set, but the user has
+        if ($user) return $user->defaultLanguage;
+    });
+    $lg_detection->add_detector('accepted_languages'); // grasping at straws
+    $lg_detection->add_detector('primary'); // Better than nothing
+    
+    $lg = $lg_detection->detect($request_params);
+    Log::debug("Using content language ".$lg);
+    
+    // Determine user interface language
+    $admin_lg_detection = new Language_Detection_Admin;
+    $admin_lg_detection->add_detector('user_admin_lang');
+    $admin_lg_detection->add_detector('accepted_languages');
+    $admin_lg_detection->add_detector('use_default');
+
+    $admin_lg = $admin_lg_detection->detect($request_params);
+    Log::debug("Using admin language ".$admin_lg);
+    
 
     $aquarius->execute_hooks('backend_init');
     
