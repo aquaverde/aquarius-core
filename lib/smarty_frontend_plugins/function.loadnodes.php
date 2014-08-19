@@ -16,7 +16,7 @@
   *  @param limit cuts the list after the given limit, preset: false, signifying ∞
   *  @param start start at this index (ignore start of list), preset: 0
   *  @param var name of the smarty variable to assign the list to
-  *  @param honor_show_in_menu don't list nodes which should not be shown in menus, preset: false
+  *  @param menu don't list nodes which should not be shown in menus, preset: false (DEPRECATED name honor_show_in_menu)
   *  @param include_inactive show nodes even if their parents are inactive, default false
   *  @param return_list Used internally to flag that the list should be returned as is
   *  @param filter filter sentence selecting nodes that will end up in the list
@@ -60,7 +60,7 @@ function smarty_function_loadnodes($params, $smarty) {
     if (!$childrenof) $childrenof = db_Node::get_node(get($params, 'childsof'));
     $siblingsof = db_Node::get_node(get($params, 'siblingsof'));
     $lg = get($params, 'lg', $smarty->get_template_vars('lg'));
-    $honor_show_in_menu = get($params, 'honor_show_in_menu');
+    $honor_show_in_menu = get($params, 'menu', get($params, 'honor_show_in_menu', false));
     $custom_filter_sentence = get($params, 'filter');
 
     $list = array();
