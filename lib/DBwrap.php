@@ -68,7 +68,7 @@ class DBwrap {
         $entries = array();
         $res = $this->query($query, $data);
         while ($entry = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
-                $entries[$entry->$index] = $entry;
+                $entries[$entry[$index]] = $entry;
         }
         return $entries;
     }
