@@ -63,6 +63,8 @@ try {
     $touched_content = false;
     $node_changes = false;
     foreach($changeresult->touched_regions as $region) {
+        Cache::clean();
+        
         if ($region instanceof Node_Change_Notice) {
             $touched_content = true;
             $change = $region;
