@@ -45,14 +45,20 @@ class Aqua_Smarty extends SmartyBC {
 
 
     function receive_error($errno, $errstr, $errfile, $errline, $errcontext) {
-        $msg = compact('errno', 'errstr', 'errfile', 'errline');
+        $incfilestr = "$errfile line $errline";
         if (isset($errcontext['smarty'])) {
-            $msg['errincfile'] = $errcontext['smarty']->template_resource;
+            $incfilestr .= " (original ".$errcontext['smarty']->template_resource.")";
         }
         if (isset($errcontext['_smarty_tpl'])) {
-            $msg['errincfile'] = $errcontext['_smarty_tpl']->template_resource;
+            $incfilestr .= " (original ".$errcontext['_smarty_tpl']->template_resource.")";
         }
-        Log::debug($msg);
+        
+        $message = "$errstr (#$errno) in $incfilestr";
+        if ($errno == 8) {
+            Log::backtrace($message);
+        } else {
+            Log::debug($message);
+        }
         return true;
     }
 

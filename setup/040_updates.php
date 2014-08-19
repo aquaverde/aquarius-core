@@ -315,7 +315,7 @@ Class Aqua_Update_SQL {
         $sql_commands = file_get_contents($this->update_file);
         if ($sql_commands === false) throw new Exception("Unable to read ".$this->update_file);
         
-        if (strlen($sql_commands) > 10**5) {
+        if (strlen($sql_commands) > 100000) {
             // This could take a while...
             set_time_limit(0);
             echo "Please wait...";
