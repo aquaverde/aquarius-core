@@ -224,12 +224,12 @@ try {
     $template_requests = $aquarius->execute_hooks('frontend_page', $smarty, $node, $node_params);
 
     // Determine the template to use
+    $form = $node->get_form();
     $template = 'not_found.tpl';
     if (!empty($template_requests)) {
         if (count($template_requests) > 1) Log::warn("Requests to switch to multiple templates (".join(' and ', $template_requests).") picking first");
         $template = first($template_requests);
     } else {
-        $form = $node->get_form();
         if ($form) $template = $form->template;
     }
 
