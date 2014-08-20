@@ -14,9 +14,9 @@ class db_Content extends DB_DataObject
     public $__table = 'content';                         // table name
     public $node_id;                         // int(11)  not_null multiple_key group_by
     public $id;                              // int(10)  not_null primary_key unsigned auto_increment group_by
-    public $lg;                              // char(2)  
-    public $cache_title;                     // varchar(250)  multiple_key
-    public $cache_fields;                    // blob(65535)  blob
+    public $lg;                              // char(6)  
+    public $cache_title;                     // varchar(750)  multiple_key
+    public $cache_fields;                    // blob(196605)  blob
     public $active;                          // tinyint(1)  not_null multiple_key group_by
 
     /* Static get */
@@ -57,7 +57,8 @@ class db_Content extends DB_DataObject
         if (!$node) throw new Exception("No node with id '$this->node_id' for content $this->id.");
         return $node;
     }
-    
+
+
     /** Initialize content fields with empty array or null; according to form */
     function initialize_properties($formfields) {
          foreach($formfields as $formfield) {
@@ -65,6 +66,7 @@ class db_Content extends DB_DataObject
              if (strlen($fieldname)) $this->$fieldname = $formfield->multi? array() : null;
          }
     }
+
 
     /** Load the content field values into object properties.
       * The fields are not reloaded on successive calls to this method.
@@ -76,16 +78,33 @@ class db_Content extends DB_DataObject
         $loaded = $this->load_cache();
         if (!$loaded) {
             $loaded = $this->load_db();
-            // Update the cache
-            if ($loaded) {
-                $this->prepare_cache();
-                $this->update();
-            }
         }
         $this->_loaded_fields = true;
         return false;
     }
-    
+
+
+    /** Load content fields from cache
+      * @return true if the fields could be loaded */
+    function load_cache() {
+        if (0 === strlen($this->cache_fields)) return false;
+
+        $cache_val = unserialize($this->cache_fields);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            Log::debug("Unable to load cache of content id $this->id, error ".json_last_error());
+            return false;
+        } else {
+            Log::debug("USing cache for $this->id");
+            Log::debug($cache_val);
+        }
+        foreach($cache_val as $key => $value) {
+            $this->$key = $value;
+        }
+        return true;
+    }
+
+
     function load_db() {
         if ($this->id == null) return false;
         global $aquarius;
@@ -119,41 +138,36 @@ class db_Content extends DB_DataObject
         $this->initialize_properties($formfields);
 
         $formtypes = $aquarius->get_formtypes();
+        $cache = array();
         foreach($formfields as $field_name => $form_field) {
             $formtype = $formtypes->get_formtype($form_field->type);
             if (!is_object($formtype)) throw new Exception("Formtype '$form_field->type' does not exist");
             
             $field_values = get($content_field_values, $field_name, array());
-            $this->$field_name = $formtype->db_get_field($field_values, $form_field, $this->lg);
+            $value = $formtype->db_get_field($field_values, $form_field, $this->lg);
+            $this->$field_name = $value;
+            $cache[$field_name] =  $value;
+        }
+        $cache_val = serialize($cache);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            Log::debug("Unable to build cache of content id $this->id, error ".json_last_error());
+        } else {
+            $this->cache_fields = $cache_val;
+            $success = parent::update();
+            if (!$success) Log::warn("Unable to write cache to DB for $this->id");
         }
         return true;
     }
-    
-    /** Load content fields from cache
-      * @return true if the fields could be loaded */
-    function load_cache() {
-        global $aquarius;
-        $formtypes = $aquarius->get_formtypes();
-        $formfields = $this->get_formfields();
-        $this->initialize_properties($formfields);
-        if (@strlen($this->cache_fields)) {
-            foreach(json_decode($this->cache_fields, true) as $name => $cache_entry) {
-                if (!isset($formfields[$name])) {
-                    return false;
-                }
-                $formfield = $formfields[$name];
-                $formtype = $formtypes->get_formtype($formfield->type);
-                $this->$name = $formtype->cache_get($cache_entry, $formfield, $this->lg);
-            }
-            return true;
-        }
-        return false;
-    }
-    
-    /** Load the fields from the DB on the first access */
+
+
+    /** Load the fields from the DB on the first access
+      *
+      * Accessing unset properties of the object will return null without warning.
+      */
     function __get($field) {
-        $this->cache_load();
-        return $this->$field;
+        $this->load_fields();
+        if (isset($this->$field)) return $this->$field;
+        return null;
     }
 
     /** Tries to load language independent fields from another language
@@ -230,10 +244,10 @@ class db_Content extends DB_DataObject
                 $weight += 1;
             }
         }
-        $this->prepare_cache();
+        $this->cache_fields = ''; // Reset the cache
         $this->cache_title = join(', ', $this->titlefields());
 
-        parent::update();
+        $this->update();
         
         // Lose the cached object
         unset($GLOBALS['_AQUARIUS_CONTENT_CACHE'][$this->node_id][$this->lg]);
