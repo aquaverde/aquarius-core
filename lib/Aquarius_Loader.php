@@ -321,7 +321,9 @@ class Aquarius_Stage_legacy_db_connection extends Aquarius_Basic_Stage {
     
     function load($loader) {
         $dbconf = $loader->aquarius->conf('db');
-        $loader->db_legacy = new SQLwrap($dbconf['host'], $dbconf['user'], DB_PASSWORD, $dbconf['name']);
+        $port = get($dbconf, 'port');
+        $ports = $port ? ":$port" : '';
+        $loader->db_legacy = new SQLwrap($dbconf['host'].$ports, $dbconf['user'], DB_PASSWORD, $dbconf['name']);
         $GLOBALS['DB'] = $loader->db_legacy;
     }
 }
