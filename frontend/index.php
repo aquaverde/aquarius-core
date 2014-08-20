@@ -355,5 +355,3 @@ try {
 }
 
 flush_exit();
-
-?>
