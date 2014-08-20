@@ -94,9 +94,6 @@ class db_Content extends DB_DataObject
         if (json_last_error() !== JSON_ERROR_NONE) {
             Log::debug("Unable to load cache of content id $this->id, error ".json_last_error());
             return false;
-        } else {
-            Log::debug("USing cache for $this->id");
-            Log::debug($cache_val);
         }
         foreach($cache_val as $key => $value) {
             $this->$key = $value;
