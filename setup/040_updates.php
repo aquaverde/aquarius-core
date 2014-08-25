@@ -44,8 +44,7 @@ example: "2038.01.20 change timestamp column to int64"
 /* LOLWTF ad-hoc stream SQL lexer to iterate over SQL statements in string
  * No syntax checking whatsoever! This brought to you by Fun and Games inc. */
 class SQL_Split implements Iterator {
-    private $sql_statements;
-    private $length;
+    private $inf;
     
     private $current_statement;
     private $current_key;
@@ -62,23 +61,25 @@ class SQL_Split implements Iterator {
         ';'  => 'read_end'
     );
     
-    function __construct($sql_statements) {
-        $this->sql_statements = $sql_statements;
-        $this->length = strlen($sql_statements);
+    
+    /** Build an iterator over SQL statements in given input
+      * @param $inf file to read */
+    function __construct($inf) {
+        $this->inf = $inf;
     }
     
     function rewind() {
+        $this->current_statement = '';
+        if (fseek($this->inf, 0) !== 0) throw new Exception("Unable to seek start in $this->inf");
         $this->cur = -1;
-        $this->statement_start = 0;
         $this->current_key = -1;
         $this->next();
     }
     
     function next() {
-        $this->current_statement = $this->read_statement();
+        $this->read_statement();
         $this->valid = strlen($this->current_statement) > 0;
         $this->current_key++;
-        // echo "<br>$this->current_key: ".nl2br($this->current_statement);
     }
     
     function current() {
@@ -93,64 +94,68 @@ class SQL_Split implements Iterator {
         return $this->valid;
     }
     
-    function read_statement() {
-        $this->statement_start = $this->cur + 1;
-        while(++$this->cur < $this->length) {
-            $c = $this->sql_statements[$this->cur];
+    private function read_char() {
+        $c = fgetc($this->inf);
+        if ($c === false) return false;
+        $this->current_statement .= $c;
+        return $c;
+    }
+    
+    private function read_statement() {
+        $this->current_statement = '';
+        while(false !== $c = $this->read_char()) {
             if (isset($this->chars[$c])) {
                 $end = $this->{$this->chars[$c]}();
                 if ($end) break;
             }
         }
-        return trim(substr($this->sql_statements, $this->statement_start, $this->cur - $this->statement_start));
+        $this->current_statement = trim($this->current_statement); // Be nice and people will be nice to you too?
     }
     
     function read_quote1() {
-         while(++$this->cur < $this->length) {
-            $c = $this->sql_statements[$this->cur];
+        while(false !== $c = $this->read_char()) {
             if ($c === '\\') {
-                $this->cur++;
+                $this->read_char();
             } elseif($c === "'") {
                 return false;
             } 
         }
+        return false;
     }
     
     function read_quote2() {
-         while(++$this->cur < $this->length) {
-            $c = $this->sql_statements[$this->cur];
+        while(false !== $c = $this->read_char()) {
             if ($c === '\\') {
-                $this->cur++;
+                $this->read_char();
             } elseif($c === '"') {
                 return false;
             } 
         }
+        return false;
     }
     
     function read_comment1() {
-        if ($this->cur + 1 < $this->length && $this->sql_statements[$this->cur + 1] === '*') {
-            $this->cur++;
-            while(++$this->cur < $this->length) {
-                $c = $this->sql_statements[$this->cur];
-                if ($c === '*') {
-                    if ($this->cur + 1 < $this->length && $this->sql_statements[$this->cur + 1] === '/')
-                    $this->cur++;
-                    return false;
-                }
+        $c = $this->read_char();
+        if ($c === false) return false;
+        if ('*' === $this->read_char()) {
+            // We're inside a comment block, look for the end
+            $cur = '  ';
+            while ($cur !== '*/') {
+                $c = $this->read_char();
+                if ($c === false) return;
+                $cur = $cur[1].$c;
             }
         }
         return false;
     }
     
+    
     function read_comment2() {
-        if ($this->cur + 1 < $this->length && $this->sql_statements[$this->cur + 1] === '-') {
-            $this->cur++;
-            while(++$this->cur < $this->length) {
-                $c = $this->sql_statements[$this->cur];
-                if ($c === "\n") {
-                    return false;
-                }
-            }
+        $c = $this->read_char();
+        if ($c === false) return false;
+        if ($c === '-') {
+            // Line comment, find line termination
+            do { $c = $this->read_char(); } while (false !== $c && "\n" !== $c);
         }
         return false;
     }
@@ -311,19 +316,19 @@ Class Aqua_Update_SQL {
     function apply($aquarius, $module) {
         // Hack: Make sure all created tables are in UTF8
         $aquarius->db->query("ALTER DATABASE `".$aquarius->conf('db/name')."` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
-        
-        $sql_commands = file_get_contents($this->update_file);
-        if ($sql_commands === false) throw new Exception("Unable to read ".$this->update_file);
-        
-        if (strlen($sql_commands) > 100000) {
+
+        $sql_file = fopen($this->update_file, 'r');
+        if ($sql_file === false) throw new Exception("Unable to open ".$this->update_file);
+
+        if (get(fstat($sql_file), 'size') > 100000) {
             // This could take a while...
             set_time_limit(0);
             echo "Please wait...";
             while(@ob_end_flush());
             flush();
         }
-        
-        $sql_reader = new SQL_Split($sql_commands);
+
+        $sql_reader = new SQL_Split($sql_file);
         foreach($sql_reader as $idx => $sql_command) {
             try {
                 $aquarius->db->query($sql_command);
