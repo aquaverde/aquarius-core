@@ -44,7 +44,7 @@ function smarty_block_minify_includes($params, $content, $smarty, &$repeat) {
                 foreach($deps as $path) {
                     if (
                         $path->isFile()
-                     && $path->getExtension() == 'scss')
+                     && $path->getExtension() == 'scss'
                     ) {
                         $maxmtime = max($maxmtime, $path->getMTime());
                     }
