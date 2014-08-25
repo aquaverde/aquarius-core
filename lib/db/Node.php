@@ -352,7 +352,7 @@ class db_Node extends DB_DataObject
     }
     
     /** Load a child with given url title, returns false if there's no such child. */
-    function get_urlchild($urltitle, $lg=false) {
+    function get_urlchild($urltitle, $lg=false, $require_active=false) {
         if (!$lg) $lg = $GLOBALS['lg'];
         $urlchildren = $GLOBALS['aquarius']->db->listquery("
             SELECT n.id 
@@ -363,7 +363,8 @@ class db_Node extends DB_DataObject
             WHERE n.parent_id = ? 
                 AND c.lg = ?
                 AND f.name = 'urltitle'
-                AND content_field_value.value = ?", 
+                AND content_field_value.value = ?"
+            .($require_active ? "AND n.active = 1" : ""), 
             array($this->id, $lg, $urltitle)
         );
         switch(count($urlchildren)) {
@@ -372,7 +373,7 @@ class db_Node extends DB_DataObject
             case 1:
                 break; // Good
             default:
-                Log::warn("Found ".count($urlchilds)." childs for node $this->id that have urltitle '$urltitle'; picking one.");
+                Log::warn("Found ".count($urlchildren)." childs for node $this->id that have urltitle '$urltitle'; picking one.");
         }
         return self::staticGet(array_shift($urlchildren));
     }

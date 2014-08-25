@@ -10,6 +10,7 @@
   *   request: request variables from get/post requests ($_REQUEST)
   *   lg: determined language of the request
   *   server: server variables ($_SERVER)
+  *   require_active: whether detected nodes must be active
   *
   * Special parameters to be set by detectors. If any of those is set by a step,
   * detection stops and the result is returned.
@@ -184,7 +185,7 @@ class Node_Detection {
     static function urltitle($params) {
         $current_node = $params['current_node'];
         while($urltitle = array_shift($params['path_parts'])) {
-            $next_node = $current_node->get_urlchild($urltitle);
+            $next_node = $current_node->get_urlchild($urltitle, $params['lg'], $params['require_active']);
             if ($next_node) {
                 Log::debug("Following urltitle '$urltitle' from ".$current_node->idstr()." to ".$next_node->idstr());
                 $current_node = $next_node;
