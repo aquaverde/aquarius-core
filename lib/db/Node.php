@@ -566,7 +566,7 @@ class db_Node extends DB_DataObject
     /** Get an array of strings describing the thing here
       * The first entry in the returned array is always "node", the second may be "root", "rubric", "box", "category" or "content" and the third is either "on" or "off"
       */
-      function get_prop() {
+    function get_prop() {
         $type = "rubric";
         if ($this->is_root()) $type = "root";
         if ($this->is_box()) $type = "box";
@@ -576,27 +576,27 @@ class db_Node extends DB_DataObject
             else
                 $type = "category";
         return array("node", $type, $this->active?"on":"off");
-      }
-      
-      function icon() {
-          return join("_", $this->get_prop());
-      }
-      
-      
-      /** Divert $this->get_*() calls to content->*() */
-      function __call($name, $params) {
-          $prefix = substr($name, 0, 4);
-          $name = substr($name, 4);
-          switch ($prefix) {
-              case "get_": 
+    }
+
+    function icon() {
+        return join("_", $this->get_prop());
+    }
+
+
+    /** Divert $this->get_*() calls to content->*() */
+    function __call($name, $params) {
+        $prefix = substr($name, 0, 4);
+        $name = substr($name, 4);
+        switch ($prefix) {
+            case "get_":
                 $content = $this->get_content();
                 if ($content)
                     return call_user_func_array(array(&$content, $name), $params); // This abomination effects a call to $content->$name($param1, $param2...)
                 else
                     return false; // Cannot divert to nonexisting content, can I?
-              default: return parent::__call($name, $params); // super();
-          }
-      }
+            default: return parent::__call($name, $params); // super();
+        }
+    }
 
     /** Update cached fields and those of all children
         The cache update is done in an SQL session (not that this helps in the usual MySQL setup)
