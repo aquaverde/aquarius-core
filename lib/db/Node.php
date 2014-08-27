@@ -241,7 +241,7 @@ class db_Node extends DB_DataObject
       * For unboxed nodes, or nodes where there are no forms specified in
       * ancestor nodes, the available forms are specified in this node's form.
       */
-    function available_childforms($formtype = 'form') {
+    function available_childforms() {
         // Find out whether children are boxed
         $inherited_form = false;
         $child_box_depth = $this->box_depth() - 1;
