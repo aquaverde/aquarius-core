@@ -583,7 +583,8 @@ class db_Node extends DB_DataObject
     }
 
 
-    /** Divert $this->get_*() calls to content->*() */
+    /** Divert $this->get_*() calls to content->*()
+      * DEPRECATED it's dangerous and confusing */
     function __call($name, $params) {
         $prefix = substr($name, 0, 4);
         $name = substr($name, 4);
