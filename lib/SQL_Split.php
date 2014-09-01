@@ -21,6 +21,8 @@ class SQL_Split implements Iterator {
 
     private $current_statement;
     private $current_key;
+    private $current_line;
+    private $statement_line;
     private $valid;
 
     private $cur;
@@ -48,6 +50,7 @@ class SQL_Split implements Iterator {
         if (fseek($this->inf, 0) !== 0) throw new Exception("Unable to seek start in $this->inf");
         $this->cur = -1;
         $this->current_key = -1;
+        $this->current_line = 1;
         $this->next();
     }
 
@@ -71,12 +74,19 @@ class SQL_Split implements Iterator {
     function valid() {
         return $this->valid;
     }
+    
+    
+    /** Return line number where the last-read statement ends */
+    function line() {
+        return $this->current_line;
+    }
 
 
     private function read_char() {
         $c = fgetc($this->inf);
         if ($c === false) return false;
         $this->current_statement .= $c;
+        if ("\n" == $c) $this->current_line += 1;
         return $c;
     }
 
