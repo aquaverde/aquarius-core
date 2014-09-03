@@ -14,7 +14,7 @@ class action_port extends ModuleAction {
 class action_port_export extends action_port {
     function export($request) {
         $roots = array_filter(explode(',', $request['export_selected']));
-        $recurse = (bool)$request['include_children'];
+        $recurse = (bool)get($request, 'include_children');
         
         // Export nodes first
         $exported = array();
