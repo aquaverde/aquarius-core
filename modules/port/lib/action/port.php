@@ -99,9 +99,10 @@ class action_port_export_download extends action_port_export implements SideActi
         $first_content = first(get(first($export), 'content'));
         $name = first(first(get($first_content, 'title', first($first_content))));
         $export_count = count($export);
-
+        $totalstr = false;
+        if ($export_count > 1) $totalstr = " (total $export_count)";
         header('Content-type: application/json');
-        header('Content-Disposition: attachment; filename="'.$_SERVER['SERVER_NAME']." $name (total $export_count) ".date('YmdHis').'.json"');
+        header('Content-Disposition: attachment; filename="'.date('Y.m.d His')." ".$_SERVER['SERVER_NAME']." $name$totalstr".'.json"');
 
         echo json_encode($export);
         exit();
