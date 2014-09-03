@@ -222,6 +222,30 @@ Class Aqua_Update_PHP {
     }
 }
 
+class Aqua_Update_JSON {
+    function __construct($path) {
+        $this->update_file = $path;
+    }
+
+    function apply($aquarius, $module) {
+        $importer = new Content_Import();
+        $importer->update = true;
+
+        $import = file_get_contents($this->update_file);
+        if (FALSE === $import) {
+            message('warn', "Unable to read content update $this->update_file");
+        } else {
+            try {
+                global $aquarius;
+                $aquarius->load(); // FUGLY HACK so sorry
+                $importer->import($import);
+            } catch(Content_Import_Decoding_Exception $e) {
+                message('warn', 'Error applying content update: '.$e->getMessage());
+            }
+        }
+    }
+}
+
 
 
 
