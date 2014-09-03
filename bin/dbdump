@@ -6,7 +6,7 @@ Wrapper to dump all data from database configured in config.local.php
 
 */
 
-require_once "../config.local.php";
+require_once __DIR__."/../../config.local.php";
 
 $options = array(
 	'--no-create-db',
