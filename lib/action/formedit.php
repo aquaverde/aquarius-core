@@ -142,8 +142,8 @@ class action_formedit_edit extends action_formedit implements DisplayAction {
         $smarty->assign('fields', $fields);
 
         // Prepare fallthrough options
-        $opts = array('-none-', 'all', 'category', 'box', 'parent');
-        $smarty->assign('fallthroughoptions', array_combine($opts, $opts)); // FIXME: Use translation
+        $opts = array('none' => '-none-', 'all' => 'all', 'category' => 'category', 'box' => 'box', 'parent' => 'parent');
+        $smarty->assign('fallthroughoptions', $opts);
 
         // Prepare fieldgrouping selection
         $selection = DB_DataObject::factory('fieldgroup_selection');
