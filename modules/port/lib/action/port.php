@@ -133,6 +133,7 @@ class action_port_import extends action_port implements ChangeAction {
             $file = $_FILES['import_file']['tmp_name'];
             if(file_exists($file)) {
                 $import = file_get_contents($file);
+                unlink($file);
                 if (FALSE === $import) {
                     $result->add_message(new Translation("port_upload_unreadable"));
                 } else {
