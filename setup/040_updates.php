@@ -202,12 +202,14 @@ Class Aqua_Update_SQL {
         }
 
         $sql_reader = new SQL_Split($sql_file);
-        foreach($sql_reader as $idx => $sql_command) {
+        $sql_reader->next();
+        while($sql_reader->valid()) {
             try {
-                $aquarius->db->query($sql_command);
+                $aquarius->db->connection->query($sql_reader->current());
             } catch (Exception $sqlerr) {
-                throw new Exception($sqlerr->getMessage()." in query $idx ending on line ".$sql_reader->line().":\n".$sql_command);
+                throw new Exception($sqlerr->getMessage()." in query ".$sql_reader->key()." ending on line ".$sql_reader->line().":\n");
             }
+            $sql_reader->next();
         }
     }
 }
