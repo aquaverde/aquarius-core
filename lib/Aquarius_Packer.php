@@ -39,6 +39,8 @@ class Aquarius_Packer {
         if ($version === false) {
             $version = 'unspecified';
         }
+        
+        $version = trim($version);
 
         $this->message("Version: $version");
 
