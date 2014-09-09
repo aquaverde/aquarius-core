@@ -552,6 +552,11 @@ class SLIRGDImage extends SLIRImage implements SLIRImageLibrary
     imagefilter($this->getImage(), IMG_FILTER_GRAYSCALE);
     return $this;
   }
+  
+  public function blur() {
+    for ($i = $this->blur; $i > 0; $i--) imagefilter($this->getImage(), IMG_FILTER_GAUSSIAN_BLUR);
+    return $this;
+  }
 
   /**
    * @since 2.0

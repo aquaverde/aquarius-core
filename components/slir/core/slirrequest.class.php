@@ -89,6 +89,7 @@ class SLIRRequest
   
 
   private $grayscale;
+  private $blur;
 
   /**
    * Whether or not progressive JPEG output is turned on
@@ -187,10 +188,15 @@ class SLIRRequest
       case 'quality':
         $this->setQuality($value);
           break;
-          
+
       case 'g':
       case 'gray':
         $this->setGrayscale($value);
+          break;
+
+      case 'l':
+      case 'blur':
+        $this->setBlur($value);
           break;
 
       case 'p':
@@ -258,6 +264,10 @@ class SLIRRequest
   
   private function setGrayscale($value) {
     $this->grayscale  = (bool) $value;
+  }
+  
+  private function setBlur($value) {
+    $this->blur  = (int)$value;
   }
 
   /**

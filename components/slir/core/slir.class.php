@@ -560,7 +560,7 @@ class SLIR
    */
   private function isSourceImageDesired()
   {
-    if ($this->isWidthDifferent() || $this->isHeightDifferent() || $this->isBackgroundFillOn() || $this->isQualityOn() || $this->isGrayscaleOn() || $this->isCroppingNeeded()) {
+    if ($this->isWidthDifferent() || $this->isHeightDifferent() || $this->isBackgroundFillOn() || $this->isQualityOn() || $this->isBlurOn() || $this->isGrayscaleOn() || $this->isCroppingNeeded()) {
       return false;
     } else {
       return true;
@@ -630,6 +630,11 @@ class SLIR
   private function isGrayscaleOn()
   {
     return $this->getGrayscale();
+  }
+  
+  private function isBlurOn()
+  {
+    return $this->getBlur();
   }
 
   /**
@@ -732,6 +737,7 @@ class SLIR
       ->setBackground($this->getBackground())
       ->setQuality($this->getQuality())
       ->setGrayscale($this->getGrayscale())
+      ->setBlur($this->getBlur())
       ->setProgressive($this->getProgressive())
       ->setMimeType($this->getMimeType())
       ->setCropper($this->request->cropper);
@@ -781,6 +787,15 @@ class SLIR
       return $this->request->grayscale;
     } else {
       return SLIRConfig::$defaultGrayscale;
+    }
+  }
+
+  private function getBlur()
+  {
+    if ($this->request->blur !== null) {
+      return $this->request->blur;
+    } else {
+      return SLIRConfig::$defaultBlur;
     }
   }
 

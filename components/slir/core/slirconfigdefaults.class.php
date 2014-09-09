@@ -61,6 +61,14 @@ class SLIRConfigDefaults
    * @var integer
    */
   public static $defaultGrayscale = false;
+  
+  /**
+   * Default setting for blur filter, preset is 0 (off)
+   *
+   * @since 2.0
+   * @var integer
+   */
+  public static $defaultBlur = 0;
 
   /**
    * Default setting for whether JPEGs should be progressive JPEGs (interlaced) or not.

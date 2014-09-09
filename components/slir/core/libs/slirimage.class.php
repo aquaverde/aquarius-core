@@ -20,6 +20,11 @@ abstract class SLIRImage
    * @var whether to apply grayscale filter
    */
   protected $grayscale;
+  
+  /**
+   * @var blur filter strength
+   */
+  protected $blur;
 
   /**
    * @var string background color in hex
@@ -111,6 +116,7 @@ abstract class SLIRImage
       $this->getInfo(),
       $this->getCropper(),
       $this->getGrayscale(),
+      $this->getBlur(),
       $this->getQuality()
     );
 
@@ -198,6 +204,16 @@ abstract class SLIRImage
 
   public function setGrayscale($grayscale) {
     $this->grayscale = (bool)$grayscale;
+    return $this;
+  }
+  
+  
+  public function getBlur() {
+    return $this->blur;
+  }
+
+  public function setBlur($blur) {
+    $this->blur = (int)$blur;
     return $this;
   }
 
@@ -345,6 +361,7 @@ abstract class SLIRImage
    */
   final protected function isSharpeningDesired()
   {
+    if ($this->blur) return false;
     if ($this->isJPEG()) {
       return true;
     } else {
@@ -566,6 +583,7 @@ abstract class SLIRImage
   public function applyTransformations()
   {
     $this->crop()
+      ->blur()
       ->grayscale()
       ->sharpen()
       ->interlace();
