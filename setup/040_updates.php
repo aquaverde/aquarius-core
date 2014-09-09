@@ -40,128 +40,6 @@ example: "2038.01.20 change timestamp column to int64"
 
 */
 
-
-/* LOLWTF ad-hoc stream SQL lexer to iterate over SQL statements in string
- * No syntax checking whatsoever! This brought to you by Fun and Games inc. */
-class SQL_Split implements Iterator {
-    private $sql_statements;
-    private $length;
-    
-    private $current_statement;
-    private $current_key;
-    private $valid;
-    
-    private $cur;
-    private $statement_start;
-
-    var $chars = array(
-        "'"  => 'read_quote1',
-        '"'  => 'read_quote2',
-        '/'  => 'read_comment1',
-        '-'  => 'read_comment2',
-        ';'  => 'read_end'
-    );
-    
-    function __construct($sql_statements) {
-        $this->sql_statements = $sql_statements;
-        $this->length = strlen($sql_statements);
-    }
-    
-    function rewind() {
-        $this->cur = -1;
-        $this->statement_start = 0;
-        $this->current_key = -1;
-        $this->next();
-    }
-    
-    function next() {
-        $this->current_statement = $this->read_statement();
-        $this->valid = strlen($this->current_statement) > 0;
-        $this->current_key++;
-        // echo "<br>$this->current_key: ".nl2br($this->current_statement);
-    }
-    
-    function current() {
-        return $this->current_statement;
-    }
-    
-    function key() {
-        return $this->current_key;
-    }
-    
-    function valid() {
-        return $this->valid;
-    }
-    
-    function read_statement() {
-        $this->statement_start = $this->cur + 1;
-        while(++$this->cur < $this->length) {
-            $c = $this->sql_statements[$this->cur];
-            if (isset($this->chars[$c])) {
-                $end = $this->{$this->chars[$c]}();
-                if ($end) break;
-            }
-        }
-        return trim(substr($this->sql_statements, $this->statement_start, $this->cur - $this->statement_start));
-    }
-    
-    function read_quote1() {
-         while(++$this->cur < $this->length) {
-            $c = $this->sql_statements[$this->cur];
-            if ($c === '\\') {
-                $this->cur++;
-            } elseif($c === "'") {
-                return false;
-            } 
-        }
-    }
-    
-    function read_quote2() {
-         while(++$this->cur < $this->length) {
-            $c = $this->sql_statements[$this->cur];
-            if ($c === '\\') {
-                $this->cur++;
-            } elseif($c === '"') {
-                return false;
-            } 
-        }
-    }
-    
-    function read_comment1() {
-        if ($this->cur + 1 < $this->length && $this->sql_statements[$this->cur + 1] === '*') {
-            $this->cur++;
-            while(++$this->cur < $this->length) {
-                $c = $this->sql_statements[$this->cur];
-                if ($c === '*') {
-                    if ($this->cur + 1 < $this->length && $this->sql_statements[$this->cur + 1] === '/')
-                    $this->cur++;
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-    
-    function read_comment2() {
-        if ($this->cur + 1 < $this->length && $this->sql_statements[$this->cur + 1] === '-') {
-            $this->cur++;
-            while(++$this->cur < $this->length) {
-                $c = $this->sql_statements[$this->cur];
-                if ($c === "\n") {
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-    
-    function read_end() {
-        return true;
-    }
-}
-
-
-
 $requested_updates = get($_POST, 'requested_updates', array());
 $available_updates = array();
 
@@ -311,25 +189,27 @@ Class Aqua_Update_SQL {
     function apply($aquarius, $module) {
         // Hack: Make sure all created tables are in UTF8
         $aquarius->db->query("ALTER DATABASE `".$aquarius->conf('db/name')."` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
-        
-        $sql_commands = file_get_contents($this->update_file);
-        if ($sql_commands === false) throw new Exception("Unable to read ".$this->update_file);
-        
-        if (strlen($sql_commands) > 10**5) {
+
+        $sql_file = fopen($this->update_file, 'r');
+        if ($sql_file === false) throw new Exception("Unable to open ".$this->update_file);
+
+        if (get(fstat($sql_file), 'size') > 100000) {
             // This could take a while...
             set_time_limit(0);
             echo "Please wait...";
             while(@ob_end_flush());
             flush();
         }
-        
-        $sql_reader = new SQL_Split($sql_commands);
-        foreach($sql_reader as $idx => $sql_command) {
+
+        $sql_reader = new SQL_Split($sql_file);
+        $sql_reader->next();
+        while($sql_reader->valid()) {
             try {
-                $aquarius->db->query($sql_command);
+                $aquarius->db->connection->query($sql_reader->current());
             } catch (Exception $sqlerr) {
-                throw new Exception($sqlerr->getMessage()." in query $idx:\n".$sql_command);
+                throw new Exception($sqlerr->getMessage()." in query ".$sql_reader->key()." ending on line ".$sql_reader->line().":\n");
             }
+            $sql_reader->next();
         }
     }
 }
@@ -341,6 +221,30 @@ Class Aqua_Update_PHP {
 
     function apply($aquarius, $module) {
         include $this->update_file;
+    }
+}
+
+class Aqua_Update_JSON {
+    function __construct($path) {
+        $this->update_file = $path;
+    }
+
+    function apply($aquarius, $module) {
+        $importer = new Content_Import();
+        $importer->update = true;
+
+        $import = file_get_contents($this->update_file);
+        if (FALSE === $import) {
+            message('warn', "Unable to read content update $this->update_file");
+        } else {
+            try {
+                global $aquarius;
+                $aquarius->load(); // FUGLY HACK so sorry
+                $importer->import($import);
+            } catch(Content_Import_Decoding_Exception $e) {
+                message('warn', 'Error applying content update: '.$e->getMessage());
+            }
+        }
     }
 }
 

@@ -283,21 +283,30 @@ class db_Users extends DB_DataObject
         // Siteadmins may edit everything
         if ($this->isSiteadmin()) return true;
 
-        // Users may edit a node if they have permission to edit that node or one of its parents
-        if (!isset($this->_cache_edit_ranges)) {
-            global $DB;
-            $this->_cache_edit_ranges = $DB->mapqueryhash('node_id', '
+        // Check whether node is in a permitted edit range
+        // In case of new nodes, the tree index is not available, so we check against its parent
+        $check_against = $node;
+        if (!$node->cache_right_index) $check_against = $node->get_parent();
+
+        $user_id = $this->id;
+        $edit_ranges = Cache::call("edit_ranges$this->id", function() use ($user_id) {
+            // Users may edit a node if they have permission to edit that node or one of its parents
+            global $aquarius;
+            return $aquarius->db->mapqueryhash('node_id', '
                 SELECT node.id AS node_id, node.cache_left_index AS left_index, node.cache_right_index AS right_index
                 FROM node
                 JOIN users2nodes ON node.id = users2nodes.nodeId
-                WHERE users2nodes.userId = '.$this->id.'
-            ');
-        }
-        foreach($this->_cache_edit_ranges as $permitted_range) {
-            if ( $permitted_range['left_index'] <= $node->cache_left_index
-            && $permitted_range['right_index'] >= $node->cache_right_index
+                WHERE users2nodes.userId = ?', 
+                $user_id
+            );
+        });
+
+        foreach($edit_ranges as $permitted_range) {
+            if ( $permitted_range['left_index'] <= $check_against->cache_left_index
+              && $permitted_range['right_index'] >= $check_against->cache_right_index
             ) return true;
         }
+        
         return false;
     }
 

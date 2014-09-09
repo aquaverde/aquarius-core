@@ -235,6 +235,7 @@ class Aquarius {
       * @return The value stored under $name in the session, or $default if there is nothing.
     */
     function session_get($name, $default = null) {
+        $this->session_start($lazy = true);
         if (!isset($_SESSION['aquarius3']) || !is_array($_SESSION['aquarius3'])) $_SESSION['aquarius3'] = array();
         if (isset($_SESSION['aquarius3'][$name])) return $_SESSION['aquarius3'][$name];
         else return $default;

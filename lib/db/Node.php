@@ -241,7 +241,7 @@ class db_Node extends DB_DataObject
       * For unboxed nodes, or nodes where there are no forms specified in
       * ancestor nodes, the available forms are specified in this node's form.
       */
-    function available_childforms($formtype = 'form') {
+    function available_childforms() {
         // Find out whether children are boxed
         $inherited_form = false;
         $child_box_depth = $this->box_depth() - 1;
@@ -352,7 +352,7 @@ class db_Node extends DB_DataObject
     }
     
     /** Load a child with given url title, returns false if there's no such child. */
-    function get_urlchild($urltitle, $lg=false) {
+    function get_urlchild($urltitle, $lg=false, $require_active=false) {
         if (!$lg) $lg = $GLOBALS['lg'];
         $urlchildren = $GLOBALS['aquarius']->db->listquery("
             SELECT n.id 
@@ -363,7 +363,8 @@ class db_Node extends DB_DataObject
             WHERE n.parent_id = ? 
                 AND c.lg = ?
                 AND f.name = 'urltitle'
-                AND content_field_value.value = ?", 
+                AND content_field_value.value = ?"
+            .($require_active ? "AND n.active = 1" : ""), 
             array($this->id, $lg, $urltitle)
         );
         switch(count($urlchildren)) {
@@ -372,7 +373,7 @@ class db_Node extends DB_DataObject
             case 1:
                 break; // Good
             default:
-                Log::warn("Found ".count($urlchilds)." childs for node $this->id that have urltitle '$urltitle'; picking one.");
+                Log::warn("Found ".count($urlchildren)." childs for node $this->id that have urltitle '$urltitle'; picking one.");
         }
         return self::staticGet(array_shift($urlchildren));
     }
@@ -565,7 +566,7 @@ class db_Node extends DB_DataObject
     /** Get an array of strings describing the thing here
       * The first entry in the returned array is always "node", the second may be "root", "rubric", "box", "category" or "content" and the third is either "on" or "off"
       */
-      function get_prop() {
+    function get_prop() {
         $type = "rubric";
         if ($this->is_root()) $type = "root";
         if ($this->is_box()) $type = "box";
@@ -575,27 +576,28 @@ class db_Node extends DB_DataObject
             else
                 $type = "category";
         return array("node", $type, $this->active?"on":"off");
-      }
-      
-      function icon() {
-          return join("_", $this->get_prop());
-      }
-      
-      
-      /** Divert $this->get_*() calls to content->*() */
-      function __call($name, $params) {
-          $prefix = substr($name, 0, 4);
-          $name = substr($name, 4);
-          switch ($prefix) {
-              case "get_": 
+    }
+
+    function icon() {
+        return join("_", $this->get_prop());
+    }
+
+
+    /** Divert $this->get_*() calls to content->*()
+      * DEPRECATED it's dangerous and confusing */
+    function __call($name, $params) {
+        $prefix = substr($name, 0, 4);
+        $name = substr($name, 4);
+        switch ($prefix) {
+            case "get_":
                 $content = $this->get_content();
                 if ($content)
                     return call_user_func_array(array(&$content, $name), $params); // This abomination effects a call to $content->$name($param1, $param2...)
                 else
                     return false; // Cannot divert to nonexisting content, can I?
-              default: return parent::__call($name, $params); // super();
-          }
-      }
+            default: return parent::__call($name, $params); // super();
+        }
+    }
 
     /** Update cached fields and those of all children
         The cache update is done in an SQL session (not that this helps in the usual MySQL setup)

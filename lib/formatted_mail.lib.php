@@ -97,6 +97,11 @@ class FormattedTextMail {
     {
         $this->blockColumns     = $column_sizes;
         $this->maxBlockWidth    = $maxWidth;
+    }       
+    
+    public function addBlockColumn($columnWidth)
+    {
+        $this->blockColumns[]   = $columnWidth;
     }
 
     public function addText($text) {
@@ -107,9 +112,13 @@ class FormattedTextMail {
       * String Params are put into columns in the same order they were received.
       */
     public function addTextRow() {
+        // Fields of the row
+        $params = func_get_args();
+        
         // Build a format string that pads to the right
         $format = "";
-        foreach($this->blockColumns as $column_width) {
+        $column_widths = array_pad($this->blockColumns, count($params), '');
+        foreach($column_widths as $column_width) {
             if (is_numeric($column_width)) {
                 $format .= "% -{$column_width}s";
             } else {
@@ -118,7 +127,6 @@ class FormattedTextMail {
         }
 
         // Get the text fields for this row and replace empty fields with a dash
-        $params = func_get_args();
         $params = array_map(create_function('$field', 'return empty($field)?"-":$field;'), $params);
 
         // Call sprintf to format the fields

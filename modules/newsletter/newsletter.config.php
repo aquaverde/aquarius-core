@@ -2,10 +2,10 @@
 
 // NEWSLETTER
 if (!defined('NEWSLETTER_ROOT_NODE')) define('NEWSLETTER_ROOT_NODE', '');
-define('ADMIN_NEWSLETTER_ADDRESSES_PER_PAGE', 100);
-define('NEWSLETTER_CLEAN_DELTA', 7*24*60*60); // when is an inactive address to be deleted
+if (!defined('ADMIN_NEWSLETTER_ADDRESSES_PER_PAGE')) define('ADMIN_NEWSLETTER_ADDRESSES_PER_PAGE', 100);
+if (!defined('NEWSLETTER_CLEAN_DELTA')) define('NEWSLETTER_CLEAN_DELTA', 7*24*60*60); // when is an inactive address to be deleted
 
-define('NEWSLETTER_CSS', FILEBASEDIR.'/css/newsletter.css') ; 
+if (!defined('NEWSLETTER_CSS')) define('NEWSLETTER_CSS', FILEBASEDIR.'/css/newsletter.css') ; 
 
 /*
 $config['newsletter']['transport'] = array(

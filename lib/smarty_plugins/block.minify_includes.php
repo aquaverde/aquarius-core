@@ -33,15 +33,32 @@ function smarty_block_minify_includes($params, $content, $smarty, &$repeat) {
                 $scss_path = $root.$scss_file;
                 $css_path = $root.$css_file;
 
-                if (filemtime($css_path) < filemtime($scss_path)) {
-                    $scss_compiler->setImportPaths(dirname($scss_path));
+                // Loop over all files in the dir to find the last date any SCSS was changed
+                $scss_base = dirname($scss_path);
+                $maxmtime = 0;
+                $deps = new RecursiveIteratorIterator(
+                    new RecursiveDirectoryIterator($scss_base, RecursiveDirectoryIterator::SKIP_DOTS),
+                    RecursiveIteratorIterator::SELF_FIRST,
+                    RecursiveIteratorIterator::CATCH_GET_CHILD // Ignore "Permission denied"
+                );
+                foreach($deps as $path) {
+                    if (
+                        $path->isFile()
+                     && $path->getExtension() == 'scss'
+                    ) {
+                        $maxmtime = max($maxmtime, $path->getMTime());
+                    }
+                }
+
+                if (filemtime($css_path) < $maxmtime) {
+                    $scss_compiler->setImportPaths($scss_base);
                     $source = file_get_contents($scss_path);
                     if ($source === false) throw new Exception("Unable to read SCSS file $scss_path");
                     $comp = "/* Generated ".date(DATE_W3C)." from $scss_file */\n".$scss_compiler->compile($source, $scss_file);
                     $tmp_css_path = $css_path.'.'.uniqid();
                     $result = file_put_contents($tmp_css_path, $comp);
                     if ($result === false)  throw new Exception("Unable to write to $tmp_css_path after compiling $scss_file");
-                    touch($tmp_css_path, filemtime($scss_path));
+                    touch($tmp_css_path, filemtime($maxmtime));
                     if (!rename($tmp_css_path, $css_path)) throw new Exception("Unable to rename $tmp_css_path to $css_path after compiling $scss_file");
                 }
             }

@@ -27,21 +27,32 @@ class DB_Dump {
         $result = $this->db->query("SELECT * FROM `$table`");
         fwrite($f, "-- Table `$table`: ".$result->numRows()." rows\n");
 
-        if ($result->numRows() < 1) return;
-     
-        fwrite($f, "INSERT INTO `$table` VALUES\n");
+        // Create chunked inserts
+        $rowcount = 0;
         $first = true;
         while($row = $result->fetchRow(DB_FETCHMODE_ORDERED)) {
-            fwrite($f, ($first ? '  (' : ', ('));
+            if ($first) {
+                fwrite($f, "INSERT INTO `$table` VALUES\n (");
+                $first = false;
+            } else {
+                fwrite($f, "\n, (");
+            }
             $last_index = count($row) - 1;
             foreach($row as $i => $value) {
                 if (is_null($value)) fwrite($f, 'null');
                 else fwrite($f, $this->db->quote($value));
                 if ($i < $last_index) fwrite($f, ', ');
             }
-            fwrite($f, ")\n");
-            $first = false;
+            fwrite($f, ")");
+            
+            $rowcount += 1;
+            if ($rowcount % 1000 == 0) { 
+                fwrite($f, ";\n");
+                $first = true;
+            }
         }
-        fwrite($f, ";\n");
+        if (!$first) {
+            fwrite($f, ";\n");
+        }
     }
 }
