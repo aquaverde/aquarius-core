@@ -102,6 +102,7 @@ function clean_link($link) {
  *   crop: toggle     image cropping (preset true)
  *   c or crop_ratio: set crop ratio (example: "16:9")
  *   g or gray:       enable filter to grayscale (use 1 as value)
+ *   l or blur:       give radius (in pixels) to blur image (example: 5)
  *   as:              use as preset settings taken from given directory (alt settings unless th flag set to true)
  *   th:              use th settings, not alt settings
  * 
@@ -127,6 +128,7 @@ function smarty_function_resize($params, $smarty) {
     $height     = get($params, 'h', get($params, 'height', false));
     $quality    = get($params, 'q', get($params, 'quality', false));
     $gray       = get($params, 'g', get($params, 'gray', false));
+    $blur       = get($params, 'l', get($params, 'blur', 0));
     $crop       = get($params, 'crop', true);
     $crop_ratio = get($params, 'c', get($params, 'crop_ratio', false));
     $as         = get($params, 'as', false);
@@ -185,6 +187,10 @@ function smarty_function_resize($params, $smarty) {
     
     if ($gray !== false) {
         $slir_options ['g']= (bool)$gray;
+    }
+    
+    if ($blur) {
+        $slir_options ['l']= (int)$blur;
     }
 
     $option_strings = "";
