@@ -554,8 +554,11 @@ class SLIRGDImage extends SLIRImage implements SLIRImageLibrary
   }
   
   public function blur() {
-    for ($i = $this->blur; $i > 0; $i--) imagefilter($this->getImage(), IMG_FILTER_GAUSSIAN_BLUR);
-    return $this;
+    for ($i = $this->blur; $i > 0; $i--) {
+        $blur = array(array(1, 2, 1), array(2, 1, 2), array(1, 2, 1));
+        $offset = 0.5; // discovered by trial and error
+        imageconvolution($this->getImage(), $blur, array_sum(array_map('array_sum', $blur)), $offset);
+    }
   }
 
   /**
