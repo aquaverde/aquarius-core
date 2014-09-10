@@ -559,6 +559,7 @@ class SLIRGDImage extends SLIRImage implements SLIRImageLibrary
         $offset = 0.5; // discovered by trial and error
         imageconvolution($this->getImage(), $blur, array_sum(array_map('array_sum', $blur)), $offset);
     }
+    return $this;
   }
 
   /**
