@@ -2,11 +2,12 @@
 $coredir = dirname(__DIR__);
 require_once $coredir.'/vendor/autoload.php';
 define('MINIFY_MIN_DIR', $coredir.'/vendor/mrclay/minify/min/lib');
-define('CACHE_DIR', dirname($coredir).'/cache/min');
 
 // setup include path
 set_include_path(MINIFY_MIN_DIR . PATH_SEPARATOR . get_include_path());
 
+$cachedir = dirname($coredir).'/cache/min';
+@mkdir($cachedir);
 Minify::setCache(CACHE_DIR, true);
 
 require_once 'Minify/DebugDetector.php';
@@ -16,10 +17,14 @@ if (!$debug) {
     ini_set('display_errors', 0);
 }
 
+$compress = true;
+if (isset($_REQUEST['compress'])) $compress = (bool)$_REQUEST['compress'];
+
 $min_serveOptions = array(
     'bubbleCssImports' => true,
     'debug' => $debug,
-    'fileLocking' => false
+    'fileLocking' => false,
+    'encodeOutput' => $compress
 );
 
 if ($debug) {

@@ -42,9 +42,10 @@ function smarty_block_minify_includes($params, $content, $smarty, &$repeat) {
                     RecursiveIteratorIterator::CATCH_GET_CHILD // Ignore "Permission denied"
                 );
                 foreach($deps as $path) {
+                    $extension = method_exists($path, 'getExtension') ? $path->getExtension() : array_pop(explode('.', $path->getFilename()));
                     if (
                         $path->isFile()
-                     && $path->getExtension() == 'scss'
+                     && $extension == 'scss'
                     ) {
                         $maxmtime = max($maxmtime, $path->getMTime());
                     }
@@ -58,17 +59,22 @@ function smarty_block_minify_includes($params, $content, $smarty, &$repeat) {
                     $tmp_css_path = $css_path.'.'.uniqid();
                     $result = file_put_contents($tmp_css_path, $comp);
                     if ($result === false)  throw new Exception("Unable to write to $tmp_css_path after compiling $scss_file");
-                    touch($tmp_css_path, filemtime($maxmtime));
+                    touch($tmp_css_path, $maxmtime);
                     if (!rename($tmp_css_path, $css_path)) throw new Exception("Unable to rename $tmp_css_path to $css_path after compiling $scss_file");
                 }
             }
         }
+        
+        $compress = (bool)get($params, 'compress', true);
 
         // Replace content with proper links
         if ($css_files) {
             $css_min_url = new Url('/min/');
             $css_min_url->add_param('f', join(',', $css_files));
             $css_min_url->add_param(smarty_block_minify_includes_max_mtime($root, $css_files));
+            $css_min_url->add_param(smarty_block_minify_includes_max_mtime($root, $css_files));
+            $css_min_url->add_param('compress', intval($compress));
+            
             global $aquarius;
             if ($aquarius->debug()) $css_min_url->add_param('debug', 1);
             $links .= "<link href='$css_min_url' rel='stylesheet' type='text/css' />";
@@ -77,6 +83,8 @@ function smarty_block_minify_includes($params, $content, $smarty, &$repeat) {
             $js_min_url = new Url('/min/');
             $js_min_url->add_param('f', join(',', $js_files));
             $js_min_url->add_param(smarty_block_minify_includes_max_mtime($root, $js_files));
+            $js_min_url->add_param('compress', intval($compress));
+            
             global $aquarius;
             if ($aquarius->debug()) $js_min_url->add_param('debug', 1);
             $links .= "<script src='$js_min_url' type='text/javascript'></script>";
