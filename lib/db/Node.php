@@ -81,9 +81,16 @@ class db_Node extends DB_DataObject
       * This method exists mainly for convenience in frontend plugins where you're never sure what exactly you're getting as parameter. */
     static function get_node($thing) {
         if (is_numeric($thing)) {
-            $node = new self();
-            $node->id = intval($thing);
-            if ($node->find(true)) return $node;
+            $id = intval($thing);
+            return Cache::call($id, function() use ($id) {
+                $node = new self();
+                $node->id = $id;
+                if ($node->find(true)) {
+                    return $node;
+                } else {
+                    return false;
+                }
+            });
         } elseif ($thing instanceof db_Node) {
             return $thing;
         } elseif ($thing instanceof db_Content) {
@@ -214,9 +221,13 @@ class db_Node extends DB_DataObject
 
     /** Load the form for this node */
     function get_form() {
-        $form = DB_DataObject::factory('Form');
-        $found = $this->form_id && $form->get($this->form_id);
-        if (!$found) {
+        $form = Cache::call('form'.$this->form_id, function() {
+            $form = DB_DataObject::factory('Form');
+            $found = $this->form_id && $form->get($this->form_id);
+            if (!$found) return false;
+            return $form;
+        });
+        if (!$form) {
             // This is not supposed to happen...
             if ($this->is_root()) throw new Exception("No form set on root node $this");
             $parent = $this->get_parent();

@@ -146,13 +146,11 @@ class db_Content extends DB_DataObject
             $cache[$field_name] =  $value;
         }
         $cache_val = serialize($cache);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            Log::debug("Unable to build cache of content id $this->id, error ".json_last_error());
-        } else {
-            $this->cache_fields = $cache_val;
-            $success = parent::update();
-            if (!$success) Log::warn("Unable to write cache to DB for $this->id");
-        }
+
+        $this->cache_fields = $cache_val;
+        $success = parent::update();
+        if (!$success) Log::warn("Unable to write cache to DB for $this->id");
+        
         return true;
     }
 
@@ -248,28 +246,6 @@ class db_Content extends DB_DataObject
         
         // Lose the cached object
         unset($GLOBALS['_AQUARIUS_CONTENT_CACHE'][$this->node_id][$this->lg]);
-    }
-    
-    function prepare_cache() {
-        // Cannot cache fields for transient content
-        if (!$this->id) return false;
-        
-        $cache_fields = array();
-        
-        global $aquarius;
-        $formtypes = $aquarius->get_formtypes();
-        $formfields = $this->get_formfields();
-        foreach($formfields as $formfield) {
-            $name = $formfield->name;
-
-            $val = $this->$name;
-            $formtype = $formtypes->get_formtype($formfield->type);
-            $val = $formtype->cache_set($val, $formfield, $this->lg);
-            if (!is_null($val) && $val !== array()) {
-                $cache_fields[$name] = $val;
-            }
-        }
-        $this->cache_fields = json_encode($cache_fields);
     }
 
 
@@ -368,11 +344,11 @@ class db_Content extends DB_DataObject
     
     /** Get list of fields of the form for this content */
     function get_formfields() {
-      $form = $this->get_node()->get_form();
-      if ($form)
-         return $form->get_fields();
-      else
-         return array();
+        $form = $this->get_node()->get_form();
+        if ($form) {
+            return $form->get_fields();
+        }
+        return array();
     }
 
     /** Get the content field values */
