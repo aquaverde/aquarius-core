@@ -231,8 +231,7 @@ class Aqua_Update_JSON {
 
     function apply($aquarius, $module) {
         $importer = new Content_Import();
-        $importer->update = true;
-
+        
         $import = file_get_contents($this->update_file);
         if (FALSE === $import) {
             message('warn', "Unable to read content update $this->update_file");

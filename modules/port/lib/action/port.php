@@ -34,6 +34,7 @@ class action_port_export extends action_port {
         
         $entry = array();
         $entry['id'] = $node->id;
+        if ($update) $entry['parent'] = $node->parent_id;
         if ($parent) $entry['parent'] = $parent;
         if ($node->name) $entry['name'] = $node->name;
         $entry['form'] = $node->form_id;
