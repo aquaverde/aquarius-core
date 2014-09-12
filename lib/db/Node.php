@@ -82,7 +82,7 @@ class db_Node extends DB_DataObject
     static function get_node($thing) {
         if (is_numeric($thing)) {
             $id = intval($thing);
-            return Cache::call($id, function() use ($id) {
+            return Cache::call('node'.$id, function() use ($id) {
                 $node = new self();
                 $node->id = $id;
                 if ($node->find(true)) {

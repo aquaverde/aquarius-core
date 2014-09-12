@@ -55,18 +55,16 @@ class db_Form extends DB_DataObject
     /** get all form fields in a list indexed by their id */
     function get_fields() {
         return Cache::call('form_fields'.$this->id, function() {
-            if (!isset($this->fields)) { // Caching
-                $this->fields = array();
-                $formfield_prototype = DB_DataObject::factory('form_field');
-                $formfield_prototype->form_id = $this->id;
-                $formfield_prototype->orderBy("weight ASC");
-                $formfield_prototype->find();
-                while ($formfield_prototype->fetch()) {
-                    assert("preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\$/', '$formfield_prototype->name'); /* Field name must be a valid variable name */");           
-                    $this->fields[$formfield_prototype->name] = clone $formfield_prototype;
-                }
+            $fields = array();
+            $formfield_prototype = DB_DataObject::factory('form_field');
+            $formfield_prototype->form_id = $this->id;
+            $formfield_prototype->orderBy("weight ASC");
+            $formfield_prototype->find();
+            while ($formfield_prototype->fetch()) {
+                assert("preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\$/', '$formfield_prototype->name'); /* Field name must be a valid variable name */");
+                $fields[$formfield_prototype->name] = clone $formfield_prototype;
             }
-            return $this->fields;
+            return $fields;
     	});
     }
     
