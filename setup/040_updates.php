@@ -237,13 +237,9 @@ class Aqua_Update_JSON {
         if (FALSE === $import) {
             message('warn', "Unable to read content update $this->update_file");
         } else {
-            try {
-                global $aquarius;
-                $aquarius->load(); // FUGLY HACK so sorry
-                $importer->import($import);
-            } catch(Content_Import_Decoding_Exception $e) {
-                message('warn', 'Error applying content update: '.$e->getMessage());
-            }
+            global $aquarius;
+            $aquarius->load(); // FUGLY HACK so sorry
+            $importer->import($import);
         }
     }
 }
