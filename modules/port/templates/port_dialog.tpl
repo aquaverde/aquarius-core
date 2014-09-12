@@ -34,6 +34,8 @@ function nodes_selected(target_id, selected_nodes) {
             <span id="export_titles"></span>
         </label>
         <label><input type="checkbox" name="include_children" checked>{#port_include_children#}</label>
+        <label><input type="radio" name="update" value="0" checked>{#port_new#}</label>
+        <label><input type="radio" name="update" value="1">{#port_update#}</label>
 
         {include file='select_buttons.tpl' actions=$export_actions}
     </form>

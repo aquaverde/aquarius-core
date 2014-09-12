@@ -2,10 +2,6 @@
 
 /** Reads or updates content into DB */
 class Content_Import {
-    /** Update nodes with same ID
-      * Preset is false, new nodes will be created. */
-    var $update = false;
-
 
     /** Where to place imported nodes that have no parent set.
       * May be set to a node ID
@@ -58,10 +54,15 @@ class Content_Import {
     function import_node($entry, $idmap) {
         $node = false;
         $insert = false;
-        if ($this->update) {
+        
+        // When importing a node, we may create a new one or update the fields
+        // of an existing node. Because update is potentially destructive, we do
+        // it only when the entry explicilty sets the 'update' flag, and a node
+        // with the given id exists
+        if (get($entry, 'update', false)) {
             $node = db_Node::get_node($entry['id']);
         }
-
+        
         if (!$node) {
             $node = new db_Node();
             $insert = true;
@@ -82,6 +83,7 @@ class Content_Import {
         if (isset($entry['active'])) $node->active = (bool)$entry['active'];
         if (isset($entry['name'])) $node->name = $entry['name'];
         if (isset($entry['form'])) $node->form_id = $entry['form'];
+        if (isset($entry['box_depth'])) $node->box_depth = (int)$entry['box_depth'];
 
         if ($insert) {
             $node->insert();

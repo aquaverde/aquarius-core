@@ -15,11 +15,12 @@ class action_port_export extends action_port {
     function export($request) {
         $roots = array_filter(explode(',', $request['export_selected']));
         $recurse = (bool)get($request, 'include_children');
+        $update = (bool)get($request, 'update');
         
         // Export nodes first
         $exported = array();
         foreach($roots as $root_str) {
-            $this->export_node($root_str, $recurse, null, function($export_item) use (&$exported) {
+            $this->export_node($root_str, $recurse, $update, null, function($export_item) use (&$exported) {
                 $exported []= $export_item;
             });
         }
@@ -27,7 +28,7 @@ class action_port_export extends action_port {
         return $exported;
     }
     
-    function export_node($node_str, $recurse, $parent, $yield) {
+    function export_node($node_str, $recurse, $update, $parent, $yield) {
         $node = db_Node::get_node($node_str);
         if (!$node) throw new Exception("Unable to load $node_str");
         
@@ -37,6 +38,8 @@ class action_port_export extends action_port {
         if ($node->name) $entry['name'] = $node->name;
         $entry['form'] = $node->form_id;
         $entry['active'] = (bool)$node->active;
+        $entry['box_depth'] = (int)$node->box_depth;
+        $entry['update'] = $update;
         
         $form = $node->get_form();
         $fields = $form->get_fields();
@@ -59,7 +62,7 @@ class action_port_export extends action_port {
 
         if ($recurse) {
             foreach ($node->children() as $child) {
-                $this->export_node($child, true, $entry['id'], $yield);
+                $this->export_node($child, true, $update, $entry['id'], $yield);
             }
         }
     }
@@ -119,8 +122,7 @@ class action_port_import extends action_port implements ChangeAction {
         $import_parent_str = $request['import_selected'];
         $import_parent = db_Node::get_node($import_parent_str);
         if (false == $import_parent) {
-            $result->add_message(new Translation("port_no_parent_selected"));
-            return;
+            $import_parent = db_Node::get_node('root');
         }
 
         $importer = new Content_Import();

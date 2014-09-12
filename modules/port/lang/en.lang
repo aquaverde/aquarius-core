@@ -13,3 +13,6 @@ port_imported_message    = "%d Inhalte importiert"
 
 port_export_show = "Anzeigen"
 port_export_download = "Runterladen"
+
+port_new = "Create as new content"
+port_update = "Update existing"
