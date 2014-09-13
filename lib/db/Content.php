@@ -222,7 +222,6 @@ class db_Content extends DB_DataObject
             // Let the formtype process the value before writing
             $formtype = $formtypes->get_formtype($formfield->type);
             $val = $formtype->db_set_field($val, $formfield, $this->lg);
-            $cache = 
 
             // Write the fields to the DB
             $weight = 0;
