@@ -212,7 +212,6 @@ class db_Content extends DB_DataObject
 
             // In case of multilingual fields we must delete the field in all languages, and save to all of them
             if ($formfield->language_independent) {
-                echo "$this->lg erease all $name";
                 self::delete_contentfield($this->node_id, $name);
                 $save_to_contents = $content_langs;
             }
@@ -238,7 +237,6 @@ class db_Content extends DB_DataObject
                 
                 if (count($fieldvals) > 0) {
                     foreach($save_to_contents as $content) {
-                        echo "$this->lg $name = ".print_r($values);
                         db_Content_field::write($content->id, $formfield->name, $weight, $fieldvals);
                     }
                 }
