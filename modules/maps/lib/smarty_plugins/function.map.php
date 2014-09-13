@@ -170,11 +170,8 @@ function init_map() {
 				var d_icon = "'.MAP_DEFAULT_ICONTYPE.'"
 				
 				var map_key = "'.MAP_KEY.'"
-				var map_xml_file = "'.PROJECT_URL.'cache/maps_extern_'.$smarty->get_template_vars('lg').'.json";								
-			</script>					
-			
-			<script src="http://maps.google.com/maps?file=api&amp;hl='.$smarty->get_template_vars('lg').'&amp;v=2&amp;key='.MAP_KEY.'" type="text/javascript"></script>
-			<script type="text/javascript" charset="utf-8" src="/lib/maps/googlemaps.js"></script>				
+				var map_xml_file = "'.PROJECT_URL.'cache/maps_extern_'.$smarty->get_template_vars('lg').'.json";
+			</script>
 		';
 	}
 
