@@ -35,17 +35,28 @@ class Content_Import {
             if ($db_id) $id_mapping[$transport_id] = $db_id;
             return get($id_mapping, $transport_id, null);
         };
+        
+        // For updates: the id mapper tries to use transport_id as db_id
+        // This way references to existing nodes work
+        $idmap_update = function($transport_id, $db_id = false) use ($idmap) {
+            $db_id = $idmap($transport_id, $db_id);
+            if ($db_id) return $db_id;
+            if (db_Node::get_node($transport_id)) {
+                return $transport_id;
+            }
+            return false;
+        };
 
 
         $count = 0;
         // Import is done in two steps (nodes first, content later) so that
         // the new node ID are available when pointings are resolved
         foreach($import as $entry) {
-            $this->import_node($entry, $idmap);
+            $this->import_node($entry, get($entry, 'update') ? $idmap_update : $idmap);
             $count += 1;
         }
         foreach($import as $entry) {
-            $this->import_content($entry, $idmap);
+            $this->import_content($entry, get($entry, 'update') ? $idmap_update : $idmap);
         }
         return $count;
     }
@@ -101,6 +112,7 @@ class Content_Import {
         $node_id = $idmap($entry['id']);
         $node = db_Node::get_node($node_id);
         $form = $node->get_form();
+        
         foreach($entry['content'] as $lg => $entry_fields) {
             $content = $node->get_content($lg);
             if (!$content) {
