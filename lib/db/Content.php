@@ -212,13 +212,19 @@ class db_Content extends DB_DataObject
 
             // In case of multilingual fields we must delete the field in all languages, and save to all of them
             if ($formfield->language_independent) {
+                echo "$this->lg erease all $name";
                 self::delete_contentfield($this->node_id, $name);
                 $save_to_contents = $content_langs;
             }
 
             // Read the value to be written from the content property
-            $val = $this->$name;
-
+            // Check with isset to avoid triggering __get() which might call load_fields() which would overwrite things
+            // Shows how bad such hacks are
+            $val = null;
+            if (isset($this->$name)) {
+                $val = $this->$name;
+            }
+            
             // Let the formtype process the value before writing
             $formtype = $formtypes->get_formtype($formfield->type);
             $val = $formtype->db_set_field($val, $formfield, $this->lg);
@@ -232,6 +238,7 @@ class db_Content extends DB_DataObject
                 
                 if (count($fieldvals) > 0) {
                     foreach($save_to_contents as $content) {
+                        echo "$this->lg $name = ".print_r($values);
                         db_Content_field::write($content->id, $formfield->name, $weight, $fieldvals);
                     }
                 }
