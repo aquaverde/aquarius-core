@@ -503,6 +503,8 @@ class db_Node extends DB_DataObject
             $cont->delete();
         }
         parent::delete(); // Call the DB_DataObject delete method
+        
+        Cache::clean();
     }
     
     /** Insert this node (DB_DataObject::insert override) */
@@ -510,7 +512,7 @@ class db_Node extends DB_DataObject
         
         // Calculate a sensible weight if none has been specified
         if (!$this->weight) {
-            $maxweight = array_shift($GLOBALS['DB']->listquery('SELECT max(weight) FROM node WHERE parent_id = '.$this->parent_id)); // May be NULL if the node table is empty or parent_id is invalid
+            $maxweight = array_shift($GLOBALS['aquarius']->db->listquery('SELECT max(weight) FROM node WHERE parent_id = '.$this->parent_id)); // May be NULL if the node table is empty or parent_id is invalid
             $this->weight = ($maxweight + 10) - ($maxweight % 10); // Round off to ten
         }
 
@@ -519,6 +521,7 @@ class db_Node extends DB_DataObject
         global $aquarius;
         $aquarius->execute_hooks('node_insert', $this);
     
+        Cache::clean();
         return $result;
     }
     

@@ -111,6 +111,7 @@ class Content_Import {
     function import_content($entry, $idmap) {
         $node_id = $idmap($entry['id']);
         $node = db_Node::get_node($node_id);
+        if (!$node) throw new Exception("Unable to load $node_id");
         $form = $node->get_form();
         
         foreach($entry['content'] as $lg => $entry_fields) {

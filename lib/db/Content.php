@@ -219,7 +219,7 @@ class db_Content extends DB_DataObject
             // Read the value to be written from the content property
             // Check with isset to avoid triggering __get() which might call load_fields() which would overwrite things
             // Shows how bad such hacks are
-            $val = null;
+            $val = $formfield->multi ? array() : null;
             if (isset($this->$name)) {
                 $val = $this->$name;
             }
