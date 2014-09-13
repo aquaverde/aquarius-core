@@ -54,10 +54,11 @@ class db_Form extends DB_DataObject
     
     /** get all form fields in a list indexed by their id */
     function get_fields() {
-        return Cache::call('form_fields'.$this->id, function() {
+        $id = $this->id;
+        return Cache::call('form_fields'.$id, function() use ($id) {
             $fields = array();
             $formfield_prototype = DB_DataObject::factory('form_field');
-            $formfield_prototype->form_id = $this->id;
+            $formfield_prototype->form_id = $id;
             $formfield_prototype->orderBy("weight ASC");
             $formfield_prototype->find();
             while ($formfield_prototype->fetch()) {

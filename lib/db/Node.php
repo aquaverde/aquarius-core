@@ -221,9 +221,10 @@ class db_Node extends DB_DataObject
 
     /** Load the form for this node */
     function get_form() {
-        $form = Cache::call('form'.$this->form_id, function() {
+        $form_id = $this->form_id;
+        $form = Cache::call('form'.$form_id, function() use ($form_id) {
             $form = DB_DataObject::factory('Form');
-            $found = $this->form_id && $form->get($this->form_id);
+            $found = $form_id && $form->get($form_id);
             if (!$found) return false;
             return $form;
         });
