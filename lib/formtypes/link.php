@@ -10,7 +10,6 @@ class Formtype_Link extends Formtype {
         $valobject->formname3 = "field[".$formfield->name."][target][]";
         $valobject->formname4 = "field[".$formfield->name."][weight][]";
 
-        $weight = 10;
         if(!is_array($valobject->value)) {
             // When the field was not initialized
             $valobject->value[] = array();
@@ -23,8 +22,7 @@ class Formtype_Link extends Formtype {
                 $valobject->value = array();
                 $valobject->value[0] = $values;
             }
-            
-            
+
             $i = 0;
             $valWeight = 10;
             foreach ($valobject->value as &$linkObject) {
