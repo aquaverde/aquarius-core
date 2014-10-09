@@ -154,6 +154,13 @@ $config['admin']['rte']['browse_path_file'] = 'download';
   */
 $config['admin']['allow_languageadmin'] = false;
 
+/** The preset for the target selection in link fields
+  *
+  * Set this to '_blank' if you prefer the links to open a new window.
+  * Changing this value will only affect newly added links. */
+$config['admin']['link_target'] = '';
+
+
 /** Standard email address to use as sender address
   * This is used in the "Sender:" header when the system generates mails. The
   * "From:" header will also be set to this address should it not be set

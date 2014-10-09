@@ -10,14 +10,18 @@ class Formtype_Link extends Formtype {
         $valobject->formname3 = "field[".$formfield->name."][target][]";
         $valobject->formname4 = "field[".$formfield->name."][weight][]";
 
+        // Prepare an empty link
+        global $aquarius;
+        $empty_link = array( 'target' => $aquarius->conf('admin/link_target') );
+        
         if(!is_array($valobject->value)) {
             // When the field was not initialized
-            $valobject->value[] = array();
+            $valobject->value[] = $empty_link;
         } else {
             $values = $valobject->value;
             if($formfield->multi) {
                 // Add a new empty link box
-                $valobject->value[] = array();
+                $valobject->value[] = $empty_link;
             } else {
                 $valobject->value = array();
                 $valobject->value[0] = $values;
