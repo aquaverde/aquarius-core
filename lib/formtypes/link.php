@@ -1,5 +1,18 @@
 <?php
-
+/** Store a link or a list of links
+  *
+  * Link data has the following properties:
+  *   link: the actual Link data such as 'http://aquaverde.ch' which is placed in the href attribute.
+  *   text: The text of the link. This is usually added inside the a-tag.
+  *   target: The target attribute, see also config setting 'admin/link_target'
+  *   weight: (it seems that this is used internally to sort multiple links)
+  *
+  * Form parameters:
+  *   sup1: not used
+  *   sup2: disables target selection when set to value 1
+  *   sup3: override title of the link field
+  *   sup4: override title of the target selection box
+ */
 class Formtype_Link extends Formtype {
 
     /** Apply formtype specific conversion prior to editing content
