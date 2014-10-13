@@ -21,9 +21,11 @@ class action_node extends AdminAction {
         // Users may toggle activation of nodes they have edit permission for
         if ($this->command == 'toggle_active') return $user->may_activate($node);
         
-        // Normal users may move nodes within boxes if they have edit permission on them. Siteadmins may copy everything except the root node.
-        if (in_array($this->command, array('moveorcopy', 'move', 'copy', 'moveorder'))) {
-            return !$node->is_root() && (($node->is_boxed() && $user->may_edit($node) && $user->copy_permission) || $user->isSiteadmin());
+        // Normal users may move nodes if they have edit permission on them. Siteadmins may copy everything except the root node.
+        $is_move = in_array($this->command, array('moveorcopy', 'move', 'moveorder'));
+        $is_copy = in_array($this->command, array('moveorcopy', 'copy'));
+        if ($is_move || $is_copy) {
+            return !$node->is_root() && ($user->may_edit($node) && ($is_move || $user->copy_permission) || $user->isSiteadmin());
         }
 
         if (strpos($this->command, 'delete') === 0) {
@@ -56,7 +58,7 @@ class action_node extends AdminAction {
       */
     protected function _possible_parents($node, $as_list=false) {
         // Only boxed nodes may be moved
-        if (!$node->is_boxed()) return false;
+        if (!$node->is_boxed()) return array();
 
         // Get the parent box
         $box_node = $node;
@@ -95,6 +97,19 @@ class action_node extends AdminAction {
             
             return $flat_tree;
         }
+    }
+
+    /** Whether the given node is a acceptable parent for the node being moved
+      * @param $node node up for adoption
+      * @param $parent parent node
+      * @return true if $parent may adopt $node
+      */
+    protected function acceptable_parent($node, $parent) {
+        $form = $node->get_form();
+        foreach($parent->available_childforms() as $available_form) {
+            if ($available_form->id == $form->id) return true;
+        }
+        return false;
     }
 }
 
@@ -225,7 +240,7 @@ class action_node_move extends action_node implements ChangeAction {
         if ($new_parent && $new_parent->id != $node->get_parent()->id) {
             $user = db_Users::authenticated();
 
-            if (!$user->isSiteadmin() && !in_array($new_parent->id, $this->_possible_parents($node, true))) {
+            if (!$user->isSiteadmin() && !$this->acceptable_parent($node, $new_parent)) {
                 throw new Exception("Parent ".$new_parent->idstr()." not permitted for ".$node->idstr());
             }
             
@@ -233,7 +248,7 @@ class action_node_move extends action_node implements ChangeAction {
             $node->move($new_parent);
 
             $result->touch_region(Node_Change_Notice::structural_change_to($old_parent));
-            $result->touch_region(Node_Change_Notice::structural_change_to($node));
+            $result->touch_region(Node_Change_Notice::structural_change_to($new_parent));
 
             $result->add_message(AdminMessage::with_line('ok', "s_message_node_moved", $node->get_contenttitle(), $new_parent->get_contenttitle()));
         }
@@ -258,12 +273,13 @@ class action_node_moveorder extends action_node_move implements ChangeAction {
         $node = $this->load_node();
 
         $parent_id = $post['node_target'];
+        $parent = db_Node::get_node($parent_id);
         $old_parent_id = $node->parent_id;
         $parent_changed = $old_parent_id != $parent_id;
         
         // Hack: check whether user is permitted now
         $user = db_Users::authenticated();
-        if (!parent::permit_user($user) || ($parent_changed && !$user->isSiteadmin() && !in_array($parent_id, $this->_possible_parents($node, true)))) {
+        if (!parent::permit_user($user) || ($parent_changed && !$user->isSiteadmin() && !$this->acceptable_parent($node, $parent))) {
             $result->add_message(AdminMessage::with_line('warn', 's_message_node_younomove', $node->get_contenttitle()));
             return;
         }
@@ -294,7 +310,7 @@ class action_node_moveorder extends action_node_move implements ChangeAction {
         if ($parent_changed) {
             $this->move($node, $post, $result);
         } else {
-            $result->touch_region(new Node_Change_Notice($node, false, false));
+            $result->touch_region(new Node_Change_Notice($node->get_parent(), false, false));
         }
     }
 }
