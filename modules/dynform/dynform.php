@@ -278,7 +278,6 @@ class Dynform extends Module
                             }
                             break;
 
-
                         case "TargetEmail":
                             $field['options'] = get($this->target_emails($options), 'labels');
                             break;
@@ -289,7 +288,10 @@ class Dynform extends Module
                         case "Nodelist":
                             $field['nodetree'] = $this->load_nodetree($options, $lg);
                             break;
-                            
+
+                        case "Upload":
+                            break;
+
                         default: throw new Exception("dynform field type '$type' not implemented");
 
                     }
@@ -447,6 +449,50 @@ class Dynform extends Module
                             if (!empty($posted)) {
                                 $value .= sprintf("\r\n% 4s: %s", $posted, $order_node->get_form_code());
                             }
+                        }
+                    }
+                } elseif ($ftype == 'Upload') {
+                    $field_name = 'field_'.$field->id;
+                    if ($_FILES[$field_name]) {
+                        // The dir where the files are stored must be
+                        // random so that it can't be guessed.
+                        $chars = 8;
+                        
+                        $rbytes = '';
+                        if (function_exists('openssl_random_pseudo_bytes')) {
+                            $rbytes = openssl_random_pseudo_bytes($chars);
+                        } else {
+                            // Because we don't have openssl_random_pseudo_bytes we'll
+                            // just use uniqid() and bray.
+                            $rbytes = uniqid('', true);
+                        }
+                        
+                        $rstr = substr(md5($rbytes), $chars * -1); // Depending on the function used above we get either binary or hex output, trash it through md5 to get a uniform hex string
+
+                        $month_path = $this->conf('upload_dir').strftime('%Y/%m/'); // Grouping dirs by month makes it easier to delete old dirs
+                        $path = $month_path.$rstr.'/';
+                        $full_path = FILEBASEDIR.$path;
+                        if (is_dir($full_path)) {
+                            // This does not happen for big $chars
+                            throw new Exception("Errord $path exists. This happens ".count(scandir($full_path))." out of ".(1<<(4*$chars))." times. It's like winning the lottery, and you too get a price. Your price is this error message. Enjoy. And do try again."); // Hex carries four bits of information per character
+                        }
+                        $created = mkdir($full_path, 0755, true);
+
+                        if (!$created) throw new Exception("Unable to create $path");
+                        
+                        require_once "lib/file_mgmt.lib.php";
+                        $mresult = process_upload($_FILES[$field_name], $path);
+                        
+                        // Now dynform has no way of gracefully handling errors, it always works unless it doesn't
+                        // I go with the flow
+                        if ($mresult['error'] && $mresult['message']) throw new Exception('Upload error '.first($mresult['message']));
+                        
+                        $filename = get($mresult, 'new_name');
+                        if ($filename) {
+                            // Takin a wild guess
+                            $value = 'http://'.$_SERVER['SERVER_NAME'].'/'.$path.$filename;
+                        } else {
+                            $value = '';
                         }
                     }
                 }

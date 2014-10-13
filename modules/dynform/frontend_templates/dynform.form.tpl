@@ -4,6 +4,7 @@
     data-number="{wording Please enter a valid number.}" 
     data-error="{wording Your form contains 1 error, see details below.}" 
     data-errors="{wording Your form contains _n_ errors, see details below.}"
+    enctype="multipart/form-data"
 >
 
     {foreach from=$dynform.blocks item='block'}

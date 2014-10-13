@@ -24,7 +24,7 @@ function smarty_function_dynform_fm_get_forms($params, &$smarty)
 			{
 				$node->fetch() ; 
 				$dynforms[$i]['title'] = $node->title ; 
-				$content = $node->get_content() ; 
+				$content = $node->get_content($lg) ; 
 				if ($content)
 				{
 					$content->load() ; 

@@ -19,6 +19,7 @@
     Option				= "Option"
     TargetEmail			= "Target E-Mail"
     Nodelist            = "content list"
+    Upload              = "File upload"
     
     new_block			= "New block"
     new_field			= "New line" 

@@ -19,6 +19,7 @@
     Option				= "Option aus Formularfeld"
     TargetEmail			= "Ziel-E-Mail"
     Nodelist            = "Inhaltsliste"
+    Upload              = "Dateiupload"
     
     new_block			= "Neuer Block"
     new_field			= "Neue Zeile" 

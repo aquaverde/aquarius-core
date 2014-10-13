@@ -18,8 +18,9 @@
     Number				= "Nombre"
     Option				= "Option"
     TargetEmail			= "E-Mail cible"
-    Nodelist                   = "Liste contenu"
-    
+    Nodelist            = "Liste contenu"
+    Upload              = "téléchargement"
+
     new_block			= "Nouveau bloc"
     new_field			= "Nouveau champ" 
     change_type			= "Changer le type"
