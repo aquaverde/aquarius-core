@@ -264,11 +264,11 @@ if (count($available_updates) > 0) { ?>
 ?>
             <li><label>
                 <?php if ($step=='init') { ?>
-                    <input type="radio" name="requested_updates[<?php echo htmlentities($module_name);?>]" value="<?php echo htmlentities($update_name);?>" 
+                    <input type="radio" name="requested_updates[<?php echo htmlspecialchars($module_name);?>]" value="<?php echo htmlspecialchars($update_name);?>" 
                      <?php if ($first) echo "checked='checked'"; ?> 
                     /><?php echo htmlentities($update_name);?>
                  <?php } else { ?>
-                    <input type="checkbox" name="requested_updates[]" value="<?php echo htmlentities($update_name);?>" checked="checked" /><?php echo htmlentities($update_name);?>
+                    <input type="checkbox" name="requested_updates[]" value="<?php echo htmlspecialchars($update_name);?>" checked="checked" /><?php echo htmlspecialchars($update_name);?>
                  <?php } ?>
            </label></li>
         
