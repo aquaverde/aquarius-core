@@ -403,12 +403,12 @@ function initmap(config, markers_in) {
         for(var i = 0; i < elms.length; i++) {
             var ac_document = elms[i];
             if(ac_document.id == ('mapmenu_box_' + index)) {
-                if(ac_document.style.display != 'none') Effect.BlindUp(ac_document, {duration: my_duration});
-                else Effect.BlindDown(ac_document, {duration:my_duration}); 
+                if(ac_document.style.display != 'none') jQuery(ac_document).slideUp(300);
+                else jQuery(ac_document).slideDown(300); 
             }
             else {
-                Effect.BlindUp(ac_document, { duration: my_duration });
-            }                                                   
+                jQuery(ac_document).slideUp(300);
+            }
         }                                       
     }
     
