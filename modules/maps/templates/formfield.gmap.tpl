@@ -23,7 +23,6 @@
         window.mapinits = []
         
         window.mapinit = function() {
-        console.log(mapinits)
             var initfun;
             while(initfun = mapinits.pop()) {
                 initfun()
