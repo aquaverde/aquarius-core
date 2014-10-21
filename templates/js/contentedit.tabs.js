@@ -15,10 +15,7 @@ function load_pending_change() {
     }
 }
 
-document.observe('dom:loaded', load_pending_change)
-Event.observe(window, 'load', load_pending_change) /* FOR IE6 ONLY. WHEN THAT OLD CRANK IS DEAD (SOON) REMOVE THIS LINE */
-
-
+jQuery(document).ready(load_pending_change)
 
 function show_tab(tabnr, hide, show) {
     var tab_change = function() {
@@ -40,5 +37,4 @@ function show_tab(tabnr, hide, show) {
     }
     if (dom_loaded) tab_change()
     else pending_tab_change = tab_change
-
 }
