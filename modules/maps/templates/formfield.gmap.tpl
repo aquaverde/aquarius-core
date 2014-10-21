@@ -1,5 +1,5 @@
-{include_javascript file="scriptaculous.js" lib=true}
-{include_javascript file="effects.js" lib=true}
+{*include_javascript file="scriptaculous.js" lib=true*}
+{*include_javascript file="effects.js" lib=true*}
 {include_javascript file="maps.js"}
 {include_css file="maps.css"}
 
@@ -21,20 +21,34 @@
     var t_link = "{#link#}";
     var t_delete_instance = "{#delete_instance#}";
 
-    // Maps deferred loading
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.defer = true;
-    script.src = "http://maps.googleapis.com/maps/api/js?key={$field.map_options.presets->api_key}&libraries=drawing,places&sensor=false&callback=initmap_{$field.htmlid}";
-    document.body.appendChild(script);
-    
-    // Callback that loads the map
-    var initmap_{$field.htmlid} = function() {ldelim}
+    if (!window.mapinits) {
+        window.mapinits = []
+        
+        window.mapinit = function() {
+        console.log(mapinits)
+            var initfun;
+            while(initfun = mapinits.pop()) {
+                initfun()
+            }
+        }
+        
+        // Maps deferred loading
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.defer = true;
+        script.src = "http://maps.googleapis.com/maps/api/js?key={$field.map_options.presets->api_key}&libraries=drawing,places&sensor=false&callback=mapinit";
+        document.body.appendChild(script);
+    }
+
+    mapinits.push(function() {
         var resfun = initmap({$field.map_options|@json}, {$field.value|@json})
-        if (on_tab_init) {ldelim}
+        if (window.on_tab_init) {
             on_tab_init.push(resfun)
-            {rdelim}
-    {rdelim}
+        } else {
+            resfun()
+        }
+    })
+    
 {/js}
 <div id="{$field.formname}_markers">
     {foreach from=$field.value item=gmap_data key = index}
