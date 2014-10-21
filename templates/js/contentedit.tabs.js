@@ -19,21 +19,18 @@ jQuery(document).ready(load_pending_change)
 
 function show_tab(tabnr, hide, show) {
     var tab_change = function() {
-        var tab = $('tab'+tabnr)
-        $$('.tabs li.active').invoke('removeClassName', 'active')
-        tab.addClassName('active')
+        var tab = jQuery('#tab'+tabnr)
+        jQuery('.tabs li.active').removeClass('active')
+        tab.addClass('active')
         hide.forEach(function (hide_name) {
-            var field = $('box'+hide_name)
-            if (field) field.style.display = 'None'
+            jQuery('#box'+hide_name).hide()
         })
         show.forEach(function (show_name) {
-            var field = $('box'+show_name)
-            if (field) field.style.display = 'Block'
+            jQuery('#box'+show_name).show()
         })
         on_tab_init.forEach(function (initializer) { initializer() } )
-        tab.toggleClassName('idefix')
 
-        $('active_tab_id').value = tabnr
+        jQuery('#active_tab_id').value = tabnr
     }
     if (dom_loaded) tab_change()
     else pending_tab_change = tab_change

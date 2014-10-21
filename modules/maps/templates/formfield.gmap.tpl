@@ -37,7 +37,8 @@
         document.body.appendChild(script);
     }
 
-    mapinits.push(function() {
+    
+    window.mapinits.push(function() {
         var resfun = initmap({$field.map_options|@json}, {$field.value|@json})
         if (window.on_tab_init) {
             on_tab_init.push(resfun)
