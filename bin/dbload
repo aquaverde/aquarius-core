@@ -7,12 +7,38 @@ Wrapper to execute SQL statements on DB configured in config.local.php
 */
 require_once dirname(__FILE__)."/../../config.local.php";
 
-$options = array(
-    '--default-character-set=utf8',
-	'--host='.$config['db']['host'],
-	'--password='.$config['db']['pass'],
-	'--user='.$config['db']['user'],
-	$config['db']['name']
-);
+system('mysql --version', $ret);
+$have_mysql_command = (0 === $ret);
+if ($have_mysql_command) {
+    echo "Passing through to mysql client (fast)\n";
 
-system('mysql '.join(' ', $options));
+    $options = array(
+        '--default-character-set=utf8',
+        '--host='.$config['db']['host'],
+        '--password='.$config['db']['pass'],
+        '--user='.$config['db']['user'],
+        $config['db']['name']
+    );
+
+    system('mysql '.join(' ', $options));
+} else {
+    $db = new mysqli($config['db']['host'], $config['db']['user'], $config['db']['pass'], $config['db']['name']);
+    if ($db->connect_error) {
+        die('Connect Error ('.$mysqli->connect_errno.') '.$mysqli->connect_error);
+    }
+    echo "Using PHP mysqli (slow)\n";
+    require_once dirname(__FILE__)."/../lib/SQL_Split.php";
+    foreach(new SQL_Split(fopen('php://stdin', 'r')) as $ln => $statement) {
+        $result = $db->query($statement);
+        if ($result === true) {
+            // GOOD
+        } elseif ($result) {
+            while($r = $result->fetch_assoc()) {
+                print_r($r);
+            }
+            $result->free();
+        } else {
+            die("DB error on line $ln: $db->error, statement $statement");
+        }
+    }
+}
