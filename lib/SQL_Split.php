@@ -47,7 +47,9 @@ class SQL_Split implements Iterator {
 
     function rewind() {
         $this->current_statement = '';
-        if (fseek($this->inf, 0) !== 0) throw new Exception("Unable to seek start in $this->inf");
+        if (ftell($this->inf) !== 0 && fseek($this->inf, 0) !== 0) {
+            throw new Exception("Unable to seek start in $this->inf");
+        }
         $this->cur = -1;
         $this->current_key = -1;
         $this->current_line = 1;
