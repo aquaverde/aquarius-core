@@ -71,12 +71,18 @@ class Formtype_Pointing extends Formtype {
         return $node1->cache_left_index - $node2->cache_left_index;
     }
 
+
     /** Load node object from id */
     function db_get($values, $formfield) {
-        $pointing_node = db_Node::get_node(first($values));
-        if (!$pointing_node) return null;
+        $pointing_id = first($values);
+        $pointing_node = DB_DataObject::factory('node');
+        if (!$pointing_node->get($pointing_id)) {
+            Log::debug("Invalid pointing id $pointing_id in formfield $formfield->name");
+            return null;
+        }
         return $pointing_node;
     }
+
 
     /** Save node id to DB.
       * If value is not a node object, this will try to load the node first and then save the id of the array. If the value is not a valid node identifier, it is ignored. */
