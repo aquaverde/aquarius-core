@@ -142,6 +142,7 @@ class Minify_Link_Builder_CSS extends Minify_Link_Builder {
         }
 
         if (filemtime($css_path) < $maxmtime) {
+            $scss_compiler = new scssc();
             $scss_compiler->setImportPaths($scss_base);
             $source = file_get_contents($scss_path);
             if ($source === false) throw new Exception("Unable to read SCSS file $scss_path");
