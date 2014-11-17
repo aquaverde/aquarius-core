@@ -1,6 +1,7 @@
 (function(){
-    var link_dialog_command = {  
-        exec:function(editor){  
+    var link_dialog_command = {
+        exec: function(editor) {
+            // WARNING Not a sane way to catch the callback
             window.ilink_callback = function(target_id, selected_nodes) {
                 var node_id;
                 var node_title;
@@ -22,25 +23,20 @@
                     else                        
                         editor.insertHtml("<a href='aquarius-node:" + node_id + "' >"+node_title+"</a>");                   
                 }
-            } // END OF FUNCTION
-            
+            };
+
+            var link = ilink_select;
             if( editor.getSelection() != null 
                 && editor.getSelection().getStartElement().getAttribute('href') != null
                 && editor.getSelection().getNative() != '') 
-            {       
+            {
                 var aqua_link = editor.getSelection().getStartElement().getAttribute('href');
                 var aqua_array = aqua_link.split(":");
                 var aqua_node_id = aqua_array[1];
-                
-                if(aqua_node_id)
-                    var media = window.showModalDialog(ilink_select+"&selected="+aqua_node_id,window,"dialogHeight=600px; dialogWidth=500px; center=yes; resizable=yes");
-                else 
-                    var media = window.showModalDialog(ilink_select,window,"dialogHeight=600px; dialogWidth=500px; center=yes; resizable=yes");
+
+                if (aqua_node_id) link = link + +"&selected="+aqua_node_id;
             }
-            else {
-                var media = window.showModalDialog(ilink_select,window,"dialogHeight=600px; dialogWidth=500px; center=yes; resizable=yes");              
-            }
-            window.ilink_callback = false;     
+            open_attached_popup(ilink_select, 'link', "height=600px; width=500px; center=yes; resizable=yes");
         }
     }
     
