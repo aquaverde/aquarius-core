@@ -1,10 +1,9 @@
 COMPOSER=bin/composer.phar
 VENDOR=vendor/autoload.php
 ADMINER=../dbadmin/index.php
-CKEDITOR_ACCESS=vendor/ckeditor/ckeditor/.htaccess
 REVISION:=$(shell git describe --abbrev=4 --dirty --always)
 
-all: $(VENDOR) $(ADMINER) $(CKEDITOR_ACCESS) revision
+all: $(VENDOR) $(ADMINER) revision
 
 full: $(VENDOR) $(ADMINER)
 	php bin/packer --inline full
@@ -21,9 +20,6 @@ $(ADMINER): $(VENDOR)
 $(COMPOSER):
 	curl -sS https://getcomposer.org/installer | php -- --install-dir bin
 
-$(CKEDITOR_ACCESS): $(VENDOR)
-	cp backend/.htaccess $(CKEDITOR_ACCESS)
-	
 clean:
 	rm -rf $(COMPOSER) vendor
 
