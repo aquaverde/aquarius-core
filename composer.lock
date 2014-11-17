@@ -1,22 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "2f52c2364abda3a6e52d370dcf7664d2",
+    "hash": "de3b7f8296d7296259a1c77fa1875aff",
     "packages": [
         {
             "name": "ckeditor/ckeditor",
-            "version": "4.4.3",
+            "version": "4.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ckeditor/ckeditor-releases.git",
-                "reference": "7c4d8c1e91ba8d6d4e33574f59fc17586b10da1f"
+                "reference": "68cc6ad041e5268fd0d1445802a7d6a6ce6e1802"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ckeditor/ckeditor-releases/zipball/7c4d8c1e91ba8d6d4e33574f59fc17586b10da1f",
-                "reference": "7c4d8c1e91ba8d6d4e33574f59fc17586b10da1f",
+                "url": "https://api.github.com/repos/ckeditor/ckeditor-releases/zipball/68cc6ad041e5268fd0d1445802a7d6a6ce6e1802",
+                "reference": "68cc6ad041e5268fd0d1445802a7d6a6ce6e1802",
                 "shasum": ""
             },
             "type": "library",
@@ -44,20 +45,20 @@
                 "text",
                 "wysiwyg"
             ],
-            "time": "2014-07-15 15:06:48"
+            "time": "2014-09-25 13:15:55"
         },
         {
             "name": "leafo/scssphp",
-            "version": "v0.0.12",
+            "version": "v0.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/scssphp.git",
-                "reference": "ff76df3e45af45e808f3fcd516a2cb5cbc77f45e"
+                "reference": "85348dde6f193fe390aff76b21d816415ffef93b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/scssphp/zipball/ff76df3e45af45e808f3fcd516a2cb5cbc77f45e",
-                "reference": "ff76df3e45af45e808f3fcd516a2cb5cbc77f45e",
+                "url": "https://api.github.com/repos/leafo/scssphp/zipball/85348dde6f193fe390aff76b21d816415ffef93b",
+                "reference": "85348dde6f193fe390aff76b21d816415ffef93b",
                 "shasum": ""
             },
             "require": {
@@ -90,7 +91,7 @@
             ],
             "description": "scssphp is a compiler for SCSS written in PHP.",
             "homepage": "http://leafo.net/scssphp/",
-            "time": "2014-07-07 01:51:39"
+            "time": "2014-08-05 15:11:40"
         },
         {
             "name": "mrclay/minify",
@@ -134,21 +135,32 @@
         },
         {
             "name": "smarty/smarty",
-            "version": "v3.1.18",
+            "version": "v3.1.21",
             "source": {
-                "type": "svn",
-                "url": "http://smarty-php.googlecode.com/svn",
-                "reference": "/tags/v3.1.18/@4839"
+                "type": "git",
+                "url": "https://github.com/smarty-php/smarty.git",
+                "reference": "1f878e6d746ecc8ec8d00d9c75044cf7d23ad94a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/1f878e6d746ecc8ec8d00d9c75044cf7d23ad94a",
+                "reference": "1f878e6d746ecc8ec8d00d9c75044cf7d23ad94a",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.2"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1.x-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
-                    "distribution/libs/Smarty.class.php",
-                    "distribution/libs/SmartyBC.class.php",
-                    "distribution/libs/sysplugins/smarty_security.php"
+                    "libs/Smarty.class.php",
+                    "libs/SmartyBC.class.php",
+                    "libs/sysplugins/smarty_security.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -174,7 +186,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-05-08 18:38:30"
+            "time": "2014-10-31 04:22:20"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -236,6 +248,16 @@
                 "reference": "v4.0.3"
             },
             "type": "library"
+        },
+        {
+            "name": "w8tcha/CKEditor-WordCount-Plugin",
+            "version": "1.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/w8tcha/CKEditor-WordCount-Plugin.git",
+                "reference": "v1.10"
+            },
+            "type": "library"
         }
     ],
     "packages-dev": [
@@ -248,6 +270,7 @@
     "stability-flags": [
 
     ],
+    "prefer-stable": false,
     "platform": [
 
     ],

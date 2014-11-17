@@ -4,6 +4,7 @@
         "mrclay/minify": "2.*",
         "swiftmailer/swiftmailer": "4.*",
         "vrana/adminer": "4.*",
+        "w8tcha/CKEditor-WordCount-Plugin": "*",
         "leafo/scssphp": "0.0.*",
         "ckeditor/ckeditor": "4.4.*"
     },
@@ -17,6 +18,18 @@
                     "type": "git",
                     "url": "https://github.com/vrana/adminer.git",
                     "reference": "v4.0.3"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "w8tcha/CKEditor-WordCount-Plugin",
+                "version": "1.10",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/w8tcha/CKEditor-WordCount-Plugin.git",
+                    "reference": "v1.10"
                 }
             }
         }
