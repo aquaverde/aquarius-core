@@ -7,6 +7,7 @@
   *   on: A node. Links that lead to this node or one of its parents will get the second class. Template variable 'node' will be used if this is not specified.
   *   class: Class attribute of the a tag. A second class may be specified after a comma to be used when the link is 'on'
   *   loadcontent: load the content of the linked node inside the block, like {usecontent}
+  *   data-*: data attributes to add to the link-tag
   *
   * The parameters of the href plugin can be used as well
   *
@@ -54,10 +55,20 @@ function smarty_block_link($params, $content, $smarty, &$repeat) {
         $normal_class = get($classes, 0);
         $on_class = get($classes, 1, $normal_class);
         $class = $active ? $on_class : $normal_class;
-        $classstr = !empty($class) ? ' class="'.$class.'"' : '';
+        $class_str = !empty($class) ? ' class="'.$class.'"' : '';
 
+        // Data attributes
+        $data_attrs = array();
+        foreach($params as $name => $param) {
+            if (strpos($name, 'data-') === 0) {
+                $data_attrs []= "$name='".htmlspecialchars($param)."'";
+            }
+        }
+        $data_str = '';
+        if ($data_attrs) $data_str = ' '.join(' ', $data_attrs);
+        
         // Wrap the content in a link
-        $content = '<a href="'.$href.'"'.$classstr.'>'.$content.'</a>';
+        $content = '<a href="'.$href.'"'.$class_str.$data_str.'>'.$content.'</a>';
         
         if (get($params, 'loadcontent')) smarty_block_usecontent($params, $content, $smarty, $repeat);
     }
