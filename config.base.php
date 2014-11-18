@@ -151,30 +151,6 @@ $config['admin']['rte'] = array(
     'plugins' => array(
         'iLink' => '/aquarius/core/backend/ckeditor/plugins/iLink/plugin.js',
         'wordcount' => '/aquarius/core/vendor/w8tcha/CKEditor-WordCount-Plugin/wordcount/plugin.js'
-    ),
-
-    // Basic config options
-    // Override in /aquarius/config.php or add /aquarius/ckconfig.js
-    'config' => array(
-        'filebrowserWindowWidth' => 500,
-        'filebrowserWindowHeight' => 600,
-        'toolbar' => array(
-            array('Bold','Italic','BulletedList','iLink','Link','Unlink','Image','PasteText','PasteFromWord','RemoveFormat','Maximize','Source')
-        ),
-        'toolbarCanCollapse' => false,
-        'browserContextMenuOnCtrl' => true ,
-        'disableObjectResizing' => false ,
-        'disableNativeTableHandles' => false ,
-        'resize_enabled' => false,
-        'entities' => false,
-        'forcePasteAsPlainText' => true ,
-        'emailProtection' => 'encode',
-        'linkShowAdvancedTab' => false,
-        'wordcount' => array(
-            'showWordCount' => true,
-            'showCharCount' => true,
-            'countHTML' => false
-        )
     )
 );
 
