@@ -18,7 +18,9 @@ class Formtype_RTE extends Formtype {
         if($formfield->sup1) {
             $rte_options['height'] = max(intval($formfield->sup1), 50);
         }
-
+        
+        $valobject->rte_plugins = $aquarius->conf('admin/rte/plugins');
+        $valobject->rte_plugins_list = join(',', array_keys($aquarius->conf('admin/rte/plugins')));
         $valobject->rte_options = $rte_options;
     }
 

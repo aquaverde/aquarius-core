@@ -35,9 +35,9 @@
 </textarea>
 <div class="clear"></div>
 <script>
-    CKEDITOR.plugins.addExternal('iLink', '/aquarius/core/backend/ckeditor/plugins/iLink/plugin.js', '')
-    CKEDITOR.plugins.addExternal('charcounter', '/aquarius/core/backend/ckeditor/plugins/charcounter/plugin.js', '')
-    CKEDITOR.config.extraPlugins = 'iLink,charcounter';
+    {foreach $rte_options->plugin_list() as $name => $path}
+    CKEDITOR.plugins.addExternal({$name|json}, {$path|json}, '');
+    {/foreach}
     var editor_{$RTEhtmlID} = CKEDITOR.replace({$RTEformname|json}, {$config|json});
 </script>
 

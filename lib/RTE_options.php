@@ -2,19 +2,28 @@
 /** Prepare RTE config options */
 class RTE_options implements ArrayAccess {
     private $options = array();
+    private $plugins = array();
 
     function __construct($conf) {
-	    if(!isset($conf['browse_path_img']) || !isset($conf['browse_path_file'])) {
-	    	throw new Exception("RTE config problems: 'browse_path_img' or 'browse_path_file' not set");
-	    }
+        if(!isset($conf['browse_path_img']) || !isset($conf['browse_path_file'])) {
+            throw new Exception("RTE config problems: 'browse_path_img' or 'browse_path_file' not set");
+        }
+
+        $this->config = $conf['config'];
+        $this->plugins = $conf['plugins'];
 
         $this['image_path'] = $conf['browse_path_img'];
         $this['file_path']  = $conf['browse_path_file'];
     }
 
     function config_for($base_url) {
-        $config = array();
-        $config['customConfig'] = '/aquarius/core/backend/ckeditor/config.js';
+        $config = $this->config; // clone-by-assign
+
+        global $aquarius;
+        $custom_path = '/aquarius/ckconfig.js';
+        if (file_exists($aquarius->root_path.$custom_path)) {
+            $config['customConfig'] = $custom_path;
+        }
 
         $select_image_action = Action::build(array('file_select_rte', 0, $this['image_path'], '', '', 0, '', ''), array('callback' => 'rte_file_select_img'));
         $config['filebrowserImageBrowseUrl'] = $base_url->with_param($select_image_action)->str(false);
@@ -26,12 +35,17 @@ class RTE_options implements ArrayAccess {
         $config['ilink_select']              = $base_url->with_param($ilink_select)->str(false);
 
         $config['language'] = $this['editor_lg'];
-        $config['filebrowserWindowWidth']  = 500;
-        $config['filebrowserWindowHeight'] = 600;
 
         if (isset($this['height'])) $config['height'] = $this['height'].'px';
 
+        $config['extraPlugins'] = join(',', array_keys($this->plugins));
+
         return $config;
+    }
+
+
+    function plugin_list() {
+        return $this->plugins;
     }
 
 

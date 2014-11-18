@@ -1,4 +1,8 @@
 RewriteEngine off
 
-Order Deny,Allow
+Order Allow,Deny
 Deny from all
+
+<Files ckconfig.js>
+    Allow from all
+</Files>
