@@ -45,8 +45,9 @@ class RTE_options implements ArrayAccess {
     }
 
 
+    /* Get listg of plugins that need loading */
     function plugin_list() {
-        return $this->plugins;
+        return array_filter($this->plugins, 'is_string');
     }
 
 

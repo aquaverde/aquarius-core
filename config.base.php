@@ -154,6 +154,11 @@ $config['admin']['rte'] = array(
     )
 );
 
+// Add RTE plugin examples
+#$config['admin']['rte']['plugins']['youtube'] = '/js/ckeditor_youtube/plugin.js' // External plugin
+#$config['admin']['rte']['plugins']['iframe'] = true // core plugin
+
+
 /** Allow administrators to manage languages
   *
   * Preset is false.
