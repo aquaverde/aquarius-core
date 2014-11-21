@@ -18,13 +18,7 @@ class RTE_options implements ArrayAccess {
     function config_for($base_url) {
         $config = array();
 
-        global $aquarius;
-        $custom_path = '/aquarius/ckconfig.js';
-        if (file_exists($aquarius->root_path.$custom_path)) {
-            $config['customConfig'] = $custom_path;
-        } else {
-            $config['customConfig'] = '/aquarius/core/backend/ckeditor/config.js';
-        }
+        $config['customConfig'] = '/aquarius/core/backend/ckeditor/config.js';
 
         $select_image_action = Action::build(array('file_select_rte', 0, $this['image_path'], '', '', 0, '', ''), array('callback' => 'rte_file_select_img'));
         $config['filebrowserImageBrowseUrl'] = $base_url->with_param($select_image_action)->str(false);
