@@ -502,7 +502,7 @@ class Dynform extends Module
                 $entry_data->entry_id = $df_entry->id ; 
                 $entry_data->field_id = $field->id ; 
                 $entry_data->name = $name ; 
-                $entry_data->value = stripslashes($value) ; 
+                $entry_data->value = $value; 
                 $entry_data->insert() ; 
                 
                 $mailtxt[] = array($name, $value); 
