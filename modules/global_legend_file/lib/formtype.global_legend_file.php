@@ -38,16 +38,10 @@ class Formtype_global_legend_file extends Formtype_File {
 
         $escaped_path = mysql_real_escape_string('/'.$formfield->sup3.'/'.get($values, 'file'));
         $legend = get($values, 'legend');
-        if (strlen($legend) == 0) {
-            if (!$this->ignore_empty) {
-                $DB->query("DELETE FROM file_legend WHERE file='$escaped_path' AND lg='$lg'");
-            }
-        } else {
+        if (strlen($legend) > 0 || !$this->ignore_empty) {
             $escaped_legend = mysql_real_escape_string($legend);
             $DB->query("REPLACE file_legend SET file='$escaped_path', legend='$escaped_legend', lg='$lg'");
         }
-
-        unset($values['legend']);
 
         return $values;
     }
@@ -62,7 +56,7 @@ class Formtype_global_legend_file extends Formtype_File {
         $escaped_path = mysql_real_escape_string(get($values, 'file'));
         $global_legend = $DB->singlequery("SELECT legend FROM file_legend WHERE file='$escaped_path' AND (ISNULL(lg) OR lg='$lg') ORDER BY lg DESC");
 
-        if (strlen($global_legend) > 0) {
+        if ($global_legend !== false) {
             $values['legend'] = $global_legend;
         }
 
