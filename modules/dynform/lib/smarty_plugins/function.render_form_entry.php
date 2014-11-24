@@ -6,7 +6,6 @@
 
   
 function smarty_function_render_form_entry($params, &$smarty) {
-	require_once('lib/libdynform.php') ; 
 	require_once "lib/db/Wording.php";
 	$DL = new Dynformlib ; 
     $lg = get($params, 'lg', null) ; 

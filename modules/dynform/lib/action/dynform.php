@@ -2,8 +2,6 @@
 require_once("pear/DB/DataObject/FormBuilder.php");
 require_once("pear/HTML/QuickForm/Renderer/ArraySmarty.php");
 
-require_once("lib/libdynform.php") ;
-
 class action_dynform extends ModuleAction {
     var $modname = "dynform" ;
     var $props = array("class", "command", "content_id", "lg", "node_id", "block_id", "field_id") ;

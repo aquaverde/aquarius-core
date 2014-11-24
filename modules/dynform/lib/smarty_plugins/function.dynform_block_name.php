@@ -6,9 +6,7 @@
   *	Required parameters: id (of the block) and lg 
   */
   
-function smarty_function_dynform_block_name($params, &$smarty) 
-{    
-	require_once('lib/libdynform.php') ;  
+function smarty_function_dynform_block_name($params, &$smarty) {
     $bid = get($params, 'id') ;
     $lg = get($params, 'lg') ; 
     

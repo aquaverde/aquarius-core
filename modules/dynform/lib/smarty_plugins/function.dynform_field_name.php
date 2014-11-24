@@ -5,12 +5,8 @@
   *
   *	Required parameters: id (of the block) and lg 
   */
-  
-require_once('lib/libdynform.php') ;  
 
- 
-function smarty_function_dynform_field_name($params, &$smarty) 
-{   
+function smarty_function_dynform_field_name($params, &$smarty) {
     $fid = get($params, 'id') ;
     $lg = get($params, 'lg') ; 
     $length = get($params, 'length', 85) ; 

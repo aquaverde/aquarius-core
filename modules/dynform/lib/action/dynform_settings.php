@@ -17,7 +17,6 @@ class action_dynform_settings extends ModuleAction
     {
         global $aquarius;
         require_once("lib/db/Node.php") ;
-        require_once('lib/libdynform.php') ;  
         global $DB;
         
         $DL = new Dynformlib ;

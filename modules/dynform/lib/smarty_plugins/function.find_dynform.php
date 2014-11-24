@@ -6,7 +6,6 @@ function smarty_function_find_dynform($params, $smarty) {
     foreach($params as $param) {
         $node = db_Node::get_node($param);
         if ($node) {
-            require_once 'lib/libdynform.php';
 
             $DL = new Dynformlib;
             

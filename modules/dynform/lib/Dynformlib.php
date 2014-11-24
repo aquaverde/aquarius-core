@@ -2,8 +2,23 @@
 
 require_once("pear/Date.php") ; 
 
-class Dynformlib 
-{
+class Dynformlib {
+    
+    static $field_types = array(
+        1 => array('name' => 'Singleline', 'template' => 'df_singleline'),
+        2 => array('name' => 'Multiline', 'template' => 'df_multiline'),
+        3 => array('name' => 'Checkbox', 'template' => 'df_checkbox'),
+        4 => array('name' => 'Pulldown', 'template' => 'df_pulldown'),
+        5 => array('name' => 'Radiobutton', 'template' => 'df_radiobutton'),
+        6 => array('name' => 'Text', 'template' => 'df_text'),
+        7 => array('name' => 'Email', 'template' => 'df_email'),
+        8 => array('name' => 'Number', 'template' => 'df_number'),
+        9 => array('name' => 'Option', 'template' => 'df_options_from_form'),
+        10 => array('name' => 'TargetEmail', 'template' => 'df_target_email'),
+        11 => array('name' => 'Nodelist', 'template' => 'df_nodelist'),
+        12 => array('name' => 'Upload', 'template' => 'df_upload'),
+        13 => array('name' => 'Nodelist', 'template' => 'df_nodelist')
+    );
 
 	// options from form stuff
 
@@ -188,45 +203,24 @@ class Dynformlib
 		}
 	}
 	
-	function get_fieldtype_template($ftype)
-	{
-		$type = new db_Dynform_field_type ; 
-		$type->name = $ftype ; 
-		$found = $type->find() ; 
-		if ($found)
-		{
-			$type->fetch() ; 
-			if ($type->template) return $type->template.".tpl" ;
-			else return $type->default_template.".tpl" ; 
-		}
-		return "not_found.tpl" ; 
+	static function get_fieldtype_template($name) {
+        foreach(self::$field_types as $ftype) {
+            if ($ftype['name'] == $name) return $ftype->template;
+        }
+		throw new Exception("Undefined dynform field $name");
 	}
 	
-	function get_fieldtype_id($ftype) 
-	{
-		$type = new db_Dynform_field_type ; 
-		$type->name = $ftype ; 
-		$found = $type->find() ; 
-		if ($found)
-		{
-			$type->fetch() ; 
-			if ($type->id) return $type->id;
-			else return 0 ; 
-		}
+	static function get_fieldtype_id($name) {
+        foreach(self::$field_types as $id => $ftype) {
+            if ($ftype['name'] == $name) return $id;
+        }
+        throw new Exception("Undefined dynform field $name");
 	}
 	
-	function get_fieldtype_name($fid) 
-	{
-		$type = new db_Dynform_field_type ; 
-		$type->id = $fid ; 
-		$found = $type->find() ; 
-		if ($found)
-		{
-			$type->fetch() ; 
-			if ($type->name) return $type->name;
-			else return "" ; 
-		}
-	}
+	static function get_fieldtype_name($fid) {
+        if (isset(self::$field_types[$fid])) return self::$field_types[$fid]['name'];
+        throw new Exception("Undefined dynform field id $fid");
+    }
 	
 	/** called from lib/action/node.php on every node copy */
 	

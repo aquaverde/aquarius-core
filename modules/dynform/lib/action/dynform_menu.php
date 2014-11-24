@@ -22,8 +22,6 @@ class action_dynform_menu extends ModuleAction implements DisplayAction {
     }
     
     function process($aquarius, $request, $smarty, $result) {
-        require_once('lib/libdynform.php') ;  
-
         $DL = new Dynformlib ;
         
         

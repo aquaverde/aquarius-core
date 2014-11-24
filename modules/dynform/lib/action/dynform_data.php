@@ -1,5 +1,4 @@
 <?php 
-require_once('lib/libdynform.php') ; 
 
 /**
   * Action class for the Admin Interface: Dynform data export

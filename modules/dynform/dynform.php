@@ -79,7 +79,6 @@ class Dynform extends Module
     function node_copy($source, $destination)
     {
         global $DB;
-        require_once("lib/libdynform.php") ;
         $DL = new Dynformlib() ; 
         if (!$DL->is_dynform_node($source)) return ; 
 
@@ -154,7 +153,6 @@ class Dynform extends Module
       * @param lg          Language to render for
       */
     function render_dynform($params) {
-        require_once 'lib/libdynform.php'; 
         require_once 'lib/db/Wording.php';
 
         $DL = new Dynformlib;
@@ -329,7 +327,6 @@ class Dynform extends Module
       *                            it from form_node
       */
     function process_dynform($params) {
-        require_once ('lib/libdynform.php') ; 
         require_once ('lib/db/Wording.php') ;
         require_once ('lib/formatted_mail.lib.php') ;
         

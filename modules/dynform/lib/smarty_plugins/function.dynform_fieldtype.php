@@ -5,17 +5,10 @@
   * Requires "id"
   * Assigns nothing
   */
-  
+ 
 function smarty_function_dynform_fieldtype($params, $smarty) {
     $id = get($params, 'id') ;
     if (!$id) $smarty->trigger_error("dynform_fieldtype: require parameter id missing") ;
-        
-    $type = DB_DataObject::factory('dynform_field_type') ; 
-    $type->id = $id ; 
-    $found = $type->find() ; 
-    if ($found) 
-    {
-		$type->fetch() ; 
-		return str(new Translation($type->name)) ;     
-	}    
+
+    return Dynformlib::get_fieldtype_name($id);
 }
