@@ -701,4 +701,13 @@ class db_Node extends DB_DataObject
     function __toString() {
         return $this->idstr();
     }
+
+
+    function __set_state($state) {
+        $node = new self();
+        foreach($state as $field => $value) {
+            $node->$field = $value;
+        }
+        return $node;
+    }
 }
