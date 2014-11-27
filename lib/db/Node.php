@@ -703,7 +703,7 @@ class db_Node extends DB_DataObject
     }
 
 
-    function __set_state($state) {
+    static function __set_state($state) {
         $node = new self();
         foreach($state as $field => $value) {
             $node->$field = $value;
