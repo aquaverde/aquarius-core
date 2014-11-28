@@ -167,33 +167,6 @@ INSERT INTO `dynform_field_data` (`id`, `field_id`, `lg`, `name`, `options`) VAL
 (15, 8, 'de', 'Mitteilungen', ''),
 (16, 8, 'fr', 'Mitteilungen', '');
 
--- --------------------------------------------------------
-
--- 
--- Structure de la table `dynform_field_type`
--- 
-
-CREATE TABLE `dynform_field_type` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `name` varchar(255) collate utf8_unicode_ci NOT NULL,
-  `default_template` varchar(255) collate utf8_unicode_ci NOT NULL,
-  `template` varchar(255) collate utf8_unicode_ci NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
-
--- 
--- Contenu de la table `dynform_field_type`
--- 
-
-INSERT INTO `dynform_field_type` (`id`, `name`, `default_template`, `template`) VALUES 
-(1, 'Singleline', 'df_singleline', ''),
-(2, 'Multiline', 'df_multiline', ''),
-(3, 'Checkbox', 'df_checkbox', ''),
-(4, 'Pulldown', 'df_pulldown', ''),
-(5, 'Radiobutton', 'df_radiobutton', ''),
-(6, 'Text', 'df_text', ''),
-(7, 'Email', 'df_email', ''),
-(8, 'Number', 'df_number', '');
 
 -- --------------------------------------------------------
 

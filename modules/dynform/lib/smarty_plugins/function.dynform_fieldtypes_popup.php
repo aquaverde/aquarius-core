@@ -15,23 +15,17 @@ function smarty_function_dynform_fieldtypes_popup($params, &$smarty)
     
     $possible_option_fields = $DL->get_setting_value('option_fields') ;
     $option_fields_enabled = trim($possible_option_fields) ; 
-    
-    $ft = DB_DataObject::factory('dynform_field_type') ; 
-    $found = $ft->find() ; 
-    if ($found) 
-    {
-		$str .= '<select name="'.$name.'" size="1">' ;
-		$types = array() ; 
-		while ($ft->fetch()) {
-			$types[] = clone($ft) ; 
-		}
-		foreach ($types as $type) {
-			if ($type->name == "Option" && !$option_fields_enabled) continue ; 
-			$str .= '<option value="'.$type->name.'">'.str(new Translation($type->name)).'</option>' ; 
-		} 
-		$str .= '</select>' ; 
-	}
-	return $str ;     
+
+
+    $str .= '<select name="'.$name.'" size="1">' ;
+    foreach (Dynformlib::$field_types as $type) {
+        if ($name == "Option" && !$option_fields_enabled) continue;
+        $type_name = $type['name'];
+        $str .= '<option value="'.$type_name.'">'.str(new Translation($type_name)).'</option>';
+    }
+    $str .= '</select>';
+
+    return $str;
 }
 
 
