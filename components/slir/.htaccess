@@ -1,5 +1,4 @@
 RewriteEngine On
-RewriteBase /aquarius/slir
 RewriteRule . index.php [L]
 
 
