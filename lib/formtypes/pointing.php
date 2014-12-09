@@ -6,13 +6,13 @@
   *    Enable a drop-down for selection directly from contentedit. Not available for multi fields
   *
   * sup2:
-  *    name or id of root node for tree from which pointings may be selected
+  *    name or id of root node for tree from which pointings may be selected, preset: root node from DB
   *
   * sup3:
-  *    maximal depth of selection tree
+  *    maximal depth of selection tree, specify 1 to give selection of children only
   *
   * sup4:
-  *    comma-delimited list of depth where selection is prohibited
+  *    comma-delimited list of depth where selection is prohibited (specify 0 to prohibit selection of the root node)
   */
 class Formtype_Pointing extends Formtype {
     /** For single pointings with sup1 set, a flat tree is loaded to 'nodelist', so that a selection can be shown. In this case, the following keys will be set for the field: 'show_selection', 'disabled_depths', and 'nodelist'. Otherwise, the key 'selected_titles' will contain the list of selected nodes (for single pointings too); the key 'popup_action' will be the action to be used for node selection in a popup; and the key 'selected_ids' will be a comma delimited list of node identifiers.
