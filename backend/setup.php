@@ -1,6 +1,6 @@
 <?php
 /** Aquarius setup handler
-  * Executes the files 'aquarius/setup/XXX_*.php (alphabetic order) until one sets 
+  * Executes the files 'aquarius/setup/XXX_*.php (alphabetic order) until one sets
   * $halt = true.
   */
 
@@ -24,6 +24,7 @@ try {
 <head>
     <title>aquarius setup</title>
     <link href='css/admin.css' rel='stylesheet' media='screen' type='text/css' />
+    <style type='text/css'>body { padding: 60px 90px; }</style>
 </head>
 <body>
 
