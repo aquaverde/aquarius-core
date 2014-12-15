@@ -205,7 +205,7 @@ class Dynformlib {
 	
 	static function get_fieldtype_template($name) {
         foreach(self::$field_types as $ftype) {
-            if ($ftype['name'] == $name) return $ftype->template;
+            if ($ftype['name'] == $name) return $ftype['template'].'.tpl';
         }
 		throw new Exception("Undefined dynform field $name");
 	}
