@@ -444,7 +444,12 @@ class Dynform extends Module
                             $order_node = $node_entry['node'];
                             $posted = get($nodeposts, $order_node->id);
                             if (!empty($posted)) {
-                                $value .= sprintf("\r\n% 4s: %s", $posted, $order_node->get_form_code());
+                                $order_content = $order_node->get_content($lg);
+                                if (!$order_content) continue; // ignorant error handling
+
+                                $title = trim($order_content->form_code);
+                                if ($title == '') $title = $order_content->title();
+                                $value .= sprintf("\r\n% 4s: %s", $posted, $title);
                             }
                         }
                     }
