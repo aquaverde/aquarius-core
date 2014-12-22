@@ -150,6 +150,7 @@ class Dynform extends Module
 
     /** Write a dynform if there is one
       * @param form_node   Node that has the form to be rendered
+      * @param content     Content that is used for option fields
       * @param lg          Language to render for
       */
     function render_dynform($params) {

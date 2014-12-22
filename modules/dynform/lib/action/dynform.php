@@ -326,7 +326,7 @@ class action_dynform_editfieldsubmit extends action_dynform implements ChangeAct
         if ($found)
         {
             $field->fetch() ;
-            $field->required = $post_vars['required'] ;
+            $field->required = (bool)get($post_vars, 'required', false);
             if (array_key_exists("width", $post_vars)) $field->width = $post_vars['width'] ;
             if (array_key_exists("num_lines", $post_vars)) $field->num_lines = $post_vars['num_lines'] ;
             $field->update() ;
