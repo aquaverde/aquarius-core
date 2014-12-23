@@ -13,10 +13,12 @@
   *    /articles/checkthisout.523.html
   * This wouldn't work on links crossing subsite borders. Links leading from one subsite to another include a domain in those cases:
   *    http://subsite.example.com/articles/checkthisout.523.html
+  * 
+  * An additional pointing formfield "Pointing_Subsite" is provided that offers node selection within the boundaries of the subsite
   *
   *  */
 class Subsites extends Module {
-    var $register_hooks = array('frontend_extend_node_detection', 'frontend_extend_uri_factory', 'frontend_page') ;
+    var $register_hooks = array('init_form', 'frontend_extend_node_detection', 'frontend_extend_uri_factory', 'frontend_page') ;
     var $short = "subsites" ;
     var $name  = "Manage URL for subsites" ;
 
@@ -38,6 +40,10 @@ class Subsites extends Module {
             $debug_site_names []= $name.": ".$sitenode->idstr();
         }
         Log::debug(join("\n    ", $debug_site_names));
+    }
+
+    function init_form($formtypes) {
+        $formtypes->add_formtype(new Formtype_Pointing_Subsite('pointing_subsite', 'pointing', $this));
     }
 
     /** Determine what site a node belongs to */
