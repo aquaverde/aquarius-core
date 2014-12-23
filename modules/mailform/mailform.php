@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /** Send mail when a form is POSTed.
   * This is a typical config:
@@ -24,9 +24,14 @@
   *
   * decoy_field: Name of a field where if it is missing or non-empty mailform
   *              acts as if it did send the mail but doesn't.
-  *  
+  *
+  * target_address_page_field: Same as target_address_field, but take
+  *              the value from the current page content. This setting allows
+  *              using the same mailform on multiple pages with different
+  *              recipients.
+  *
   * The configured $node, $content and its fields will be available in the mail
-  * template. Also the fields from 'formfields' will be available in the 
+  * template. Also the fields from 'formfields' will be available in the
   * $formfields dict.
   */
 class MailForm extends Module {
@@ -41,7 +46,7 @@ class MailForm extends Module {
     }
 
     /** Checks for POSTed forms and sends mail for those */
-    function frontend_page($smarty) {
+    function frontend_page($smarty, $node) {
         global $aquarius;
         foreach($aquarius->conf('mailform/forms', array()) as $index => $form_config) {
             $form_name = $form_config['form_name'];
@@ -49,7 +54,7 @@ class MailForm extends Module {
                 Log::warn("Mailform config forms $index missing form_name");
             } else {
                 if (isset($_POST[$form_name])) {
-                    $sent = $this->send($form_config);
+                    $sent = $this->send($form_config, $node, $smarty->get_template_vars('lg'));
                     $this->sent_status[$form_name] = $sent ? 'success' : 'error';
                 }
             }
@@ -57,9 +62,9 @@ class MailForm extends Module {
     }
 
     /** Send a mail for the given form config*/
-    function send($formspec) {
+    function send($formspec, $page_node, $lg) {
         $form_name = $formspec['form_name'];
-    
+
         // Load the node with info on where to send the form
         // This node must be specified explicitly in the config. It is not read
         // from the request by default because of security concerns.
@@ -67,21 +72,38 @@ class MailForm extends Module {
         $node = db_Node::get_node($node_name);
         if (!$node) throw new Exception("Unable to load node '$node_name' for $form_name");
 
-        $content = $node->get_content();
+        Log::debug("Mailform sending $form_name on $node");
+
+        $content = $node->get_content($lg);
+        if (!$content) throw new Exception("No content in language $lg for $node on sending $form_name");
         $content->load_fields();
 
         $replyto_address = requestvar($formspec['replyto_formfield']);
-        
+
         // Determine target email address
-        $field_name = $formspec['target_address_field'];
-        $target_address = $content->$field_name;
-        if (strlen($target_address) < 1) throw new Exception("No target mail address in node '$node_name' field '$field_name' for $form_name");
-        
+        $target_address = false;
+        $target_address_page_field = get($formspec, 'target_address_page_field');
+        if ($target_address_page_field) {
+            $page_content = $page_node->get_content($lg);
+            if ($page_content && $page_content->$target_address_page_field) {
+                $target_address = trim($page_content->$target_address_page_field);
+                Log::debug("Using page-specific target address $target_address from page $page_node field $target_address_page_field");
+            }
+        }
+
+        if (!$target_address) {
+            $field_name = $formspec['target_address_field'];
+            $target_address = trim($content->$field_name);
+            if (strlen($target_address) < 1) throw new Exception("No target mail address in node '$node_name' field '$field_name' for $form_name");
+            Log::debug("Using target address $target_address from node $node field $target_address_field");
+        }
+
         $test_email = get($formspec, 'test_email');
         if ($test_email == $replyto_address) {
+            Log::debug("Overriding target address with $test_email for testing");
             $target_address = $test_email;
         }
-        
+
         $formfield_errors = array();
         $post = clean_magic($_POST);
         $formfields = validate($post, $formspec['formfields'], $formfield_errors);
@@ -91,7 +113,7 @@ class MailForm extends Module {
             Log::debug($formfield_errors);
             return false;
         }
-        
+
         global $aquarius;
         $smarty = $aquarius->get_smarty_frontend_container(false, $node);
         $smarty->assign('formfields', $formfields);
