@@ -7,11 +7,11 @@
         <ul>
         {whilefetch object=$edit_messages}
             <li>
-            {include file=message_edit.box.tpl message=$edit_messages}<br/><br/>
+            {include file="message_edit.box.tpl" message=$edit_messages}<br/><br/>
             </li>
         {/whilefetch}
             <li>
-            {include file=message_edit.box.tpl message=$empty_message}
+            {include file="message_edit.box.tpl" message=$empty_message}
             </li>
         </ul>
     {include file=select_buttons.tpl}
