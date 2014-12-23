@@ -18,7 +18,7 @@
   *
   *  */
 class Subsites extends Module {
-    var $register_hooks = array('init_form', 'frontend_extend_node_detection', 'frontend_extend_uri_factory', 'frontend_page') ;
+    var $register_hooks = array('init_form', 'smarty_config_backend', 'frontend_extend_node_detection', 'frontend_extend_uri_factory', 'frontend_page') ;
     var $short = "subsites" ;
     var $name  = "Manage URL for subsites" ;
 
