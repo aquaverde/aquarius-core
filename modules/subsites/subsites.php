@@ -81,7 +81,8 @@ class Subsites extends Module {
       * Checks whether subsite host name should be used in URI.
       * Users should be able to work in the backend using a neutral domain, and click around on the frontend without changing domain. (When the domain changes, they are no longer logged in.)
       *
-      * Also assigns the subsite root to the sub_root variable.  */
+      * The list of languages available on this subsite is assigned to 'subsite_langs'.
+      * Also assigns the subsite node as 'subsite' smarty var and the subsite root content as 'sub_root'.  */
     function frontend_page($smarty, $node, $detection_params) {
         // Ugly hack to not change host when backend user is logged in
         $use_subsite_host = true;
@@ -91,10 +92,22 @@ class Subsites extends Module {
         }
         $smarty->uri->use_subsite_host = $use_subsite_host;
 
+        Log::debug("Use subsite domains for URI: ".($use_subsite_host?'yes':'no'));
+
         $subsite = $this->site_of_node($node);
         if ($subsite) {
+            // Determine list of available languages for this subsite by looking at available langs on subsite root.
+            $available_langs = array();
+            foreach(db_Languages::getLanguages(true) as $lang) {
+                if ($subsite->get_content($lang->lg, true)) {
+                    $available_langs []= $lang->lg;
+                }
+            }
+            $smarty->assign('available_langs', $available_langs);
+
             $subsite_content = $subsite->get_content($smarty->get_template_vars('lg'));
             $subsite_content->load_fields();
+            $smarty->assign('subsite',  $subsite);
             $smarty->assign('sub_root', $subsite_content);
         }
     }
@@ -130,9 +143,20 @@ class Subsites extends Module {
 /* URI construction changes */
 
     function frontend_extend_uri_factory($url_factory) {
-        $url_factory->add_step('use_subsite_host',    array($this, 'use_subsite_host'), 'after', 'use_option_host');
-        $url_factory->add_step('remove_subsite_parts', array($this, 'remove_subsite_parts'), 'after', 'path_parts_from_nodes');
+        $url_factory->add_step('default_to_primary_lang', array($this, 'default_to_primary_lang'), 'before');
+        $url_factory->add_step('use_subsite_host',        array($this, 'use_subsite_host'),        'after', 'use_option_host');
+        $url_factory->add_step('remove_subsite_parts',    array($this, 'remove_subsite_parts'),    'after', 'path_parts_from_nodes');
     }
+
+    /** URI construction step: Change to primary language if the target subsite does not support the desired language.
+    * This of course assumes that the primary language has content for all nodes.*/
+    function default_to_primary_lang($options, $uri) {
+        $subsite = $this->site_of_node($options->target_node);
+        if ($subsite && !$subsite->get_content($options->lg, $options->require_active)) {
+            $options->lg = db_Languages::getPrimary();
+        }
+    }
+
 
     /** Use hostname of subsite instead of current host
       * Also sets the subsite option to the detected subsite
@@ -153,8 +177,8 @@ class Subsites extends Module {
             $scored_domains = array();
             foreach($configs as $domain => $confs) {
                 $score = 0;
-                if (get($confs, 'main'))               $score++;
-                if (get($confs, 'lg') == $options->lg) $score++;
+                if (get($confs, 'main'))               $score += 2;
+                if (get($confs, 'lg') == $options->lg) $score += 1;
                 $scored_domains[$score] = $domain; // When multiple domains have the same score, we just pick one
             }
             krsort($scored_domains); // Highest score first
