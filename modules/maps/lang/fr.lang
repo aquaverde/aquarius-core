@@ -15,6 +15,8 @@ link							= "Lien:"
 delete_instance					= "Effacer"
 load_external_xml				= "Load external XML-File"
 
+location_search             = "Rechercher endroit"
+
 points							= "Points"
 title							= "Titre"
 description						= "Texte"
