@@ -233,6 +233,14 @@ try {
         if ($form) $template = $form->template;
     }
 
+    // Find Content-type which is text/html most of the time but forms may override this
+    $content_type = 'text/html';
+    if (trim($form->content_type)) {
+        $content_type = trim($form->content_type);
+        Log::debug("Form $form->name set Content-type: $content_type");
+    }
+    header("Content-type: $content_type");
+
 
 /* Maybe allow direct edit */
     // Allow only when client logged-in to backend

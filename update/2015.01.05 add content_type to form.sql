@@ -1,0 +1,1 @@
+ALTER TABLE `form` ADD `content_type` varchar(100) COLLATE 'utf8_bin' NULL;

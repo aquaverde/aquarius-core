@@ -38,6 +38,7 @@ class action_formedit_save extends action_formedit implements ChangeAction {
         $form->show_in_menu = get($post, "formshowinmenu", 0);
         $form->fieldgroup_selection_id = get($post, 'fieldgroup_selection');
         $form->permission_level = get($post, 'permission_level');
+        $form->content_type = trim(get($post, 'content_type'));
         if ($form->id == 'new') {
             $form->insert();
         } else {

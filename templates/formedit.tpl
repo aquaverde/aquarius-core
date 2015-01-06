@@ -18,6 +18,7 @@ html, body {height: 95%} body {max-width: none;}
         <label>Title</label> <input type="text" name="formtitle" value="{$form->title}" class="form-control"/>
         <label>Template</label> <input type="text" name="formtemplate" value="{$form->template}" class="form-control"/>
         <label>Sort by field</label> <input type="text" name="formsortby" value="{$form->sort_by}" class="form-control"/>
+        <label>Content-type</label> <input type="text" name="content_type" value="{$form->content_type}" class="form-control" placeholder="text/html"/>
         <div class="inline-item">
         <label for="formsortreverse" style="min-width:150px;float:left;">Reverse sorting</label>
         <input type="checkbox" style="height:20px;" name="formsortreverse" id="formsortreverse" value="1" {if $form->sort_reverse}checked="checked"{/if}/>

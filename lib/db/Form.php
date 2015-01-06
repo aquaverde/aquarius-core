@@ -17,6 +17,7 @@ class db_Form extends DB_DataObject
     public $show_in_menu;                    // tinyint(1)  not_null multiple_key group_by
     public $fieldgroup_selection_id;         // int(11)  multiple_key group_by
     public $permission_level;                // int(11)  not_null group_by
+    public $content_type;
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Form',$k,$v); }
