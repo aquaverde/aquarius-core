@@ -33,7 +33,7 @@ function smarty_function_include_javascript($params, $template) {
 
         if (!$multiple) {
             $included []= $file;
-            $template->assign('included_js', $file);
+            $template->assign('included_js', $included);
         }
     }
     return $result;
