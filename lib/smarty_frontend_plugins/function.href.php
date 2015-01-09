@@ -25,9 +25,10 @@
   *
   */
 
-function smarty_function_href($params, $smarty) {  
-    $node = db_Node::get_node(get($params, 'node'));
-    if (!$node) $smarty->trigger_error("href: node could not be loaded");
+function smarty_function_href($params, $smarty) {
+    $nodestr = get($params, 'node');
+    $node = db_Node::get_node($nodestr);
+    if (!$node) throw new Exception("href: node ".htmlspecialchars($nodestr)." could not be loaded");
 
     $lg = get($params, 'lg', $smarty->get_template_vars('lg'));
 
