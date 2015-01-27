@@ -132,7 +132,7 @@ class SQL_Split implements Iterator {
     function read_comment1() {
         $c = $this->read_char();
         if ($c === false) return false;
-        if ('*' === $this->read_char()) {
+        if ('*' === $c) {
             // We're inside a comment block, look for the end
             $cur = '  ';
             while ($cur !== '*/') {
