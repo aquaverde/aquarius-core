@@ -245,11 +245,6 @@ class Aquarius_Stage_PHP_Basic_Settings extends Aquarius_Basic_Stage {
         // other error
         set_exception_handler('process_exception');
         register_shutdown_function('handle_fatal_errors');
-        
-        
-        // This does not belong. You idle? Remove it.
-        $aquarius_version = array(3, 6, 5);
-        define('AQUARIUS_VERSION', join('.', $aquarius_version));
 
         // Turn on output buffering, so that later code may change headers
         ob_start();
