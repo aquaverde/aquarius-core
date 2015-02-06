@@ -25,7 +25,6 @@ class Aquarius_Loader {
     var $included_files = array();
 
     var $aquarius;
-    var $db_legacy;
     var $db_pear;
 
     
@@ -308,23 +307,9 @@ class Aquarius_Stage_db_connection extends Aquarius_Basic_Stage {
         $node = DB_DataObject::factory('node');
         $loader->aquarius->db = new DBwrap($node->getDatabaseConnection());
         $loader->aquarius->db->reset_charset(); // Told you so
-    }
-}
-
-class Aquarius_Stage_legacy_db_connection extends Aquarius_Basic_Stage {
-    var $db_options;
-    
-    function depends() { return array('aquarius'); }
-    function init($loader) {
-        $loader->include_file('sql.lib.php');
-    }
-    
-    function load($loader) {
-        $dbconf = $loader->aquarius->conf('db');
-        $port = get($dbconf, 'port');
-        $ports = $port ? ":$port" : '';
-        $loader->db_legacy = new SQLwrap($dbconf['host'].$ports, $dbconf['user'], DB_PASSWORD, $dbconf['name']);
-        $GLOBALS['DB'] = $loader->db_legacy;
+        
+        // DEPRECATED global variable
+         $GLOBALS['DB'] = $loader->aquarius->db;
     }
 }
 
@@ -397,7 +382,6 @@ class Aquarius_Stage_full extends Aquarius_Basic_Stage {
         return array(
             'logging',
             'db_connection',
-            'legacy_db_connection',
             'php_settings',
             'modules',
             'globals'
