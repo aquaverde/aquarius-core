@@ -234,9 +234,6 @@ class Aquarius_Stage_PHP_Basic_Settings extends Aquarius_Basic_Stage {
     }
     
     function load($loader) {
-        if (!defined('E_DEPRECATED')) define('E_DEPRECATED', 8192);
-       
-        
         // Make sure we see them errors
         // Unfortunately we can't enable depreciation warnings and strict
         // standard warnings because the PEAR PHP4 compatible classes use
@@ -247,7 +244,7 @@ class Aquarius_Stage_PHP_Basic_Settings extends Aquarius_Basic_Stage {
         // Convince PHP to treat unhandled Exceptions, E_ERROR and E_PARSE like any
         // other error
         set_exception_handler('process_exception');
-        if (version_compare(PHP_VERSION, '5.2') >= 0) register_shutdown_function('handle_fatal_errors');
+        register_shutdown_function('handle_fatal_errors');
         
         
         // This does not belong. You idle? Remove it.
