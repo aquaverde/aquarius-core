@@ -28,20 +28,20 @@ $db_port = get($config, 'port');
 $db_connection = false;
 if (!empty($db_host) && !empty($db_name) && !empty($db_user) && !empty($db_pass)) {
     $srv = $db_host.($db_port ? ":$db_port" : "");
-    $db_connection = mysql_connect($srv, $db_user, $db_pass, true);
+    $db_connection = mysqli_connect($srv, $db_user, $db_pass);
     if (!$db_connection) {
         message('warn', "Failed connecting to server $db_user@$db_host");
     }
     if ($db_connection) {
-        $result = mysql_select_db($db_name, $db_connection);
+        $result = $db_connection->select_db($db_name);
         if (!$result) {
-            $result = mysql_query("CREATE DATABASE `".mysql_real_escape_string($db_name)."`");
+            $result = $db_connection->query("CREATE DATABASE `".$db_connection->escape_string($db_name)."`");
             if (!$result) {
                 message('warn', "Failed selecting DB $db_name on $db_host");
                 $db_connection = false;
             } else {
                 message('', "Created DB $db_name on $db_host");
-                $result = mysql_select_db($db_name, $db_connection);
+                $result = $db_connection->select_db($db_name);
                 if (!$result) {
                     message('warn', "Failed selecting DB $db_name on $db_host");
                     $db_connection = false;
