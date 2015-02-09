@@ -21,7 +21,6 @@ class action_search_replace_search extends action_search_replace implements Disp
 	function process($aquarius, $request, $smarty, $result) {
 		$search_string = get($request,'search_string');
 		if(strlen($search_string) > 0) {
-			global $DB;
 			$id_list = array();
 			$escaped_search_string = str_replace("_","\_",str_replace("%","\%",$search_string));
 		
@@ -37,10 +36,10 @@ class action_search_replace_search extends action_search_replace implements Disp
 						JOIN content_field ON content_field_value.content_field_id = content_field.id
 						JOIN content ON content_field.content_id = content.id						
 						WHERE
-						content_field_value.value COLLATE utf8_bin LIKE ('%".mysql_real_escape_string($escaped_search_string)."%')
-						AND content.lg = '".$this->lg."'
-						";
-			$id_list = $DB->mapqueryhash("id",$query);
+                        content_field_value.value COLLATE utf8_bin LIKE (?)
+                        AND content.lg = ?
+            ";
+            $id_list = $aquarius->db->mapqueryhash("id",$query, array("%$escaped_search_string%", $this->lg));
 			$counter = count($id_list);
 
 			$i = 0;
@@ -82,22 +81,22 @@ class action_search_replace_replace extends action_search_replace implements Cha
 		$replace_string	= get($post,'replace_string');
 
 		if(strlen($post['search_string']) > 0) {
-			global $DB;
+            $db = $aquarius->db;
 						
 			$query = "	UPDATE content_field_value
 						JOIN content_field ON content_field_value.content_field_id = content_field.id
 						JOIN content ON content_field.content_id = content.id
 						SET
-							content_field_value.value = REPLACE(content_field_value.value, '".mysql_real_escape_string($search_string)."', '".mysql_real_escape_string($replace_string)."')
-						WHERE
-							content.lg = '".$this->lg."' 
-						";
-						
-			$DB->query($query);
+                            content_field_value.value = REPLACE(content_field_value.value, ?, ?)
+                        WHERE
+                            content.lg = ?
+                        ";
 
-			$message = new Translation("s_r_affected");
-			$result->add_message(mysql_affected_rows()." ".$message.". searched for '".$search_string."' replaced with '".$replace_string."'");
-		}
+            $db->query($query, array($search_string, $replace_string, $this->lg));
+
+            $message = new Translation("s_r_affected");
+            $result->add_message($db->affected_rows()." ".$message.". searched for '".$search_string."' replaced with '".$replace_string."'");
+        }
 		
 		else {
 			$result->add_message(new Translation("s_r_no_search_string"));
