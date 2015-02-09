@@ -95,7 +95,8 @@ class NodeFilter_Field implements Filter {
         $query->add_join("JOIN content_field $cf_field ON content.id = $cf_field.content_id");
         $cfv_field = 'cfv_'.$field_id;
         $query->add_join("JOIN content_field_value $cfv_field ON ($cf_field.id = $cfv_field.content_field_id AND $cf_field.name = '$this->field')");
-        return "$cfv_field.value = '".mysql_real_escape_string($this->value)."'";
+        $query->add_datum($this->value);
+        return "$cfv_field.value = ?";
     }
 }
 
@@ -273,6 +274,7 @@ class SQL_NodeFilter {
     
     var $joins = array();
     var $wheres = array();
+    var $data = array();
 
     function new_id() {
         return $this->last_id++;
@@ -290,6 +292,10 @@ class SQL_NodeFilter {
         $this->wheres []= $filter->sql_predicates($this);
     }
     
+    function add_datum($datum) {
+        $this->data []= $datum;
+    }
+    
     function run($DB, $lg) {
         $wheres = $this->wheres;
         $wheres []= "content.lg = '$lg'";
@@ -298,7 +304,7 @@ class SQL_NodeFilter {
             JOIN content ON node.id = content.node_id
             ".join("\n", $this->joins)."
             WHERE ".join("\n AND ", $wheres)."
-        ");
+        ", $this->data);
         return db_Node::get_nodes($node_ids);
     }
 }
