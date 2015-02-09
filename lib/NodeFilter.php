@@ -59,7 +59,7 @@ class Filter_Logic_Or implements Filter {
     }
     
     function sql_predicates($query) {
-        $predicates = array('0=0');
+        $predicates = array('1=0');
         foreach($this->clauses as $filter) {
             $predicates []= $filter->sql_predicates($query);
         }
