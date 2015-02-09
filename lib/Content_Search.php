@@ -132,11 +132,6 @@ class Content_Search {
         if ($run) {
             $search_escaped = mysql_real_escape_string($this->search);
 
-            if ($start == 0) {
-                // Log the search
-                $DB->query("INSERT INTO content_search SET lg='$lg', query='".$search_escaped."'");
-            }
-
             $wheres = $this->restrictions();
             $wheres []= "content.lg = '$this->lg'";
             $wherestr = join('
