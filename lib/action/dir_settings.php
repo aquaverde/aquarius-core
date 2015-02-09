@@ -80,11 +80,10 @@ class action_dir_settings_cache_dirs extends action_dir_settings implements Chan
     }
 
     function process($aquarius, $post, $result) {
-        global $DB;
         $dirs = getAllDirs('');
-        $DB->query("TRUNCATE TABLE cache_dirs");
+        $aquarius->db->query("TRUNCATE TABLE cache_dirs");
         foreach($dirs as $dir)
-            $DB->query("INSERT INTO cache_dirs SET path = '".mysql_real_escape_String($dir)."'");
+            $aquarius->db->query('INSERT INTO cache_dirs SET path = ?', array($dir));
 
         $result->add_message(new FixedTranslation("Cached ".count($dirs)." dirs"));
     }
