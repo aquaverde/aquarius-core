@@ -39,7 +39,7 @@ class action_feuser_list extends action_feuser implements DisplayAction {
 
         if ( !empty($user_search) ) {
             // Name's Bob, Bob';DROP *;--
-            $fe_users->whereAdd("name LIKE '%".mysql_real_escape_string($user_search)."%'");
+            $fe_users->whereAdd('name LIKE '.$aquarius->db->quote("%$user_search%"));
         }
 
         // Maybe restrict search to one group
@@ -173,7 +173,7 @@ class action_feuser_export extends action_feuser implements SideAction {
         $query .= "WHERE fe_user_address.fe_user_id = fe_users.id and fe_user_address.fe_address_id = fe_address.id ";
 
         if ( !empty($user_search) ) {
-            $query .= "and fe_users.name LIKE '%" . mysql_real_escape_string($user_search) . "%' ";
+            $query .= 'and fe_users.name LIKE '.$aquarius->db->quote("%$user_search%");
         }
 
         // Maybe restrict search to one group
