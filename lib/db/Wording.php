@@ -21,7 +21,7 @@ class db_Wording extends DB_DataObject
         
         static function getAllWordingsByLg($lg, $order="keyword") {
             $words = DB_DataObject::factory('wording');
-            $words->orderBy(mysql_real_escape_string($order));
+            $words->orderBy($order);
             $words->lg = $lg;
             $words->find();
 

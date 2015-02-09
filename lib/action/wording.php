@@ -54,7 +54,9 @@ class action_wording_list extends action_wording implements DisplayAction {
     function process($aquarius, $request, $smarty, $result) {
         $this->check_lg();
         $orderkey = get($this->params, 0);
+        if (!in_array($orderkey, array('keyword', 'translation'))) throw new Exception("Unknown order key $orderkey");
         $orderdir = get($this->params, 1);
+        if (!in_array($orderdir, array('ASC', 'DESC'))) throw new Exception("Unknown order dir $orderdir");
         if(empty($orderkey)) $orderkey = "keyword";
         if(empty($orderdir)) $orderdir = "ASC";
         $order = $orderkey." ".$orderdir;
