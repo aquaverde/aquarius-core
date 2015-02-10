@@ -16,7 +16,7 @@ class action_lastchanges extends AdminAction implements DisplayAction {
         // Maybe we received the limit as parmeter
         if (@is_numeric($this->params[0])) $limit = max(min(intval($this->params[0]), 1), 1000); // Limit to sane values
 
-        $entries = $DB->query("
+        $entries = $DB->queryhash("
             SELECT content_id, user_id, MAX(last_change) as last_change
             FROM journal
             GROUP BY content_id, user_id
@@ -25,7 +25,7 @@ class action_lastchanges extends AdminAction implements DisplayAction {
         );
 
         $journal_info = array();
-        while($entry = mysql_fetch_assoc($entries)) {
+        foreach($entries as $entry) {
             $user = DB_DataObject::factory('users');
             $found_user = $user->get($entry['user_id']);
             if ($found_user) $entry['user'] = $user;
