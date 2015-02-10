@@ -11,8 +11,8 @@
   * Warning: confusion will ensue if {pushed} blocks are nested!
   */
 
-function smarty_block_pushed($params, $content, &$smarty, &$repeat) {
-    
+function smarty_block_pushed($params, $content, $smarty, &$repeat) {
+
     static $list;
     // On first invocation get elements for list
     if ($repeat) {
@@ -50,21 +50,21 @@ function smarty_block_pushed($params, $content, &$smarty, &$repeat) {
               AND node.active = 1
               AND content.active = 1
             ORDER BY " ;
-        
+
         if ($sort)                       $query .= 'order_value' ;
         elseif (get($params,'shuffle'))  $query .= 'RAND()' ;
         else                             $query .= 'node.weight' ;            
-        
+
         if ($limit > 0) $query .= "
             LIMIT 0,$limit";
-            
+
         $list = $GLOBALS['DB']->listquery($query);
         if (get($params, 'reverse')) $list = array_reverse($list);
     }
-    
+
     // Next node on the list
     $content_id = array_shift($list);
-   
+
     // Repeat if there's another node
     $repeat = (bool)$content_id;
     if ($repeat) {
@@ -75,4 +75,3 @@ function smarty_block_pushed($params, $content, &$smarty, &$repeat) {
     }
     return $content;
 }
-?>
