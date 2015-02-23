@@ -668,3 +668,13 @@ clear_cache_content          = "Vider le content-cache"
 clear_cache_content_cleared  = "Content-cache vidé"
 clear_cache_loader           = "Enlever le loader-cache"
 clear_cache_loader_cleared   = "Loader-cache enlevé"
+
+
+create_dir = "Nouveau classeur"
+parent_dir = "Créer dans"
+new_name = "Nom"
+new_name_placeholder = "Nouveau classeur"
+dirname_s_invalid = "Nom '%s' est invalid"
+dirname_s_exists = "'%s' existe"
+created_dir_s_in_s = "Classeur '%s' créé en '%s'"
+unable_to_create_dir_s_in_s = "Incapable de créer classeur '%s' dans '%s'"

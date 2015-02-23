@@ -56,5 +56,21 @@
         &nbsp;
     {/action}
 	</form>
+	
+    <form method="post" action="{url action=$lastaction}">
+        <h2>{$newdir->get_title()}</h2>
+        <label>{#parent_dir#}
+            <select name='target'>
+            {foreach from=$dirs item=dir}
+                <option value='{$dir|escape}' {if $smarty.post.target == $dir}selected{/if}>{$dir|escape}</option>
+            {/foreach}
+            </select>
+        </label>
+        
+        <label>{#new_name#}
+            <input type='text' name='dirname' value='' placeholder='{#new_name_placeholder#}'>
+        </label>
+        <input type="submit" name="{$newdir}" value="Save" class="btn btn-primary" />
+    </form>
 
 {include file="footer.tpl"}
