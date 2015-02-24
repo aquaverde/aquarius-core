@@ -58,9 +58,7 @@ class db_Users extends DB_DataObject
                 self::password_hashes($proffered_password, $user->password_salt)
             )) {
                 session_regenerate_id();
-                global $aquarius;
-                $aquarius->session_set('user', $user->id);
-                Log::info("Login of user '".$user->name."' (".$user->id.") from " . $_SERVER['REMOTE_ADDR'].' user-agent '.$_SERVER['HTTP_USER_AGENT']);
+                $user->login();
                 
                 return $user;
             } else {
@@ -131,6 +129,14 @@ class db_Users extends DB_DataObject
             return $cache_user;
         }
         return false;
+    }
+
+    /** Mark this user as logged-in for this session */
+    function login() {
+        global $aquarius;
+        $aquarius->db->query("UPDATE users SET last_login=UTC_TIMESTAMP() WHERE id=?", array($this->id));
+        $aquarius->session_set('user', $this->id);
+        Log::info("Login of user '".$this->name."' (".$this->id.") from " . $_SERVER['REMOTE_ADDR'].' user-agent '.$_SERVER['HTTP_USER_AGENT']);
     }
 
     /** Clear the user id from session */
