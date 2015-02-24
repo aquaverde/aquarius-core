@@ -62,6 +62,10 @@ class Archiver extends Module {
         $archived_count = 0;
         $published = 0;
         
+        // Have a grace period of a few days
+        // So that publishing works even if the archiver doesn't run every day
+        $grace_time = strtotime('-7 days');
+        
         $publishquery = "
             SELECT node.id AS node_id, 
                 content_field_value.value AS publish_date
@@ -81,7 +85,11 @@ class Archiver extends Module {
 
             $date_valid = is_numeric($publish_date) && $publish_date != 0;
             $archived = isset($archived_nodes[$id]);
-            $publish = $date_valid && $publish_date <= $now && !$archived;
+            $publish = 
+                $date_valid
+             && $publish_date <= $now        // Publish date must be in the past
+             && $publish_date >= $grace_time // Publish date reached recently
+             && !$archived;                  // Archiving date not reached
             
             if ($publish) {
                 $node = db_Node::get_node($id);
