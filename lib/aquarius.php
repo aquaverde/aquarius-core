@@ -311,6 +311,7 @@ class Aquarius {
         $smarty->registerPlugin('function', 'resize', 'smarty_function_resize');
         $smarty->registerPlugin('modifier', 'alt', 'smarty_modifier_alt');
         $smarty->registerPlugin('modifier', 'th', 'smarty_modifier_th');
+        $smarty->registerPlugin('modifier', 'date_format', 'smarty_modifier_date_format');
         
         // Quickfix to allow periods in filenames without requiring quotes
         // All template text of the form {include file=xxx.tpl} is translated to
