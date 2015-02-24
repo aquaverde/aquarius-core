@@ -355,4 +355,9 @@ class db_Users extends DB_DataObject
     function idstr() {
         return "$this->name ($id)";
     }
+    
+    /** Get last login as DateTime */
+    function last_login() {
+        return DateTime::createFromFormat('Y-m-d H:i:s', $this->last_login, new DateTimeZone("UTC"));
+    }
 }
