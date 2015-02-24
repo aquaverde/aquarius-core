@@ -9,16 +9,17 @@ class db_Users extends DB_DataObject
 
     public $__table = 'users';                           // table name
     public $id;                              // int(11)  not_null primary_key auto_increment group_by
-    public $name;                            // varchar(50)  not_null unique_key
-    public $password;                        // varchar(255)  not_null multiple_key
-    public $password_salt;                   // varchar(255)  
+    public $name;                            // varchar(150)  not_null unique_key
+    public $password;                        // varchar(765)  not_null multiple_key
+    public $password_salt;                   // varchar(765)  
     public $status;                          // int(11)  not_null group_by
-    public $adminLanguage;                   // char(2)  not_null
-    public $defaultLanguage;                 // char(2)  not_null
+    public $adminLanguage;                   // char(6)  not_null
+    public $defaultLanguage;                 // char(6)  not_null
     public $active;                          // tinyint(1)  not_null multiple_key group_by
     public $activation_permission;           // tinyint(1)  not_null group_by
     public $delete_permission;               // tinyint(1)  not_null group_by
     public $copy_permission;                 // tinyint(1)  not_null group_by
+    public $last_login;                      // datetime(19)  
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Users',$k,$v); }
