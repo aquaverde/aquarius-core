@@ -8,7 +8,8 @@
 				<th>{#s_users#}</th>
 				<th>{#s_status#}</th>
                 <th>{#s_default_language#}</th>
-				<th>{#s_admin_language#}</th>
+                <th>{#s_admin_language#}</th>
+				<th>{#s_last_login#}</th>
 				<th>&nbsp;</th>
 			</tr>
 		{foreach item="user" from=$users}
@@ -30,6 +31,13 @@
                 <td>
                     {assign var="adminlg" value="s_`$user->adminLanguage`"}
                     {$smarty.config.$adminlg}
+                </td>
+                <td>
+                    {if $user->last_login}
+                        {$user->last_login()|date_format:"%d.%m.%Y %H:%M"}
+                    {else}
+                        —
+                    {/if}
                 </td>
 				<td align="right">
                     {confirm
