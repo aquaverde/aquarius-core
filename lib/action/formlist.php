@@ -27,7 +27,8 @@ class action_formlist extends AdminAction implements DisplayAction {
             LEFT JOIN node chosenchild ON form.id = chosenchild.childform_id
             LEFT JOIN node chosencont ON form.id = chosencont.contentform_id
             LEFT JOIN form_child chosenform ON form.id = chosenform.child_id
-            GROUP BY form_id;
+            GROUP BY form_id
+            ORDER BY form.title;
         ') as $formdesc) {
             $form = DB_DataObject::factory('form');
             $form->get($formdesc['form_id']);
