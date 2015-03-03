@@ -33,7 +33,7 @@ class action_formlist extends AdminAction implements DisplayAction {
             $form = DB_DataObject::factory('form');
             $form->get($formdesc['form_id']);
             
-            $nodechild_example = min(intval($formdesc['nodechild_example']), intval($formdesc['nodecont_example']));
+            $nodechild_examples = array_filter([intval($formdesc['nodechild_example']), intval($formdesc['nodecont_example'])]);
             
             $formcts []= array(
                 'form' => $form,
@@ -44,7 +44,7 @@ class action_formlist extends AdminAction implements DisplayAction {
                 ),
                 'example' => array(
                     'node' => $formdesc['applied_example'] ? Action::make('node', 'editprop', $formdesc['applied_example']) : false,
-                    'nodechild' => $nodechild_example ? Action::make('node', 'editprop', $nodechild_example) : false,
+                    'nodechild' => $nodechild_examples ? Action::make('node', 'editprop', min($nodechild_examples)) : false,
                     'formchild' => $formdesc['formchild_example'] ? Action::make('formedit', 'edit', $formdesc['formchild_example']) : false
                 ),
             );
