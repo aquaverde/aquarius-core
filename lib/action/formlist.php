@@ -15,12 +15,12 @@ class action_formlist extends AdminAction implements DisplayAction {
         foreach($aquarius->db->queryhash('
             SELECT
                 form.id form_id,
-                count(applied.id) as applied_count,
+                count(distinct applied.id) as applied_count,
                 min(applied.id) as applied_example,
-                count(chosenchild.id) + count(chosencont.id) as nodechild_count,
+                count(distinct chosenchild.id) + count(distinct chosencont.id) as nodechild_count,
                 min(chosenchild.id) as nodechild_example, 
                 min(chosencont.id) as nodecont_example,
-                count(chosenform.id) as formchild_count,
+                count(distinct chosenform.id) as formchild_count,
                 min(chosenform.parent_id) as formchild_example
             FROM form
             LEFT JOIN node applied ON form.id = applied.form_id
