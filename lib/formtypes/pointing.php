@@ -76,7 +76,7 @@ class Formtype_Pointing extends Formtype {
     function db_get($values, $formfield) {
         $pointing_id = first($values);
         $pointing_node = DB_DataObject::factory('node');
-        if (!$pointing_node->get($pointing_id)) {
+        if (!$pointing_id || !$pointing_node->get($pointing_id)) {
             Log::debug("Invalid pointing id $pointing_id in formfield $formfield->name");
             return null;
         }
