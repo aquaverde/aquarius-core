@@ -234,13 +234,6 @@ class Aquarius_Stage_PHP_Basic_Settings extends Aquarius_Basic_Stage {
     }
     
     function load($loader) {
-        // Make sure we see them errors
-        // Unfortunately we can't enable depreciation warnings and strict
-        // standard warnings because the PEAR PHP4 compatible classes use
-        // call-time pass-by-reference.
-        error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
-
-
         // Convince PHP to treat unhandled Exceptions, E_ERROR and E_PARSE like any
         // other error
         set_exception_handler('process_exception');
@@ -354,6 +347,11 @@ class Aquarius_Stage_Logging extends Aquarius_Basic_Stage {
         
         // Display PHP errors and warnings when echolevel is on debug
         if ($loader->aquarius->logger->echolevel < Log::INFO || $loader->aquarius->logger->firelevel < Log::INFO) {
+            // Unfortunately we can't enable depreciation warnings and strict
+            // standard warnings because the PEAR PHP4 compatible classes use
+            // call-time pass-by-reference.
+            error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
+
             ini_set('display_errors','1');
         } else {
             // Don't change preset
