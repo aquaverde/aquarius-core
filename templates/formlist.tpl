@@ -9,7 +9,8 @@
                 <th>Used</th>
                 <th></th>
             </tr>
-{foreach from=$forms item=form}
+{foreach from=$formcts item=detail}
+            {assign 'form' $detail.form}
 	        <tr>
 		        <td width="30%">
 				  {action action="formedit:edit:`$form->id`"}
@@ -22,7 +23,21 @@
                     <div class="dim">{if $form->template}{$form->template}{/if}</div>
 				</td>				
 				<td>
-				  {count_form_used form_id=$form->id}
+                    {if $detail.count.node}
+                        <a href="{url action1=$detail.example.node action2=$lastaction}">{$detail.count.node}</a>
+                    {else}
+                        ―
+                    {/if}
+                    {if $detail.count.nodechild}
+                        <a href="{url action1=$detail.example.nodechild action2=$lastaction}">{$detail.count.nodechild}</a>
+                    {else}
+                        ―
+                    {/if}
+                    {if $detail.count.formchild}
+                        <a href="{url action1=$detail.example.formchild action2=$lastaction}">{$detail.count.formchild}</a>
+                    {else}
+                        ―
+                    {/if}
 				</td>
                 <td>
                     <div class="dropdown pull-right">

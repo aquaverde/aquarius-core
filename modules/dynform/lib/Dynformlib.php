@@ -522,7 +522,7 @@ class Dynformlib {
 		
 		global $DB;
         $form_id = intval($form_id);
-		$result = $DB->query("
+		$result = $DB->queryhash("
             SELECT entry_id, field_id, lg, time, submitnodetitle, value
             FROM dynform_entry
             JOIN dynform_entry_data ON entry_id = dynform_entry.id
@@ -533,7 +533,7 @@ class Dynformlib {
 		");
 
 		$data = array();
-		while($field = mysql_fetch_assoc($result)) {
+		foreach($result as $field) {
             $entry_id = $field['entry_id'];
             if (!isset($data[$entry_id])) {
                 $data[$entry_id] = array(

@@ -28,7 +28,6 @@ class Menu {
                 '10' => new Menu('menu_sitemap', Action::make('nodetree', 'show', $lg, 'sitemap'), "picts/node_sitemap_nav.gif"),
                 '50' => new Menu('special:nodetree', false),
                 '60' => new Menu('special:separator', false),
-//              '70' => new Menu('menu_lastsearches', Action::make('lastsearches', $lg)),
                 '65' => new Menu('lastchanges_menu', Action::make('lastchanges'))
             )),
             '20' => new Menu('menu_filemgr', false, false, array(

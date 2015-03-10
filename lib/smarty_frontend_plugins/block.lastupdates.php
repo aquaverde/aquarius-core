@@ -53,7 +53,7 @@ function smarty_block_lastupdates($params, $content, $smarty, &$repeat) {
         }
 
         global $DB;
-        $entries = $DB->query('
+        $entries = $DB->queryhash('
             SELECT content_id, MAX(journal.last_change) as last_change
             FROM journal
             JOIN content ON journal.content_id = content.id
@@ -68,7 +68,7 @@ function smarty_block_lastupdates($params, $content, $smarty, &$repeat) {
         $first = false;
         $last = false;
         $index = 0;
-        while($entry = mysql_fetch_assoc($entries)) {
+        foreach($entries as $entry) {
             $content = DB_DataObject::factory('content');
             $found_content = $content->get($entry['content_id']);
             if ($found_content) {

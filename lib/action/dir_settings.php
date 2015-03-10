@@ -26,6 +26,8 @@ class action_dir_settings_edit extends action_dir_settings implements DisplayAct
         $smarty->assign("typeOptions", array('m' => 'm', 'w' => 'w', 'h' => 'h'));
         $smarty->assign("dirData", $dirs);
         $smarty->assign("resize", PICTURE_RESIZE == 'm' ? 'MaxSize' : 'Width');
+        $smarty->assign("newdir", Action::make('dir_settings', 'mkdir'));
+        $smarty->assign("dirs", $directoriesData);
         $result->use_template("directory_settings.tpl");
     }
 }
@@ -80,12 +82,54 @@ class action_dir_settings_cache_dirs extends action_dir_settings implements Chan
     }
 
     function process($aquarius, $post, $result) {
-        global $DB;
         $dirs = getAllDirs('');
-        $DB->query("TRUNCATE TABLE cache_dirs");
+        $aquarius->db->query("TRUNCATE TABLE cache_dirs");
         foreach($dirs as $dir)
-            $DB->query("INSERT INTO cache_dirs SET path = '".mysql_real_escape_String($dir)."'");
+            $aquarius->db->query('INSERT INTO cache_dirs SET path = ?', array($dir));
 
         $result->add_message(new FixedTranslation("Cached ".count($dirs)." dirs"));
+    }
+}
+
+class action_dir_settings_mkdir extends action_dir_settings implements ChangeAction {
+    function get_title() {
+        return new Translation('create_dir');
+    }
+
+    function process($aquarius, $post, $result) {
+        // Where do we create the dir
+        $target = $post['target'];
+        if (!in_array($target, get_cached_dirs())) {
+            // Tryin' to trick us
+            $result->add_message(AdminMessage::with_line('warn', new FixedTranslation('Target invalid')));
+            return;
+        }
+
+        // Name of the new dir
+        $unfiltered_dirname = $post['dirname'];
+        $dirname = trim(preg_replace('%[^[:print:]]|/%', '', $unfiltered_dirname)); // Remove slashes, nonprintable chars, and surrounding whitespace
+        if (strlen($dirname) == 0) {
+            $result->add_message(AdminMessage::with_line('warn', new Translation('dirname_s_invalid', array($unfiltered_dirname))));
+            return;
+        }
+
+        $new_path = ensure_filebasedir_path($target).'/'.$dirname;
+        if (!ensure_filebasedir_path(dirname($new_path))) throw new Exception("Path is off"); // can't be right
+
+        if (file_exists($new_path)) {
+            $result->add_message(AdminMessage::with_line('warn', new Translation('dirname_s_exists', array($dirname))));
+            return;
+        }
+
+        $success = mkdir($new_path);
+        if ($success) {
+            $result->add_message(new Translation("created_dir_s_in_s", array($dirname, $target)));
+
+            // HACK should use the touch() interface but then we'd have to adjust the other action as well
+            Action::make('dir_settings', 'cache_dirs')->process($aquarius, $post, $result);
+        } else {
+            print_r(new Translation("unable_to_create_dir_s_in_s", array($dirname, $target)));
+            $result->add_message(AdminMessage::with_line('warn', new Translation("unable_to_create_dir_s_in_s", array($dirname, $target))));
+        }
     }
 }

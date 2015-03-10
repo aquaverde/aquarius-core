@@ -80,9 +80,8 @@ if ($have_modules_table) {
     foreach(array('init', 'update') as $step) {
         foreach($aquarius->modules as $module) {
             $found_updates = find_updates($step, $module);
-            
             apply_updates($found_updates, $requested_updates, $step, $module);
-            
+
             $found_updates = find_updates($step, $module);
             if ($found_updates) {
                 $available_updates[$step][$module->short] = array_merge(get(get($available_updates, $step, array()), $module->short, array()), $found_updates);
@@ -96,11 +95,11 @@ function find_updates($step, $module) {
     $short = $module->short;
     $available_updates = array();
     $updates_path = $module->path.$step.'/';
-    
+
     $update_candidates = Aqua_Update::load_updates($updates_path);
-       
+
     global $aquarius;
-        
+
     if (count($update_candidates) > 0) {
         $have_log_table = $aquarius->db->singlequery("
             SELECT COUNT(*) AS count 
@@ -112,13 +111,17 @@ function find_updates($step, $module) {
 
         if ($have_log_table) {
             $last_update = $aquarius->db->singlequery("SELECT name FROM update_log WHERE module = '$short' ORDER BY name DESC LIMIT 1");
-
             if ($step == 'update') {
                 foreach($update_candidates as $name => $update) {
                     if ($name > $last_update) {
                         $available_updates[$name] = $update; 
                     }
-                    
+                }
+            }
+            if ($step == 'init') {
+                // Assume module is not initialized if there are no updates logged
+                if (!$last_update) {
+                    $available_updates = $update_candidates;
                 }
             }
         } else {

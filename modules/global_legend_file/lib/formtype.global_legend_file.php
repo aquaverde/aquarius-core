@@ -32,15 +32,14 @@ class Formtype_global_legend_file extends Formtype_File {
 
     /** Save legend into 'file_legend' table and do not pass through to DB */
     function db_set($values, $formfield, $lg) {
-        global $DB;
+        global $aquarius;
 
         $values = parent::db_set($values, $formfield);
 
-        $escaped_path = mysql_real_escape_string('/'.$formfield->sup3.'/'.get($values, 'file'));
+        $path ='/'.$formfield->sup3.'/'.get($values, 'file');
         $legend = get($values, 'legend');
         if (strlen($legend) > 0 || !$this->ignore_empty) {
-            $escaped_legend = mysql_real_escape_string($legend);
-            $DB->query("REPLACE file_legend SET file='$escaped_path', legend='$escaped_legend', lg='$lg'");
+            $aquarius->db->query("REPLACE file_legend SET file=?, legend=?, lg=?", array($path, $legend, $lg));
         }
 
         return $values;
@@ -49,12 +48,12 @@ class Formtype_global_legend_file extends Formtype_File {
     /** Loads legend from 'file_legend' table if available
       * To enable transitioning from the normal file field, normal legends are still used if there is no entry in the 'file_legend' table. */
     function db_get($values, $formfield, $lg) {
-        global $DB;
+        global $aquarius;
 
         $values = parent::db_get($values, $formfield, $lg);
 
-        $escaped_path = mysql_real_escape_string(get($values, 'file'));
-        $global_legend = $DB->singlequery("SELECT legend FROM file_legend WHERE file='$escaped_path' AND (ISNULL(lg) OR lg='$lg') ORDER BY lg DESC");
+        $path = get($values, 'file');
+        $global_legend = $aquarius->db->singlequery("SELECT legend FROM file_legend WHERE file=? AND (ISNULL(lg) OR lg=?) ORDER BY lg DESC", array($path, $lg));
 
         if ($global_legend !== false) {
             $values['legend'] = $global_legend;

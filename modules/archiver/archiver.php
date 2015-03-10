@@ -1,4 +1,30 @@
-<?php 
+<?php
+/** Automated publishing and archiving
+  *
+  * Two formfields are provided which allow setting the publishing date and the
+  * archiving date.
+  *
+  * Field archiver_archive_date will deactivate the node once the archiving date
+  * is reached, params allow to move the node to a different parent instead:
+  *  sup1: Whether to deactivate the node when the date is reached, defaults to
+  *        true unless sup3 is set.
+  *  sup3: Move to this parent when archiving date is reached
+  *  sup4: Set sup4 to 'first' to have the archived node automatically added as
+  *        child to the first child of the node named in 'sup3'. Set sup4 to
+  *        'last' to place the archived node under the last child of 'sup3'.
+  *
+  * Field archiver_publish_date does not take parameters, it just activates the
+  * node when the publishing date is reached. It insists on it, so if you go and
+  * deactivate the node manually, it will be reactivated the next day.
+  *
+  * You can set the config option 'archiving_delay' to a date offset so
+  * archiving will be delayed or hurried by the given offset. See strtotime().
+  *
+  * Config example:
+  *
+  *    $config['archiver']['archiving_delay'] = '+1day'
+  *
+  */
 class Archiver extends Module {
         
     var $register_hooks = array('menu_init', 'daily', 'init_form', 'smarty_config', 'smarty_config_backend');
@@ -36,6 +62,10 @@ class Archiver extends Module {
         $archived_count = 0;
         $published = 0;
         
+        // Have a grace period of a few days
+        // So that publishing works even if the archiver doesn't run every day
+        $grace_time = strtotime('-7 days');
+        
         $publishquery = "
             SELECT node.id AS node_id, 
                 content_field_value.value AS publish_date
@@ -55,7 +85,11 @@ class Archiver extends Module {
 
             $date_valid = is_numeric($publish_date) && $publish_date != 0;
             $archived = isset($archived_nodes[$id]);
-            $publish = $date_valid && $publish_date <= $now && !$archived;
+            $publish = 
+                $date_valid
+             && $publish_date <= $now        // Publish date must be in the past
+             && $publish_date >= $grace_time // Publish date reached recently
+             && !$archived;                  // Archiving date not reached
             
             if ($publish) {
                 $node = db_Node::get_node($id);
@@ -122,8 +156,11 @@ class Archiver extends Module {
                 $node = db_Node::get_node($id);
                 $archived[$id] = $node;
                 $changed = false;
-                if(!empty($val['sup3'])) {
-                    
+
+                $move = !empty($val['sup3']);
+                $deactivate = $val['sup1'] == 1 || !$move;
+
+                if ($move) {
                     //check if node has already been archived
                     //one of the parents is the archiving_node (sup3)
                     $parents = $node->get_parents();
@@ -150,7 +187,7 @@ class Archiver extends Module {
                         $moved += 1;
                     }
                 }
-                if($node->active && $val['sup1'] == 1) {
+                if($deactivate && $node->active) {
                     Log::info("deactivate archived node ".$node->idstr());
                     $node->active = 0;
                     $changed = true;

@@ -17,7 +17,7 @@ if (version_compare($actual_php_version, $required_php_version) < 0) {
 }
 
 
-$required_extensions = array('mysql', 'mbstring', 'gd');
+$required_extensions = array('mysqli', 'mbstring', 'gd');
 $missing_extensions = array_diff($required_extensions, get_loaded_extensions());
 if (!empty($missing_extensions)) {
     message('warn', "The following PHP extensions are required by Aquarius but not installed: ".join(',', $missing_extensions).'.');

@@ -213,3 +213,16 @@ function smarty_modifier_alt($image) {
 function smarty_modifier_th($image) {
     return smarty_function_resize(array('image' => $image, 'th' => true, 'quality' => 95), false);
 }
+
+/** Override the smarty provided date_format modifier
+  * Passed date may be a timestamp (int) or a DateTime. A date format string in strftime() format may be passed as parameter, the format is taken from
+  * config value DATE_FORMAT otherwise. */
+function smarty_modifier_date_format($date, $format=DATE_FORMAT) {
+    if($date > 0) {
+        if ($date instanceof DateTime) {
+            $date->setTimezone(new DateTimeZone(date_default_timezone_get()));
+            $date = $date->getTimestamp();
+        }
+        return strftime($format, $date);
+    }
+}

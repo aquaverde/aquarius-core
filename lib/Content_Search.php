@@ -118,8 +118,9 @@ class Content_Search {
       *
       * Also all parameters of the search are included in that result dict. */
     function find() {
-        global $DB;
-
+        global $aquarius;
+        $db = $aquarius->db;
+        
         $run = $this->sanitize();
         if (!$run) {
             $result->error = 'initialization failed';
@@ -130,26 +131,20 @@ class Content_Search {
         $next = false;
 
         if ($run) {
-            $search_escaped = mysql_real_escape_string($this->search);
-
-            if ($start == 0) {
-                // Log the search
-                $DB->query("INSERT INTO content_search SET lg='$lg', query='".$search_escaped."'");
-            }
 
             $wheres = $this->restrictions();
             $wheres []= "content.lg = '$this->lg'";
             $wherestr = join('
                 AND ', $wheres);
 
-            $results = $DB->query("
+            $results = $db->queryhash("
             SELECT * FROM (
                 SELECT
                     node.id AS node,
                     content.id AS content,
                     SUM(
-                        MATCH(content_field_value.value) AGAINST ('".$search_escaped."')
-                        + (content_field_value.value LIKE '%".$search_escaped."%') * 0.1
+                        MATCH(content_field_value.value) AGAINST (?)
+                        + (content_field_value.value LIKE ?) * 0.1
                     ) AS relevance
                 FROM          node
                     JOIN      content ON node.id = content.node_id
@@ -160,10 +155,12 @@ class Content_Search {
                 HAVING relevance > 0
             ) AS hits
             ORDER BY relevance DESC
-            LIMIT $this->start,".($this->length+1));
+            LIMIT $this->start,".($this->length+1),
+            array($this->search, '%'.$this->search.'%')
+            );
 
             $nr = $this->start;
-            while($item = mysql_fetch_assoc($results)) {
+            foreach($results as $item) {
                 if (count($items) >= $this->length) {
                     $next = $this->start+$this->length;
                     break;

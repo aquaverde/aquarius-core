@@ -26,7 +26,7 @@ class AdminMessage {
         $key = array_shift($args);
         $this->parts []= array(
             'type'  => 'line',
-            'text' => new Translation($key, $args)
+            'text' => is_string($key) ? new Translation($key, $args) : $key
         );
     }
 

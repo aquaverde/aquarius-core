@@ -19,18 +19,18 @@ class db_Wording extends DB_DataObject
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
         
-        static function getAllWordingsByLg($lg, $order="keyword") {
-            $words = DB_DataObject::factory('wording');
-            $words->orderBy(mysql_real_escape_string($order));
-            $words->lg = $lg;
-            $words->find();
+    static function getAllWordingsByLg($lg, $order="keyword") {
+        $words = DB_DataObject::factory('wording');
+        $words->orderBy($order);
+        $words->lg = $lg;
+        $words->find();
 
-            $result = array();
-            while ( $words->fetch() )
-                $result[] = clone($words);
+        $result = array();
+        while ( $words->fetch() )
+            $result[] = clone($words);
 
-            return $result;
-        }
+        return $result;
+    }
 	
 	static function getTranslation($key, $lg) {
         static $cache = array();

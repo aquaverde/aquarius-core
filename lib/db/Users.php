@@ -9,16 +9,17 @@ class db_Users extends DB_DataObject
 
     public $__table = 'users';                           // table name
     public $id;                              // int(11)  not_null primary_key auto_increment group_by
-    public $name;                            // varchar(50)  not_null unique_key
-    public $password;                        // varchar(255)  not_null multiple_key
-    public $password_salt;                   // varchar(255)  
+    public $name;                            // varchar(150)  not_null unique_key
+    public $password;                        // varchar(765)  not_null multiple_key
+    public $password_salt;                   // varchar(765)  
     public $status;                          // int(11)  not_null group_by
-    public $adminLanguage;                   // char(2)  not_null
-    public $defaultLanguage;                 // char(2)  not_null
+    public $adminLanguage;                   // char(6)  not_null
+    public $defaultLanguage;                 // char(6)  not_null
     public $active;                          // tinyint(1)  not_null multiple_key group_by
     public $activation_permission;           // tinyint(1)  not_null group_by
     public $delete_permission;               // tinyint(1)  not_null group_by
     public $copy_permission;                 // tinyint(1)  not_null group_by
+    public $last_login;                      // datetime(19)  
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Users',$k,$v); }
@@ -57,9 +58,7 @@ class db_Users extends DB_DataObject
                 self::password_hashes($proffered_password, $user->password_salt)
             )) {
                 session_regenerate_id();
-                global $aquarius;
-                $aquarius->session_set('user', $user->id);
-                Log::info("Login of user '".$user->name."' (".$user->id.") from " . $_SERVER['REMOTE_ADDR'].' user-agent '.$_SERVER['HTTP_USER_AGENT']);
+                $user->login();
                 
                 return $user;
             } else {
@@ -130,6 +129,14 @@ class db_Users extends DB_DataObject
             return $cache_user;
         }
         return false;
+    }
+
+    /** Mark this user as logged-in for this session */
+    function login() {
+        global $aquarius;
+        $aquarius->db->query("UPDATE users SET last_login=UTC_TIMESTAMP() WHERE id=?", array($this->id));
+        $aquarius->session_set('user', $this->id);
+        Log::info("Login of user '".$this->name."' (".$this->id.") from " . $_SERVER['REMOTE_ADDR'].' user-agent '.$_SERVER['HTTP_USER_AGENT']);
     }
 
     /** Clear the user id from session */
@@ -347,5 +354,10 @@ class db_Users extends DB_DataObject
 
     function idstr() {
         return "$this->name ($id)";
+    }
+    
+    /** Get last login as DateTime */
+    function last_login() {
+        return DateTime::createFromFormat('Y-m-d H:i:s', $this->last_login, new DateTimeZone("UTC"));
     }
 }

@@ -91,10 +91,11 @@ class db_Content extends DB_DataObject
 
         $cache_val = unserialize($this->cache_fields);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            Log::debug("Unable to load cache of content id $this->id, error ".json_last_error());
+        if ($cache_val === false) {
+            Log::debug("Failure to unserialize field cache of content id $this->id");
             return false;
         }
+        
         foreach($cache_val as $key => $value) {
             $this->$key = $value;
         }
@@ -149,7 +150,7 @@ class db_Content extends DB_DataObject
 
         $this->cache_fields = $cache_val;
         $success = parent::update();
-        if (!$success) Log::warn("Unable to write cache to DB for $this->id");
+        if ($success === false) Log::warn("Unable to write cache to DB for $this->id: $this->_lastError");
         
         return true;
     }

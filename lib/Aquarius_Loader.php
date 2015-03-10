@@ -25,7 +25,6 @@ class Aquarius_Loader {
     var $included_files = array();
 
     var $aquarius;
-    var $db_legacy;
     var $db_pear;
 
     
@@ -235,9 +234,6 @@ class Aquarius_Stage_PHP_Basic_Settings extends Aquarius_Basic_Stage {
     }
     
     function load($loader) {
-        if (!defined('E_DEPRECATED')) define('E_DEPRECATED', 8192);
-       
-        
         // Make sure we see them errors
         // Unfortunately we can't enable depreciation warnings and strict
         // standard warnings because the PEAR PHP4 compatible classes use
@@ -248,12 +244,7 @@ class Aquarius_Stage_PHP_Basic_Settings extends Aquarius_Basic_Stage {
         // Convince PHP to treat unhandled Exceptions, E_ERROR and E_PARSE like any
         // other error
         set_exception_handler('process_exception');
-        if (version_compare(PHP_VERSION, '5.2') >= 0) register_shutdown_function('handle_fatal_errors');
-        
-        
-        // This does not belong. You idle? Remove it.
-        $aquarius_version = array(3, 6, 5);
-        define('AQUARIUS_VERSION', join('.', $aquarius_version));
+        register_shutdown_function('handle_fatal_errors');
 
         // Turn on output buffering, so that later code may change headers
         ob_start();
@@ -308,23 +299,9 @@ class Aquarius_Stage_db_connection extends Aquarius_Basic_Stage {
         $node = DB_DataObject::factory('node');
         $loader->aquarius->db = new DBwrap($node->getDatabaseConnection());
         $loader->aquarius->db->reset_charset(); // Told you so
-    }
-}
-
-class Aquarius_Stage_legacy_db_connection extends Aquarius_Basic_Stage {
-    var $db_options;
-    
-    function depends() { return array('aquarius'); }
-    function init($loader) {
-        $loader->include_file('sql.lib.php');
-    }
-    
-    function load($loader) {
-        $dbconf = $loader->aquarius->conf('db');
-        $port = get($dbconf, 'port');
-        $ports = $port ? ":$port" : '';
-        $loader->db_legacy = new SQLwrap($dbconf['host'].$ports, $dbconf['user'], DB_PASSWORD, $dbconf['name']);
-        $GLOBALS['DB'] = $loader->db_legacy;
+        
+        // DEPRECATED global variable
+         $GLOBALS['DB'] = $loader->aquarius->db;
     }
 }
 
@@ -397,7 +374,6 @@ class Aquarius_Stage_full extends Aquarius_Basic_Stage {
         return array(
             'logging',
             'db_connection',
-            'legacy_db_connection',
             'php_settings',
             'modules',
             'globals'
