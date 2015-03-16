@@ -155,6 +155,13 @@ try {
         }
 
         if (isset($node_params['redirect'])) {
+            $redir_uri = Url::parse($node_params['redirect']);
+
+            // Abort if we'd be redirecting to the same url
+            if ($request_uri->host == $redir_uri->host && $request_uri->path == $redir_uri->path) {
+                throw new NotFoundException("Redirect loop for ".$node_params['redirect']);
+            }
+
             header('HTTP/1.1 301 Shortcut redirection');
             header('Location: '.$node_params['redirect']);
             exit();
