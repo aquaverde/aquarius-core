@@ -27,8 +27,7 @@ $db_port = get($config, 'port');
 
 $db_connection = false;
 if (!empty($db_host) && !empty($db_name) && !empty($db_user) && !empty($db_pass)) {
-    $srv = $db_host.($db_port ? ":$db_port" : "");
-    $db_connection = mysqli_connect($srv, $db_user, $db_pass);
+    $db_connection = mysqli_connect($db_host, $db_user, $db_pass, null, $db_port ? $db_port : null);
     if (!$db_connection) {
         message('warn', "Failed connecting to server $db_user@$db_host");
     }
