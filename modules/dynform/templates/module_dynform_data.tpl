@@ -15,7 +15,7 @@
 					{/action}
 				</td>
 					
-				<td width="60%">
+				<td width="50%">
 					{action action="dynform_data:show:`$dynform.id`:"}
 						<a href="{url action0=$lastaction action1=$action}">
 						{$dynform.title|strip_tags} ({dynform_count_entries form_id=$dynform.id})
@@ -23,7 +23,7 @@
 					{/action}
 				</td>
 				
-				<td nowrap="nowrap">
+				<td width="40%" nowrap="nowrap">
 					{foreach_language}
 					<div class="dynform-data-lg-link">&nbsp;
 						{action action="dynform_data:show:`$dynform.id`:`$entry.lang->lg`"}
