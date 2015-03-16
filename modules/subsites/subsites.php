@@ -185,6 +185,10 @@ class Subsites extends Module {
             if (!empty($scored_domains)) {
                 $uri->host = first($scored_domains);
                 $options->using_subsite_host = true;
+            } else {
+                // No domains found? Use main domain
+                $main_domain  = $this->aquarius->conf('frontend/domain');
+                if ($main_domain) $uri->host = $main_domain;
             }
         }
     }
