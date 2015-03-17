@@ -1,7 +1,6 @@
 <?php 
 require_once('Mail.php');
 require_once('Mail/mime.php');
-require_once('Mail/RFC822.php');
 
 class Action_Newsletter extends ModuleAction {
     var $modname = "newsletter";
@@ -62,22 +61,19 @@ class Action_Newsletter extends ModuleAction {
 
     /** Load list of recipients for given edition */
     function load_recipients($edition_node, $count_only, $only_lg = null, $sent = null) {
-        global $DB;
-
-        $wheres = array();
-        $wheres []= "newsletter_subscription.active = 1";
-        $wheres []= "newsletter_subscription.newsletter_id = ".$edition_node->get_parent()->id;
-        if ($only_lg) $wheres []= 'newsletter_addresses.language = "'.mysql_real_escape_string($only_lg).'"';
+        global $aquarius;
         
+        $vals = array();
         $joins = array();
+        $wheres = array();
+
         $joins []= "JOIN newsletter_subscription ON newsletter_subscription.address_id = newsletter_addresses.id";
 
         if ($sent !== null) {
-            $joins []= "
-                LEFT JOIN newsletter_sent 
-                    ON newsletter_sent.address_id = newsletter_addresses.id
-                    AND newsletter_sent.edition_id = $edition_node->id
-            ";
+            $joins []= 'LEFT JOIN newsletter_sent ON newsletter_sent.address_id = newsletter_addresses.id
+                                                 AND newsletter_sent.edition_id = ?';
+            $vals []= $edition_node->id;
+
             if ($sent) {
                 $wheres []= 'newsletter_sent.sent = 1';
             } else {
@@ -85,13 +81,21 @@ class Action_Newsletter extends ModuleAction {
             }
         }
 
-        $query_tail =  "FROM newsletter_addresses ".join("\n", $joins)." WHERE ".join(" AND ", $wheres);
+        $wheres []= "newsletter_subscription.active = 1";
+        $wheres []= "newsletter_subscription.newsletter_id = ?";
+        $vals []= $edition_node->get_parent()->id;
+        if ($only_lg) {
+            $wheres []= 'newsletter_addresses.language = ?';
+            $vals []= $only_lg;
+        }
+
+        $query_tail =  "FROM newsletter_addresses ".join("\n", $joins)."\n WHERE ".join(" AND ", $wheres);
 
         if ($count_only) {
-            return $DB->singlequery("SELECT COUNT(newsletter_addresses.id) $query_tail");
+            return $aquarius->db->singlequery("SELECT COUNT(newsletter_addresses.id) $query_tail", $vals);
         } else {
             $recipients = array();
-            $results = $DB->queryhash("SELECT newsletter_addresses.id, newsletter_addresses.address $query_tail");
+            $results = $aquarius->db->queryhash("SELECT newsletter_addresses.id, newsletter_addresses.address $query_tail", $vals);
             foreach($results as $result) {
                 $recipients[$result['id']] = $result['address'];
             }
@@ -100,6 +104,7 @@ class Action_Newsletter extends ModuleAction {
     }
     
     function check_addresses($addresses) {
+        require_once('Mail/RFC822.php');
         $valid = array();
         $invalid = array();
         foreach($addresses as $address) {
@@ -279,13 +284,12 @@ class Action_Newsletter_Addaddress extends Action_Newsletter implements ChangeAc
                     $result->add_message(AdminMessage::with_line('info', 'newsletter_added_addresses', $added[0]));
                 }
             } elseif (count($addresses_ignored) > 0) {
-                $result->add_message(AdminMessage::with_line('warn', 'newsletter_added_addresses_ignored', $added[0], count($addresses_ignored)));
+                $result->add_message(AdminMessage::with_line('warn', 'newsletter_added_addresses_ignored', $added[0], count($addresses_ignored), join(', ', $addresses_ignored)));
             }
 
             if (count($subscriptions) > 0) {
                 $result->add_message(AdminMessage::with_line('info', 'newsletter_added_subscriptions', $added[1]));
             }
-            break;
     }
 }
 
