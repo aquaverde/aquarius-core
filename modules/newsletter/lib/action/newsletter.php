@@ -30,46 +30,6 @@ class Action_Newsletter extends ModuleAction {
         return $transport->send($recipients, $edition, $notify_on_send, $notify_on_error);
     }
 
-
-    function execute() {
-        global $aquarius;
-        $smarty = false;
-        $messages = array();
-        $action = false;
-
-        switch($this->op) {
-
-
-        case 'cleanuplist':
-            $subscriptions_to_cleanup = $this->get_subscriptions_to_cleanup();
-            Log::debug($subscriptions_to_cleanup);
-            $smarty = $aquarius->get_smarty_backend_container();
-            $smarty->assign('subscriptions_to_cleanup', $subscriptions_to_cleanup);
-            $smarty->assign('cleanup', true);
-            $smarty->tmplname = "newsletter_cleanup.tpl";
-            break;
-            
-        case 'cleanup':
-            $subscriptions_to_cleanup = $this->get_subscriptions_to_cleanup();
-            foreach($subscriptions_to_cleanup as $subscription) {
-                
-                $s = DB_DataObject::factory('newsletter_subscription');
-                $s->newsletter_id=$subscription->newsletter_id;
-                $s->delete();
-            }
-            Log::debug($subscriptions_to_cleanup);
-            $smarty = $aquarius->get_smarty_backend_container();
-            $smarty->assign('subscriptions_to_cleanup', $subscriptions_to_cleanup);
-            $smarty->assign('cleanup', true);
-            $smarty->tmplname = "newsletter_cleanup.tpl";
-            break;
-
-        default:
-            throw new Exception("Operation unknown: '$this->op'");
-        }
-        return compact('messages', 'smarty','action');
-    }
-
     
     function get_subscriptions_to_cleanup() {
         $newsletter_node = DB_DataObject::factory('node');
@@ -350,6 +310,7 @@ class Action_Newsletter_Deladdress extends Action_Newsletter implements ChangeAc
 
 class Action_Newsletter_Editaddress extends Action_Newsletter implements ChangeAction {
     var $props = array('class', 'op');
+
     function process($aquarius, $post, $result) {
             $editId = requestvar('editId');
             if(!empty($editId)) {
@@ -498,12 +459,31 @@ class Action_Newsletter_Export extends Action_Newsletter implements SideAction {
 }
 
 
+class Action_Newsletter_Cleanuplist extends Action_Newsletter implements DisplayAction {
+    var $props = array('class', 'op');
+
+    function process($aquarius, $params, $smarty, $result) {
+            $subscriptions_to_cleanup = $this->get_subscriptions_to_cleanup();
+
+            $smarty->assign('subscriptions_to_cleanup', $subscriptions_to_cleanup);
+            $smarty->assign('cleanup', true);
+            $result->use_template("newsletter_cleanup.tpl");
+    }
+}
 
 
+class Action_Newsletter_Cleanup extends Action_Newsletter implements ChangeAction {
+    var $props = array('class', 'op', 'newsletter_id');
 
-
-
-
+    function process($aquarius, $post, $result) {
+            $subscriptions_to_cleanup = $this->get_subscriptions_to_cleanup();
+            foreach($subscriptions_to_cleanup as $subscription) {
+                $s = DB_DataObject::factory('newsletter_subscription');
+                $s->newsletter_id=$subscription->newsletter_id;
+                $s->delete();
+            }
+    }
+}
 
 
 class Action_Newsletter_Preview extends Action_Newsletter implements SideAction {
