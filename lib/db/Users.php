@@ -49,15 +49,18 @@ class db_Users extends DB_DataObject
             $user->name = $_REQUEST['username'];
             $user->find(true);
 
-            // Don't look whether that user exists, so we don't give timing information
+            // Don't look whether that user exists, so we give less timing information
             // Instead, rely only on having a matching password
-
             $proffered_password = $_REQUEST['password'];
             if (in_array(
                 $user->password,
                 self::password_hashes($proffered_password, $user->password_salt)
             )) {
-                session_regenerate_id();
+                // Regenerate the session ID, unless it's an IE we're talking to which would use the old session ID to load the frame contents
+                // Remove this guard once we no longer use frames
+                if(!preg_match('/(?i)msie /', $_SERVER['HTTP_USER_AGENT'])) {
+                    session_regenerate_id();
+                }
                 $user->login();
                 
                 return $user;
