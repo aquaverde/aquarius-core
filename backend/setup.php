@@ -5,7 +5,7 @@
   */
 
 // We need to know what's going on
-error_reporting(E_ALL & ~8192);
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 ini_set('display_errors', 1);
 
 date_default_timezone_set('UTC');
