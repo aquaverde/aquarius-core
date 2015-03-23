@@ -27,6 +27,29 @@ class Dynform extends Module
             )) ;
         }
     }
+    
+    function setup() {
+        /* If dynform template dir does not exist, create it */
+        global $aquarius; // It should be set as module property $this->aquarius but it isn't during setup!?
+        $template_dir = $aquarius->install_path.'templates/';
+
+        $dynform_template_dir = $template_dir.'dynform/';
+        if (!is_dir($dynform_template_dir)) {
+            $success = mkdir($dynform_template_dir);
+            if (!$success) {
+                throw new Exception("Unable to create $dynform_template_dir");
+            }
+        }
+
+        /* make all frontend templates available */
+        foreach(glob($this->path.'frontend_templates/*.tpl') as $template) {
+            $target = $dynform_template_dir.basename($template);
+            if (!file_exists($target)) {
+                $success = copy($template, $target);
+                if (!$success) throw new Exception("Unable to copy to $target");
+            }
+        }
+    }
 
     function contentedit_addon($node, $content, $form) {
         if (stristr($form->title, "Dynform_node")) {
@@ -306,15 +329,12 @@ class Dynform extends Module
             global $aquarius;
             $smarty = $aquarius->get_smarty_frontend_container($lg, $form_node);
 
-            $templates_dir = $this->path."frontend_templates/";
-            $smarty->addTemplateDir($templates_dir);
-
             $smarty->assign('dynform', $dynform_struct);
             $smarty->assign($params);
             
             $smarty->caching = false; // To make sure
 
-            return $smarty->fetch('dynform.form.tpl');
+            return $smarty->fetch('dynform/form.tpl');
         }
 
 
