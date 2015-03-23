@@ -27,7 +27,12 @@ class Module {
     function __construct($path) {
         $this->path = $path;
     }
-    
+
+    /** Run setup functions if required
+      * This function will be called during aquarius setup, allowing modules
+      * to run custom setup jobs. Must not fail on repeat invocations. */
+    function setup() {}
+
     /** Initialize the module into the system
       * Adds module path to PHP include paths and registers hooks. */
     function initialize($aquarius) {
