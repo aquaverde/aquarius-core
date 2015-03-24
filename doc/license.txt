@@ -18,25 +18,10 @@ See COPYING for the full text of the licence.
 Contributed code
 ----------------
 
-Swift Mailer library
-    Location: lib/swift
-    Source:   http://swiftmailer.org/
-    License:  LGPL
-
 PEAR
     Location: pear
     Source:   http://pear.php.net
     License:  http://pear.php.net/group/docs/20040402-la.php
-
-Smarty
-    Location: smarty
-    Source: http://smarty.php.net
-    License: LGPL, http://www.smarty.net/copyright.php
-
-CKEditor
-    Location: admin/ckeditor
-    Source:   http://ckeditor.com/
-    License:  GPL, LGPL, MPL, http://ckeditor.com/license
 
 MD5 Javascript library
     Location: public_html/js/md5.js
@@ -68,10 +53,6 @@ SimplePie RSS/Atom library
     Source: http://simplepie.org
     License: BSD
 
-Adminer - Database management
-    Location: components/adminer
-    Source: http://www.adminer.org/
-    Licence: Apache License 2.0 or GPL 2
 
 Minor contributions
 -------------------
