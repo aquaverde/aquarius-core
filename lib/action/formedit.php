@@ -45,13 +45,6 @@ class action_formedit_save extends action_formedit implements ChangeAction {
             $form->update();
         }
 
-        $aquarius->db->query("START TRANSACTION");
-        $aquarius->db->query("DELETE FROM form_child WHERE parent_id = ?", array($form->id));
-        foreach(get($post, 'form_children', array()) as $form_child) {
-            $aquarius->db->query("INSERT INTO form_child SET parent_id = ?, child_id = ?, preset = ?", array($form->id, intval($form_child), get($post, 'form_child_preset') == $form_child));
-        }
-        $aquarius->db->query("COMMIT");
-
         // Save fields
         $fielddata = get($post, "field");
         $maxweight = 0;
@@ -156,9 +149,16 @@ class action_formedit_edit extends action_formedit implements DisplayAction {
         $smarty->assign('fieldgroup_selections', $selections);
         
         $smarty->assign('form_children', $aquarius->db->queryhash("
-            SELECT f.id, f.title, template, fc.parent_id AS checked, fc.preset AS preset
+            SELECT f.id, f.title, template, fc.preset AS preset
             FROM form f
-            LEFT JOIN form_child fc ON f.id = fc.child_id AND fc.parent_id = ?
+            JOIN form_child fc ON f.id = fc.child_id AND fc.parent_id = ?
+            ORDER BY f.title
+        ", array($form->id)));
+        
+        $smarty->assign('form_inherited', $aquarius->db->queryhash("
+            SELECT f.id, f.title, template
+            FROM form f
+            JOIN form_inherit fc ON f.id = fc.parent_id AND fc.child_id = ?
             ORDER BY f.title
         ", array($form->id)));
 
@@ -172,5 +172,73 @@ class action_formedit_edit extends action_formedit implements DisplayAction {
         $smarty->assign('page_requisites', $page_requisites);
 
         $result->use_template("formedit.tpl");
+    }
+}
+
+
+class action_formedit_children_save extends action_formedit implements ChangeAction {
+    function process($aquarius, $post, $result) {
+        $result->touch_region('content');
+        $form = $this->load_form();
+
+        $aquarius->db->query("START TRANSACTION");
+        $aquarius->db->query("DELETE FROM form_child WHERE parent_id = ?", array($form->id));
+        foreach(get($post, 'checked_forms', array()) as $form_child) {
+            $aquarius->db->query("INSERT INTO form_child SET parent_id = ?, child_id = ?, preset = ?", array($form->id, intval($form_child), get($post, 'selected_form') == $form_child));
+        }
+        $aquarius->db->query("COMMIT");
+    }
+}
+
+class action_formedit_children_edit extends action_formedit implements DisplayAction {
+    function process($aquarius, $request, $smarty, $result) {
+        $form = $this->load_form();
+        $smarty->assign('title', 'Edit form children for '.$form);
+        $smarty->assign('radios', true);
+        $smarty->assign('checkboxes', true);
+        $smarty->assign('saveaction', Action::make('formedit', 'children_save', $form->id));
+
+        $smarty->assign('forms', $aquarius->db->queryhash("
+            SELECT f.id, f.title, template, fc.preset AS selected, fc.parent_id AS checked
+            FROM form f
+            LEFT JOIN form_child fc ON f.id = fc.child_id AND fc.parent_id = ?
+            ORDER BY f.title
+        ", array($form->id)));
+
+        $result->use_template("form_select.tpl");
+    }
+}
+
+
+class action_formedit_inherit_save extends action_formedit implements ChangeAction {
+    function process($aquarius, $post, $result) {
+        $result->touch_region('content');
+        $form = $this->load_form();
+
+        $aquarius->db->query("START TRANSACTION");
+        $aquarius->db->query("DELETE FROM form_inherit WHERE child_id = ?", array($form->id));
+        foreach(get($post, 'checked_forms', array()) as $form_child) {
+            $aquarius->db->query("INSERT INTO form_inherit SET child_id = ?, parent_id = ?", array($form->id, intval($form_child)));
+        }
+        $aquarius->db->query("COMMIT");
+    }
+}
+
+class action_formedit_inherit_edit extends action_formedit implements DisplayAction {
+    function process($aquarius, $request, $smarty, $result) {
+        $form = $this->load_form();
+        $smarty->assign('title', 'Edit form children for '.$form);
+        $smarty->assign('checkboxes', true);
+        $smarty->assign('saveaction', Action::make('formedit', 'inherit_save', $form->id));
+
+        $smarty->assign('forms', $aquarius->db->queryhash("
+            SELECT f.id, f.title, template, fc.child_id AS checked
+            FROM form f
+            LEFT JOIN form_inherit fc ON f.id = fc.parent_id AND fc.child_id = ?
+            WHERE f.id <> ?
+            ORDER BY f.title
+        ", array($form->id, $form->id)));
+
+        $result->use_template("form_select.tpl");
     }
 }

@@ -41,6 +41,26 @@ html, body {height: 95%} body {max-width: none;}
             {html_options options=$permission_levels selected=$form->permission_level}
         </select>
         </div>
+        
+        <div class="inline-item">
+            children types
+            <ul>
+            {foreach $form_children as $form_child}
+                <li {if $form_child.preset}style="font-weight: bold;"{/if}>{$form_child.title}</li>
+            {/foreach}
+            </ul>
+            <a href="{url action="formedit:children_edit:`$form->id`" action1=$lastaction}">Change</a>
+        </div>
+        
+        <div class="inline-item">
+            inheriting from
+            <ul>
+            {foreach $form_inherited as $form_child}
+                <li>{$form_child.title}</li>
+            {/foreach}
+            </ul>
+            <a href="{url action="formedit:inherit_edit:`$form->id`" action1=$lastaction}">Change</a>
+        </div>
     </div>
     <br>
     <h2>Fields</h2>
@@ -87,17 +107,6 @@ html, body {height: 95%} body {max-width: none;}
         </tr>
 {/foreach}
     </table>
-    <br>
-    <div id="outer">
-        <h2>Child types selection</h2>
-    {foreach from=$form_children item=form_child}
-        <label>
-            <input type='radio' name='form_child_preset' value='{$form_child.id}' {if $form_child.preset}checked{/if}>
-            <input type='checkbox' name='form_children[]' value='{$form_child.id}'{if $form_child.checked}checked{/if}>
-            &nbsp;{$form_child.title}{if $form_child.template} ({$form_child.template}){/if}
-        </label>
-    {/foreach}
-    </div>
     <input type="submit" name="{$action}" value="{#s_done#}" class="btn btn-primary"/>
     <input type="submit" name="{$lastaction}" value="{#s_save#}" class="btn btn-default"/>
 </form>
