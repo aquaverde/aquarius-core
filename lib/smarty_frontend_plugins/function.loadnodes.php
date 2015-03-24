@@ -60,7 +60,7 @@ function smarty_function_loadnodes($params, $smarty) {
     if (!$childrenof) $childrenof = db_Node::get_node(get($params, 'childsof'));
     $siblingsof = db_Node::get_node(get($params, 'siblingsof'));
     $lg = get($params, 'lg', $smarty->get_template_vars('lg'));
-    $honor_show_in_menu = get($params, 'menu', get($params, 'honor_show_in_menu', false));
+    $menu = (bool)get($params, 'menu', get($params, 'honor_show_in_menu', false));
     $custom_filter_sentence = get($params, 'filter');
 
     $list = array();
@@ -100,7 +100,7 @@ function smarty_function_loadnodes($params, $smarty) {
         }
     }
 
-    if ($honor_show_in_menu) {
+    if ($menu) {
         $filters[] = NodeFilter::create('show_in_menu', true) ;
     }
 
