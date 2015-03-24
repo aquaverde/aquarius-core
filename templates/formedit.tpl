@@ -42,9 +42,9 @@ html, body {height: 95%} body {max-width: none;}
         </select>
         </div>
     </div>
-        <br>
-        <h2>Fields</h2>
-        <table class="table table-condensed table-hover" width="100%" cellpadding="0" cellspacing="2">
+    <br>
+    <h2>Fields</h2>
+    <table class="table table-condensed table-hover" width="100%" cellpadding="0" cellspacing="2">
         <tr>
             <th>Active</th>
             <th width="12%" style="min-width: 150px;">Name</th>
@@ -67,9 +67,9 @@ html, body {height: 95%} body {max-width: none;}
           <td><input type="text" class="form-control" name="field[{$field->id}][description]" value="{$field->description|escape}" title="{if $field->description}{else}{formfield_title f=$field}&nbsp;{/if}" placeholder="{formfield_title f=$field}"/></td>
           <td>
             <select name="field[{$field->id}][type]">
-  {foreach from=$formtypes item=type}
+    {foreach from=$formtypes item=type}
               <option value="{$type->get_code()}"{if $field->type==$type->get_code()}selected="selected"{/if}>{$type->get_title()|str}</option>
-  {/foreach}
+    {/foreach}
             </select>
           </td>
           <td><input type="text" class="form-control" name="field[{$field->id}][weight]" value="{$field->weight}" size="4"/></td>
@@ -86,20 +86,20 @@ html, body {height: 95%} body {max-width: none;}
         {/foreach}
         </tr>
 {/foreach}
-  </table>  
-       <br><div id="outer">
+    </table>
+    <br>
+    <div id="outer">
         <h2>Child types selection</h2>
-        {foreach from=$form_children item=form_child}
-            <label>
-                <input type='radio' name='form_child_preset' value='{$form_child.id}' {if $form_child.preset}checked{/if}>
-                <input type='checkbox' name='form_children[]' value='{$form_child.id}'{if $form_child.checked}checked{/if}>
-                &nbsp;{$form_child.title}{if $form_child.template} ({$form_child.template}){/if}
-            </label>
-        {/foreach}
+    {foreach from=$form_children item=form_child}
+        <label>
+            <input type='radio' name='form_child_preset' value='{$form_child.id}' {if $form_child.preset}checked{/if}>
+            <input type='checkbox' name='form_children[]' value='{$form_child.id}'{if $form_child.checked}checked{/if}>
+            &nbsp;{$form_child.title}{if $form_child.template} ({$form_child.template}){/if}
+        </label>
+    {/foreach}
     </div>
-  <input type="submit" name="{$action}" value="{#s_done#}" class="btn btn-primary"/>
-  <input type="submit" name="{$lastaction}" value="{#s_save#}" class="btn btn-default"/>
-
+    <input type="submit" name="{$action}" value="{#s_done#}" class="btn btn-primary"/>
+    <input type="submit" name="{$lastaction}" value="{#s_save#}" class="btn btn-default"/>
 </form>
 <form action="{url}" method="post" style="display: inline">
   &nbsp;
