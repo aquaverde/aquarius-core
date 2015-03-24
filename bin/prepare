@@ -1,6 +1,0 @@
-#!/bin/sh
-bin=$(dirname $(readlink -f "$0"))
-(cd "$bin" && [ ! -f composer.phar] && curl -sS https://getcomposer.org/installer | php --install-dir="$bin")
-(cd "$bin/.."; /usr/bin/env php "$bin/composer.phar" install)
-"$bin/compile_adminer"
-"$bin/enable_maintenance"
