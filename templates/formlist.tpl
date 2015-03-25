@@ -38,6 +38,11 @@
                     {else}
                         ―
                     {/if}
+                    {if $detail.count.forminherit}
+                        <a href="{url action1=$detail.example.forminherit action2=$lastaction}">{$detail.count.forminherit}</a>
+                    {else}
+                        ―
+                    {/if}
 				</td>
                 <td>
                     <div class="dropdown pull-right">

@@ -21,12 +21,15 @@ class action_formlist extends AdminAction implements DisplayAction {
                 min(chosenchild.id) as nodechild_example, 
                 min(chosencont.id) as nodecont_example,
                 count(distinct chosenform.id) as formchild_count,
-                min(chosenform.parent_id) as formchild_example
+                min(chosenform.parent_id) as formchild_example,
+                count(distinct inheritform.child_id) as forminherit_count,
+                min(inheritform.child_id) as forminherit_example
             FROM form
             LEFT JOIN node applied ON form.id = applied.form_id
             LEFT JOIN node chosenchild ON form.id = chosenchild.childform_id
             LEFT JOIN node chosencont ON form.id = chosencont.contentform_id
             LEFT JOIN form_child chosenform ON form.id = chosenform.child_id
+            LEFT JOIN form_inherit inheritform ON form.id = inheritform.parent_id
             GROUP BY form_id
             ORDER BY form.title;
         ') as $formdesc) {
@@ -41,11 +44,13 @@ class action_formlist extends AdminAction implements DisplayAction {
                     'node' => $formdesc['applied_count'],
                     'nodechild' => $formdesc['nodechild_count'],
                     'formchild' => $formdesc['formchild_count'],
+                    'forminherit' => $formdesc['forminherit_count'],
                 ),
                 'example' => array(
                     'node' => $formdesc['applied_example'] ? Action::make('node', 'editprop', $formdesc['applied_example']) : false,
                     'nodechild' => $nodechild_examples ? Action::make('node', 'editprop', min($nodechild_examples)) : false,
-                    'formchild' => $formdesc['formchild_example'] ? Action::make('formedit', 'edit', $formdesc['formchild_example']) : false
+                    'formchild' => $formdesc['formchild_example'] ? Action::make('formedit', 'edit', $formdesc['formchild_example']) : false,
+                    'forminherit' => $formdesc['forminherit_example'] ? Action::make('formedit', 'edit', $formdesc['forminherit_example']) : false
                 ),
             );
         }
