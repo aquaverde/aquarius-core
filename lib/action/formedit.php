@@ -4,10 +4,9 @@
     save: saves changes to the form
 */
 
-class action_formedit extends AdminAction { 
-    
+class action_formedit extends AdminAction {
     var $props = array("class", "command", "id");
-    
+
     /** permits superadmin */
     function permit_user($user) {
       return $user->isSuperadmin();
@@ -54,14 +53,14 @@ class action_formedit_edit extends action_formedit implements DisplayAction {
             $selections[$selection->fieldgroup_selection_id] = $selection->name;
         }
         $smarty->assign('fieldgroup_selections', $selections);
-        
+
         $smarty->assign('form_children', $aquarius->db->queryhash("
             SELECT f.id, f.title, template, fc.preset AS preset
             FROM form f
             JOIN form_child fc ON f.id = fc.child_id AND fc.parent_id = ?
             ORDER BY f.title
         ", array($form->id)));
-        
+
         $smarty->assign('form_inherited', $aquarius->db->queryhash("
             SELECT f.id, f.title, template
             FROM form f
@@ -81,6 +80,7 @@ class action_formedit_edit extends action_formedit implements DisplayAction {
         $result->use_template("formedit.tpl");
     }
 }
+
 
 class action_formedit_save extends action_formedit implements ChangeAction {
     function process($aquarius, $post, $result) {
@@ -126,15 +126,13 @@ class action_formedit_save extends action_formedit implements ChangeAction {
                     if ($val === false) throw new Exception("Expected val '$prop' for field $id not in REQUEST");
                     $field->$prop = $val;
                 }
-                
-                
-                
+
                 // Special handling for checkboxes
                 $field->multi                = get($data, 'multi', 0);
                 $field->language_independent = get($data, 'language_independent', 0);
                 $field->add_to_title         = get($data, 'add_to_title', 0);
                 $active                      = get($data, 'active');
-                
+
                 // Field names must conform to PHP variable naming standards
                 if ($active && !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $field->name)) {
                     // Remove invalid characters from field name, we presume they were accidentally entered and undesired.
@@ -147,7 +145,7 @@ class action_formedit_save extends action_formedit implements ChangeAction {
                     $result->add_message(new FixedTranslation("Invalid field name '$field->name' changed to '$clean_name'"));
                     $field->name = $clean_name;
                 }
-                
+
                 // save new permission_level
                 $field->permission_level = get($data, 'permission_level', 2);
 
