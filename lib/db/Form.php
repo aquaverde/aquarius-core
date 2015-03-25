@@ -111,7 +111,37 @@ class db_Form extends DB_DataObject
         }
         return $form_children;
     }
+
+    function field_parents() {
+        $link = DB_DataObject::factory('form_inherit');
+        $link->child_id = $this->id;
+
+        $link->find();
+        $field_parents = array();
+        while($link->fetch()) {
+            $field_parent = DB_DataObject::factory('form');
+            $found = $field_parent->get($link->parent_id);
+            if ($found) $field_parents []= $field_parent;
+        }
+
+        return $field_parents;
+    }
     
+    function field_children() {
+        $link = DB_DataObject::factory('form_inherit');
+        $link->parent_id = $this->id;
+
+        $link->find();
+        $field_children = array();
+        while($link->fetch()) {
+            $field_child = DB_DataObject::factory('form');
+            $found = $field_child->get($link->child_id);
+            if ($found) $field_children []= $field_child;
+        }
+
+        return $field_children;
+    }
+
     function preset_child() {
         $form_child = DB_DataObject::factory('form_child');
         $form_child->parent_id = $this->id;
@@ -122,6 +152,75 @@ class db_Form extends DB_DataObject
         } else {
             $available = $this->child_forms();
             return array_shift($available);
+        }
+    }
+
+
+    /** Develop plan to update inherited fields */
+    function plan_reform() {
+        $own_fields = $this->get_fields();
+        $seen_fields = array();
+        $add = array();
+        $update = array();
+        $reset = array();
+        $remove = array();
+        $conflicting = array();
+        foreach($this->field_parents() as $field_parent) {
+            $parents_fields = $field_parent->get_fields();
+            foreach($parents_fields as $parents_field) {
+                $conflict_form = get($seen_fields, $parents_field->name);
+                if ($conflict_form) {
+                   $conflicting[$parents_field->name] = array($conflict_form, $field_parent);
+                   continue;
+                }
+                $seen_fields[$parents_field->name] = $field_parent;
+                $parents_field->form_id = $this->id;
+                $parents_field->inherited = true;
+                if (!isset($own_fields[$parents_field->name])) {
+                    $parents_field->id = null;
+                    $add[$parents_field->name] = $parents_field;
+                } else {
+                    $existing_field = $own_fields[$parents_field->name];
+                    $parents_field->id = $existing_field->id;
+                    if ($existing_field->inherited) {
+                        $diff = $existing_field->diff($parents_field);
+                        if ($diff) {
+                            foreach($diff as $key => $oldnew) {
+                                $existing_field->$key = $oldnew[1];
+                            }
+                            $update[$existing_field->name] = $existing_field;
+                        }
+                    } else {
+                        $reset[$parents_field->name] = $parents_field;
+                    }
+                }
+            }
+        }
+
+        foreach($own_fields as $own_field) {
+            if ($own_field->inherited && !isset($seen_fields[$own_field->name])) {
+                $remove[$own_field->name] = $own_field;
+            }
+        }
+
+        return compact('add', 'update', 'reset', 'remove', 'conflicting');
+    }
+
+
+    /** Apply reform plan */
+    function reform($plan) {
+        Cache::clean(); // shoudln't be here
+        foreach($plan['add'] as $field) {
+            $field->insert();
+        }
+        foreach($plan['update'] as $field) {
+            $field->update();
+        }
+        foreach($plan['reset'] as $field) {
+            $field->update();
+        }
+        foreach($plan['remove'] as $field) {
+            $field->delete();
         }
     }
 

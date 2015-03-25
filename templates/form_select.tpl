@@ -19,6 +19,7 @@
     {/foreach}
     </ul>
     </div>
+    {if $reset_option}<label><input type='checkbox' name='reset' value='of course'> Reset overrides</label>{/if}
     <input type="submit" name="" value="{#s_done#}" class="btn btn-primary"/>
     <input type="submit" name="{$lastaction}" value="{#s_save#}" class="btn btn-default"/>
 </form>

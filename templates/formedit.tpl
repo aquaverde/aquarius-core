@@ -55,7 +55,7 @@ html, body {height: 95%} body {max-width: none;}
         <div class="inline-item">
             inheriting from
             <ul>
-            {foreach $form_inherited as $form_child}
+            {foreach $forms_inherited as $form_child}
                 <li>{$form_child.title}</li>
             {/foreach}
             </ul>
@@ -81,7 +81,7 @@ html, body {height: 95%} body {max-width: none;}
             <th>sup4 <div>varchar</div></th>
         </tr>
 {foreach from=$fields item=field}
-        <tr>
+        <tr {if $field->override}style="background-color: pink"{else}{if !$field->inherited and !$field->new}style="background-color: #9f9"{/if}{/if}>
           <td><input class="checkbox" type="checkbox" id="field_{$field->id}_active" name="field[{$field->id}][active]"  value="1" {if $field->id|is_numeric}checked="checked"{/if}/></td>
           <td><input type="text" class="form-control" name="field[{$field->id}][name]" value="{$field->name|escape}" onChange="var field_active = document.getElementById('field_{$field->id}_active'); field_active.checked = this.value.length > 0;"/></td>
           <td><input type="text" class="form-control" name="field[{$field->id}][description]" value="{$field->description|escape}" title="{if $field->description}{else}{formfield_title f=$field}&nbsp;{/if}" placeholder="{formfield_title f=$field}"/></td>

@@ -21,6 +21,66 @@ class action_formedit extends AdminAction {
         }
         return $form;
     }
+    
+    function reform($form, $reset, $result, $seen = array()) {
+        if (isset($seen[$form->id])) {
+            // Warn about a dumb idea
+            $message = new AdminMessage('warn');
+            $message->add_html("Forms ".join(', ', $seen)." are parts of a cycle and inherit their own fields. This is bad.");
+            $result->add_message($message);
+            return;
+        }
+        $seen[$form->id] = $form;
+        
+        $plan = $form->plan_reform();
+        
+        $suppressed_reset = false;
+        if (!$reset) {
+            $suppressed_reset = $plan['reset'];
+            $plan['reset'] = array();
+        }
+        $form->reform($plan);
+        
+        $message = new AdminMessage('info');
+        $message->add_html("Form $form");
+        $show = false;
+        if ($plan['add']) {
+            $message->add_html("Inherit ".count($plan['add'])." fields: ".join(', ', array_keys($plan['add'])));
+            $show = true;
+        }
+        if ($plan['update']) {
+            $message->add_html("Updat ".count($plan['update'])." fields: ".join(', ', array_keys($plan['update'])));
+            $show = true;
+        }
+        if ($plan['reset']) {
+            $message->add_html("Reset ".count($plan['reset'])." fields: ".join(', ', array_keys($plan['reset'])));
+            $show = true;
+        }
+        if ($suppressed_reset) {
+            $message->add_html(count($suppressed_reset)." fields currently overridden: ".join(', ', array_keys($suppressed_reset)));
+            $show = true;
+        }
+        if ($plan['remove']) {
+            $message->add_html("Remove ".count($plan['remove'])." fields: ".join(', ', array_keys($plan['remove'])));
+            $show = true;
+        }
+
+        if ($show) $result->add_message($message);
+
+        if ($plan['conflicting']) {
+            $message = new AdminMessage('warn');
+            $message->add_html("Form $form");
+            foreach($plan['conflicting'] as $fieldname => $providers) {
+                $message->add_html("Field '$fieldname' is supplied by forms ".join(" and ", $providers));
+            }
+            $result->add_message($message);
+        }
+
+        foreach($form->field_children() as $field_child) {
+            // Reset is not applied recursively
+            $this->reform($field_child, false, $result, $seen);
+        }
+    }
 }
 
 
@@ -29,13 +89,36 @@ class action_formedit_edit extends action_formedit implements DisplayAction {
         $form = $this->load_form();
         $smarty->assign('form', $form);
 
+        // List of forms to inherit fields from
+        $forms_inherited = $aquarius->db->queryhash("
+            SELECT f.id, f.title, template
+            FROM form f
+            JOIN form_inherit fc ON f.id = fc.parent_id AND fc.child_id = ?
+            ORDER BY f.title
+        ", array($form->id));
+        $smarty->assign('forms_inherited', $forms_inherited);
+
         // Load all form fields
         $fields = $form->get_fields();
+        
+        foreach($forms_inherited as $form_inherited) {
+            $iform = DB_DataObject::factory('form');
+            $found = $iform->get($form_inherited['id']);
+            if (!$found) throw new Exception("Unable to load inherited form ".$form_inherited['id']);
+            
+            foreach($iform->get_fields() as $field) {
+                $inherited_field = get($fields, $field->name);
+                if ($inherited_field && !$inherited_field->inherited) {
+                    $inherited_field->override = true;
+                }
+            }
+        }
 
         // Add ten empty fields at the end
         for($i = 0; $i < 5; $i++) {
             $newfield = DB_DataObject::factory('form_field');
             $newfield->id = 'new'.$i;
+            $newfield->new = true;
             $newfield->permission_level=2;
             $fields[] =  $newfield;
         }
@@ -61,12 +144,6 @@ class action_formedit_edit extends action_formedit implements DisplayAction {
             ORDER BY f.title
         ", array($form->id)));
 
-        $smarty->assign('form_inherited', $aquarius->db->queryhash("
-            SELECT f.id, f.title, template
-            FROM form f
-            JOIN form_inherit fc ON f.id = fc.parent_id AND fc.child_id = ?
-            ORDER BY f.title
-        ", array($form->id)));
 
         $smarty->assign('formtypes', $aquarius->get_formtypes()->get_formtypes());
 
@@ -108,6 +185,7 @@ class action_formedit_save extends action_formedit implements ChangeAction {
         $maxweight = 0;
         if (is_array($fielddata)) {
             foreach($fielddata as $id => $data) {
+                $original = false;
                 $field = DB_DataObject::factory('form_field');
 
                 // See whether we have to insert it
@@ -117,6 +195,7 @@ class action_formedit_save extends action_formedit implements ChangeAction {
                     $field->form_id = $form->id;
                 } else {
                     if (!$field->get($id)) throw new Exception("Missing form field with id '$id'; it doesn't exist");
+                    $original = clone $field;
                 }
 
                 // Read field properties
@@ -163,6 +242,9 @@ class action_formedit_save extends action_formedit implements ChangeAction {
                     }
                 } else {
                     if ($active) {
+                        // Remove the inherited flag when the field has been modified
+                        if ($original->diff($field)) $field->inherited = false;
+                        
                         $field->update();
                     } else {
                         $field->delete();
@@ -171,6 +253,8 @@ class action_formedit_save extends action_formedit implements ChangeAction {
                 }
             }
         }
+        
+        $this->reform($form, false, $result);
     }
 }
 
@@ -215,6 +299,7 @@ class action_formedit_inherit_edit extends action_formedit implements DisplayAct
         $form = $this->load_form();
         $smarty->assign('title', 'Edit form children for '.$form);
         $smarty->assign('checkboxes', true);
+        $smarty->assign('reset_option', true);
         $smarty->assign('saveaction', Action::make('formedit', 'inherit_save', $form->id));
 
         $smarty->assign('forms', $aquarius->db->queryhash("
@@ -225,6 +310,7 @@ class action_formedit_inherit_edit extends action_formedit implements DisplayAct
             ORDER BY f.title
         ", array($form->id, $form->id)));
 
+        
         $result->use_template("form_select.tpl");
     }
 }
@@ -241,5 +327,7 @@ class action_formedit_inherit_save extends action_formedit implements ChangeActi
             $aquarius->db->query("INSERT INTO form_inherit SET child_id = ?, parent_id = ?", array($form->id, intval($form_child)));
         }
         $aquarius->db->query("COMMIT");
+        
+        $this->reform($form, get($post, 'reset'), $result);
     }
 }
