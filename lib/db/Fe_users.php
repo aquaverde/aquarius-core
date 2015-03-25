@@ -11,8 +11,8 @@ class db_Fe_users extends DB_DataObject
 
     public $__table = 'fe_users';                        // table name
     public $id;                              // int(11)  not_null primary_key auto_increment group_by
-    public $password;                        // varchar(255)  not_null
-    public $name;                            // varchar(100)  not_null
+    public $password;                        // varchar(765)  not_null
+    public $name;                            // varchar(300)  not_null unique_key
     public $active;                          // tinyint(1)  not_null group_by
 
     /* Static get */

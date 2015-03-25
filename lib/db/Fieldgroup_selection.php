@@ -11,7 +11,7 @@ class db_Fieldgroup_selection extends DB_DataObject
 
     public $__table = 'fieldgroup_selection';            // table name
     public $fieldgroup_selection_id;         // int(11)  not_null primary_key auto_increment group_by
-    public $name;                            // varchar(255)  not_null
+    public $name;                            // varchar(765)  not_null
     public $is_standard;                     // tinyint(1)  not_null group_by
 
     /* Static get */

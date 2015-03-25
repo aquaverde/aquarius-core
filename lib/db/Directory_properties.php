@@ -9,8 +9,8 @@ class db_Directory_properties extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'directory_properties';            // table name
-    public $directory_name;                  // varchar(255)  not_null primary_key
-    public $resize_type;                     // char(1)  not_null
+    public $directory_name;                  // varchar(765)  not_null primary_key
+    public $resize_type;                     // char(3)  not_null
     public $max_size;                        // int(5)  group_by
     public $th_size;                         // int(4)  group_by
     public $alt_size;                        // int(4)  group_by

@@ -11,8 +11,8 @@ class db_Modules extends DB_DataObject
 
     public $__table = 'modules';                         // table name
     public $id;                              // int(11)  not_null primary_key auto_increment group_by
-    public $short;                           // varchar(250)  not_null
-    public $name;                            // varchar(250)  not_null
+    public $short;                           // varchar(750)  not_null
+    public $name;                            // varchar(750)  not_null
     public $active;                          // tinyint(1)  not_null group_by
 
     /* Static get */

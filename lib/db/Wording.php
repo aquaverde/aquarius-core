@@ -9,9 +9,9 @@ class db_Wording extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'wording';                         // table name
-    public $lg;                              // char(2)  not_null primary_key
-    public $keyword;                         // varchar(100)  not_null primary_key
-    public $translation;                     // blob(65535)  not_null blob
+    public $lg;                              // char(6)  not_null primary_key
+    public $keyword;                         // varchar(300)  not_null primary_key
+    public $translation;                     // blob(196605)  not_null blob
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Wording',$k,$v); }

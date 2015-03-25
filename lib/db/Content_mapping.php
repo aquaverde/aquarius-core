@@ -13,7 +13,7 @@ class db_Content_mapping extends DB_DataObject
     public $mapping_id;                      // int(11)  not_null multiple_key group_by
     public $attribute_id;                    // int(11)  not_null group_by
     public $id;                              // int(10)  not_null primary_key unsigned auto_increment group_by
-    public $lg;                              // char(2)  not_null
+    public $lg;                              // char(6)  not_null
     public $active;                          // tinyint(1)  not_null group_by
 
     /* Static get */

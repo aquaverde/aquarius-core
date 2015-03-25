@@ -16,7 +16,7 @@ class db_Content extends DB_DataObject
     public $id;                              // int(10)  not_null primary_key unsigned auto_increment group_by
     public $lg;                              // char(6)  
     public $cache_title;                     // varchar(750)  multiple_key
-    public $cache_fields;                    // blob(196605)  blob
+    public $cache_fields;                    // blob(16777215)  blob
     public $active;                          // tinyint(1)  not_null multiple_key group_by
 
     /* Static get */

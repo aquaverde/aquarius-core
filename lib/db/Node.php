@@ -35,8 +35,6 @@ class db_Node extends DB_DataObject
     public $active;                          // tinyint(1)  not_null multiple_key group_by
     public $title;                           // varchar(750)  
     public $cache_active;                    // tinyint(1)  multiple_key group_by
-    public $cache_childform_id;              // int(11)  multiple_key group_by
-    public $cache_contentform_id;            // int(11)  multiple_key group_by
     public $cache_depth;                     // int(11)  multiple_key group_by
     public $cache_box_depth;                 // int(11)  multiple_key group_by
     public $cache_access_restricted_node_id;    // int(11)  multiple_key group_by

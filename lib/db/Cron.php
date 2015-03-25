@@ -9,7 +9,7 @@ class db_Cron extends DB_DataObject
     /* the code below is auto generated do not remove the above tag */
 
     public $__table = 'cron';                            // table name
-    public $type;                            // varchar(250)  not_null primary_key
+    public $type;                            // varchar(750)  not_null primary_key
     public $start_run;                       // bigint(20)  not_null group_by
     public $end_run;                         // bigint(20)  not_null group_by
 

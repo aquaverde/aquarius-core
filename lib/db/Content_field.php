@@ -12,9 +12,8 @@ class db_Content_field extends DB_DataObject
     public $__table = 'content_field';                   // table name
     public $id;                              // int(11)  not_null primary_key auto_increment group_by
     public $content_id;                      // int(11)  not_null multiple_key group_by
-    public $name;                            // varchar(250)  not_null multiple_key
+    public $name;                            // varchar(750)  not_null multiple_key
     public $weight;                          // int(11)  not_null multiple_key group_by
-    public $value;                           // varchar(1)  not_null
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Content_field',$k,$v); }

@@ -10,7 +10,7 @@ class db_Fe_groups extends DB_DataObject
 
     public $__table = 'fe_groups';                       // table name
     public $id;                              // int(11)  not_null primary_key auto_increment group_by
-    public $name;                            // varchar(100)  not_null
+    public $name;                            // varchar(300)  not_null
     public $active;                          // tinyint(1)  not_null group_by
 
     /* Static get */
