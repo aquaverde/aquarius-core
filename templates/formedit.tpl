@@ -43,23 +43,19 @@ html, body {height: 95%} body {max-width: none;}
         </div>
         
         <div class="inline-item">
-            children types
-            <ul>
-            {foreach $form_children as $form_child}
-                <li {if $form_child.preset}style="font-weight: bold;"{/if}>{$form_child.title}</li>
+            <label style="min-width:150px;display:block;float:left;">Children types</label>
+            <a href="{url action="formedit:children_edit:`$form->id`" action1=$lastaction}" class="btn btn-default btn-xs">Change</a><br>
+            {foreach $form_children as $form_child name=children}
+                <span style="{if $form_child.preset}font-weight: bold;{/if}">{$form_child.title}</span>{if !$smarty.foreach.children.last} &nbsp;|&nbsp; {/if}
             {/foreach}
-            </ul>
-            <a href="{url action="formedit:children_edit:`$form->id`" action1=$lastaction}">Change</a>
         </div>
         
         <div class="inline-item">
-            inheriting from
-            <ul>
-            {foreach $forms_inherited as $form_child}
-                <li>{$form_child.title}</li>
+            <label style="min-width:150px;display:block;float:left;">Inheriting from</label>
+            <a href="{url action="formedit:inherit_edit:`$form->id`" action1=$lastaction}" class="btn btn-default btn-xs">Change</a><br>
+            {foreach $forms_inherited as $form_child name=inherit}
+                {$form_child.title}{if !$smarty.foreach.inherit.last} &nbsp;|&nbsp; {/if}
             {/foreach}
-            </ul>
-            <a href="{url action="formedit:inherit_edit:`$form->id`" action1=$lastaction}">Change</a>
         </div>
     </div>
     <br>
