@@ -24,6 +24,64 @@ class action_formedit extends AdminAction {
     }
 }
 
+
+class action_formedit_edit extends action_formedit implements DisplayAction {
+    function process($aquarius, $request, $smarty, $result) {
+        $form = $this->load_form();
+        $smarty->assign('form', $form);
+
+        // Load all form fields
+        $fields = $form->get_fields();
+
+        // Add ten empty fields at the end
+        for($i = 0; $i < 5; $i++) {
+            $newfield = DB_DataObject::factory('form_field');
+            $newfield->id = 'new'.$i;
+            $newfield->permission_level=2;
+            $fields[] =  $newfield;
+        }
+        $smarty->assign('fields', $fields);
+
+        // Prepare fallthrough options
+        $opts = array('none' => '-none-', 'all' => 'all', 'category' => 'category', 'box' => 'box', 'parent' => 'parent');
+        $smarty->assign('fallthroughoptions', $opts);
+
+        // Prepare fieldgrouping selection
+        $selection = DB_DataObject::factory('fieldgroup_selection');
+        $selection->find();
+        $selections = array(0 => '-none-');
+        while($selection->fetch()) {
+            $selections[$selection->fieldgroup_selection_id] = $selection->name;
+        }
+        $smarty->assign('fieldgroup_selections', $selections);
+        
+        $smarty->assign('form_children', $aquarius->db->queryhash("
+            SELECT f.id, f.title, template, fc.preset AS preset
+            FROM form f
+            JOIN form_child fc ON f.id = fc.child_id AND fc.parent_id = ?
+            ORDER BY f.title
+        ", array($form->id)));
+        
+        $smarty->assign('form_inherited', $aquarius->db->queryhash("
+            SELECT f.id, f.title, template
+            FROM form f
+            JOIN form_inherit fc ON f.id = fc.parent_id AND fc.child_id = ?
+            ORDER BY f.title
+        ", array($form->id)));
+
+        $smarty->assign('formtypes', $aquarius->get_formtypes()->get_formtypes());
+
+        $smarty->assign('permission_levels', db_Users::$status_names);
+
+        $page_requisites = new Page_Requisites();
+        $page_requisites->add_managed_js('jquery.js',          true);
+        $page_requisites->add_managed_js('jquery.labelify.js', true);
+        $smarty->assign('page_requisites', $page_requisites);
+
+        $result->use_template("formedit.tpl");
+    }
+}
+
 class action_formedit_save extends action_formedit implements ChangeAction {
     function process($aquarius, $post, $result) {
         $result->touch_region('content');
@@ -118,77 +176,6 @@ class action_formedit_save extends action_formedit implements ChangeAction {
     }
 }
 
-class action_formedit_edit extends action_formedit implements DisplayAction {
-    function process($aquarius, $request, $smarty, $result) {
-        $form = $this->load_form();
-        $smarty->assign('form', $form);
-
-        // Load all form fields
-        $fields = $form->get_fields();
-
-        // Add ten empty fields at the end
-        for($i = 0; $i < 5; $i++) {
-            $newfield = DB_DataObject::factory('form_field');
-            $newfield->id = 'new'.$i;
-            $newfield->permission_level=2;
-            $fields[] =  $newfield;
-        }
-        $smarty->assign('fields', $fields);
-
-        // Prepare fallthrough options
-        $opts = array('none' => '-none-', 'all' => 'all', 'category' => 'category', 'box' => 'box', 'parent' => 'parent');
-        $smarty->assign('fallthroughoptions', $opts);
-
-        // Prepare fieldgrouping selection
-        $selection = DB_DataObject::factory('fieldgroup_selection');
-        $selection->find();
-        $selections = array(0 => '-none-');
-        while($selection->fetch()) {
-            $selections[$selection->fieldgroup_selection_id] = $selection->name;
-        }
-        $smarty->assign('fieldgroup_selections', $selections);
-        
-        $smarty->assign('form_children', $aquarius->db->queryhash("
-            SELECT f.id, f.title, template, fc.preset AS preset
-            FROM form f
-            JOIN form_child fc ON f.id = fc.child_id AND fc.parent_id = ?
-            ORDER BY f.title
-        ", array($form->id)));
-        
-        $smarty->assign('form_inherited', $aquarius->db->queryhash("
-            SELECT f.id, f.title, template
-            FROM form f
-            JOIN form_inherit fc ON f.id = fc.parent_id AND fc.child_id = ?
-            ORDER BY f.title
-        ", array($form->id)));
-
-        $smarty->assign('formtypes', $aquarius->get_formtypes()->get_formtypes());
-
-        $smarty->assign('permission_levels', db_Users::$status_names);
-
-        $page_requisites = new Page_Requisites();
-        $page_requisites->add_managed_js('jquery.js',          true);
-        $page_requisites->add_managed_js('jquery.labelify.js', true);
-        $smarty->assign('page_requisites', $page_requisites);
-
-        $result->use_template("formedit.tpl");
-    }
-}
-
-
-class action_formedit_children_save extends action_formedit implements ChangeAction {
-    function process($aquarius, $post, $result) {
-        $result->touch_region('content');
-        $form = $this->load_form();
-
-        $aquarius->db->query("START TRANSACTION");
-        $aquarius->db->query("DELETE FROM form_child WHERE parent_id = ?", array($form->id));
-        foreach(get($post, 'checked_forms', array()) as $form_child) {
-            $aquarius->db->query("INSERT INTO form_child SET parent_id = ?, child_id = ?, preset = ?", array($form->id, intval($form_child), get($post, 'selected_form') == $form_child));
-        }
-        $aquarius->db->query("COMMIT");
-    }
-}
 
 class action_formedit_children_edit extends action_formedit implements DisplayAction {
     function process($aquarius, $request, $smarty, $result) {
@@ -210,19 +197,20 @@ class action_formedit_children_edit extends action_formedit implements DisplayAc
 }
 
 
-class action_formedit_inherit_save extends action_formedit implements ChangeAction {
+class action_formedit_children_save extends action_formedit implements ChangeAction {
     function process($aquarius, $post, $result) {
         $result->touch_region('content');
         $form = $this->load_form();
 
         $aquarius->db->query("START TRANSACTION");
-        $aquarius->db->query("DELETE FROM form_inherit WHERE child_id = ?", array($form->id));
+        $aquarius->db->query("DELETE FROM form_child WHERE parent_id = ?", array($form->id));
         foreach(get($post, 'checked_forms', array()) as $form_child) {
-            $aquarius->db->query("INSERT INTO form_inherit SET child_id = ?, parent_id = ?", array($form->id, intval($form_child)));
+            $aquarius->db->query("INSERT INTO form_child SET parent_id = ?, child_id = ?, preset = ?", array($form->id, intval($form_child), get($post, 'selected_form') == $form_child));
         }
         $aquarius->db->query("COMMIT");
     }
 }
+
 
 class action_formedit_inherit_edit extends action_formedit implements DisplayAction {
     function process($aquarius, $request, $smarty, $result) {
@@ -240,5 +228,20 @@ class action_formedit_inherit_edit extends action_formedit implements DisplayAct
         ", array($form->id, $form->id)));
 
         $result->use_template("form_select.tpl");
+    }
+}
+
+
+class action_formedit_inherit_save extends action_formedit implements ChangeAction {
+    function process($aquarius, $post, $result) {
+        $result->touch_region('content');
+        $form = $this->load_form();
+
+        $aquarius->db->query("START TRANSACTION");
+        $aquarius->db->query("DELETE FROM form_inherit WHERE child_id = ?", array($form->id));
+        foreach(get($post, 'checked_forms', array()) as $form_child) {
+            $aquarius->db->query("INSERT INTO form_inherit SET child_id = ?, parent_id = ?", array($form->id, intval($form_child)));
+        }
+        $aquarius->db->query("COMMIT");
     }
 }
