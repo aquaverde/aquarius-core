@@ -17,7 +17,7 @@ class db_Form extends DB_DataObject
     public $show_in_menu;                    // tinyint(1)  not_null multiple_key group_by
     public $fieldgroup_selection_id;         // int(11)  multiple_key group_by
     public $permission_level;                // int(11)  not_null group_by
-    public $content_type;
+    public $content_type;                    // varchar(300)  
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Form',$k,$v); }
@@ -96,12 +96,12 @@ class db_Form extends DB_DataObject
             $newchild->insert();
         }
     }
-    
+
     function child_forms() {
         $form_child = DB_DataObject::factory('form_child');
         $form_child->parent_id = $this->id;
         $form_child->orderBy('preset DESC');
-        
+
         $form_child->find();
         $form_children = array();
         while($form_child->fetch()) {
