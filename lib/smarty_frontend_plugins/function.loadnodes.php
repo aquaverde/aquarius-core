@@ -89,15 +89,13 @@ function smarty_function_loadnodes($params, $smarty) {
 
     // Do not show inactive nodes
     $prefilter = array();
-    if ($smarty->require_active) {
-        $filters []= NodeFilter::create('has_content', $lg);
-        if (get($params, 'include_inactive', false)) {
-            $prefilter = array('inactive_self');
-            $filters []= NodeFilter::create('active_self', $lg);
-        } else {
-            $prefilter = array('inactive');
-            $filters []= NodeFilter::create('active', $lg);
-        }
+    $filters []= NodeFilter::create('has_content', $lg);
+    if (get($params, 'include_inactive', false)) {
+        $prefilter = array('inactive_self');
+        $filters []= NodeFilter::create('active_self', $lg);
+    } else {
+        $prefilter = array('inactive');
+        $filters []= NodeFilter::create('active', $lg);
     }
 
     if ($menu) {
