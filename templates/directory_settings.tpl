@@ -45,18 +45,20 @@
 					{html_radios name="dir_setting[$name][resize_type]" options=$typeOptions
        					selected=$dir.resize_type separator=' '}
 				</td>
-				<td><input type="text" name="dir_setting[{$name}][max_size]" value="{$dir.max_size}" size="5"/></td>
-				<td><input type="text" name="dir_setting[{$name}][th_size]" value="{$dir.th_size}" size="5"/></td>
-				<td><input type="text" name="dir_setting[{$name}][alt_size]" value="{$dir.alt_size}" size="5"/></td>
+				<td><input type="text" class="form-control" name="dir_setting[{$name}][max_size]" value="{$dir.max_size}" size="5"/></td>
+				<td><input type="text" class="form-control" name="dir_setting[{$name}][th_size]" value="{$dir.th_size}" size="5"/></td>
+				<td><input type="text" class="form-control" name="dir_setting[{$name}][alt_size]" value="{$dir.alt_size}" size="5"/></td>
 			</tr>
 		{/foreach}
 		</table>
     {action action="dir_settings:save"}
-		<input type="submit" name="{$action}" value="Save" class="btn btn-primary" />
+		<input type="submit" name="{$action}" value="{#s_save#}" class="btn btn-primary" />
         &nbsp;
     {/action}
 	</form>
-	
+    
+    <br><br>
+    <div class="topbar">
     <form method="post" action="{url action=$lastaction}">
         <h2>{$newdir->get_title()}</h2>
         <label>{#parent_dir#}
@@ -68,9 +70,9 @@
         </label>
         
         <label>{#new_name#}
-            <input type='text' name='dirname' value='' placeholder='{#new_name_placeholder#}'>
+            <input type='text' class="form-control"  name='dirname' value='' placeholder='{#new_name_placeholder#}'>
         </label>
-        <input type="submit" name="{$newdir}" value="Save" class="btn btn-primary" />
+        <input type="submit" name="{$newdir}" value="{#s_save#}" class="btn btn-primary" />
     </form>
-
+    </div>
 {include file="footer.tpl"}

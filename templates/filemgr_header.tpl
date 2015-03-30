@@ -85,15 +85,15 @@
 {if !$isPopup}
     <h3>{#s_directory#}<span class="light"> ({#s_view_th#}: {$dir_props->th_size}px {if $dir_props->alt_size > 0}| Alt: {$dir_props->alt_size}px {/if}| Max: {$dir_props->max_size}px)</span></h3>
 
-    <form name="fileMGR" method="post" action="">
+    <form name="fileMGR" method="post" action="" class="form-inline">
 		<select name="selectedDir" onchange="document.fileMGR.submit()">
 			{html_options values=$availableDirectories output=$availableDirectories selected=$selectedDir}
     	</select>
 
-		&nbsp;{#s_filter#}: <input type="text" name="fileFilter" value="{$fileFilter}" />
-		&nbsp;<input type="submit" name="doFilter" value="{#s_filter_it#}" class="button" />
+		&nbsp;{#s_filter#}: <input type="text" name="fileFilter" value="{$fileFilter}" class="form-control" />
+		&nbsp;<input type="submit" name="doFilter" value="{#s_filter_it#}" class="btn btn-xs" />
 		&nbsp;<input type="button" name="reset" value="{#s_filter_reset#}" 
-			onclick="document.fileMGR.fileFilter.value = ''; document.fileMGR.submit();" class="button" />
+			onclick="document.fileMGR.fileFilter.value = ''; document.fileMGR.submit();" class="btn btn-xs" />
 	</form>
     </div>
 {/if}
