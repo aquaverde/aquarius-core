@@ -3,12 +3,10 @@ class Nodesort {
     
     public $fieldname;
     public $form;
-    private $reverse_numerical_sort;
     public function Nodesort($fieldname, $form) {
         $this->fieldname = $fieldname;
         $this->form = $form;
         $this->sort_reverse = $form->sort_reverse ? -1 : 1;
-        $this->reverse_numerical_sort = (defined('FUGLIX_REVERTED_NUMERICAL_SORT') && FUGLIX_REVERTED_NUMERICAL_SORT)? -1 : 1;
     }
     
     function compare($entry1, $entry2) {
@@ -27,7 +25,7 @@ class Nodesort {
                 if (is_numeric($c1->$fieldname) && is_numeric($c2->$fieldname)) {
                     if (function_exists('bccomp')) {
                         // Compare using arbitrary precision comparison function; scale=6 should cover the precision of your average float
-                        $order = bccomp($c1->$fieldname, $c2->$fieldname, 6) * $this->reverse_numerical_sort;
+                        $order = bccomp($c1->$fieldname, $c2->$fieldname, 6);
                     } else {
                         $order = $c1->$fieldname - $c2->$fieldname;
                     }
