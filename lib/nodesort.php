@@ -2,13 +2,12 @@
 class Nodesort {
     
     public $fieldname;
-    public $form;
-    public function Nodesort($fieldname, $form) {
+    public $reverse;
+    public function __construct($fieldname, $reverse) {
         $this->fieldname = $fieldname;
-        $this->form = $form;
-        $this->sort_reverse = $form->sort_reverse ? -1 : 1;
+        $this->reverse = $reverse ? -1 : 1;
     }
-    
+
     function compare($entry1, $entry2) {
         $fieldname = $this->fieldname;
         $form = $this->form;
@@ -37,6 +36,6 @@ class Nodesort {
                 $order = intval($c1_set) - intval($c2_set);
             }
         }
-        return $order * $this->sort_reverse;
+        return $order * $this->reverse;
     }
 }

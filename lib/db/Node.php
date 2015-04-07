@@ -356,7 +356,7 @@ class db_Node extends DB_DataObject
 
                 // Apparently usort complains when the nodes in the array get changed
                 // We ignore those warnings because they're expected.
-                @usort($children, array(new Nodesort($fieldname,$form), "compare"));
+                @usort($children, array(new Nodesort($fieldname, $form->sort_reverse), "compare"));
             }
         }
     }
