@@ -339,13 +339,11 @@ class db_Node extends DB_DataObject
       * Not only should this be in the content class, it's a bloody mess as well. Enjoy. */
     static function _contentsort(&$children) {
         if (count($children) > 1) {
-             $form = $children[0]->get_form();
+            $form = $children[0]->get_form();
 
             if ($form && strlen($form->sort_by) > 0) {
                 // we can't trust 'sort_by' to be a name
-                $fieldname = preg_replace('/[^A-Za-z0-9_]/', '', $form->sort_by); 
-
-                require_once("lib/nodesort.php");
+                $fieldname = preg_replace('/[^A-Za-z0-9_]/', '', $form->sort_by);
 
                 // Precache content and fields
                 // This is not done because it's faster, but because usort() sometimes gets confused and crashes PHP when the objects in the array change bacause they're caching stuff. (This is a bug, in my opinion.)
