@@ -335,6 +335,7 @@ class db_Node extends DB_DataObject
         return $list;
     }
 
+
     /** Sort (in place) the $children array based on a content field, according to form settings
       * Not only should this be in the content class, it's a bloody mess as well. Enjoy. */
     static function _contentsort(&$children) {
