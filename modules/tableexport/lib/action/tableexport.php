@@ -135,12 +135,13 @@ class Action_Tableexport_exportdown extends action_tableexport implements SideAc
             header('Content-type: text/csv; charset=utf-8');
             header('Content-Disposition: attachment; filename="'.TABLEEXPORT_FILENAME.'"');
             $bookings = DB_DataObject::factory(TABLEEXPORT_TABLE);
+            $bookings->find();
 
             $out = fopen("php://output", "w");
 
             $columns = array_keys($bookings->table());
             aqua_fputcsv($out, $columns);
-
+            
             while($bookings->fetch()) {
                 aqua_fputcsv($out, $bookings->toArray());
             }
