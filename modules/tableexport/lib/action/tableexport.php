@@ -132,18 +132,27 @@ class Action_Tableexport_exportdown extends action_tableexport implements SideAc
     var $props = array('class', 'op');
     function process($aquarius, $get) {
             ob_clean();
-            header('Content-type: text/csv; charset=utf-8');
+            $latin1 = $this->module->conf('latin1');
+            $delimiter = $this->module->conf('delimiter');
+            header('Content-type: text/csv'.($latin1 ? '' : '; charset=utf-8'));
             header('Content-Disposition: attachment; filename="'.TABLEEXPORT_FILENAME.'"');
+
             $bookings = DB_DataObject::factory(TABLEEXPORT_TABLE);
             $bookings->find();
 
             $out = fopen("php://output", "w");
 
             $columns = array_keys($bookings->table());
-            aqua_fputcsv($out, $columns);
-            
+            aqua_fputcsv($out, $columns, $delimiter);
+
             while($bookings->fetch()) {
-                aqua_fputcsv($out, $bookings->toArray());
+                $fields = $bookings->toArray();
+                if ($latin1) {
+                    $fields = array_map(function($field) {
+                        return iconv("UTF-8", "ISO-8859-1//TRANSLIT", $field);
+                    }, $fields);
+                }
+                aqua_fputcsv($out, $fields, $delimiter);
             }
     }
 }
