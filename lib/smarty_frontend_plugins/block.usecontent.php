@@ -16,14 +16,14 @@
   *   {/usecontent}
   * {/list}
   */
-function smarty_block_usecontent($params, $content, &$smarty, &$repeat) {
+function smarty_block_usecontent($params, $block_content, $smarty, &$repeat) {
     static $replace_stack = array(); // Stack containing the replaced values
-    
+
     if ($repeat) {
         /* Start of block */
         $load = true;
         $reason = false;
-        
+
         // Load node and content
         $nodestr = get($params, 'node');
         $node = db_Node::get_node($nodestr);
@@ -81,5 +81,6 @@ function smarty_block_usecontent($params, $content, &$smarty, &$repeat) {
         /* End of block */
         $smarty->tpl_vars = array_pop($replace_stack); // HACK back
     }
-    return $content;
+
+    return $block_content;
 }
