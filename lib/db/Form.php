@@ -320,7 +320,7 @@ class Form_Reform_Plan {
 
         if (isset($this->registered[$name])) {
             $seen_in = $this->origin[$name];
-            if ($seen_in == $form) return false; // Ignore merges (due to diamond inheritance), cycles are detected separately
+            if ($seen_in->id == $form->id) return false; // Ignore merges (due to diamond inheritance), cycles are detected separately
 
             if ($conflict) {
                 $this->conflict($name, $seen_in);
