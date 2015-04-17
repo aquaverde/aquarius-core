@@ -159,51 +159,73 @@ class db_Form extends DB_DataObject
     /** Develop plan to update inherited fields */
     function plan_reform() {
         $own_fields = $this->get_fields();
-        $seen_fields = array();
-        $add = array();
-        $update = array();
-        $reset = array();
-        $remove = array();
-        $conflicting = array();
+
+        $reps = array($this->id => $this);
+        $plans = array();
         foreach($this->field_parents() as $field_parent) {
-            $parents_fields = $field_parent->get_fields();
-            foreach($parents_fields as $parents_field) {
-                $conflict_form = get($seen_fields, $parents_field->name);
-                if ($conflict_form) {
-                   $conflicting[$parents_field->name] = array($conflict_form, $field_parent);
-                   continue;
-                }
-                $seen_fields[$parents_field->name] = $field_parent;
-                $parents_field->form_id = $this->id;
-                $parents_field->inherited = true;
-                if (!isset($own_fields[$parents_field->name])) {
-                    $parents_field->id = null;
-                    $add[$parents_field->name] = $parents_field;
+            $plans []= $field_parent->plan_reform_inherit($this, $own_fields, $reps);
+        }
+
+        $plan = Form_Reform_Plan::merge($plans);
+
+        foreach($own_fields as $own_field) {
+            if ($own_field->inherited && $plan->unregistered($own_field->name)) {
+                $plan->remove($own_field);
+            }
+        }
+
+        return $plan->flat();
+    }
+
+    function plan_reform_inherit($target_form, $present_fields, $reps) {
+        $plan = new Form_Reform_Plan($this);
+        // Cycle detection
+
+        $cycle = isset($reps[$this->id]);
+        $reps[$this->id] = $this;
+
+        if ($cycle) {
+            $plan->cycle($reps);
+            return $plan;
+        }
+
+        $parents_fields = $this->get_fields();
+        foreach($parents_fields as $parents_field) {
+            if (!$parents_field->inherited) {
+                $name = $parents_field->name;
+                $inherited_field = clone $parents_field;
+                $inherited_field->inherited = true;
+                $inherited_field->form_id = $target_form->id;
+                if (!isset($present_fields[$name])) {
+                    $inherited_field->id = null;
+                    $plan->add($inherited_field);
                 } else {
-                    $existing_field = $own_fields[$parents_field->name];
-                    $parents_field->id = $existing_field->id;
+                    $existing_field = $present_fields[$name];
+                    $inherited_field->id = $existing_field->id;
                     if ($existing_field->inherited) {
                         $diff = $existing_field->diff($parents_field);
                         if ($diff) {
-                            foreach($diff as $key => $oldnew) {
-                                $existing_field->$key = $oldnew[1];
-                            }
-                            $update[$existing_field->name] = $existing_field;
+                            // The reference field changed
+                            // Update the inherited version
+                            $plan->update($inherited_field);
+                        } else {
+                            $plan->good($existing_field);
                         }
                     } else {
-                        $reset[$parents_field->name] = $parents_field;
+                        // The field has the same name 
+                        // Provide update that cancels the override
+                        $plan->reset($inherited_field);
                     }
                 }
             }
         }
 
-        foreach($own_fields as $own_field) {
-            if ($own_field->inherited && !isset($seen_fields[$own_field->name])) {
-                $remove[$own_field->name] = $own_field;
-            }
+        $plans = array();
+        foreach($this->field_parents() as $field_parent) {
+            $plans []= $field_parent->plan_reform_inherit($target_form, $present_fields, $reps);
         }
 
-        return compact('add', 'update', 'reset', 'remove', 'conflicting');
+        return Form_Reform_Plan::merge($plans, $plan);
     }
 
 
@@ -226,5 +248,136 @@ class db_Form extends DB_DataObject
 
     function __toString() {
         return "'".$this->title."' (".$this->id.")";
+    }
+}
+
+class Form_Reform_Plan {
+    var $origin = array();
+    var $registered = array();
+    var $fields = array(
+            'good' => array(),
+            'add' => array(),
+            'update' => array(),
+            'reset' => array(),
+            'remove' => array()
+        );
+    var $conflicting = array();
+    var $cycles = array();
+
+    function __construct($form) {
+        $this->form = $form;
+    }
+
+    // The field needs no alteration
+    function good($field, $form = false) {
+        if ($this->register($field->name, true, $form)) {
+            $this->fields['good'][$field->name] = $field;
+        }
+    }
+
+    // The field must be added
+    function add($field, $form = false) {
+        if ($this->register($field->name, true, $form)) {
+            $this->fields['add'][$field->name] = $field;
+        }
+    }
+
+    //The field must be updated
+    function update($field, $form = false) {
+        if ($this->register($field->name, true, $form)) {
+            $this->fields['update'][$field->name] = $field;
+        }
+    }
+
+    // The field is overridden and can be reset
+    function reset($field, $form = false) {
+        if ($this->register($field->name, false, $form)) {
+            $this->fields['reset'][$field->name] = $field;
+        }
+    }
+
+    // The field is not present
+    function remove($field, $form = false) {
+        if ($this->register($field->name, false, $form)) {
+            $this->fields['remove'][$field->name] = $field;
+        }
+    }
+
+    function conflict($name, $new_conflicting) {
+        if (!isset($this->conflicting[$name])) {
+            $this->conflicting[$name] = array();
+        }
+        $this->conflicting[$name][$new_conflicting->id] = $new_conflicting;
+    }
+
+    function cycle($forms) {
+        $this->cycles []= $forms;
+    }
+
+    function register($name, $conflict = true, $form = false) {
+        if (!$form) $form = $this->form;
+        if (!$form) throw new Exception("Cannot register $name because form was not specified");
+
+        if (isset($this->registered[$name])) {
+            $seen_in = $this->origin[$name];
+            if ($seen_in == $form) return false; // Ignore merges (due to diamond inheritance), cycles are detected separately
+
+            if ($conflict) {
+                $this->conflict($name, $seen_in);
+                $this->conflict($name, $form);
+            }
+            return false;
+        } else {
+            $this->registered[$name] = true;
+            $this->origin[$name] = $form;
+            return true;
+        }
+    }
+
+    function unregistered($name) {
+        return !isset($this->registered[$name]);
+    }
+
+    function flat() {
+        $fields = $this->fields;
+        $fields['conflicting'] = $this->conflicting;
+        $fields['cycles'] = $this->cycles;
+
+        return $fields;
+    }
+
+    // Combine plans into a bigger plan
+    //
+    // Field updates are merged by method with 'good' ones first. This avoids
+    // oscillating updates over conflicting fields.
+    //
+    // If a master plan is provided, the other plans are merged into that one
+    // discarding any conflicts they may cause.
+    //
+    static function merge($plans, $master = false) {
+        if ($master) {
+            $new = clone $master;
+            $masterconflicts = $master->conflicting;
+        } else {
+            $new = new self(false);
+        }
+
+        foreach(array('good', 'reset', 'update', 'add', 'remove') as $method) {
+            foreach($plans as $plan) {
+                foreach($plan->fields[$method] as $field) {
+                    $new->$method($field, $plan->origin[$field->name]);
+                }
+            }
+        }
+
+        if ($master) {
+            $new->conflicting = $masterconflicts;
+        }
+
+        foreach($plans as $plan) {
+            $new->cycles = array_merge($new->cycles, $plan->cycles);
+        }
+
+        return $new;
     }
 }

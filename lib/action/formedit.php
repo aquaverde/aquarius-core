@@ -21,35 +21,37 @@ class action_formedit extends AdminAction {
         }
         return $form;
     }
-    
-    function reform($form, $reset, $result, $seen = array()) {
-        if (isset($seen[$form->id])) {
+
+    function reform($form, $reset, $result) {
+        $plan = $form->plan_reform();
+
+        if ($plan['cycles']) {
             // Warn about a dumb idea
             $message = new AdminMessage('warn');
-            $message->add_html("Forms ".join(', ', $seen)." are parts of a cycle and inherit their own fields. This is bad.");
+            foreach($plan['cycles'] as $cycle) {
+                $message->add_html("Forms ".join(', ', $cycle)." are parts of a cycle and inherit their own fields. Their fields will not be updated until the cycle is broken");
+            }
             $result->add_message($message);
+
             return;
         }
-        $seen[$form->id] = $form;
-        
-        $plan = $form->plan_reform();
-        
+
         $suppressed_reset = false;
         if (!$reset) {
             $suppressed_reset = $plan['reset'];
             $plan['reset'] = array();
         }
         $form->reform($plan);
-        
+
         $message = new AdminMessage('info');
         $message->add_html("Form $form");
         $show = false;
         if ($plan['add']) {
-            $message->add_html("Inherit ".count($plan['add'])." fields: ".join(', ', array_keys($plan['add'])));
+            $message->add_html("Inherited ".count($plan['add'])." fields: ".join(', ', array_keys($plan['add'])));
             $show = true;
         }
         if ($plan['update']) {
-            $message->add_html("Updat ".count($plan['update'])." fields: ".join(', ', array_keys($plan['update'])));
+            $message->add_html("Updated ".count($plan['update'])." fields: ".join(', ', array_keys($plan['update'])));
             $show = true;
         }
         if ($plan['reset']) {
@@ -61,7 +63,7 @@ class action_formedit extends AdminAction {
             $show = true;
         }
         if ($plan['remove']) {
-            $message->add_html("Remove ".count($plan['remove'])." fields: ".join(', ', array_keys($plan['remove'])));
+            $message->add_html("Removed ".count($plan['remove'])." fields: ".join(', ', array_keys($plan['remove'])));
             $show = true;
         }
 
@@ -78,7 +80,7 @@ class action_formedit extends AdminAction {
 
         foreach($form->field_children() as $field_child) {
             // Reset is not applied recursively
-            $this->reform($field_child, false, $result, $seen);
+            $this->reform($field_child, false, $result);
         }
     }
 }
