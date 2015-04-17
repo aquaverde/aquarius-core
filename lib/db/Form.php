@@ -170,7 +170,7 @@ class db_Form extends DB_DataObject
 
         foreach($own_fields as $own_field) {
             if ($own_field->inherited && $plan->unregistered($own_field->name)) {
-                $plan->remove($own_field);
+                $plan->remove($own_field, $this);
             }
         }
 
