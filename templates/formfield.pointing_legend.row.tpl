@@ -4,7 +4,7 @@
             type='button'
             name=''
             value='{$field.popup_action->get_title()}'
-            class='button'
+            class='btn btn-default btn-xs'
             onclick='open_attached_popup("{$simpleurl->with_param($field.popup_action)}&amp;selected="+$("{$field.htmlid}_{$fileval.myindex}_selected").value + "&amp;target_id={$fileval.popupid}" , {$fileval.popupid|json}, "height=450,width=350,status=yes,resizable=yes,scrollbars=yes"); return false;'>{$field.popup_action->get_title()}
         </button>
     </td>
@@ -19,11 +19,11 @@
         </div>
         <div style="float:right;">
             <input type="hidden" id="{$field.htmlid}_{$fileval.myindex}_selected" name="{$field.formname}" value="{$fileval.node->id}" />
-            Text&nbsp;<input type="text" class="ef" style="margin:0 3px; width:250px;" name="{$field.formname2}" value="{$fileval.legend|escape}"/>
+            <input type="text" class="form-control" placeholder="Text"  style="width:250px;" name="{$field.formname2}" value="{$fileval.legend|escape}"/>
         </div>
     </td>
 
-    <td style="width:19px;">
+    <td width="25" align="center">
         
         <button 
             type='button' 
@@ -34,7 +34,7 @@
             alt="{#s_delete#}" 
             onclick="remove_pointing_legend('{$field.htmlid}_{$fileval.myindex}','{$field.htmlid}');">
 			    
-			    <img style="padding-left:1px;" src='buttons/delete.gif' />
+			    <span class="glyphicon glyphicon-trash"></span>
 		
 		</button>
 
@@ -43,7 +43,8 @@
     <td width="30"  align="center">
         <input type="hidden" class="inputweight" style="margin:0" name="{$field.formname3}" value="{$fileval.weight}" id="{$field.htmlid}_{$fileval.myindex}_weight"/>
         <button type='button' class='imagebutton' id="{$field.htmlid}_{$fileval.myindex}_move_row" title="{#s_move#}" alt="{#s_move#}">
-            <img src='buttons/drag.gif' />
+            <span class="glyphicon glyphicon-move" title="" data-original-title="{#s_move#}"></span>
         </button>
     </td>
 </tr>
+

@@ -34,7 +34,7 @@
         {/if}
         {if $change_form}
             {if !$is_super}{#choose_form#}:&nbsp;{/if}
-            <select name="form_id">
+            <select name="form_id" class="form-control input-sm">
                 {strip}
                     <option value="null" class="dim">{#inherited#}</option>
                 {foreach from=$forms item='select_form'}
@@ -44,7 +44,7 @@
                 {/foreach}
                 {/strip}
             </select>
-            <input type="submit" name="{$change_form}" value="{#change_form_submit#}" class="button" />
+            <input type="submit" name="{$change_form}" value="{#change_form_submit#}" class="btn btn-default btn-xs" />
         {/if}
         
         {if $formedit || $change_form}

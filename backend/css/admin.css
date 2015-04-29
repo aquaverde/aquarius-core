@@ -183,6 +183,7 @@ div.topbar img, div.topbar input { vertical-align: middle; }
 #toolbar .btn-link { margin-top: -9px !important;}
 #toolbar .btn.btn-xs { margin-right: 0 !important; margin-top: 2px; font-size:11px !important; }
 .tooltipp, .dropdown { display:inline-block !important;}
+#toolbar select.input-sm { height: 25px;   display: inline-block; height: 23px; line-height: 22px; padding: 0; width: 125px; }
 
 
 /* toolbox */
