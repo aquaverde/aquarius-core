@@ -50,7 +50,7 @@ class Content_Search {
                     ,'start'  => 'int'
                     ,'length' => 'int'
                     ,'lg'     => 'string'
-                    ,'purge'  => 'string'
+                    ,'purge'  => 'string int'
                     );
     }
 

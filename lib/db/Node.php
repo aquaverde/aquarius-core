@@ -117,6 +117,11 @@ class db_Node extends DB_DataObject
         if (is_string($things)) {
             $things = explode(',', $things);
         }
+
+        // Sometimes we get passed a single ID as int
+        if (is_numeric($things)) {
+            $things = array($things);
+        }
         
         // Handle invalid input 
         if (!is_array($things)) {
