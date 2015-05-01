@@ -71,7 +71,7 @@ class action_formedit extends AdminAction {
 
         if ($plan['conflicting']) {
             $message = new AdminMessage('warn');
-            $message->add_html("Form $form");
+            $message->add_html("Conflicting fields provided for form $form");
             foreach($plan['conflicting'] as $fieldname => $providers) {
                 $message->add_html("Field '$fieldname' is supplied by forms ".join(" and ", $providers));
             }
