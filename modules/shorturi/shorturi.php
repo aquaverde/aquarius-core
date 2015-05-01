@@ -100,15 +100,14 @@ class Shorturi_Detection_Step {
 
                         $score = 0;
                         if ($content->lg == $params['lg']) $score += 1;
-                        
                         if ($best_score < $score) {
                             $best = $content;
                             $best_score = $score;
                         }
                     }
                     if ($best) {
-                        $params['current_node'] = $content->get_node();
-                        $params['lg'] = $content->lg;
+                        $params['current_node'] = $best->get_node();
+                        $params['lg'] = $best->lg;
                         return $params;
                     }
                 }
