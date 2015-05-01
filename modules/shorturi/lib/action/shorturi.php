@@ -58,6 +58,31 @@ class action_Shorturi_manage extends action_Shorturi implements DisplayAction {
 
 		$smarty->assign("uris", $redis);
 		$smarty->assign('new_uri', array('id' => ''));
+		
+		$shorturi_content = array();
+		foreach($aquarius->db->queryhash("
+            SELECT content.id content_id, content_field_value.value short
+            FROM node
+            JOIN content ON node.id = content.node_id
+            JOIN content_field ON content.id = content_field.content_id
+            JOIN content_field_value ON content_field.id = content_field_value.content_field_id
+            JOIN form ON node.form_id = form.id
+            JOIN form_field ON form.id = form_field.form_id
+            WHERE form_field.type = 'shorturi' 
+              AND form_field.name = content_field.name
+            ORDER BY content_field_value.value
+        ") as $shorturi) {
+            $content = DB_DataObject::factory('content');
+            if (!$content->get($shorturi['content_id'])) continue;
+
+            $node = $content->get_node();
+            $shorturi_content[$shorturi['short']] []= array(
+                'edit' => Action::make('contentedit', 'edit', $content->node_id, $content->lg),
+                'title' => $content->get_title()
+            );
+        }
+        $smarty->assign('shorturi_content', $shorturi_content);
+
 		$result->use_template("manage.tpl");
 	
 	}

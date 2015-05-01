@@ -1,5 +1,6 @@
 Shorturi					= "Weiterleitungen"
 shorturi_menu				= "Weiterleitungen"
+shorturi_in_content     = "Kurze URI in Inhalten"
 
 shorturi_manage				= "Weiterleitungen bearbeiten"
 
@@ -8,3 +9,6 @@ keyword						= "Begriff"
 to_url						= "Link"
 
 save						= "Speichern"
+
+formtype_shorturi = "Kurze URI"
+

@@ -1,5 +1,6 @@
 <?php 
 /** Redirections based on keywords in URI
+  * 
   * Example:
   *
   * $config['shorturi']['redirections'] = array(
@@ -14,9 +15,10 @@
   * 'http://www.my.example/shiny') would work in theory, but in practice
   * due to the current .htaccess setup only requests containing the language
   * code are received.
+  * 
   *  */
 class Shorturi extends Module {
-    var $register_hooks = array('menu_init', 'smarty_config', 'smarty_config_backend', 'smarty_config_frontend', 'frontend_extend_node_detection');
+    var $register_hooks = array('menu_init', 'smarty_config', 'smarty_config_backend', 'smarty_config_frontend', 'frontend_extend_node_detection', 'init_form');
     var $short          = "shorturi" ;
     var $name           = "URI shortcut redirection" ;
 
@@ -43,6 +45,11 @@ class Shorturi extends Module {
         $node_detection->add_step('urltitle', array($detector, 'detect_shortcuts'), 'after', 'urltitle');
     }
 
+
+    function init_form($formtypes) {
+        // Add the shorturi field
+        $formtypes->add_formtype(new Formtype_Urltitle('shorturi', 'urltitle'));
+    }
 }
 
 class Shorturi_Detection_Step {
@@ -68,7 +75,44 @@ class Shorturi_Detection_Step {
 
                 $shortcut = first($path_parts);
                 Log::debug("Looking for shortcut name '$shortcut'");
-                
+
+                global $aquarius;
+                $matching_content = $aquarius->db->listquery("
+                    SELECT DISTINCT content.id
+                    FROM node
+                    JOIN content ON node.id = content.node_id
+                    JOIN content_field ON content.id = content_field.content_id
+                    JOIN content_field_value ON content_field.id = content_field_value.content_field_id
+                    JOIN form ON node.form_id = form.id
+                    JOIN form_field ON form.id = form_field.form_id
+                    WHERE form_field.type = 'shorturi' 
+                    AND form_field.name = content_field.name
+                    AND content_field_value.value COLLATE utf8_general_ci = ?
+                ", array($shortcut));
+
+                if ($matching_content) {
+                    $best = false;
+                    $best_score = -1;
+                    foreach($matching_content as $content_id) {
+                        $content = DB_DataObject::factory('content');
+                        $loaded = $content->get($content_id);
+                        if (!$loaded) continue; // it did WHAT?
+
+                        $score = 0;
+                        if ($content->lg == $params['lg']) $score += 1;
+                        
+                        if ($best_score < $score) {
+                            $best = $content;
+                            $best_score = $score;
+                        }
+                    }
+                    if ($best) {
+                        $params['current_node'] = $content->get_node();
+                        $params['lg'] = $content->lg;
+                        return $params;
+                    }
+                }
+
                 $shorturi_search            = DB_DataObject::factory("shorturi");
                 $shorturi_search->domain    = substr($params['uri']->host,4);
                 $shorturi_search->keyword   = mb_strtolower($shortcut);
@@ -78,7 +122,7 @@ class Shorturi_Detection_Step {
                     return array('redirect' => $shorturi_search->redirect);
                 }
 
-                $shorturi_search            = DB_DataObject::factory("shorturi");                
+                $shorturi_search            = DB_DataObject::factory("shorturi");
                 $shorturi_search->keyword   = mb_strtolower($shortcut);
                 $shorturi_search->whereAdd("`domain` = ''");
 

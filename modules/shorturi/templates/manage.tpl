@@ -26,13 +26,23 @@
     </tr>
 
 </table>
-
-
 <button type="submit" name="save_button" class="btn btn-primary">{#save#}</button>
-
-
-
 </form>
+
+
+{if $shorturi_content}
+<div style="margin-top: 2em">
+    <h2>{#shorturi_in_content#}</h2>
+    <table class="table">
+    {foreach $shorturi_content as $matches}
+        <tr>
+            <td>{$matches@key|escape}</td>
+            <td>{foreach $matches as $match}{actionlink action=$match.edit title=$match.title}{if !$match@last}, {/if}{/foreach}</td>
+        </tr>
+    {/foreach}
+    </table>
+<div>
+{/if}
 
 
 {include file='footer.tpl'}
