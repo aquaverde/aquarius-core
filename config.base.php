@@ -115,6 +115,15 @@ $config['frontend']['loadcontent'] = false;
 /* Automagically escape every variable in templates */
 $config['frontend']['smarty']['auto_escape'] = false;
 
+/* Merge includes into one compiled template
+ * In smarty 3.1, you can either have dynamic templates like
+ * {include file=$file} or use {block} inheritance. The default is {block}
+ * inheritance. If you want dynamic includes set this to false, then use
+ * the inline parameter ({include file=include_with_block.tpl inline}) if there
+ * are blocks in your includes.
+ * */
+$config['frontend']['smarty']['merge_includes'] = true;
+
 /* Enable caching of template output.
  * This is generally a very good idea. */
 $config['frontend']['cache']['templates'] = true;

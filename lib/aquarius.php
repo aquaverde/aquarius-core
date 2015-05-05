@@ -406,6 +406,8 @@ class Aquarius {
         $smarty->uri = $this->frontend_uri_constructor();
         $smarty->uri->lg = $lg;
 
+        $smarty->inheritance_merge_compiled_includes = $this->conf('frontend/smarty/merge_includes');
+
         if ($node) {
             $form = $node->get_form();
             $content = $node->get_content($lg);
