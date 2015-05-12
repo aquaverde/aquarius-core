@@ -9,7 +9,8 @@ class Maps_Presets {
             'name' => 'default',
             'selection_name' => 'default',
             'icon' => '/interface/marker.png',
-            'size' => array(45,45)
+            'size' => array(45,45),
+            'anchor' => array(0,0)
     );
     
     function __construct($api_key, $position, $polyline, $markers_in, $marker_classes) {
