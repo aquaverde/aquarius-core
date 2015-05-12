@@ -1,9 +1,8 @@
 <?php
-class Dynform extends Module 
-{
+class Dynform extends Module {
     var $register_hooks = array('menu_init', 'smarty_config', 'smarty_config_backend', 'smarty_config_frontend', 'contentedit_addon', 'node_copy', 'node_delete') ;
     var $short = "dynform" ;
-    var $name  = "Dynform Modul" ;
+    var $name  = "Dynform Module" ;
 
     function menu_init($menu, $lg) 
     {
@@ -372,7 +371,7 @@ class Dynform extends Module
             $target_email = $content->target_email ; 
         }
         
-        // In some places Aquarius erroneously recommends using semiclons to add multiple addresses.
+        // In some places Aquarius erroneously recommends using semicolons to add multiple addresses.
         // We replace those semicolons with commas and tidy up a bit. Yeah yeah, quoted local parts &c not supported.
         $target_email = join(', ', array_map('trim', array_filter(split('[,;]', $target_email))));
         Log::debug("Dynform target_email $target_email");
@@ -391,44 +390,42 @@ class Dynform extends Module
         $found = $dynform->find() ;
         if (!$found) throw new Exception("No dynform for ".$form_node->idstr());
 
-
         $dynform->fetch() ; 
         $blocks = array() ;
-        $dblock = new db_Dynform_block ;
-        $dblock->dynform_id = $dynform->id ; 
-        $dblock->orderBy('weight ASC') ;
-        $dblock->find() ; 
-        while ($dblock->fetch()) {
-            $blocks[] = clone($dblock) ; 
-        }
-        
-        $df_entry = new db_Dynform_entry ; 
-        $df_entry->dynform_id = $dynform->id ; 
-        $df_entry->time = self::toMysqlDatetime($_SERVER['REQUEST_TIME']) ;
-        $df_entry->lg = $lg ; 
-        $df_entry->submitnodetitle = empty($submit_node_name) ? $content->title : $submit_node_name;
-        $df_entry->insert() ; 
-        
-        foreach ($blocks as $block)
-        {
+        $block = new db_Dynform_block ;
+        $block->dynform_id = $dynform->id ; 
+        $block->orderBy('weight ASC') ;
+        $block->find();
+
+        $entry_data = array();
+
+        $missing_fields = array();
+
+        while ($block->fetch()) {
             $fields = array() ; 
-            $dfield = new db_Dynform_field ; 
-            $dfield->block_id = $block->id ; 
-            $dfield->orderBy('weight ASC') ;
-            $dfield->find() ; 
-            while ($dfield->fetch()) {
-                $fields[] = clone($dfield) ; 
-            }
-            
+            $field = new db_Dynform_field ; 
+            $field->block_id = $block->id ; 
+            $field->orderBy('weight ASC') ;
+            $field->find() ;
+
             $mailtxt[] = $DL->get_block_name($block->id, $lg) ; 
             $mailtxt[] = ' ' ; 
-            
-            foreach ($fields as $field)
-            {
-                $ftype = $DL->get_fieldtype_name($field->type) ; 
-                
-                $value = get($post_vars, 'field_'.$field->id, '');
-                    
+
+            while ($field->fetch()) {
+                $ftype = $DL->get_fieldtype_name($field->type);
+                $name = $DL->get_field_name($field->id, $lg);
+
+                $postname = 'field_'.$field->id;
+                $value = trim(get($post_vars, $postname, ''));
+                if ($field->required) {
+                    if (
+                        !isset($post_vars[$postname])
+                     || strlen($value) == 0
+                    ) {
+                        $missing_fields []= $name;
+                    }
+                }
+
                 if ($ftype == "Text") continue ;   // no entries for texts
                 elseif ($ftype == "Email") {
                     if (!$client_email) {
@@ -440,7 +437,7 @@ class Dynform extends Module
                     }
                 } elseif ($ftype == "TargetEmail") {
                    $target_emails = get($this->target_emails($DL->get_field_options($field->id, $lg)), 'emails');
-                   
+
                     if (isset($target_emails[$value])) {
                         $target_email = $target_emails[$value];
                     } else {
@@ -480,7 +477,7 @@ class Dynform extends Module
                         // The dir where the files are stored must be
                         // random so that it can't be guessed.
                         $chars = 8;
-                        
+
                         $rbytes = '';
                         if (function_exists('openssl_random_pseudo_bytes')) {
                             $rbytes = openssl_random_pseudo_bytes($chars);
@@ -519,22 +516,36 @@ class Dynform extends Module
                         }
                     }
                 }
-                $name = $DL->get_field_name($field->id, $lg) ; 
-                
-                $entry_data = new db_Dynform_entry_data ; 
-                $entry_data->entry_id = $df_entry->id ; 
-                $entry_data->field_id = $field->id ; 
-                $entry_data->name = $name ; 
-                $entry_data->value = $value; 
-                $entry_data->insert() ; 
-                
-                $mailtxt[] = array($name, $value); 
+
+                $entry_datum = new db_Dynform_entry_data;
+                $entry_datum->field_id = $field->id;
+                $entry_datum->name = $name;
+                $entry_datum->value = $value;
+                $entry_data []= $entry_datum;
+
+                $mailtxt []= array($name, $value);
             }
-            $mailtxt[] = ' ' ; 
+            $mailtxt []= ' ';
+        }
+
+        // We still don't have proper error handling when client validation fails :-(
+        // Spambots fail to do client validation (surprise?) so we throw an error
+        if ($missing_fields) throw new Exception("Required field missing: ".join(', ', $missing_fields));
+
+        $df_entry = new db_Dynform_entry ; 
+        $df_entry->dynform_id = $dynform->id ; 
+        $df_entry->time = self::toMysqlDatetime($_SERVER['REQUEST_TIME']) ;
+        $df_entry->lg = $lg ; 
+        $df_entry->submitnodetitle = empty($submit_node_name) ? $content->title : $submit_node_name;
+        $df_entry->insert() ;
+
+        foreach ($entry_data as $datum) {
+            $datum->entry_id = $df_entry->id;
+            $datum->insert();
         }
 
         if ($target_email == "") {
-            throw new Exception("FATAL ERROR: Target email for form is missing!") ;
+            throw new Exception("Target email for form is missing!") ;
         }
         
         // Take the first address as sender address if there are multiple
