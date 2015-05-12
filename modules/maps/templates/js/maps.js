@@ -42,16 +42,16 @@ function initmap(config, markers_in) {
 
     searchBox.addListener('places_changed', function() {
         var places = searchBox.getPlaces();
-        
+
         for (var i = 0, place; place = places[i]; i++) {
             if (config.multi == 0) {
                 // There can be only one
                 remove_all()
             }
-            
+
             var marker = new google.maps.Marker({
                 map: map,
-                icon: config.icon_types[Object.keys(config.icon_types)[0]],
+                icon: mkIcon(config.icon_types[Object.keys(config.icon_types)[0]]),
                 title: place.name,
                 position: place.geometry.location
             });
