@@ -181,6 +181,15 @@ $config['admin']['allow_languageadmin'] = false;
 $config['admin']['link_target'] = '';
 
 
+/** Enable deprecated sorting-by-child
+  *
+  * The nodes in Aquarius are sorted according to the settings of the parent
+  * node. In the olden days, sorting was configured on the children themselves,
+  * which led to confusion when there were children of different types.
+  * Set this to true to enable the old behaviour. */
+$config['admin']['classic_sort'] = false;
+
+
 /** Standard email address to use as sender address
   * This is used in the "Sender:" header when the system generates mails. The
   * "From:" header will also be set to this address should it not be set
