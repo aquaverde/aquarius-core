@@ -375,7 +375,7 @@ class action_node_editprop_save extends action_node implements ChangeAction {
         $node = $this->load_node(true);
         $valid = true;
         // Read string values from POST
-        $fields = array("name", "form_id", "childform_id", "contentform_id", "box_depth", "title");
+        $fields = array("name", "form_id", "childform_id", "contentform_id", "box_depth", "title", "sort_by");
         if (!$node->is_root()) $fields []= "parent_id";
         foreach ($fields as $field) {
             $tmp = get($post, $field);
@@ -390,6 +390,7 @@ class action_node_editprop_save extends action_node implements ChangeAction {
         // Special handling for checkbox values
         $node->access_restricted = get($post, 'access_restricted', 0);
         $node->active            = get($post, 'active', 0);
+        $node->sort_reverse      = $node->sort_by && get($post, 'sort_reverse', 0);
 
         // Commit
         if ($valid) {

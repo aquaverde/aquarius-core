@@ -95,11 +95,23 @@ function nodes_selected(_, selected_nodes) {
             <input class="checkbox" type="checkbox" name="active"  value="1" {if $node->active}checked="checked"{/if} id="nodedit_active"/>
             {#s_active#}
         </label>
-    
+
         <label>
             <input class="checkbox" type="checkbox" name="access_restricted"  value="1" {if $node->access_restricted}checked="checked"{/if} id="nodedit_access_restricted"/>
             {#s_access_restricted#}
         </label>
+
+        <div>
+            <label style="display: inline">
+                {#s_sort_by#}
+                <input class="form-control short" type="text" name="sort_by" value="{$node->sort_by|escape}" style="display: inline">
+            </label>
+            
+            <label style="display: inline">
+                <input class="checkbox" type="checkbox" name="sort_reverse"  value="1" {if $node->sort_reverse}checked="checked"{/if}>
+                {#s_sort_reverse#}
+            </label>
+        <div>
 
         <label>
             {#s_last_change#}<br/>

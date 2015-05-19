@@ -155,6 +155,8 @@ s_template = "Template"
 s_cancel = "Abbrechen"
 s_done = "Speichern und schliessen"
 s_submit = "Abschicken"
+s_sort_by = "Inhalte sortieren nach"
+s_sort_reverse = "absteigende Reihenfolge"
 
 change_form_submit = "ok"
 s_formadmin_field_name = "Feldname"

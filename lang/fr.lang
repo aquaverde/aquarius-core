@@ -156,6 +156,8 @@ s_template = "Template"
 s_cancel  = "Annuler"
 s_done = "Sauvegarder et fermer"
 s_submit = "Envoyer"
+s_sort_by = "Trier par"
+s_sort_reverse = "Ordre décroissant"
 
 change_form_submit = "ok"
 
