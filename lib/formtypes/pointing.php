@@ -23,7 +23,7 @@ class Formtype_Pointing extends Formtype {
             $rootnode = db_Node::get_root();
         } else {
             $rootnode = db_Node::get_node($rootid);
-            if (!$rootnode) throw new Exception("Invalid pointing root node '$rootid' in formfield $formfield->id (sup2)");
+            if (!$rootnode) throw new Exception("Invalid pointing selection node '$rootid' in formfield $formfield->name (sup2) of form ".$formfield->get_form());
         }
 
         // Depth of selection tree
