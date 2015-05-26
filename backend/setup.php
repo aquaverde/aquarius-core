@@ -115,6 +115,7 @@ class Aqua_Config_File {
     function write() {
         if (!$this->changed) return 0;
         $result = file_put_contents($this->filename, $this->content);
+        if (function_exists('opcache_invalidate')) opcache_invalidate($this->filename);
         return $result ? 1 : -1;
     }
 }
