@@ -13,3 +13,9 @@ if (!file_exists($cached_db_schema)) {
 
 $aquarius_loader->load('db_connection');
 
+
+$confd_path = $aquarius->install_path."conf.d/";
+if(file_exists($confd_path)) {
+    message('warn', "The config files in conf.d are not read anymore. Copy all settings into config.php. Delete the conf.d directory to get rid of this message.");
+}
+

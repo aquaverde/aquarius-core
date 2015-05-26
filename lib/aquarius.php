@@ -61,7 +61,6 @@ class Aquarius {
       * The following configuration files are loaded:
       * - core_path/config.base.php    Default values for all Aquarius installations
       * - install_path/config.php      Configuration options for website replacing default values
-      * - install_path/conf.d/*.php    load configs from these files DEPRECATED
       * - install_path/config.local.php Options specific to this installation
       * - core_path/config.post.php    Default define() statements based on configuration
       * 
@@ -76,17 +75,6 @@ class Aquarius {
         // site specific values that overwrite the defaults
         $this->use_config($this->install_path."config.php");
 
-        /* Load all configs in the conf.d directory */
-        $confd_path = $this->install_path."/conf.d/";
-        if(file_exists($confd_path)) {
-            $dh = opendir($confd_path);
-            while (($file = readdir($dh)) !== false) {
-                if(is_file($confd_path.$file) && substr($file, -4) == '.php')
-                    $this->use_config($confd_path.$file);
-            }
-            closedir($dh);
-        }
-        
         // local config values used for stuff that specific to each webserver
         $this->use_config($this->install_path."config.local.php");
         
