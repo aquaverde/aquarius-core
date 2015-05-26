@@ -148,8 +148,9 @@ class Aquarius {
         if (file_exists($config_path)) {
             $aquarius = $this;
             $config = $this->config;
-            if ($hide_warnings) @include $config_path;
-            else                 include $config_path;
+            if ($hide_warnings) $result = @include $config_path;
+            else                $result =  include $config_path;
+            if (!$result) throw new Exception("Failed including $config_path");
             $this->config = $config;
         }
     }
