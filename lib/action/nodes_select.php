@@ -23,9 +23,6 @@
   * An additional parameter may be given
   *
   *   - comma separated list of excluded nodes (these, and their children, will not show up in the tree)
-  * 
-  *   callback:
-  *		callback function called in the opener when a node is selected (default: nodes_selected)
   *
   * Request parameters:
   *   selected:
@@ -158,7 +155,6 @@ class action_nodes_select extends AdminAction {
 
 class action_nodes_select_tree extends action_nodes_select implements DisplayAction {
     var $props = array('class', 'command', 'target_id', 'lg', 'root_id', 'depth', 'exclude_levels', 'multi');
-	var $named_props = array('callback');
 
     function get_title() {
         return new Translation($this->multi ? 's_pointings_select' : 's_pointing_select');
@@ -191,7 +187,6 @@ class action_nodes_select_tree extends action_nodes_select implements DisplayAct
         $smarty->assign('entry', $selection_tree);
         $smarty->assign('selected', $selected_str);
         $smarty->assign('multi', $this->multi);
-		$smarty->assign('callback', $this->callback ? $this->callback : 'nodes_selected');
 		
         $result->use_template('nodes_select.tpl');
     }

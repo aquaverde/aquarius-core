@@ -26,7 +26,7 @@ class RTE_options implements ArrayAccess {
         $select_file_action = Action::build(array('file_select_rte', 0, $this['file_path'], '', '', 0, '', ''), array('callback' => 'rte_file_select_file'));
         $config['filebrowserBrowseUrl']      = $base_url->with_param($select_file_action)->str(false);
 
-        $ilink_select = Action::build(array('nodes_select', 'tree', 0, $this['content_lg'], 'root', false, '', false),array('callback' => 'ilink_callback'));
+        $ilink_select = Action::build(array('nodes_select', 'tree', 0, $this['content_lg'], 'root', false, '', false));
         $config['ilink_select']              = $base_url->with_param($ilink_select)->str(false);
 
         $config['language'] = $this['editor_lg'];

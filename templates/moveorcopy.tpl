@@ -1,21 +1,24 @@
 {include file='header.tpl'}
 <h1>{#s_node#} "{$node->get_contenttitle()}": {#s_move_copy#}</h1>
-{include_javascript file='prototype.js' lib=true}
-{js}
+
+{include_javascript file='contentedit.pointing.js' lib=true}
+<script>
 var original_parent = '{$parent->id}'
-{literal}
-function nodes_selected(_, selected_nodes) {
-    for (new_parent in selected_nodes) {
-        set_parent(new_parent, selected_nodes[new_parent], true)
-    }
-}
+
+jQuery(function() {
+    jQuery('.parent_select').click(function() {
+        pointing_selection_setup(this, function(target_id, selected) {
+            for (new_parent in selected) {
+                set_parent(new_parent, selected[new_parent], true);
+            }
+        });
+    });
+});
 
 function set_parent(new_parent, title, from_all) {
-    $('node_target').value = new_parent
-    $('node_target_title').update(title)
-    $('move_button').disabled = new_parent == original_parent
+    jQuery('#move_button').attr('disabled', new_parent == original_parent);
     if (from_all) {
-        var select = $('destination_select')
+        var select = document.getElemmentById('destination_select');
         var option_present = false
         if (select) {
             for (option_index in select.options) {
@@ -31,11 +34,9 @@ function set_parent(new_parent, title, from_all) {
             select.selectedIndex=0
         }
     }
-
-    // Jig a class so that IE renders our changes
-    $('node_target_title').toggleClassName('idefix')
 }
-{/literal}{/js}
+</script>
+
 <form action="{url}" method="post">
     <div class="bigbox" id="movecopy_target">
     {if $possible_parents || $select_from_all}
@@ -61,14 +62,18 @@ function set_parent(new_parent, title, from_all) {
                 type='button'
                 name=''
                 value='{#move_copy_select_from_all#}'
-                class='btn btn-default'
-                onclick='open_attached_popup("{$simpleurl->with_param($select_from_all)}&selected="+$("node_target").value,0, "height=450,width=350,status=yes,resizable=yes,scrollbars=yes"); return false;'/><br/><br/>
+                class='btn btn-default parent_select'
+                data-url="{$simpleurl->with_param($select_from_all)}"
+                data-selected_field="node_target"
+                data-target="node_target"
+            >
+            <br/><br/>
         {/if}
     {/if}
 
         <h2>{#move_copy_choose_action#}</h2>
         {#move_copy_selected_page#}: {$node->get_contenttitle()}<br/>
-        {#move_copy_target_location#}: <span id='node_target_title'>{$parent->get_contenttitle()}</span><br/><br/>
+        {#move_copy_target_location#}: <span id='node_target_titles'>{$parent->get_contenttitle()}</span><br/><br/>
         <input type='hidden' id='node_target' name='node_target' value='{$parent->id}'/>
         {if $copyaction}<input type="submit" name="{$copyaction}" value="{$copyaction->get_title()}"  class="btn btn-default" />{/if}
         {if $moveaction}<input type="submit" name="{$moveaction}" value="{$moveaction->get_title()}"  class="btn btn-default" id='move_button' disabled='disabled'/>{/if}

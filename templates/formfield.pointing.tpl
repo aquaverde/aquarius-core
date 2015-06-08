@@ -21,16 +21,18 @@
     {/foreach}
     </select>
 {else}
-    {include_javascript file='prototype.js' lib=true}
-    {include_javascript file='contentedit.pointing.js'}
+    {include_javascript file='contentedit.pointing.js' lib=true}
     <button
         type='button'
         name=''
         value='{$field.popup_action->get_title()}'
-        class='btn btn-default btn-xs'
-        onclick='open_attached_popup("{$simpleurl->with_param($field.popup_action)}&selected="+$("{$field.htmlid}_selected").value, {$field.htmlid|json}, "height=600,width=500,status=yes,resizable=yes,scrollbars=yes"); return false;'>{$field.popup_action->get_title()}
-    </button>    
-    <div class="dim" id="{$field.htmlid}_titlebox" style="margin-top: 3px; {if $field.selected_nodes|@count  == 0}display: none{/if}">
+        class='btn btn-default btn-xs pointing_selection'
+        data-url='{$simpleurl->with_param($field.popup_action)}'
+        data-target='{$field.htmlid}'>
+        {$field.popup_action->get_title()}
+    </button>
+
+    <div class="dim" id="{$field.htmlid}_titlebox" style="margin-top: 3px; {if !$field.selected_nodes}display: none{/if}">
         {#s_pointings_selected#}:
         <span id="{$field.htmlid}_titles" class="dim">
             {foreach from=$field.selected_nodes item=node name="ptitles"}

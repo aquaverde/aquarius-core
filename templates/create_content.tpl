@@ -1,14 +1,6 @@
 {include file='header.tpl'}
 
-{include_javascript file='prototype.js' lib=true}
-{js}{literal}
-function nodes_selected(_, selected_nodes) {
-    for (id in selected_nodes) {
-        $('node_id').value = id
-        $('node_title').update(selected_nodes[id])
-    }
-}
-{/literal}{/js}
+{include_javascript file='contentedit.pointing.js' lib=true}
 
 <h1>{#menu_super_createcontent#}</h1>
 <form action="{url url=$url action=$lastaction}" method="post">
@@ -16,16 +8,18 @@ function nodes_selected(_, selected_nodes) {
 <div class="bigboxtitle"><h2>1. {#createcontent_select_node#}</h2></div>
 <div style="margin-top:10px;">
 
-<input type="hidden" id="node_id" name="node_id" value=""/>
+<input type="hidden" id="node_selected" name="node_id" value=""/>
 <button
     type='button'
     name='node_select' id='node_select'
-    class='button'
-    onclick='open_attached_popup("{$simpleurl->with_param($node_select_action)}", "parent_select", "height=450,width=350,status=yes,resizable=yes,scrollbars=yes"); return false;'>
+    class='button pointing_selection'
+    data-url='{$simpleurl->with_param($node_select_action)}'
+    data-target='node'
+>
     {$node_select_action->get_title()}
 </button>
 <div style="margin-top: 3px;" >
-    <span id="node_title"></span>
+    <span id="node_titles"></span>
 </div>
 
 </div>

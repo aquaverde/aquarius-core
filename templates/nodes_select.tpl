@@ -11,40 +11,35 @@
 
 {include_javascript file='nodetree.js'}
 
-{js target_id=$target_id callback=$callback}
+<script>
     var selected = {$selected}
-    var xWin = window.dialogArguments;
 
-    {literal}
     function changed_multi_selection(node_id, node_title, is_selected) {
         if (is_selected) {
-            selected[node_id] = node_title
+            selected[node_id] = node_title;
         } else {
-            selected[node_id] = null
+            selected[node_id] = null;
         }
 
-        selected = clean_dict(selected)
-        if(xWin) xWin.$callback('$target_id', selected)
-        else opener.$callback('$target_id', selected)
+        selected = clean_dict(selected);
+        window.select_nodes(selected);
     }
 
     function changed_selection(node_id, node_title) {
-        selected  = {}
-        if (node_id) selected[node_id] = node_title
-        if(xWin) xWin.$callback('$target_id', selected)
-        else opener.$callback('$target_id', selected)
-        window.close()
+        selected = {};
+        if (node_id) selected[node_id] = node_title;
+        window.select_nodes(selected);
+        window.close();
     }
 
     function selected_ids() {
         var ids = []
         for (var node_id in selected) {
-            ids.push(node_id)
+            ids.push(node_id);
         }
-        return ids.join(',')
+        return ids.join(',');
     }
-    {/literal}
-{/js}
+</script>
 
 <div class="bigbox">
     <div class="bigboxtitle"><h2>{$lastaction->get_title()}</h2></div>

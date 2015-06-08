@@ -4,16 +4,19 @@ function openBrWindow(theURL,winName,features) { //v2.0
   mypop.focus();  //fixed focus bug
 }
 
-/* Open a popup that will be closed when the window is unloaded */
+/* Open a popup that will be closed when the window is unloaded
+ * Returns the opened popup.
+ */
 var opening_popup = false
 function open_attached_popup(url, title, params) {
     if (opening_popup) return false /* double-click legacy */
     opening_popup = true
     var pop = window.open(url, title, params)
-    jQuery(window).bind("beforeunload", pop.close.bind(pop))
+    var $window = jQuery(window);
+    if ($window) $window.bind("beforeunload", pop.close.bind(pop));
     pop.focus()
     opening_popup = false
-    return false
+    return pop;
 }
 
 

@@ -2,17 +2,7 @@
 
 {include file='path.tpl'}
 
-{include_javascript file='prototype.js' lib=true}
-{js}{literal}
-function nodes_selected(_, selected_nodes) {
-    for (id in selected_nodes) {
-        if (id) {
-            $('parent_id').value = id
-            $('parent_select_title').update(selected_nodes[id])
-        }
-    }
-}
-{/literal}{/js}
+{include_javascript file='contentedit.pointing.js' lib=true}
 
 <h1>{$node->title}</h1>
     
@@ -35,13 +25,17 @@ function nodes_selected(_, selected_nodes) {
             <button
                 type='button'
                 name='nodeedit_parent' id='nodeedit_parent'
-                class='btn btn-default btn-xs'
-                onclick='open_attached_popup("{$simpleurl->with_param($parent_select_action)}&selected={$node->parent_id}", "parent_select", "height=450,width=350,status=yes,resizable=yes,scrollbars=yes"); return false;'>{$parent_select_action->get_title()}
+                class='btn btn-default btn-xs pointing_selection'
+                data-url='{$simpleurl->with_param($parent_select_action)}'
+                data-selected_field='parent_id'
+                data-target='parent'
+            >
+                {$parent_select_action->get_title()}
             </button>
         </label>
         <div class="dim" id="parent_select_title_box" style="margin-top: 3px;" >
             {#s_pointings_selected#}:
-            <span id="parent_select_title" class="dim">
+            <span id="parent_titles" class="dim">
                 {if $parent}{$parent->title}{/if}
             </span>
         </div>

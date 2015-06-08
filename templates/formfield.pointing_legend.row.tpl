@@ -1,11 +1,17 @@
-<tr id="{$field.htmlid}_{$fileval.myindex}" {if $smarty.foreach.pls.last OR $fileval.ajax}class="lastOne"{/if}>
+<tr id="{$field.htmlid}_{$fileval.myindex}" {if $last OR $fileval.ajax}class="last"{/if} 
+    data-formfield="{$field.formfield->id}"
+    data-htmlid="{$field.htmlid}"
+    data-lg="{$content->lg}"
+>
     <td style="width:50px;">
         <button
             type='button'
             name=''
             value='{$field.popup_action->get_title()}'
-            class='btn btn-default btn-xs'
-            onclick='open_attached_popup("{$simpleurl->with_param($field.popup_action)}&amp;selected="+$("{$field.htmlid}_{$fileval.myindex}_selected").value + "&amp;target_id={$fileval.popupid}" , {$fileval.popupid|json}, "height=450,width=350,status=yes,resizable=yes,scrollbars=yes"); return false;'>{$field.popup_action->get_title()}
+            class='btn btn-default btn-xs pointing_selection_legend'
+            data-url="{$simpleurl->with_param($field.popup_action)}"
+            data-target="{$field.htmlid}_{$fileval.myindex}">
+            {$field.popup_action->get_title()}
         </button>
     </td>
     
@@ -27,15 +33,12 @@
         
         <button 
             type='button' 
-            class='imagebutton' 
+            class='imagebutton delete_pointing_legend' 
             style="{if !$fileval.node}display:none;{/if}" 
             id="{$field.htmlid}_{$fileval.myindex}_delete_button" 
             title="{#s_delete#}" 
-            alt="{#s_delete#}" 
-            onclick="remove_pointing_legend('{$field.htmlid}_{$fileval.myindex}','{$field.htmlid}');">
-			    
+            alt="{#s_delete#}">
 			    <span class="glyphicon glyphicon-trash"></span>
-		
 		</button>
 
 	</td>

@@ -1,18 +1,6 @@
 {include file='header.tpl'}
-{js}
-function nodes_selected(target_id, selected_nodes) {
-    var ids = []
-    var titles = []
-    for (node_id in selected_nodes) {
-        ids.push(node_id)
-        titles.push(selected_nodes[node_id])
-    }
-    
-    jQuery('#'+target_id+'_selected').val(ids.join(','))
 
-    jQuery('#'+target_id+'_titles').text(titles.join(' | '))
-}
-{/js}
+{include_javascript file='contentedit.pointing.js' lib=true}
 
 <h1>{#port_dialog_title#}</h1>
 
@@ -26,8 +14,9 @@ function nodes_selected(target_id, selected_nodes) {
             <button
                 type='button'
                 name='node_select' id='node_select'
-                class='button'
-                onclick='open_attached_popup("{$simpleurl->with_param($roots_select_action)}", "roots_select", "height=450,width=350,status=yes,resizable=yes,scrollbars=yes"); return false;'
+                class='button pointing_selection'
+                data-url="{$simpleurl->with_param($roots_select_action)}"
+                data-target="export"
             >
                 {#s_usr_choose#}
             </button>
@@ -49,8 +38,9 @@ function nodes_selected(target_id, selected_nodes) {
             <button
                 type='button'
                 name='node_select' id='node_select'
-                class='button'
-                onclick='open_attached_popup("{$simpleurl->with_param($import_root_select_action)}", "roots_select", "height=450,width=350,status=yes,resizable=yes,scrollbars=yes"); return false;'
+                class='button pointing_selection'
+                data-url="{$simpleurl->with_param($import_root_select_action)}"
+                data-target="import"
             >
                 {#s_usr_choose#}
             </button>

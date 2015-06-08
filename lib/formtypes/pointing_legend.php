@@ -66,8 +66,9 @@ class Formtype_Pointing_Legend extends Formtype {
                 , $depth, $formfield->sup4
                 , false
             )
-            , array('callback' => 'nodes_selected_pl')
         );
+
+        $valobject->row_action = Action::make('pointing_legend_ajax', 'empty_row');
     }
 
     function post_contentedit($formtype, $field, $value, $node, $content) {        
