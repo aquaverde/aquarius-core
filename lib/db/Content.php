@@ -386,4 +386,10 @@ class db_Content extends DB_DataObject
         if (isset($this->$name)) return $this->$name;
         return null;
     }
+
+
+    // Dummy function so serializing works
+    function __set_state() {
+        return array_keys((array)$this);
+    }
 }
