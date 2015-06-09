@@ -22,17 +22,19 @@
                 }
 
                 var name;
-                if(node_id) {
-                    if (CKEDITOR.env.ie) {
-                       name = editor.getSelection().document.$.selection.createRange().text;
-                    } else {
-                       name = editor.getSelection().getNative();
+                if (node_id) {
+                    var selection = editor.getSelection();
+
+                    var range = editor.getSelection().getRanges()[0];
+                    var link = editor.document.createElement('a')
+                    link.setAttribute('href', 'aquarius-node:'+node_id);
+                    link.append(range.extractContents());
+
+                    if (link.getText().length == 0) {
+                        link.append(new CKEDITOR.dom.text(node_title));
                     }
 
-                    if(name != '' && name[0] != "<" && name[1] != "!" && name[2] != "-" && name[3] != "-")
-                        editor.insertHtml("<a href='aquarius-node:" + node_id + "' >"+name+"</a>");
-                    else
-                        editor.insertHtml("<a href='aquarius-node:" + node_id + "' >"+node_title+"</a>");
+                    range.insertNode(link);
                 }
             });
         }
