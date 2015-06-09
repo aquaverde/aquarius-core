@@ -22,19 +22,14 @@ function pointing_selection_setup(button, on_select) {
     var titlebox_id = '#'+target_id+'_titlebox';
     var $titlebox = jQuery(titlebox_id);
 
-    var $modal = jQuery('<div></div>');
-    $modal.load(url+'&selected='+selected);
-    $modal.width(500);
-    $modal.height(600);
-   // jQuery('body').append($modal);
-    //$modal.modal('show');
-
-    window.select_nodes = function(selected) {
+    nodes_select(url, selected, function(selected) {
         var ids = []
         var titles = []
         for (node_id in selected) {
-            ids.push(node_id)
-            titles.push(selected[node_id])
+            if (selected.hasOwnProperty(node_id)) {
+                ids.push(node_id);
+                titles.push(selected[node_id]);
+            }
         }
 
         $selected_field.val(ids.join(','));
@@ -44,8 +39,7 @@ function pointing_selection_setup(button, on_select) {
         $titlebox.toggle(ids.length > 0);
 
         if (on_select) on_select(target_id, selected);
-    }
-    return false;
+    });
 }
 
 jQuery(function() {

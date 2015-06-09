@@ -1,6 +1,8 @@
 {include file='header.tpl'}
 <h1>{#s_node#} "{$node->get_contenttitle()}": {#s_move_copy#}</h1>
 
+{include_javascript file='nodetree.js'}
+{include_javascript file='nodes_select.js' lib=true}
 {include_javascript file='contentedit.pointing.js' lib=true}
 <script>
 var original_parent = '{$parent->id}'

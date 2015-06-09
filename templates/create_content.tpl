@@ -1,5 +1,7 @@
 {include file='header.tpl'}
 
+{include_javascript file='nodetree.js'}
+{include_javascript file='nodes_select.js' lib=true}
 {include_javascript file='contentedit.pointing.js' lib=true}
 
 <h1>{#menu_super_createcontent#}</h1>

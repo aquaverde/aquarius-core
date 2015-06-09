@@ -1,5 +1,7 @@
 {include file='header.tpl'}
 
+{include_javascript file='nodetree.js'}
+{include_javascript file='nodes_select.js' lib=true}
 {include_javascript file='contentedit.pointing.js' lib=true}
 
 <h1>{#port_dialog_title#}</h1>

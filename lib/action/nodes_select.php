@@ -173,19 +173,17 @@ class action_nodes_select_tree extends action_nodes_select implements DisplayAct
         $visible_nodes = $this->selected_nodes;
         $open_nodes = array($this->root_node);
         $selection_tree = $this->load_tree($this->root_node, $open_nodes, $visible_nodes);
-        
-        // Turn list of selected node ids into javascript hash
+
         $selected = array();
         foreach($this->selected_nodes as $selected_node) {
-            $selected[] = "$selected_node->id: ".json($selected_node->get_contenttitle($this->lg));
+            $selected[$selected_node->id] = $selected_node->get_contenttitle($this->lg);
         }
-        $selected_str = '{'.join(',', $selected).'}';
-        
+
         $smarty->assign('htmltitle', $this->get_title());
         $smarty->assign('target_id', $this->target_id);
         $smarty->assign('subtree_action', $subtree_action);
         $smarty->assign('entry', $selection_tree);
-        $smarty->assign('selected', $selected_str);
+        $smarty->assign('selected', $selected);
         $smarty->assign('multi', $this->multi);
 		
         $result->use_template('nodes_select.tpl');

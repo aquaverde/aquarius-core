@@ -21,6 +21,8 @@
     {/foreach}
     </select>
 {else}
+    {include_javascript file='nodetree.js'}
+    {include_javascript file='nodes_select.js' lib=true}
     {include_javascript file='contentedit.pointing.js' lib=true}
     <button
         type='button'

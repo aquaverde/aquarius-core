@@ -13,13 +13,12 @@
                 if (aqua_node_id) link = link + +"&selected="+aqua_node_id;
             }
 
-            var pop = open_attached_popup(ilink_select, 'link', "height=600px; width=500px; center=yes; resizable=yes");
-            pop.select_nodes = function(selected_nodes) {
+            nodes_select(ilink_select, aqua_node_id, function(selected) {
                 var node_id;
                 var node_title;
-                for (id in selected_nodes) {
+                for (id in selected) {
                     node_id = id;
-                    node_title = selected_nodes[id];
+                    node_title = selected[id];
                 }
 
                 var name;
@@ -35,7 +34,7 @@
                     else
                         editor.insertHtml("<a href='aquarius-node:" + node_id + "' >"+node_title+"</a>");
                 }
-            };
+            });
         }
     }
 

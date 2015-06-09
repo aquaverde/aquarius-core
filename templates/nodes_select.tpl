@@ -1,58 +1,18 @@
-{include file=header.tpl}
-
 <link rel="stylesheet" href="css/nodetree.css" type="text/css" />
-
-{include_javascript file='nodetree.js'}
-
-<script>
-    var selected = {$selected}
-
-    function changed_multi_selection(node_id, node_title, is_selected) {
-        if (is_selected) {
-            selected[node_id] = node_title;
-        } else {
-            selected[node_id] = null;
-        }
-
-        selected = clean_dict(selected);
-        window.select_nodes(selected);
-    }
-
-    function changed_selection(node_id, node_title) {
-        selected = {};
-        if (node_id) selected[node_id] = node_title;
-        window.select_nodes(selected);
-        window.close();
-    }
-
-    function selected_ids() {
-        var ids = []
-        for (var node_id in selected) {
-            ids.push(node_id);
-        }
-        return ids.join(',');
-    }
-</script>
 
 <div class="bigbox">
     <div class="bigboxtitle"><h2>{$lastaction->get_title()}</h2></div>
 {if !$multi}
-    <input id="select_none" name="node_selection" type="radio" onclick='changed_selection(null, "")' checked="checked"/>
+    <input id="select_none" name="node_selection" type="radio" class="node_select" data-title='' checked="checked" value=''/>
     <label  style="display:inline" for="select_none">
         &nbsp;{#s_pointing_select_none#}
     </label>
 {/if}
 {strip}
-    <div class="nodetree_container" id="nodetree_entry_{$entry.node->id}" style="margin: 5px 0 0 -15px;">
+    <div class="nodetree_container nodetree_root" id="nodetree_entry_{$entry.node->id}" data-subtree_action="{url action=$subtree_action}" data-multi="{$multi}" data-selected='{$selected|JSON|escape}' style="margin: 5px 0 0 -15px;">
         {include file=nodes_select_container.tpl}
     </div>
 {/strip}
 </div>
-<input type="submit" name="" value="{#s_close#}" onclick="window.close()" class="btn btn-default pull-right"/>
+<button type="submit" data-dismiss="modal" class="btn btn-default pull-right">{#s_close#}</button>
 
-<script type="text/javascript">
-    var root = document.getElementById('nodetree_entry_{$entry.node->id}')
-    var nodetree = new NodeTree(root, '{url escape=false action=$subtree_action}', null, function() { return { selected: selected_ids() } })
-</script>
-
-{include file=footer.tpl}

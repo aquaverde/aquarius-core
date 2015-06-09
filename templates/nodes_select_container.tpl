@@ -6,9 +6,9 @@
     <div style="width: 15px; padding-top: 2px; display:inline">
         {if $entry.selectable}
             {if $multi}
-                <input id="select_{$entry.node->id}" name="node_selection" type="checkbox" onclick='changed_multi_selection({$entry.node->id}, "{$entry.title|addslashes|escape:htmlall:'UTF-8'}", this.checked)' {if $entry.selected}checked="checked"{/if}/>
+                <input id="select_{$entry.node->id}" name="node_select" class="node_select" type="checkbox" data-title="{$entry.title|escape:htmlall:'UTF-8'}" {if $entry.selected}checked="checked"{/if} value='{$entry.node->id}'/>
             {else}
-                <input id="select_{$entry.node->id}" name="node_selection" type="radio" onclick='changed_selection({$entry.node->id}, "{$entry.title|addslashes|escape:htmlall:'UTF-8'}")' {if $entry.selected}checked="checked"{/if}/>
+                <input id="select_{$entry.node->id}" name="node_select" class="node_select" type="radio" data-title="{$entry.title|escape:htmlall:'UTF-8'}" {if $entry.selected}checked="checked"{/if} value='{$entry.node->id}'/>
             {/if}
         {/if}
     </div>
