@@ -20,7 +20,7 @@ jQuery(function() {
 function set_parent(new_parent, title, from_all) {
     jQuery('#move_button').attr('disabled', new_parent == original_parent);
     if (from_all) {
-        var select = document.getElemmentById('destination_select');
+        var select = document.getElementById('destination_select');
         var option_present = false
         if (select) {
             for (option_index in select.options) {
