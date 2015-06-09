@@ -1,5 +1,8 @@
 {assign var='config' value=$rte_options->config_for($simpleurl)}
 
+{include_javascript file='nodetree.js'}
+{include_javascript file='nodes_select.js' lib=true}
+
 <script>
      var ilink_select = {$config.ilink_select|json}; 	
 
