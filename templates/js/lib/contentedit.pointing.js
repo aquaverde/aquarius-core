@@ -6,7 +6,6 @@ function pointing_selection_setup(button, on_select) {
 
     var target_id = $button.data('target');
 
-
     // The 'selected' field is a hidden form-field that contains the comma
     // separated list of the currently selected node ID
     var selected_id = $button.data('selected_field') || target_id+'_selected';
@@ -23,12 +22,14 @@ function pointing_selection_setup(button, on_select) {
     var titlebox_id = '#'+target_id+'_titlebox';
     var $titlebox = jQuery(titlebox_id);
 
-    var pop = open_attached_popup(
-        url+'&selected='+selected,
-        'link', 
-        "height=600,width=500,status=yes,resizable=yes,scrollbars=yes"
-    );
-    pop.select_nodes = function(selected) {
+    var $modal = jQuery('<div></div>');
+    $modal.load(url+'&selected='+selected);
+    $modal.width(500);
+    $modal.height(600);
+   // jQuery('body').append($modal);
+    //$modal.modal('show');
+
+    window.select_nodes = function(selected) {
         var ids = []
         var titles = []
         for (node_id in selected) {

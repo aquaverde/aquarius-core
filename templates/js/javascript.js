@@ -13,7 +13,7 @@ function open_attached_popup(url, title, params) {
     opening_popup = true
     var pop = window.open(url, title, params)
     var $window = jQuery(window);
-    if ($window) $window.bind("beforeunload", pop.close.bind(pop));
+    if ($window) $window.on("unload", function() { pop.close() });
     pop.focus()
     opening_popup = false
     return pop;

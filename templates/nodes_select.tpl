@@ -1,13 +1,6 @@
 {include file=header.tpl}
 
 <link rel="stylesheet" href="css/nodetree.css" type="text/css" />
-<style type="text/css">
-    {literal}
-    body {
-        min-width: 0;
-    }
-    {/literal}
-</style>
 
 {include_javascript file='nodetree.js'}
 

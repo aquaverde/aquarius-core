@@ -7,7 +7,7 @@
   * @param defer optional flag to enable deferred loading
 */
 function smarty_function_include_javascript($params, $template) {
-    $included = $template->getTemplateVars('included_js');
+    $included = $template->smarty->getTemplateVars('included_js');
     if (!is_array($included)) $included = array();
 
     $file = get($params, 'file');
@@ -33,7 +33,7 @@ function smarty_function_include_javascript($params, $template) {
 
         if (!$multiple) {
             $included []= $file;
-            $template->assign('included_js', $included);
+            $template->smarty->assign('included_js', $included);
         }
     }
     return $result;
