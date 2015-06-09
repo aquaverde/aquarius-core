@@ -33,15 +33,14 @@ class Dynformlib {
 		}
 		return "" ; 
 	}
-	
-	function get_options_from_form_fields()
-	{
-		$vals = split(' *; *', $this->get_setting_value('option_fields')) ; 
-		$pairs = array() ; 
-		foreach ($vals as $val) {
+
+    function get_options_from_form_fields() {
+        $vals = array_map('trim', explode(';', $this->get_setting_value('option_fields')));
+        $pairs = array() ; 
+        foreach ($vals as $val) {
             if (strlen($val) > 0) {
                 $entry = array() ;
-                $kvp = split(' *, *', $val) ;
+                $kvp = array_map('trim', explode(',', $val));
                 if (count($kvp) > 1) {
                     $entry['key'] = $kvp[0] ;
                     $entry['value'] = $kvp[1] ;

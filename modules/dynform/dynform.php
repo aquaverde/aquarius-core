@@ -279,8 +279,8 @@ class Dynform extends Module {
                             * The field may either be a string, or a multi-field. If it's a string, it is split by ';' to get the options. If it's multi, each item is taken as option. */
                             $content = get($params, 'content', null) ;
                             if (!$content) {
-                                throw new Exception("render_dynform: require parameter <b>content</b> missing for Option-Field");
-                                return ;
+                                // Can't read from template vars within insert functions, so we must fail because the content parameter is missing 
+                                throw new Exception("render_dynform: please provide content parameter from template (required by option-field)");
                             }
                             $option_field_name = $options;
                             $show = !empty($content->$option_field_name);
@@ -293,7 +293,7 @@ class Dynform extends Module {
                                         else $options []= $entry;
                                     }
                                 } else {
-                                    $options = split(' *; *', $content->$option_field_name);
+                                    $options = array_map('trim', explode(';', $content->$option_field_name));
                                 }
                                 $show = !empty($options);
                             }
