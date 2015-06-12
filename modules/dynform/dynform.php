@@ -296,6 +296,7 @@ class Dynform extends Module {
                                     $options = array_map('trim', explode(';', $content->$option_field_name));
                                 }
                                 $show = !empty($options);
+                                $field['options'] = $options;
                             }
                             break;
 
