@@ -570,7 +570,10 @@ class Dynform extends Module {
         if (!empty($submit_node_name)) $subject .= ' | '.$submit_node_name;
 
         $newMail = new FormattedHTMLMail($recipient, $subject, $sender);
-        if ($replyto) $newMail->setReplyAddress($replyto);
+        if ($replyto) {
+            $newMail->setReplyAddress($replyto);
+            $newMail->setSenderAddress($replyto);
+        }
 
         if ($confirmation) {
             $newMail->addText($content->email_confirmation_text);

@@ -32,16 +32,20 @@ class FormattedTextMail {
     protected $replyAddress = false;
     protected $subject;
     
-    public function __construct($targetAddress, $subject, $senderAddress)
+    public function __construct($targetAddress, $subject, $fromAddress)
     {
         $this->targetAddress    = $targetAddress;
-        $this->senderAddress    = $senderAddress;
+        $this->fromAddress      = $fromAddress;
         $this->subject          = $subject;
     }
     
     public function setTargetAddress($targetAddress)
     {
         $this->targetAddress = $targetAddress;
+    }
+    
+    public function setFromAddress($fromAddress) {
+        $this->fromAddress = $fromAddress;
     }
     
     public function setSenderAddress($senderAddress)
@@ -67,9 +71,12 @@ class FormattedTextMail {
         $text = $this->mailText;
         $message->setBody($text);
         
-        $message->setFrom($this->senderAddress);
+        $message->setFrom($this->fromAddress ? $this->fromAddress : $this->senderAddress);
         if ($this->replyAddress) {
             $message->setReplyTo($this->replyAddress);
+        }
+        if ($this->senderAddress) {
+            $message->setSender($this->senderAddress);
         }
         $message->setSubject($this->subject);
 
@@ -168,10 +175,13 @@ class FormattedHTMLMail extends FormattedTextMail {
         $text = $this->getMailText();
         $message->setBody($text);
         $message->addPart($this->getMailHTML(), 'text/html');
-        
-        $message->setFrom($this->senderAddress);
+
+        $message->setFrom($this->fromAddress ? $this->fromAddress : $this->senderAddress);
         if ($this->replyAddress) {
             $message->setReplyTo($this->replyAddress);
+        }
+        if ($this->senderAddress) {
+            $message->setSender($this->senderAddress);
         }
         
         $message->setSubject($this->subject);
