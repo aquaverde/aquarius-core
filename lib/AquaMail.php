@@ -62,7 +62,7 @@ class AquaMail {
 
     function send() {
         $message = Swift_Message::newInstance();
-         
+
         // Attach pics and other files as requested
         foreach($this->values as $key => $value) {
             if ($this->html_body && eregi('^html_image', $key)) {
@@ -71,8 +71,16 @@ class AquaMail {
                 // replace filename in HTML body with ID of generated attachement
                 $this->html_body = str_replace($value, $image_cid);
             }
+
             if (eregi('^file_attachment', $key)) {
-                $message->embed(Swift_Image::fromPath($value));
+                switch(pathinfo($value, PATHINFO_EXTENSION)) {
+                case 'jpg':
+                case 'png':
+                    $result = $message->embed(Swift_Image::fromPath(FILEBASEDIR.$value));
+                    break;
+                default:
+                    $result = $message->attach(Swift_Attachment::fromPath(FILEBASEDIR.$value));
+                }
             }
         }
 
@@ -112,6 +120,7 @@ class AquaMail {
 
         $logstr = "mail to $to on behalf of ".$_SERVER['REMOTE_ADDR']."\n".$message->getHeaders()->toString()."\n\n".$this->text_body;
 
+        global $aquarius;
         if ($sender = $aquarius->conf('email/smtp/sender')) $message->setFrom($sender);
         $mailer = $aquarius->mailer();
 
