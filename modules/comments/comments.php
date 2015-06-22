@@ -71,10 +71,9 @@ class Comments extends Module {
         if (isset($_POST['submit_comment'])) {
             global $aquarius;
 
-                        $sent = $_POST;
+            $sent = $_POST;
             $bend_email_field = $this->conf('bend_email_field');
             if ($bend_email_field) {
-            print_r($sent);
                 $have_email_content = isset($sent['email']) && strlen($sent['email']) > 0;
                 if ($have_email_content) {
                     Log::debug("Suspected spam, it filled out the 'email' form filed that we assume was hidden. Comment will not be registered.");
