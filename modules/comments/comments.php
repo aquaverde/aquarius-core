@@ -96,7 +96,19 @@ class Comments extends Module {
                 }
             }
             $aquarius->session_set('comment_form_settings', $carry_fields);
-            
+
+            $comment_node = $smarty->get_template_vars('node');
+            $lg = $smarty->get_template_vars('lg');
+
+            $new_comment = DB_DataObject::factory('comment');
+            $new_comment->date = time();
+            $new_comment->node_id = $comment_node->id;
+            $new_comment->accepted = false;
+            $new_comment->lg = false;
+            foreach(array('name', 'email', 'subject', 'body') as $field) {
+                $new_comment->$field = requestvar($field);
+            }
+
             // Generate subject line in case its empty
             if (strlen($new_comment->subject) < 1) {
                 // Grab the first ten words in body
