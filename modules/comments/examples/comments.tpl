@@ -1,6 +1,6 @@
 {comments->load offset=$smarty.get.offset}
 
-{wording Comments}
+<h3>{wording Comments}</h3>
 {w key="There are %s comments" p=$comments|@count}
 <ul class='comments'>
 {foreach from=$comments item=comment}
@@ -12,12 +12,18 @@
 {/foreach}
 </ul>
 
-{wording Post new comment}
-<form action='' method='post'>
-    <label>{wording Name}<input type='text' name='name'  value="{$comment_form_settings.name|escape}"/></label>
-    <label>{wording Email}<input type='text' name='email'  value="{$comment_form_settings.email|escape}"/></label>
-    <input type='text' name='email'  value="" style="display: none"/>{* spam trap *}
-    <label>{wording Subject}<input type='text' name='subject' /></label>
-    <label>{wording Message}<textarea name='body'></textarea></label>
-    <input type='submit' name='submit_comment' value='{wording Submit comment}' />
-</form>
+<div id='comment_form'>
+{if $comment_posted}
+    {wording Thanks for your comment. It will be published after review.}
+{else}
+    {wording Post new comment}
+    <form action='#comment_form' method='post'>
+        <label>{wording Name}<input type='text' name='name'  value="{$comment_form_settings.name|escape}"/></label>
+        <label>{wording Email}<input type='text' name='liame'  value="{$comment_form_settings.email|escape}"/></label>
+        <input type='text' name='email'  value="" style="display: none"/>{* spam trap *}
+        <label>{wording Subject}<input type='text' name='subject' /></label>
+        <label>{wording Message}<textarea name='body'></textarea></label>
+        <input type='submit' name='submit_comment' value='{wording Submit comment}' />
+    </form>
+{/if}
+</div>
