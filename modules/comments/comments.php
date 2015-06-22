@@ -154,7 +154,8 @@ class Comments extends Module {
       * notice. This saves bytes and nerves. */
     function maybe_send_notice($new_comment) {
         $send_notice_to = $this->conf('notice_email');
-        if ($test_email = $this->conf('notice_email_test') && $test_email == $new_comment->email) {
+        $test_email = $this->conf('notice_email_test');
+        if ($test_email && $test_email == $new_comment->email) {
             $send_notice_to = $test_email;
         }
         if ($send_notice_to) {
