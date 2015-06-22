@@ -38,27 +38,32 @@ class Comments_Search {
     function __construct($DB) {
         $this->DB = $DB;
     }
-    
+
     function find() {
         $wheres = array('1=1');
-        
+        $data = [];
+
         if ($this->beforedate !== null) {
-            $wheres []= 'date < '.intval($this->beforedate);
+            $wheres []= 'date < ?';
+            $data []= intval($this->beforedate);
         }
         if ($this->afterdate !== null) {
-            $wheres []= 'date >= '.intval($this->afterdate);
+            $wheres []= 'date >= ?';
+            $data []= intval($this->afterdate);
         }
-        
+
         if ($this->beforecomment !== null) {
             // Assume that comment ids are always increasing with time
-            $wheres []= 'id < '.intval($this->beforecomment);
+            $wheres []= 'id < ?';
+            $data []= intval($this->beforecomment);
         }
-        
+
         if ($this->aftercomment !== null) {
             // Assume that comment ids are always increasing with time
-            $wheres []= 'id > '.intval($this->aftercomment);
+            $wheres []= 'id > ?';
+            $data []= intval($this->aftercomment);
         }
-        
+
         if (strlen($this->words) > 0) {
             // http://stackoverflow.com/questions/790596/split-a-text-into-single-words
             $words = preg_split('/((^\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+$))/', $this->words, -1, PREG_SPLIT_NO_EMPTY);
@@ -67,15 +72,14 @@ class Comments_Search {
                 // We expect sporadic searches for names
                 // You know how the MySQL fulltext-index works? It doesn't.
                 $ors = array();
-                $escaped_word = mysql_real_escape_string($word);
+                $escaped_word = $this->DB->quote($word);
                 foreach(array('name', 'email', 'subject', 'body') as $field) {
                     $ors []= "$field LIKE '%$escaped_word%'";
                 }
                 $wheres []= '('.join(' OR ', $ors).')';
             }
-            
         }
-        
+
         if ($this->nodes !== null) {
             $nodes = db_Node::get_nodes($this->nodes);
             $ids = array();
@@ -86,11 +90,14 @@ class Comments_Search {
             }
             $wheres []= 'node_id in ('.join(',', $ids).')';
         }
-        
+
         if ($this->status) {
             $status_list = is_array($this->status) ? $this->status : array($this->status);
-            $wheres []= "status IN ('".join("','", array_map('mysql_real_escape_string', $status_list))."')";
+
+            $wheres []= "status IN (".join(",", array_fill(0, count($status_list), '?')).")";
+            $data = array_merge($data, $status_list);
         }
+
         $limit = '';
         if($this->limit) {
             /* When searching with a limit, we also want to communicate whether
@@ -103,24 +110,24 @@ class Comments_Search {
             $limit_params []= intval($this->limit) + 1; // It is assumed that nobody would limit to INT_MAX
             $limit = 'LIMIT '.join(',', $limit_params);
         }
-        
+
         $result = $this->DB->queryhash("
             SELECT id, prename, name, email, subject, date, body, node_id, status
             FROM comment
             WHERE ".join(' AND ', $wheres)."
             ORDER BY date DESC
             $limit
-        ");
+        ", $data);
 
         $more = false;
         if ($this->limit && count($result) > $this->limit) {
             $more = true;
             array_pop($result);
         }
-        
+
         return new Comment_Search_result($result, $more);
     }
-    
+
     /** Same as find(), loads the dataobject for each comment */
     function find_objects() {
         $nts = array();
