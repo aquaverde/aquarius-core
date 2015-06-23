@@ -91,7 +91,10 @@ class Content_Search {
 
         // Node and content must be active
         $restrictions['active'] = "(node.active AND content.active)";
-        
+
+        // Don't show content that has no template for display
+        $restrictions['form'] = "(form.fall_through = 'parent' OR form.template <> '')";
+
         if ($this->purge) {
             $purgatory = array();
             foreach($this->purge as $purge_node) {
@@ -150,6 +153,7 @@ class Content_Search {
                     JOIN      content ON node.id = content.node_id
                     LEFT JOIN content_field ON content.id = content_field.content_id
                     LEFT JOIN content_field_value ON content_field.id = content_field_value.content_field_id
+                    JOIN      form ON form.id = node.form_id
                 WHERE $wherestr
                 GROUP BY content_field.content_id
                 HAVING relevance > 0
