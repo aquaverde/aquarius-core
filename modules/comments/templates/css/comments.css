@@ -10,4 +10,6 @@
 .comments .header .subject {  }
 .comments .header .node    { position: absolute; top: 0; right: 0;}
 .comments .glyphicon { font-size: 15px !important; margin-top: 4px;}
-.comments .body { clear: both; padding: 0.3em; }
+.comments .glyphicon.glyphicon-thumbs-up { color: #5cb85c; }
+.comments .glyphicon.glyphicon-thumbs-down { color: red; }
+.comments .body { clear: both; padding: .5em 0; }
