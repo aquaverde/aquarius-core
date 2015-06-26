@@ -90,7 +90,7 @@ class Content_Search {
         }
 
         // Node and content must be active
-        $restrictions['active'] = "(node.active AND content.active)";
+        $restrictions['active'] = "(node.cache_active AND content.active)";
 
         // Don't show content that has no template for display
         $restrictions['form'] = "(form.fall_through = 'parent' OR form.template <> '')";
