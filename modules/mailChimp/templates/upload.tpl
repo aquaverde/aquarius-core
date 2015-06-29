@@ -1,18 +1,24 @@
 {include file='header.tpl'}
 <h1>{#mailChimp_menu#}</h1>
-<table class="table" cellspacing="0" cellpadding="0" border="0">
+<p><a href="https://admin.mailchimp.com/campaigns/" target="_blank">> Link to MailChimp</a><br/></p>
+<table class="table">
     <tr>
         <th>Newletter</th>
-        <th width="140" style="text-align:center;">{#mailChimp_upload#}</th>
+        <th width="140"  class="right">{#mailChimp_upload#}</th>
     </tr>
     {foreach from=$newsletters item=newsletter}
         <tr>
             <td><b>{$newsletter->title}</b></td>
-            <td align="center" style="padding:10px">{action action="mailChimp:select_lg:`$newsletter->id`"}<a href="{url action0=$action action1=$lastaction}" class='submit'>{#mailChimp_upload#}</a>{/action}</td>
+            <td class="right" style="padding:10px">
+                {action action="mailChimp:select_lg:`$newsletter->id`"}
+                    <a href="{url action0=$action action1=$lastaction}" title="{#mailChimp_upload#}" class="btn btn-default" style="margin:0">
+                        {#mailChimp_upload#}
+                    </a>
+                {/action}
+            </td>
         </tr>
     {/foreach}
     </table>
-    <p><br/><a href="https://us7.admin.mailchimp.com/campaigns/">> Link to MailChimp</a></p>
 <br/>
 <h1>Kampagnen (Anzahl: {$count_campaigns})</h1>
 <table class="table" cellspacing="0" cellpadding="0" border="0">
@@ -20,14 +26,14 @@
         <th>Kampagne</th>
         <th>Status</th>
         <th>Verschickt am</th>
-        <th>Verschickt an (Personen)</th>
+        <th style="text-align:center;">Verschickt an (Personen)</th>
     </tr>
     {foreach from=$campaigns item=campaign}
         <tr>
         <td>{$campaign.title}</td>
         <td>{$campaign.status} </td>
         <td>{$campaign.send_time}</td>
-        <td><b>{$campaign.emails_sent}</b></td>
+        <td style="text-align:center;"><b>{$campaign.emails_sent}</b></td>
         </tr>
     {/foreach}
 </table>
