@@ -4,9 +4,9 @@
 		<input type="hidden" value="{$field_type}" name="field[type]" />
 		
 		{action action="dynform:addfieldsubmit:`$content->id`:`$content->lg`:`$node->id`:`$block->id`:`$field->id`"}
-			<input type="submit" name="{$action}" value="{#s_save#}" class="submit" />
+			<input type="submit" name="{$action}" value="{#s_save#}" class="btn btn-primary" />
 		{/action}
 		
-		<input type="submit" name="" value="{#s_cancel#}" class="btn" />
+		&nbsp;<input type="submit" name="" value="{#s_cancel#}" class="btn" />
 	</div>
  </form>
