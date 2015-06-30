@@ -101,7 +101,7 @@ class Node_Detection {
 
     /** Split URI path into elements */
     static function path_parts_from_uri($params) {
-        return array('path_parts' => array_filter(split("/", $params['uri']->path)));
+        return array('path_parts' => array_filter(explode("/", $params['uri']->path)));
     }
 
     /** Use node given as parameter 'id' in request */

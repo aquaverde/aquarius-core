@@ -23,7 +23,7 @@ class Url {
 
         $params = explode('&', get($components, 'query', ''));
         foreach($params as $param) {
-            @list($key, $value) = split('=', $param, 2);
+            @list($key, $value) = explode('=', $param, 2);
             $key = urldecode($key);
             if (strlen($value) > 0) {
                 $url->add_param($key, urldecode($value));
