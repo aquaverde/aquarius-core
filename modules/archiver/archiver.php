@@ -50,8 +50,15 @@ class Archiver extends Module {
     
     function run() {
         $now = time();
-        $archived_nodes = $this->run_archiver($now);
-        $this->run_publisher($now, $archived_nodes);
+        $archiving_result = $this->run_archiver($now);
+        $published = $this->run_publisher($now, $archiving_result['currently_archived']);
+
+        if ($published > 0 || $archiving_result['deactivated'] > 0 || $archiving_result['moved'] > 0) {
+            // Something changed and we have to clear the frontend cache
+            // Aquarius should have an API for this, but it doesn't
+            $smarty_frontend = $this->aquarius->get_smarty_frontend_container(false);
+            $smarty_frontend->clear_all_cache();
+        }
     }
     
     function run_publisher($now, $archived_nodes) {
@@ -108,6 +115,8 @@ class Archiver extends Module {
         }
         
         Log::debug("$having_publish_date nodes have publish date, $published newly activated, $to_be_published currently published, $archived_count currently archived");
+
+        return $published;
     }
     
     function run_archiver($now) {
@@ -206,7 +215,7 @@ class Archiver extends Module {
         
         Log::debug("$have_archiving_date nodes have archiving date, $deactivated newly deactivated, $moved moved, ".count($archived)." currently archived");
         
-        return $archived;
+        return array('currently_archived' => $archived, 'deactivated' => $deactivated, 'moved' => $moved);
     }
     
     function init_form($formtypes) {
