@@ -15,7 +15,7 @@ class action_comments_accept extends ModuleAction implements ChangeAction {
     }
 
     function get_icon() {
-        return $this->new_status == 'accepted' ? 'picts/flag_0.gif' : 'picts/flag_1.gif';
+        return $this->new_status == 'accepted' ? 'thumbs-down' : 'thumbs-up';
     }
     
     function process($aquarius, $post, $result) {

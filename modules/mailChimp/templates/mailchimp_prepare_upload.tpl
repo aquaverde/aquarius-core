@@ -12,7 +12,7 @@
     <tr>
         <td><label><input name='newsletter_lg' value='{$lg}' type='radio'/><strong>{$lg}</strong></label></td>
         <td>{$lang_content->title|escape}</td>
-        <td class="button">{actionlink action="mailChimp:preview:$lg:`$newsletter->id`"}</td>
+        <td class="button">{actionlink action="mailChimp:preview:$lg:`$newsletter->id`" button=true} dd</td>
     </tr>
     {/foreach}
     </table>
