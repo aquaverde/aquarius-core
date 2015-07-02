@@ -3,8 +3,8 @@
 <div class="bigbox">
     <div class="bigboxtitle"><h2>{$lastaction->get_title()}</h2></div>
 {if !$multi}
-    <input id="select_none" name="node_selection" type="radio" class="node_select" data-title='' checked="checked" value=''/>
-    <label  style="display:inline" for="select_none">
+    <label  style="display:inline" >
+    <input id="select_none" name="node_select" type="radio" class="node_select" data-title='' checked="checked" value=''/>
         &nbsp;{#s_pointing_select_none#}
     </label>
 {/if}
