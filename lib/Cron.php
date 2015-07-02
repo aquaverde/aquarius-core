@@ -22,7 +22,6 @@ class Cron {
             $now = getdate();
             $today = mktime(0, 0, 0, $now['mon'], $now['mday'], $now['year']);
 
-            $DB->query('BEGIN');
             try {
                 /* The 'cron' table stores the status. The two fields 'start_run' and 'end_run' are timestamps of the last time a cron run started and ended. When this class starts a run, start_run is set to the current time and end_run is set to zero. When the run finishes, end_run is set to the current time. 'end_run' is used to detect incomplete runs that didn't finish. If a run did not set 'end_run' after ten minutes, another run is started. */
                 $last_run = $DB->singlequery('SELECT end_run FROM cron WHERE type=\'daily\'');
@@ -41,12 +40,9 @@ class Cron {
                     Log::info('Cron: Finished daily jobs');
 
                     $DB->query('UPDATE cron SET end_run = '.time().' WHERE type=\'daily\'');
-                    $DB->query('COMMIT');
                     return true;
                 }
             } catch (Exception $e) { Log::fail($e); }
-
-            $DB->query('ROLLBACK');
         }
         return false;
     }
