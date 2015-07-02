@@ -33,7 +33,7 @@ class Cron {
 
                     if ($start_run > time() - 600) return false; // Do not execute if it looks like it's already running
 
-                    $DB->query('REPLACE INTO cron SET type=\'daily\', end_run = 0, start_run = '.time()); // We assume that the transaction will be killed if another transaction tries to do the same thing
+                    $DB->query('REPLACE INTO cron SET type=\'daily\', end_run = 0, start_run = '.time());
 
                     Log::info('Cron: Running daily jobs');
                     $aquarius->execute_hooks('daily');

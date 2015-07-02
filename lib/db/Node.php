@@ -29,6 +29,7 @@ class db_Node extends DB_DataObject
     public $contentform_id;                  // int(10)  multiple_key unsigned group_by
     public $box_depth;                       // int(10)  not_null multiple_key unsigned group_by
     public $weight;                          // int(10)  not_null multiple_key unsigned group_by
+    public $sort_by;
     public $access_restricted;               // tinyint(1)  not_null multiple_key group_by
     public $created;                         // timestamp(19)  not_null unsigned zerofill
     public $last_change;                     // int(10)  unsigned group_by
