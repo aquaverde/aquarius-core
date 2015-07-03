@@ -31,6 +31,7 @@ class action_comments_list extends ModuleAction implements DisplayAction {
         
         $search = new Comments_Search($DB);
         $search->limit = $comment_limit;
+        $search->status = array('accepted', 'rejected');
         foreach(array('beforedate', 'afterdate', 'beforecomment', 'aftercomment', 'words', 'nodes', 'offset') as $search_setting) {
             $search_value = get($request, $search_setting, $this->$search_setting);
             $search->$search_setting = $search_value;
