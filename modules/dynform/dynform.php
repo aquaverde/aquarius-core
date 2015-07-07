@@ -417,14 +417,17 @@ class Dynform extends Module {
                 $name = $DL->get_field_name($field->id, $lg);
 
                 $postname = 'field_'.$field->id;
-                $value = trim(get($post_vars, $postname, ''));
-                if ($field->required) {
-                    if (
-                        !isset($post_vars[$postname])
-                     || strlen($value) == 0
-                    ) {
-                        $missing_fields []= $name;
-                    }
+                $postval = get($post_vars, $postname, '');
+                $valid = false;
+                if (is_array($postval)) {
+                    $value = array_filter(array_map('trim', $postval));
+                    $valid = count($value) > 0;
+                } else {
+                    $value = trim($postval);
+                    $valid = strlen($value) > 0;
+                }
+                if ($field->required && !$valid) {
+                    $missing_fields []= $name;
                 }
 
                 if ($ftype == "Text") continue ;   // no entries for texts
