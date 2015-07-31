@@ -15,7 +15,7 @@ require_once "lib/Compare.php";
   *
   */
 
-function smarty_block_select($params, $content, &$smarty, &$repeat) {
+function smarty_block_select($params, $page_content, $smarty, &$repeat) {
     static $items;
 
     // On first invocation of the block, we build the list of nodes
@@ -54,7 +54,6 @@ function smarty_block_select($params, $content, &$smarty, &$repeat) {
         $items = array();
         foreach ($nodes as $index => $node) {
             $content = $node->get_content($lg);
-            $content->load_fields();
             $items[] = array(
                 'content'         => $content,
                 'node'            => $node,
@@ -73,6 +72,6 @@ function smarty_block_select($params, $content, &$smarty, &$repeat) {
     if ($repeat) {
         $smarty->assign('item', $item);
     }
-    return $content;
+
+    return $page_content;
 }
-?>
