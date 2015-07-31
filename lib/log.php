@@ -194,7 +194,9 @@ class Logger {
 
             // Print message as HTML comment
             if ($level >= $this->echolevel) {
-                $esc = preg_replace('/\-\-/', '-#-', "$logmessage$backtrace"); // Some messages contain double dashes which terminate HTML comments, garble them.
+                // Some messages contain double dashes which terminate HTML comments, insert zero width space
+                $zeroed = '-​-'; // three chars, one you don't see
+                $esc = str_replace('--', $zeroed, str_replace('--', $zeroed, "$logmessage$backtrace")); 
                 echo "<!--\n".$esc." -->";
             }
         }
