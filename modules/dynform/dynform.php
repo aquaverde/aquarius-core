@@ -634,7 +634,7 @@ class Dynform extends Module {
         $emails = array();
         $labels = array();
         foreach ($options as $email_label) {
-            $parts = array_filter(array_map('trim', explode(',', $email_label)));
+            $parts = array_filter(array_map('trim', explode(',', $email_label, 2)));
             if (count($parts) == 2) {
                 list($label, $email) = $parts;
                 $labels []= $parts[0];
