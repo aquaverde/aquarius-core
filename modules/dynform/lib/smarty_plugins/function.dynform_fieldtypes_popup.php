@@ -5,14 +5,12 @@
   * An optional "name" can be specified
   * Assigns nothing
   */
-  
-function smarty_function_dynform_fieldtypes_popup($params, &$smarty) 
-{    
+function smarty_function_dynform_fieldtypes_popup($params, $smarty) {
     $name = get($params, 'name', 'new_fieldtype') ;
     $str = "" ; 
 
     $DL = new Dynformlib ;
-    
+
     $possible_option_fields = $DL->get_setting_value('option_fields') ;
     $option_fields_enabled = trim($possible_option_fields) ; 
 
