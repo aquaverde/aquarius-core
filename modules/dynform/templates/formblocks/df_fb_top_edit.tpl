@@ -3,7 +3,7 @@
     <div class="toolbox">
         {action action="dynform:changefieldtype:`$content->id`:`$content->lg`:`$node->id`:`$block->id`:`$field->id`"}
             <form action="{url action=$lastaction}"  style="display: inline" method="post">
-                {#change_type#}&nbsp;&nbsp;{dynform_fieldtypes_popup}
+                {#change_type#}&nbsp;&nbsp;{dynform_fieldtypes_popup selected=$field_type}
                 <input type="submit" name="{$action}" value="ok" class="button" />
             </form>
         {/action}
