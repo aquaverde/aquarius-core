@@ -36,7 +36,7 @@ class SLIRConfig extends SLIRConfigDefaults {
     
     public static function init() {
         if (self::$documentRoot === null) {
-            self::$documentRoot = $_SERVER['DOCUMENT_ROOT'];
+            self::$documentRoot = dirname(dirname(dirname(dirname(__DIR__))));
         }
 
         if (self::$pathToCacheDir === null) {

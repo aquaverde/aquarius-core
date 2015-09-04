@@ -1,5 +1,10 @@
 <?php
 $coredir = dirname(__DIR__);
+
+// Under some circumstances (Apache VirtualDocumentRoot) DOCUMENT_ROOT is not
+// what Minify expects it to be. So we patch it here.
+$_SERVER['DOCUMENT_ROOT'] = dirname(dirname($coredir));
+
 require_once $coredir.'/vendor/autoload.php';
 define('MINIFY_MIN_DIR', $coredir.'/vendor/mrclay/minify/min/lib');
 
