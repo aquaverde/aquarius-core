@@ -74,8 +74,13 @@ $config['session']['name'] = 'aquarius3_session';
 
 /**************** FRONTEND */
 
-/* Set the standard domain name */
-// $config['frontend']['domain'] = 'www.aquaverde.ch';
+/* Set the standard domain name 
+ * This will be used in generated URL.
+ * 
+ * Example:
+ * $config['frontend']['domain'] = 'www.aquaverde.ch'
+ */
+$config['frontend']['domain'] = null;
 
 
 /* Always use session in frontend
