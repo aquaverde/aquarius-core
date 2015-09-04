@@ -102,7 +102,8 @@ class Aquarius {
 
         // Reload main config to override presets
         $this->use_config($this->install_path."config.php", true);
-        
+        $this->use_config($this->install_path."config.local.php", true);
+
         // Activate modules
         foreach($this->modules as $short => $module) {
             Log::debug("Initializing module $short");
