@@ -25,9 +25,8 @@ class Aquarius_Loader {
     var $included_files = array();
 
     var $aquarius;
-    var $db_pear;
 
-    
+
     function use_stage($stage_name) {
         if (isset($this->stages[$stage_name])) return $this->stages[$stage_name];
         $stage = $this->prepare($stage_name);

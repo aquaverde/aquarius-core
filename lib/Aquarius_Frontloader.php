@@ -55,8 +55,6 @@ frontinclude('.var_export($included, true).');';
         
         // Prepare a loader that is serializable
         $ser_loader = clone $loader;
-        $ser_loader->db_pear = false;
-        $ser_loader->db_legacy = false;
         $ser_loader->stages_loaded = array();
         
         $frontloader .= '
