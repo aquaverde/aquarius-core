@@ -87,6 +87,10 @@ class Aquarius_Loader {
         }
         return new $class_name();
     }
+
+    function override($name) {
+        return isset($this->overrides[$name]);
+    }
 }
 
 
@@ -111,13 +115,13 @@ class Aquarius_Stage_Paths extends Aquarius_Basic_Stage {
     var $aquarius_path;
     var $root_path;
     var $include_paths;
-    
+
     function init($loader) {
         $this->core_path =     dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR;
         $this->aquarius_path = dirname($this->core_path).DIRECTORY_SEPARATOR;
         $this->root_path =     dirname($this->aquarius_path).DIRECTORY_SEPARATOR;
         $this->install_path =  $this->aquarius_path;
-        
+
         $lib_path = $this->core_path.'lib'.DIRECTORY_SEPARATOR;
         $loader->include_paths(array(
             $lib_path,
@@ -134,25 +138,70 @@ class Aquarius_Stage_Paths extends Aquarius_Basic_Stage {
     }
 }
 
+
+/** Read configuration overrides */
+class Aquarius_Stage_Overrides extends Aquarius_Basic_Stage {
+    var $overrides;
+    var $override_classes;
+
+    function init($loader) {
+        $override_map = array(
+            'DEV' => array('displayerrors', 'nodomains', 'asserts', 'nocache'),
+            'STAGING' => array('nodomains'),
+            'DEBUG' => array('displayerrors', 'asserts', 'contentlogging'),
+        );
+        foreach(scandir($loader->aquarius_path) as $override_class) {
+            if (isset($override_map[$override_class])) {
+                foreach($override_map[$override_class] as $override_name) {
+                    $this->overrides[$override_name] = true;
+                }
+                $this->override_classes[$override_class] = $override_map[$override_class];
+            }
+        }
+    }
+
+    function load($loader) {
+        $loader->overrides = $this->overrides;
+        $loader->override_classes = $this->override_classes;
+    }
+}
+
+
+
 /** Setup logging without relying on configuration */
 class Aquarius_Stage_Basic_Logging extends Aquarius_Basic_Stage {
     var $name = 'basic_logging';
     var $logger;
     
-    function depends() { return array('paths'); }
-    
+    function depends() { return array('paths', 'overrides'); }
+
     function init($loader) { 
         $loader->include_file('log.php');
         $this->logger = new Logger(
             false,
             Log::INFO,
-            Log::NEVER,
+            $loader->override('contentlogging') ? Log::DEBUG : Log::NEVER,
             Log::NEVER
         );  
     }
-    
+
     function load($loader) {
         Log::$usuallogger = $this->logger;
+
+        if ($loader->override('displayerrors')) {
+            // Unfortunately we can't enable depreciation warnings and strict
+            // standard warnings because the PEAR PHP4 compatible classes use
+            // call-time pass-by-reference.
+            error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
+
+            ini_set('display_errors','1');
+        }
+
+        if ($loader->override('asserts')) {
+            assert_options(ASSERT_ACTIVE, 1);
+        } else {
+            assert_options(ASSERT_ACTIVE, 0);
+        }
     }
 }
 
@@ -173,8 +222,7 @@ class Aquarius_Stage_Aquarius extends Aquarius_Basic_Stage {
             $loader->include_file($libloader);
         }
 
-        
-        $this->aquarius = new Aquarius($loader->root_path, $loader->core_path);
+        $this->aquarius = new Aquarius($loader->root_path, $loader->core_path, $loader->overrides);
     }
     
     function load($loader) {
@@ -340,12 +388,17 @@ class Aquarius_Stage_Logging extends Aquarius_Basic_Stage {
 
     function load($loader) {
         $logger = $this->logging_manager->load_for(clean_magic($_COOKIE));
+
+        if ($loader->override('contentlogging')) {
+            $logger->echolevel = min(Log::DEBUG, $logger->echolevel);
+        }
+
         $loader->aquarius->logging_manager = $this->logging_manager;
         $loader->aquarius->logger = $logger;
         Log::$usuallogger = $logger;
         
         // Display PHP errors and warnings when echolevel is on debug
-        if ($loader->aquarius->logger->echolevel < Log::INFO || $loader->aquarius->logger->firelevel < Log::INFO) {
+        if ($logger->echolevel < Log::INFO || $logger->firelevel < Log::INFO) {
             // Unfortunately we can't enable depreciation warnings and strict
             // standard warnings because the PEAR PHP4 compatible classes use
             // call-time pass-by-reference.

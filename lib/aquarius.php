@@ -35,6 +35,9 @@ class Aquarius {
 
     var $formtypes = null;
 
+    /** Map of enabled overrides */
+    var $overrides = null;
+    
     /** Create an aquarius instance
       *
       * @param $root_path the root of the site managed by aquarius
@@ -44,10 +47,11 @@ class Aquarius {
       * directory from the core_path.
       *
       */
-    function __construct($root_path, $core_path) {
+    function __construct($root_path, $core_path, $overrides) {
         $this->root_path = $root_path;
         $this->core_path = $core_path;
         $this->install_path = realpath($core_path.'..').DIRECTORY_SEPARATOR;
+        $this->overrides = $overrides;
     }
     
     /** Return the installed aquarius revision as string
@@ -140,6 +144,13 @@ class Aquarius {
             if ($hide_warnings) $result = @include $config_path;
             else                $result =  include $config_path;
             if (!$result) throw new Exception("Failed including $config_path");
+
+            // HACK reset configuration options based on overrides
+            if ($this->override('nodomains')) {
+                $config['frontend']['domain'] = null;
+                $config['frontend']['domains'] = array();
+            }
+
             $this->config = $config;
         }
     }
@@ -448,6 +459,10 @@ class Aquarius {
     
     /** Returns true when debugging information should be output */
     function debug() {
-       return  $this->logger && $this->logger->echolevel < Log::INFO;
+       return $this->logger && $this->logger->echolevel < Log::INFO;
+    }
+    
+    function override($name) {
+        return isset($this->overrides[$name]);
     }
 }

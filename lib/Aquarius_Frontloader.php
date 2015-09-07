@@ -31,7 +31,7 @@ class Aquarius_Frontloader {
 
         $loader->load($stage_name);
 
-        if ($rebuild) {
+        if ($rebuild && !$loader->override('nocache')) {
             $this->cache($loader);
         }
         

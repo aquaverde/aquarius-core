@@ -13,6 +13,9 @@
             <a href="./" target="_parent"><img src="picts/logo_top.png" border="0" style="vertical-align: middle;" alt="aquarius logo" title="aquarius version {aquarius_revision plain=true}" /></a>
         </div>
         <div class="title">
+
+        {show_overrides}
+
        {if $user->isSuperadmin()}
             <form action="{url url=$url action="nodetree:show:$lg:sitemap"}" method="post" target="mainFrame">{* Insane... in the mainFrame.            Sorry could not resist. *}
                 {actionlink action=$clean_cache}
