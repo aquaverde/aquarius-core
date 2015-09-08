@@ -38,9 +38,12 @@
 </textarea>
 <div class="clear"></div>
 <script>
-    {foreach $rte_options->plugin_list() as $name => $path}
-    CKEDITOR.plugins.addExternal({$name|json}, {$path|json}, '');
-    {/foreach}
-    var editor_{$RTEhtmlID} = CKEDITOR.replace({$RTEformname|json}, {$config|json});
+    var editor_{$RTEhtmlID};
+    document.observe('dom:loaded', function() {
+        {foreach $rte_options->plugin_list() as $name => $path}
+        CKEDITOR.plugins.addExternal({$name|json}, {$path|json}, '');
+        {/foreach}
+        var editor_{$RTEhtmlID} = CKEDITOR.replace({$RTEformname|json}, {$config|json});
+    });
 </script>
 
