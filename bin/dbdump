@@ -17,5 +17,5 @@ $options = array(
 	'--user='.$config['db']['user']
 );
 
-system("mysqldump ".join(" ", $options)." ".$config['db']['name']." ".join(array_slice($argv, 1)));
+system("mysqldump ".join(" ", $options)." ".$config['db']['name']." ".join(' ', array_slice($argv, 1)));
 
