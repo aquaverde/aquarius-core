@@ -174,6 +174,8 @@ class Aqua_Update {
         if (!is_dir($update_path)) return array();
         foreach (scandir($update_path) as $update_file) {
             $p = pathinfo($update_file);
+            if (!isset($p['extension'])) continue;
+
             $update_class = 'Aqua_Update_'.strtoupper($p['extension']);
             if (class_exists($update_class)) {
                 $updates[$p['basename']] = new $update_class($update_path.$update_file);   
