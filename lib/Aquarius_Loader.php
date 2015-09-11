@@ -87,10 +87,6 @@ class Aquarius_Loader {
         }
         return new $class_name();
     }
-
-    function override($name) {
-        return isset($this->overrides[$name]);
-    }
 }
 
 
@@ -141,28 +137,10 @@ class Aquarius_Stage_Paths extends Aquarius_Basic_Stage {
 
 /** Read configuration overrides */
 class Aquarius_Stage_Overrides extends Aquarius_Basic_Stage {
-    var $overrides;
-    var $override_classes;
-
-    function init($loader) {
-        $override_map = array(
-            'DEV' => array('displayerrors', 'nodomains', 'asserts', 'nocache'),
-            'STAGING' => array('nodomains'),
-            'DEBUG' => array('displayerrors', 'asserts', 'contentlogging'),
-        );
-        foreach(scandir($loader->aquarius_path) as $override_class) {
-            if (isset($override_map[$override_class])) {
-                foreach($override_map[$override_class] as $override_name) {
-                    $this->overrides[$override_name] = true;
-                }
-                $this->override_classes[$override_class] = $override_map[$override_class];
-            }
-        }
-    }
-
     function load($loader) {
-        $loader->overrides = $this->overrides;
-        $loader->override_classes = $this->override_classes;
+        define('DEV', is_file($loader->aquarius_path.'DEV'));
+        define('STAGING', is_file($loader->aquarius_path.'STAGING'));
+        define('DEBUG', is_file($loader->aquarius_path.'DEBUG'));
     }
 }
 
@@ -180,7 +158,7 @@ class Aquarius_Stage_Basic_Logging extends Aquarius_Basic_Stage {
         $this->logger = new Logger(
             false,
             Log::INFO,
-            $loader->override('contentlogging') ? Log::DEBUG : Log::NEVER,
+            DEBUG ? Log::DEBUG : Log::NEVER,
             Log::NEVER
         );  
     }
@@ -188,7 +166,7 @@ class Aquarius_Stage_Basic_Logging extends Aquarius_Basic_Stage {
     function load($loader) {
         Log::$usuallogger = $this->logger;
 
-        if ($loader->override('displayerrors')) {
+        if (DEV || DEBUG) {
             // Unfortunately we can't enable depreciation warnings and strict
             // standard warnings because the PEAR PHP4 compatible classes use
             // call-time pass-by-reference.
@@ -197,7 +175,7 @@ class Aquarius_Stage_Basic_Logging extends Aquarius_Basic_Stage {
             ini_set('display_errors','1');
         }
 
-        if ($loader->override('asserts')) {
+        if (DEV) {
             assert_options(ASSERT_ACTIVE, 1);
         } else {
             assert_options(ASSERT_ACTIVE, 0);
@@ -222,7 +200,7 @@ class Aquarius_Stage_Aquarius extends Aquarius_Basic_Stage {
             $loader->include_file($libloader);
         }
 
-        $this->aquarius = new Aquarius($loader->root_path, $loader->core_path, $loader->overrides);
+        $this->aquarius = new Aquarius($loader->root_path, $loader->core_path);
     }
     
     function load($loader) {
@@ -389,24 +367,27 @@ class Aquarius_Stage_Logging extends Aquarius_Basic_Stage {
     function load($loader) {
         $logger = $this->logging_manager->load_for(clean_magic($_COOKIE));
 
-        if ($loader->override('contentlogging')) {
-            $logger->echolevel = min(Log::DEBUG, $logger->echolevel);
-        }
-
         $loader->aquarius->logging_manager = $this->logging_manager;
         $loader->aquarius->logger = $logger;
         Log::$usuallogger = $logger;
-        
-        // Display PHP errors and warnings when echolevel is on debug
-        if ($logger->echolevel < Log::INFO || $logger->firelevel < Log::INFO) {
+
+        $log_php = $loader->aquarius->conf('log/php');
+
+        // Display PHP errors and warnings if desired
+        if ($log_php || $logger->echolevel < Log::INFO) {
             // Unfortunately we can't enable depreciation warnings and strict
             // standard warnings because the PEAR PHP4 compatible classes use
             // call-time pass-by-reference.
             error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
 
             ini_set('display_errors','1');
-        } else {
-            // Don't change preset
+        }
+
+        // When the option is unset, we do not disable the warnings and keep
+        // the webserver settings.
+        if ($log_php === false) {
+            error_reporting(0);
+            ini_set('display_errors','0');
         }
     }
 }

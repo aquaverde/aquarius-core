@@ -4,12 +4,26 @@
 
 // Log messages are written to a log-file and included as HTML comments
 // Available log levels: NEVER | FAIL |  WARN | INFO | MESSAGES | DEBUG | BACKTRACE | ALL
-$config['log'] = array(
-    'level'     => 'INFO',  // What messages to write to file, use level INFO on working sites
-    'echolevel' => 'NEVER', // include log messages from this level as HTML comments in output, use level NEVER in production
-    'firelevel' => 'NEVER', // send log messages as HTTP headers, requires Firefox/FirePHP extension, use NEVER in production
-    'file'      => 'cache/log.txt' // This file must be writable by the webserver and relative to the root path.
-);
+
+/** What messages to log to file, recommended is INFO */
+$config['log']['level']     = 'INFO';
+
+/** Write log messages to this file, path relative to aquarius dir, must be
+  * writable by webserver. */
+$config['log']['file'] = 'cache/log.txt';
+
+/** Echo log messages to output as HTML comments, recommended NEVER */
+$config['log']['echolevel'] = 'NEVER';
+
+/** Send log messages in HTTP headers, recommended NEVER
+  * This requires Firefox/FirePHP */
+$config['log']['firelevel'] = 'NEVER';
+
+/** Enable/disable PHP messages
+  * Set to true to enable PHP warnings, false to disable them explicitly.
+  * The preset null means that the PHP settings are not changed. */
+$config['log']['php'] = null;
+
 
 
 
@@ -235,3 +249,40 @@ $config['email']['smtp'] = array(
 $config['pdfgen']['enabled'] = false;
 $config['pdfgen']['standard_template'] = 'basic.tpl';
 $config['pdfgen']['prefix'] = 'pdf';
+
+
+/** Cache Aquarius loading
+  * The pristine Aquarius stage is cached to a file and Aquarius is initizlized
+  * from this cache. On fast systems the difference is negligible but disk-bound
+  * webservers can profit from this.
+  */
+$config['initcache'] = true;
+
+
+/** Override section
+  * Place a file with the override name in the aquarius dir to enable it. So to
+  * enable DEV mode, touch aquarius/DEV.
+  *
+  * If one of the override settings is unsuitable, you can override it again
+  * in config.local.php.
+  */
+if (DEV) {
+    /** Overrides suitable for developement */
+    $config['frontend']['domain'] = null;
+    $config['frontend']['domains'] = array();
+    $config['frontend']['cache']['templates'] = false;
+    $config['initcache'] = false;
+    $config['log']['php'] = true;
+}
+
+if (STAGING) {
+    /** Overrides suitable for testing before deployment */
+    $config['frontend']['domain'] = null;
+    $config['frontend']['domains'] = array();
+}
+
+if (DEBUG) {
+    /** Overrides suitable for debugging */
+    $config['log']['echolevel'] = 'DEBUG';
+    $config['log']['php'] = true;
+}
