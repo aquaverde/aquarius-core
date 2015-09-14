@@ -62,6 +62,7 @@ class Aquarius {
       * The following configuration files are loaded:
       * - core_path/config.base.php    Default values for all Aquarius installations
       * - install_path/config.php      Configuration options for website replacing default values
+      * - core_path/config.override.php Apply override settings depending on modes (DEV/STAGING)
       * - install_path/config.local.php Options specific to this installation
       * - core_path/config.post.php    Default define() statements based on configuration
       * 
@@ -75,6 +76,9 @@ class Aquarius {
         
         // site specific values that overwrite the defaults
         $this->use_config($this->install_path."config.php");
+
+        // Override settings
+        $this->use_config($this->core_path."config.override.php");
 
         // local config values used for stuff that specific to each webserver
         $this->use_config($this->install_path."config.local.php");
@@ -103,6 +107,7 @@ class Aquarius {
 
         // Reload main config to override presets
         $this->use_config($this->install_path."config.php", true);
+        $this->use_config($this->core_path."config.override.php");
         $this->use_config($this->install_path."config.local.php", true);
 
         // Activate modules
