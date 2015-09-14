@@ -207,7 +207,7 @@ try {
     $smarty = $aquarius->get_smarty_frontend_container($lg, $node);
     
     $cache_settings = $aquarius->conf('frontend/cache');
-    $smarty->caching = (bool)$cache_settings['templates'] && !$aquarius->override('nocache');
+    $smarty->caching = (bool)$cache_settings['templates'];
     $smarty->cache_lifetime = intval($cache_settings['lifetime']);
     // maybe force smarty to recompile tepmlates on every execution.
     $smarty->force_compile = !(bool)$cache_settings['compiles'];
