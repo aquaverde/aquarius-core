@@ -381,14 +381,10 @@ class action_contentedit_edit extends action_contentedit implements DisplayActio
             $tree = NodeTree::editable_tree($node, $this->lg, $open_nodes);
             NodeTree::add_controls($tree, $open_nodes, 'sitemap', true, $this->lg);
 
-            if (!empty($tree['children'])) $smarty->assign('entry', $tree);
-            $smarty->assign('forallaction', Action::make('nodetree', 'forall'));
-
-            // Maybe collapse contentedit if there are enough children
-            $enable_collapse_category = $node->id && !$node->is_content();
-            $autocollapse_category = $enable_collapse_category && $aquarius->conf('admin/contentedit/autocollapse_category', false) && (count($tree['children']) >= $aquarius->conf('admin/contentedit/autocollapse_category_children_minimum', 1));
-
-            $smarty->assign('forallaction', Action::make('nodetree', 'forall'));
+            if (!empty($tree['children'])) {
+                $smarty->assign('entry', $tree);
+                $smarty->assign('forallaction', Action::make('nodetree', 'forall'));
+            }
         }
 
         // Prepare functions to save and close contentedit
