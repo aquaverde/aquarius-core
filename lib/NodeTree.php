@@ -197,8 +197,9 @@ class NodeTree {
       *  @param type what controls to add. Either 'none', 'sitemap', 'contentedit' or 'super'
       *  @param add_new whether to add 'new' nodes
       *  @param lg language code of the language to be used for contentedit links
+      *  @param $allow_sorting whether this node's weight can be changed
       */
-    function add_controls(&$entry, $open_nodes, $type, $add_new, $lg) {
+    function add_controls(&$entry, $open_nodes, $type, $add_new, $lg, $allow_sorting=false) {
         $node = $entry['node'];
         $open = in_array($node->id, $open_nodes);
 
@@ -207,7 +208,8 @@ class NodeTree {
         
         if ($type == 'sitemap' || $type == 'super' || $type == 'contentedit') {
             $entry['has_content'] = (bool)$node->get_content($lg);
-            $entry['may_change_weight'] = db_Users::authenticated()->may_change_weight($node, false);
+
+            $entry['movable'] = $allow_sorting;
             
             $entry['actions'] = array();
             $entry['actions']['toggle_active'] = Action::make('node', 'toggle_active', $node->id);
@@ -232,8 +234,11 @@ class NodeTree {
             }
         }
         if ($open) {
+            $has_ordering = (bool)Nodesort::for_node($node)->fieldname;
+            $allow_children_sorting = !$has_ordering && db_Users::authenticated()->may_edit($node);
+
             foreach($entry['children'] as &$child) {
-                self::add_controls($child, $open_nodes, $type, $add_new, $lg);
+                self::add_controls($child, $open_nodes, $type, $add_new, $lg, $allow_children_sorting);
             }
             if ($add_new) self::add_new($entry, $lg);
         }
