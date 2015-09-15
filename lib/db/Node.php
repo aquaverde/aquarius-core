@@ -337,7 +337,9 @@ class db_Node extends DB_DataObject
                 $list[] = clone $node;
             }
         }
-        if (!in_array('no_sort', $prefilters)) $this->_contentsort($list, false);
+
+        if (!in_array('no_sort', $prefilters)) $this->_contentsort($list);
+
         return $list;
     }
 
@@ -346,21 +348,9 @@ class db_Node extends DB_DataObject
       * Not only should this be in the content class, it's a bloody mess as well. Enjoy. */
     function _contentsort(&$children) {
         if (count($children) > 1) {
-            $sort_settings = false;
+            $nodecomp = Nodesort::for_node($this);
 
-            global $aquarius;
-            if ($this->sort_by) {
-                $sort_settings = $this;
-            } elseif ($aquarius->conf('admin/classic_sort')) {
-                $sort_settings = $children[0]->get_form();
-            } else {
-                $sort_settings = $this->get_form();
-            }
-
-            if ($sort_settings && strlen($sort_settings->sort_by) > 0) {
-                // we can't trust 'sort_by' to be a name
-                $fieldname = preg_replace('/[^A-Za-z0-9_]/', '', $sort_settings->sort_by);
-
+            if ($nodecomp->fieldname) {
                 // Precache content and fields
                 // This is not done because it's faster, but because usort() sometimes gets confused and crashes PHP when the objects in the array change (they're caching stuff)
                 foreach($children as $child) {
@@ -370,7 +360,7 @@ class db_Node extends DB_DataObject
 
                 // Apparently usort complains when the nodes in the array get changed
                 // We ignore those warnings because they're expected.
-                @usort($children, array(new Nodesort($fieldname, $sort_settings->sort_reverse), "compare"));
+                @usort($children, array($nodecomp, "compare"));
             }
         }
     }

@@ -333,23 +333,7 @@ class db_Users extends DB_DataObject
         return $this->may_edit($node);
     }
 
-    /** Whether user may change the wheight of given node.
-      * @param $node
-      * @param $ignore_sort=false If nodes are sorted by content fields, changing weight does not make sense. Set this to true to override. */
-    function may_change_weight($node, $ignore_sort=false) {
-        // Do not allow weight changes if nodes are sorted by content field
-        if (!$ignore_sort) {
-            $form = $node->get_form();
-            if ($form && !empty($form->sort_by)) return false;
-        }
 
-        // weighting may be changed if user has permission to edit parent node
-        $parent = $node->get_parent();
-        $may_edit = $parent && $this->may_edit($parent);
-
-        return $may_edit;
-    }
-    
     function may_delete($node) {
         return ($this->isSiteadmin() || $this->delete_permission)
             && $this->may_edit($node);

@@ -1,14 +1,35 @@
 <?php 
 class Nodesort {
-    
-    public $fieldname;
+    /** Create a node comparator based on a given node's settings
+      * @param $node Read sort_by setting of this node or alternatively that of its form
+      *
+      * If neither $node nor its form specify a sorting preference (this is common), the ordering is tree order.
+      */
+    static function for_node($node) {
+        // Both nodes and forms can have the sort_by and sort_reverse properties
+        if ($node->sort_by) {
+            $sort_settings = $node;
+        } else {
+            $sort_settings = $node->get_form();
+        }
+
+        return new Nodesort($sort_settings->sort_by, (bool)$sort_settings->sort_reverse);
+    }
+
+    public $fieldname = false;
     public $reverse;
-    public function __construct($fieldname, $reverse) {
-        $this->fieldname = $fieldname;
+
+    public function __construct($fieldname, $reverse = false) {
+        if (preg_match('/[^A-Za-z0-9_]/', $fieldname)) throw new Exception("Illegal characters in sort field name $fieldname");
+        if (strlen($fieldname) > 0) $this->fieldname = $fieldname;
         $this->reverse = $reverse ? -1 : 1;
     }
 
     function compare($entry1, $entry2) {
+        if (!$this->fieldname) {
+            return $entry1->weight - $entry2->weight;
+        }
+
         $fieldname = $this->fieldname;
         $form = $this->form;
         $c1 = $entry1->get_content();
