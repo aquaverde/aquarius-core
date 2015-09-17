@@ -11,9 +11,10 @@ Log::backtrace('backend');
 
 
 /* Process logins & load logged in user */
+    $allpass = $aquarius->conf('admin/allpass');
     require_once "db/Users.php";
-    $login_status = db_Users::authenticate();
-                
+    $login_status = db_Users::authenticate($allpass);
+
     // Redirect to frontend if user wants to
     if ($login_status instanceof db_User && isset($_REQUEST['login_frontend'])) {
         header('Location:'.PROJECT_URL);

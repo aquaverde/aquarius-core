@@ -7,7 +7,8 @@
   * in config.local.php.
   */
 if (DEV) {
-    /** Overrides suitable for developement */
+    /** Overrides suitable for development */
+    $config['admin']['allpass'] = true;
     $config['frontend']['domain'] = null;
     $config['frontend']['domains'] = array();
     $config['frontend']['cache']['templates'] = false;

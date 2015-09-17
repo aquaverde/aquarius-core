@@ -200,6 +200,16 @@ $config['admin']['allow_languageadmin'] = false;
 $config['admin']['link_target'] = '';
 
 
+/** Omit password checking for backend logins.
+  * This is useful during development, use with care! Do not ever enable this
+  * on a publicly accessible system. Best enable DEV mode to get this, change it
+  * in config.local.php if at all.
+  *
+  * Preset is false.
+  */
+$config['admin']['allpass'] = false;
+
+
 /** Standard email address to use as sender address
   * This is used in the "Sender:" header when the system generates mails. The
   * "From:" header will also be set to this address should it not be set

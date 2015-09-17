@@ -40,14 +40,21 @@ class db_Users extends DB_DataObject
     /** Verify user credentials and register user in session if successful.
       * Requires fields 'backend_login', 'username' and 'password' to be set in $_REQUEST
       *   backend_login: must be set or this method won't try to authenticate
+      *  @param $allpass optional parameter to skip password check
       *  @return user instance if login is successful, -1 if login failed, false if no login credentials were found.
       */
-    static function authenticate() {
+    static function authenticate($allpass=false) {
         if (isset($_REQUEST['backend_login'])) {
             $user = DB_DataObject::factory('users');
             $user->active = true;
             $user->name = $_REQUEST['username'];
-            $user->find(true);
+            $found = $user->find(true);
+
+            if ($found && $allpass) {
+                Log::debug("Logging in user '$user->name' without checking password");
+                $user->login();
+                return true;
+            }
 
             // Don't look whether that user exists, so we give less timing information
             // Instead, rely only on having a matching password
