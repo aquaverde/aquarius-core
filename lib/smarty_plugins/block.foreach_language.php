@@ -6,6 +6,7 @@
     *    node: Cycle through content of this node in each language. (If this node is specified but cannot be loaded, the block content will not be executed)
     *    parent_fallback: Use content of parent node if no content for language is available (default true, if this is false, languages where the node has no content are skipped)
     *    show_single: Show language when there is only one, standard value is true
+    *    active_first: put the active language first in the list, preset false.
     *
     * On each iteration, the $entry container is filled with:
     *    lang: The current language instance
@@ -13,6 +14,7 @@
     *    content: If node given as parameter, this will be the corresponding content in the current language, or the content of the first parent that has some in the current language.
     *    node: The node instance corresponding to the content (due to parent-fallback it might be a parent of the node given as parameter)
     *   first/last: set to true for the first and last entry, respectively
+    *    active: entry is for the current language
     *
     * Example:
     *    {foreach_language langs="de,fr,es" node=$somenode}
@@ -27,8 +29,8 @@
     */
 
 // Helper
-function make_language_entry($lang, $node, $fallback) {
-    $entry = array('lang' => $lang, 'lg' => $lang->lg);
+function make_language_entry($lang, $node, $fallback, $current_lg) {
+    $entry = array('lang' => $lang, 'lg' => $lang->lg, 'active' => $lang->lg === $current_lg);
     if (!$node) {
         return $entry;
     } else {
@@ -48,20 +50,20 @@ function make_language_entry($lang, $node, $fallback) {
     return false;
 }
 
-function smarty_block_foreach_language($params, $content, &$smarty, &$repeat) {
+function smarty_block_foreach_language($params, $content, $smarty, &$repeat) {
     static $entries; // List of languages yet to be displayed
     static $var; // Name of template var
 
     $is_first = false;
 
+    // On first invocation, build list
     if ($repeat) {
-        // On first invocation, build list
-        $entries = array();
         $is_first = true;
 
         $langs_in = get($params, 'langs', 'all');
         $var = get($params, 'var', 'entry');
         $use_node = get($params, 'node');
+        $active_first = get($params, 'active_first');
         $parent_fallback = (bool)get($params, 'parent_fallback', true);
         $node = false;
         if ($use_node) {
@@ -82,15 +84,25 @@ function smarty_block_foreach_language($params, $content, &$smarty, &$repeat) {
                 if ($lang) $langs[] = $lang;
             }
         }
-        
+
+        $normal_entries = array();
+        $head_entries = array();
         if (count($langs) > 1 || get($params, 'show_single', true)) {
+            $current_lg = $smarty->getTemplateVars('lg');
             foreach ($langs as $lang) {
                 if (!in_array($lang, $ignore_langs) && (!$use_node || $node)) {
-                    $entry = make_language_entry($lang, $node, $parent_fallback);
-                    if ($entry) $entries[] = $entry;
+                    $entry = make_language_entry($lang, $node, $parent_fallback, $current_lg);
+                    if ($entry) {
+                        if ($active_first && $entry['active']) {
+                            $head_entries []= $entry;
+                        } else {
+                            $normal_entries[] = $entry;
+                        }
+                    }
                 }
             }
         }
+        $entries = array_merge($head_entries, $normal_entries);
     }
     
     // Load next entry
