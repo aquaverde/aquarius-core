@@ -1,10 +1,14 @@
 <?php
 /** @package Aquarius.frontend */
 
-/** Block to iterate over a list of nodes. See plugin function loadnodes for parameter documentation.
-The block content will be executed for every loaded node. On each iteration the item will be assigned to smarty var 'item', or the name named in 'itemvar' parameter.
+/** Block to iterate over a list of nodes.
+  * The block content will be executed for every loaded node.
 
-The following template variables are changed as well, but their use is DEPRECATED:
+  * See plugin function loadnodes for parameter documentation. Additional params:
+  *   itemvar: assign item to this variable name inside the block, preset name: 'item'
+  *
+  * On each iteration the item will be assigned to smarty var 'item', or the name named in 'itemvar' parameter.
+  * The following template variables are changed as well, but their use is DEPRECATED:
 <pre>
     entry (or 'var' name): Current content
     active: Set to true for all parents (and itself) of the node specified in the active parameter

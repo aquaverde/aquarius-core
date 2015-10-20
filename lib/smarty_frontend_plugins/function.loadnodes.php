@@ -20,6 +20,7 @@
   *  @param include_inactive show nodes even if their parents are inactive, default false
   *  @param return_list Used internally to flag that the list should be returned as is
   *  @param filter filter sentence selecting nodes that will end up in the list
+  *  @param loaded add this list of previously loaded nodes (filters do not apply)
   *
   * Should none of the parameters nodes, childrenof, nor siblingsof be specified,
   * the list will be empty.
@@ -62,7 +63,6 @@ function smarty_function_loadnodes($params, $smarty) {
     $lg = get($params, 'lg', $smarty->get_template_vars('lg'));
     $menu = (bool)get($params, 'menu', get($params, 'honor_show_in_menu', false));
     $custom_filter_sentence = get($params, 'filter');
-
     $list = array();
 
     $activenodes = array();
@@ -166,6 +166,11 @@ function smarty_function_loadnodes($params, $smarty) {
             'last'            => $index >= count($list) - 1,
             'index'           => $index + 1
         );
+    }
+
+    $loaded = get($params, 'loaded');
+    if ($loaded) {
+        $items = array_merge($items, $loaded);
     }
     
     if (get($params, 'return_list')) {
