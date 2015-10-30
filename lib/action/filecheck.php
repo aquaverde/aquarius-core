@@ -19,9 +19,9 @@ class action_filecheck extends AdminAction implements DisplayAction {
             $cutlen = strlen($aquarius->root_path);
             foreach (new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator($root, RecursiveDirectoryIterator::SKIP_DOTS),
-                RecursiveIteratorIterator::CATCH_GET_CHILD
+                RecursiveIteratorIterator::LEAVES_ONLY
             ) as $path => $file) {
-                $file_paths[substr($path, $cutlen)] = 'fs';
+                $file_paths[substr($file, $cutlen)] = 'fs';
             }
         }
 
