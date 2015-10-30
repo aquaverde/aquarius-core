@@ -75,4 +75,5 @@
         <input type="submit" name="{$newdir}" value="{#s_save#}" class="btn btn-primary" />
     </form>
     </div>
+    {actionlink action="filecheck"}
 {include file="footer.tpl"}
