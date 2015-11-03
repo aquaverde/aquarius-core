@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="right">
-                    {if $movable}
+                    {if $entry.movable}
                         <div class="move">
                             <span class="glyphicon glyphicon-move" title="{#s_update_weights#}"></span>
                         </div>
@@ -69,7 +69,6 @@
                 </div>
             </div>
         {/if}
-
     </div>
 {/if}
 
