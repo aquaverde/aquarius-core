@@ -118,12 +118,12 @@ class AquaMail {
         $replyto = get($this->values, 'replyto');
         if ($replyto) $message->setReplyto($replyto);
 
+        global $aquarius;
+        if ($sender = $aquarius->conf('email/smtp/sender')) $message->setSender($sender);
+
         $logstr = "mail to $to on behalf of ".$_SERVER['REMOTE_ADDR']."\n".$message->getHeaders()->toString()."\n\n".$this->text_body;
 
-        global $aquarius;
-        if ($sender = $aquarius->conf('email/smtp/sender')) $message->setFrom($sender);
         $mailer = $aquarius->mailer();
-
         $success = $mailer->send($message);
 
         if ($success) {

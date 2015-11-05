@@ -83,12 +83,13 @@ class FormattedTextMail {
         $tos = array_map('trim', explode(',', $to));
         $message->setTo($tos);
 
-        $logstr = "mail to $to \n".$message->getHeaders()->toString()."\n\n".$text;
         
         global $aquarius;
-        if ($sender = $aquarius->conf('email/smtp/sender')) $message->setFrom($sender);
-        $mailer = $aquarius->mailer();
+        if ($sender = $aquarius->conf('email/smtp/sender')) $message->setSender($sender);
 
+        $logstr = "mail to $to \n".$message->getHeaders()->toString()."\n\n".$text;
+
+        $mailer = $aquarius->mailer();
         $success = $mailer->send($message);
 
         if ($success) {
@@ -189,12 +190,12 @@ class FormattedHTMLMail extends FormattedTextMail {
         $tos = array_map('trim', explode(',', $to));
         $message->setTo($tos);
 
-        $logstr = "mail to $to \n".$message->getHeaders()->toString()."\n\n".$text;
-        
         global $aquarius;
-        if ($sender = $aquarius->conf('email/smtp/sender')) $message->setFrom($sender);
-        $mailer = $aquarius->mailer();
+        if ($sender = $aquarius->conf('email/smtp/sender')) $message->setSender($sender);
+       
+        $logstr = "mail to $to \n".$message->getHeaders()->toString()."\n\n".$text;
 
+        $mailer = $aquarius->mailer();
         $success = $mailer->send($message);
 
         if ($success) {
