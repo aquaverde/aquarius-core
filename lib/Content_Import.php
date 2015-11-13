@@ -78,7 +78,11 @@ class Content_Import {
             $node = new db_Node();
             $insert = true;
 
-            if (isset($entry['parent'])) {
+            if (isset($entry['attach_parent'])) {
+                $db_parent = db_Node::get_node($entry['attach_parent']);
+                if (!$db_parent) throw new Exception("Attach parent ".$entry['attach_parent']." not found");
+                $db_parent_id = $db_parent->id;
+            } elseif (isset($entry['parent'])) {
                 // A previously inserted node is the parent
                 $import_parent_id = $entry['parent'];
                 $db_parent_id = $idmap($import_parent_id);
