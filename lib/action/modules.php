@@ -23,6 +23,17 @@ class action_modules_list extends action_modules implements DisplayAction {
         $mods = $aquarius->module_manager->available_modules();
         ksort($mods);
         
+        foreach($mods as $name => $mod) {
+            $module = get($aquarius->modules, $name);
+            if ($module) {
+                foreach($module->use_modules as $dep) {
+                    if (!isset($aquarius->modules[$dep])) {
+                        $result->add_message(AdminMessage::with_html('warn', "Module $name depends on module $dep which is not loaded"));
+                    }
+                }
+            }
+        }
+
         $smarty->assign("modules", $mods);
         $result->use_template('moduleslist.tpl');
     }

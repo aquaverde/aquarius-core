@@ -41,7 +41,9 @@ class Module {
         // Add module dependencies as properites for convenient access
         foreach($this->use_modules as $depend_module_short) {
             $depend_module = get($aquarius->modules, $depend_module_short);
-            if (!$depend_module instanceof Module) throw new Exception("Module '$this->short' depends on module '$depend_module_short' which is not loaded.");
+            if (!$depend_module instanceof Module) {
+                Log::warn("Module '$this->short' depends on module '$depend_module_short' which is not loaded.");
+            }
             $this->{$depend_module_short} = $depend_module;
         }
 
