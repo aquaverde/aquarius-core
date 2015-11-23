@@ -172,6 +172,7 @@ class Fe_user_management extends Module {
         $user->name = $email;
         $found = $user->find(true);
         if ($found) $user->login();
+        return $found;
     }
     
     function change_password($user, $password, $password_confirm) {
@@ -240,7 +241,7 @@ class Fe_user_management extends Module {
       *  @param $expire How long (in seconds) the token will be valid, 24 hours by default
       *  @return token string
       * Valid tokens cannot be generated without the secretkey (according to my limited insight into cryptography) */
-    private function create_token($value, $expire=86400) {
+    function create_token($value, $expire=86400) {
         $expire = time() + $expire;
         $expire_enc = dechex($expire);
         $value_enc = base64_encode($value);
@@ -249,7 +250,7 @@ class Fe_user_management extends Module {
 
     /** Get value from token
       * @return token value string if token is valid, false in all other cases */
-    private function parse_token($token) {
+    function parse_token($token) {
         $parts = explode('-', $token);
         if (count($parts) != 3) return false;
         list($expire_enc, $value_enc, $hash) = $parts;
@@ -295,4 +296,3 @@ class Edit_Address_Action_Generator {
 		return Action::make('Fe_address', $cmd, $id);
 	}
 }
-?>
