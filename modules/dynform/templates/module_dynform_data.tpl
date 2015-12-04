@@ -18,7 +18,7 @@
 				<td width="50%">
 					{action action="dynform_data:show:`$dynform.id`:"}
 						<a href="{url action0=$lastaction action1=$action}">
-						{$dynform.title|strip_tags} ({dynform_count_entries form_id=$dynform.id})
+						{$dynform.title2|strip_tags|default:$dynform.title} ({dynform_count_entries form_id=$dynform.id})
 						</a>
 					{/action}
 				</td>
