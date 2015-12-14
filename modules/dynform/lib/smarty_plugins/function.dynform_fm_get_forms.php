@@ -28,7 +28,8 @@ function smarty_function_dynform_fm_get_forms($params, &$smarty)
 				if ($content)
 				{
 					$content->load() ; 
-					$dynforms[$i]['title'] = $content->title ; 
+					$dynforms[$i]['title'] = $content->title ;
+					$dynforms[$i]['title2'] = $content->title2 ; 
 					$dynforms[$i]['content_id'] = $content->id ; 
 				}
 			}

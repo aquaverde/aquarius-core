@@ -13,7 +13,7 @@
         {/if}
     </div>
     <label  style="display:inline" for="select_{$entry.node->id}" class="nodetree_title{if $entry.node->is_content()} nodetree_title_content{/if}">
-        &nbsp;{$entry.title}
+        &nbsp;{if !$entry.node->active}<span style="color:red">{/if}{$entry.title}{if !$entry.node->active}</span>{/if}
     </label>
 </div>
 {if $entry.open}
