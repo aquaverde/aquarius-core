@@ -36,7 +36,7 @@ class Formtype_File extends Formtype {
     }
     
     /** Load list of subdirs and attributes for selected file */
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
         $basedir = $formfield->sup3.'/';
         
         if($formfield->multi) {
@@ -103,7 +103,7 @@ class Formtype_File extends Formtype {
     }
     
     /** Process uploads and adjust other values */
-    function post_contentedit($formtype, $field, $value, $node, $content, &$messages) {
+    function post_contentedit($formtype, $field, $value, $node, $content) {
         $resultvals = array();
         foreach($value as $count => $fileval) {
             $filename = $fileval['file'];
@@ -125,7 +125,7 @@ class Formtype_File extends Formtype {
         else return $resultvals;
     }
     
-    function db_get($values, $form_field) {
+    function db_get($values, $form_field, $lg) {
         // Prepend file path
         $file = get($values, 'file');
         if (!empty($file)) {
@@ -134,7 +134,7 @@ class Formtype_File extends Formtype {
         return $values;
     }
 
-    function db_set($values, $form_field) {
+    function db_set($values, $form_field, $lg) {
         // Maybe remove prependend path.
         $path_prefix = '/'.$form_field->sup3.'/';
         if (strpos($values['file'], $path_prefix) === 0) {
@@ -144,4 +144,3 @@ class Formtype_File extends Formtype {
         return $values;
     }
 }
-?>

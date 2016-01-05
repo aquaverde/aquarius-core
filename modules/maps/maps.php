@@ -48,7 +48,7 @@ class Maps extends Module {
 
     function create_marker($point, $node_id, $cache_title, $lg) {
  
-        if(empty($point['type'])) continue;
+        if (empty($point['type'])) return;
     
         $marker = array();
         $marker['node_id'] = $node_id;

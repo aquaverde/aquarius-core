@@ -11,7 +11,7 @@ class Formtype_Int extends Formtype {
         }
     }
 
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
         $valobject->value = $this->parseval($valobject->value, $formfield);
     }
 
@@ -19,12 +19,11 @@ class Formtype_Int extends Formtype {
         return $this->parseval($value, $formfield);
     }
 
-    function db_get($values, $formfield) {
+    function db_get($values, $formfield, $lg) {
         return $this->parseval(first($values), $formfield);
     }
 
-    function db_set($values, $formfield) {
+    function db_set($values, $formfield, $lg) {
         return array($this->parseval($values, $formfield));
     }
 }
-?>

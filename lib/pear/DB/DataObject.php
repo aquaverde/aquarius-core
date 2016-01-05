@@ -179,7 +179,6 @@ $GLOBALS['_DB_DATAOBJECT']['QUERYENDTIME'] = 0;
 // NOTE: Overload SEGFAULTS ON PHP4 + Zend Optimizer (see define before..)
 // these two are BC/FC handlers for call in PHP4/5
 
-if ( substr(phpversion(),0,1) == 5) {
     class DB_DataObject_Overload 
     {
         function __call($method,$args) 
@@ -193,31 +192,6 @@ if ( substr(phpversion(),0,1) == 5) {
             return array_keys(get_object_vars($this)) ; 
         }
     }
-} else {
-    if (version_compare(phpversion(),'4.3.10','eq') && !defined('DB_DATAOBJECT_NO_OVERLOAD')) {
-        trigger_error(
-            "overload does not work with PHP4.3.10, either upgrade 
-            (snaps.php.net) or more recent version 
-            or define DB_DATAOBJECT_NO_OVERLOAD as per the manual.
-            ",E_USER_ERROR);
-    }
-
-    if (!function_exists('clone')) {
-        // emulate clone  - as per php_compact, slow but really the correct behaviour..
-        eval('function clone($t) { $r = $t; if (method_exists($r,"__clone")) { $r->__clone(); } return $r; }');
-    }
-    eval('
-        class DB_DataObject_Overload {
-            function __call($method,$args,&$return) {
-                return $this->_call($method,$args,$return); 
-            }
-        }
-    ');
-}
-
-    
-
-
  
 
  /*
@@ -324,7 +298,7 @@ class DB_DataObject extends DB_DataObject_Overload
      * @access  public
      * @return  object
      */
-    function &staticGet($class, $k, $v = null)
+    static function staticGet($class, $k, $v = null)
     {
         $lclass = strtolower($class);
         global $_DB_DATAOBJECT;

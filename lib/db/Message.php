@@ -14,7 +14,7 @@ class db_Message extends DB_DataObject
     public $text;                            // blob(196605)  not_null blob
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Message',$k,$v); }
+    static function staticGet($k,$v=NULL, $dummy=NULL) { return DB_DataObject::staticGet('db_Message',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE

@@ -17,7 +17,7 @@ class Formtype_Link extends Formtype {
 
     /** Apply formtype specific conversion prior to editing content
      */
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
         $valobject->formname = "field[".$formfield->name."][link][]";
         $valobject->formname2 = "field[".$formfield->name."][text][]";
         $valobject->formname3 = "field[".$formfield->name."][target][]";
@@ -77,11 +77,11 @@ class Formtype_Link extends Formtype {
         return $value;
     }
 
-    function db_get($value) {
+    function db_get($value, $form_field, $lg) {
         return $value;
     }
     
-    function db_set($value) {
+    function db_set($value, $form_field, $lg) {
         return $value;
     }
 }

@@ -20,7 +20,7 @@ class db_Form extends DB_DataObject
     public $content_type;                    // varchar(300)  
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Form',$k,$v); }
+    static function staticGet($k,$v=NULL, $dummy=NULL) { return DB_DataObject::staticGet('db_Form',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
@@ -71,7 +71,7 @@ class db_Form extends DB_DataObject
     }
     
     /** Delete this form and all attached form data */
-    function delete() {
+    function delete($unsupported=false) {
         // Delete form data
         $child = DB_DataObject::factory('form_field');
         $child->form_id = $this->id;

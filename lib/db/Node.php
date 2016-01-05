@@ -43,7 +43,7 @@ class db_Node extends DB_DataObject
     public $cache_right_index;               // int(11)  multiple_key group_by
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Node',$k,$v); }
+    static function staticGet($k,$v=NULL, $dummy=NULL) { return DB_DataObject::staticGet('db_Node',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
@@ -486,7 +486,7 @@ class db_Node extends DB_DataObject
     }
     
     /** Delete this node and all nodes below it (DB_DataObject::delete override)*/
-    function delete() {
+    function delete($unsupported=false) {
     
         global $aquarius;
         $aquarius->execute_hooks('node_delete', $this);

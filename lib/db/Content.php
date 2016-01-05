@@ -20,7 +20,7 @@ class db_Content extends DB_DataObject
     public $active;                          // tinyint(1)  not_null multiple_key group_by
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Content',$k,$v); }
+    static function staticGet($k,$v=NULL, $dummy=NULL) { return DB_DataObject::staticGet('db_Content',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
@@ -337,7 +337,7 @@ class db_Content extends DB_DataObject
     }
     
     /** Delete this content from the DB */
-    function delete() {
+    function delete($unsupported=false) {
         $this->delete_contentfields();
 
         // Call the overridden method to delete $this

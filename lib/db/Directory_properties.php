@@ -16,7 +16,7 @@ class db_Directory_properties extends DB_DataObject
     public $alt_size;                        // int(4)  group_by
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Directory_properties',$k,$v); }
+    static function staticGet($k,$v=NULL, $dummy=NULL) { return DB_DataObject::staticGet('db_Directory_properties',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE

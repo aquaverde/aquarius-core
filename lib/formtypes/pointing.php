@@ -17,7 +17,7 @@
 class Formtype_Pointing extends Formtype {
     /** For single pointings with sup1 set, a flat tree is loaded to 'nodelist', so that a selection can be shown. In this case, the following keys will be set for the field: 'show_selection', 'disabled_depths', and 'nodelist'. Otherwise, the key 'selected_titles' will contain the list of selected nodes (for single pointings too); the key 'popup_action' will be the action to be used for node selection in a popup; and the key 'selected_ids' will be a comma delimited list of node identifiers.
      */
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
         $rootid = $formfield->sup2;
         if (empty($rootid)) {
             $rootnode = db_Node::get_root();
@@ -73,7 +73,7 @@ class Formtype_Pointing extends Formtype {
 
 
     /** Load node object from id */
-    function db_get($values, $formfield) {
+    function db_get($values, $formfield, $lg) {
         $pointing_id = first($values);
         $pointing_node = DB_DataObject::factory('node');
         if (!$pointing_id || !$pointing_node->get($pointing_id)) {
@@ -86,7 +86,7 @@ class Formtype_Pointing extends Formtype {
 
     /** Save node id to DB.
       * If value is not a node object, this will try to load the node first and then save the id of the array. If the value is not a valid node identifier, it is ignored. */
-    function db_set($value, $formfield) {
+    function db_set($value, $formfield, $lg) {
         $node = db_Node::get_Node($value); // Make sure it is a node object
         if ($node) return array($node->id);
         else return array();

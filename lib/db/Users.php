@@ -22,7 +22,7 @@ class db_Users extends DB_DataObject
     public $last_login;                      // datetime(19)  
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Users',$k,$v); }
+    static function staticGet($k,$v=NULL, $dummy=NULL) { return DB_DataObject::staticGet('db_Users',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
@@ -269,7 +269,7 @@ class db_Users extends DB_DataObject
 	}
 
     /** Remove permission settings as well */
-    function delete() {
+    function delete($unsupported=false) {
         $users2node = DB_DataObject::factory('users2nodes');
         $users2node->userId = $this->id;
         $users2node->delete();

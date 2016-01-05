@@ -163,7 +163,7 @@ class Logger {
             $backtrace = "";
             $showrequest = false; // Maybe show _REQUEST array
             // Process exceptions
-            if ($msg instanceof Exception) {
+            if ($msg instanceof Exception || $msg instanceof Error) {
                 $excmessage = method_exists($msg, 'getDetailMessage') ? $msg->getDetailMessage() : $msg->getMessage();
                 $logmessage = $leveltext.": ".$excmessage."\n".Log::prettybacktrace($msg->getTrace());
                 $showrequest = true;

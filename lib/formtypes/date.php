@@ -7,7 +7,7 @@ class Formtype_Date extends Formtype {
         return strftime(DATE_FORMAT, $values);
     }
 
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
         if($formfield->multi) 
         {
             $valobject->formname .= "[]";
@@ -60,11 +60,11 @@ class Formtype_Date extends Formtype {
         return $value;
     }
 
-    function db_get($values) {
+    function db_get($values, $form_field, $lg) {
         return intval(first($values)); // Unix epoch
     }
 
-    function db_set($values) {
+    function db_set($values, $form_field, $lg) {
         return array(intval($values));
     }
 }

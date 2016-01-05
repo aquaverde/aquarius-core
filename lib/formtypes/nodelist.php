@@ -13,7 +13,7 @@ class Formtype_nodelist extends Formtype {
         $this->selection_nodes = $nodes;
     }
 
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
         global $aquarius;
 
         if (!$formfield->multi) throw new Exception("node selection field must always be set to multi, check form '".$formfield->get_form()->title."'");
@@ -34,13 +34,13 @@ class Formtype_nodelist extends Formtype {
     }
 
     /** Load node object from id */
-    function db_get($values, $formfield) {
+    function db_get($values, $formfield, $lg) {
         $selected_node = db_Node::get_node(first($values));
         if (!$selected_node) return null;
         return $selected_node;
     }
 
-    function db_set($value, $formfield) {
+    function db_set($value, $formfield, $lg) {
         if (!$value instanceof db_Node) return null;
         foreach($this->selection_nodes($formfield) as $selectable_node) {
             if ($selectable_node->id == $value->id) return array($value->id);
@@ -58,4 +58,3 @@ class Formtype_nodelist extends Formtype {
         return db_Node::get_nodes($selection_nodes);
     }
 }
-?>

@@ -61,7 +61,8 @@ class Language_Detection {
     /** Use the first path part if it's a valid language code  */
     static function request_path($params) {
         // Try to use the first path part as language code
-        return array_shift(array_filter(explode('/', $params['uri']->path)));
+        $parts = array_filter(explode('/', $params['uri']->path));
+        return array_shift($parts);
     }
 
     /** Detect language by domain */

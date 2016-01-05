@@ -24,8 +24,16 @@ class Formtype_RTE extends Formtype {
         $valobject->rte_options = $rte_options;
     }
 
+
+    function db_get($values, $form_field, $lg) {
+        foreach ($values as $value) {
+            return $value;
+        }
+    }
+
+    
     /** Remove text if it consists of empty tags and whitespace only */
-    function db_set($val, $formfield) {
+    function db_set($val, $formfield, $lg) {
         // Remove trash characters that get dragged in by copy&paste
         $val = str_replace(chr(0x07), "", $val); // ASCII BELL (ASCII 07). Allegedly showed up in text copied from Indesign, Adobe says BEEP.
     
@@ -64,10 +72,4 @@ class Formtype_RTE extends Formtype {
         }
         return parent::import($vals, $field, $lg, $idmap);
     }
-
-	function db_get($values, $form_field) {
-		foreach ($values as $value) {		
-			return $value;
-		}		
-	}
 }

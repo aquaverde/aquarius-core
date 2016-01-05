@@ -7,7 +7,7 @@ class Formtype_googlemaps extends Formtype {
     
     var $presets;
     
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
         // Lift to array
         if(!$formfield->multi) {
             $valobject->value = array_filter(array($valobject->value)); // lift
@@ -61,12 +61,12 @@ class Formtype_googlemaps extends Formtype {
     }
 
 
-    function db_get($vals) {
+    function db_get($vals, $form_field, $lg) {
         return $vals;
     }
 
 
-    function db_set($vals) {
+    function db_set($vals, $form_field, $lg) {
         return $vals;
     }
     

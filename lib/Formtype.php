@@ -31,7 +31,7 @@ class Formtype {
     }
 
     /** Apply formtype specific conversion prior to editing content */
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
         // No change to valobject
     }
     

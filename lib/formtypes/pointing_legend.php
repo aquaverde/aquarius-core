@@ -2,7 +2,7 @@
 
 class Formtype_Pointing_Legend extends Formtype {
 
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
         
         if(!$formfield->multi) throw new Exception("Formfield Pointing-Legend have to be multi");
         
@@ -94,7 +94,7 @@ class Formtype_Pointing_Legend extends Formtype {
     }
 
     /** Load node object from id */
-    function db_get($values, $formfield) {
+    function db_get($values, $formfield, $lg) {
         if (!empty($values['node'])) {
             $pointing_node = db_Node::staticGet($values['node']);
             if ($pointing_node) {
@@ -106,7 +106,7 @@ class Formtype_Pointing_Legend extends Formtype {
     }
 
     /** Save node id to DB. */
-    function db_set($value, $formfield) {
+    function db_set($value, $formfield, $lg) {
         $node = db_Node::get_Node($value['node']); // Make sure it is a node object
         if ($node) {
             $value['node'] = $node->id;

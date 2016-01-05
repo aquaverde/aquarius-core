@@ -1,5 +1,4 @@
 <?php 
-require_once "lib/Node_Change_Notice.php";
 
 /** The Nodetree actions are used to display trees of nodes.
   * An action to modify a list of nodes is also provided (nodetree_forall).
