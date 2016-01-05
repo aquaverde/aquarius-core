@@ -178,7 +178,7 @@ class Action implements BasicAction {
         if (!class_exists($classname, false)) {
             // Include the code for our action class.
             $includename = "lib/action/".basename(strtolower($name)).".php";
-            if (!include $includename) throw new Exception("Failed loading action class '$classname' in '$includename'");
+            require_once $includename;
             if (!class_exists($classname, false)) throw new Exception("Loaded '$includename' but class '$classname' still missing");
         }
         return $classname;

@@ -19,7 +19,7 @@ class Formtype_Pointing_Subsite extends Formtype_Pointing {
         parent::__construct($code, $template);
     }
 
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
         $subsite = $this->subsites->site_of_node($node);
 
         $frobulated_formfield = clone $formfield; // Maybe superfluous to clone it, but we don't know how it's used outside

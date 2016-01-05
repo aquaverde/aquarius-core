@@ -12,7 +12,7 @@ class db_Users2modules extends DB_DataObject
     public $moduleId;                        // int(11)  not_null primary_key group_by
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Users2modules',$k,$v); }
+    static function staticGet($k,$v=NULL, $dummy=NULL) { return DB_DataObject::staticGet('db_Users2modules',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE

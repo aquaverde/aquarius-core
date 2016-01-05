@@ -41,7 +41,7 @@ class MailForm extends Module {
 
     var $sent_status  = array();
 
-    function frontend_interface() {
+    function frontend_interface($lg) {
         return $this;
     }
 

@@ -43,7 +43,7 @@
 class Formtype_Xref extends Formtype {
     /** Apply formtype specific conversion prior to editing content
      */
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
         if (!$formfield->multi) throw new Exception("xref field must always be set to multi, check form '".$formfield->get_form()->title."'");
 
         $parents = $node->get_parents() ; 
@@ -101,11 +101,11 @@ class Formtype_Xref extends Formtype {
         $valobject->xref = $xref ; 
     }
         
-    function db_set($value, $form_field) {
+    function db_set($value, $form_field, $lg) {
         return $value ;
     }
 
-    function db_get_field ($vals, $formfield) {
+    function db_get_field ($vals, $formfield, $lg) {
         $ret = array() ;
         foreach($vals as $val) {
             $node = get($val, 'node');
@@ -117,4 +117,3 @@ class Formtype_Xref extends Formtype {
         return $ret;
     }
 }
-?>

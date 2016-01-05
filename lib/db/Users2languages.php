@@ -14,7 +14,7 @@ class db_Users2languages extends DB_DataObject
     public $lg;                              // char(6)  not_null
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Users2languages',$k,$v); }
+    static function staticGet($k,$v=NULL, $dummy=false) { return DB_DataObject::staticGet('db_Users2languages',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE

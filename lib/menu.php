@@ -134,7 +134,10 @@ class Menu {
     function add_entry($parent_name, $weight, $entry) {
         $parent_entry = $this->get_entry($parent_name);
         if ($parent_entry) {
-            if ($weight === false) $weight = 10 + array_pop(array_keys($parent_entry->subentries));
+            if ($weight === false) {
+                $sube = array_keys($parent_entry->subentries);
+                $weight = 10 + array_pop($sube);
+            }
             $parent_entry->subentries[$weight] = $entry;
             return true;
         } else {

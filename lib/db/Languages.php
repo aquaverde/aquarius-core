@@ -17,7 +17,7 @@ class db_Languages extends DB_DataObject
     public $active;                          // tinyint(1)  not_null multiple_key group_by
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Languages',$k,$v); }
+    static function staticGet($k,$v=NULL, $dummy=NULL) { return DB_DataObject::staticGet('db_Languages',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
@@ -82,7 +82,7 @@ class db_Languages extends DB_DataObject
       * This will return the first language from the configured languages. Active languages are preferred over inactive ones */
     static function getPrimary() {
         // Retrieve the first active language (sorted by weight)
-        $lang_prototype =& DB_DataObject::factory('languages');
+        $lang_prototype = DB_DataObject::factory('languages');
         $lang_prototype->orderBy('active DESC, weight');
         $lang_prototype->limit(0,1);
         if ( $lang_prototype->find() < 1 ) throw new Exception("No language present");

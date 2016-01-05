@@ -16,7 +16,7 @@ class db_Fe_users extends DB_DataObject
     public $active;                          // tinyint(1)  not_null group_by
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Fe_users',$k,$v); }
+    static function staticGet($k,$v=NULL, $dummy=NULL) { return DB_DataObject::staticGet('db_Fe_users',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
@@ -70,7 +70,7 @@ class db_Fe_users extends DB_DataObject
     }
     
     /** Delete this user and all group realations (DB_DataObject::delete override)*/
-    function delete() {
+    function delete($unsupported=false) {
         require_once("Fe_groups2user.php");
         db_Fe_groups2user::removeGroupsByUser($this->id);
         parent::delete(); // Call the DB_DataObject delete method
