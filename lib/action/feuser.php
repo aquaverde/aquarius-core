@@ -197,17 +197,9 @@ class action_feuser_export extends action_feuser implements SideAction {
         if (!$fp) throw new Exception("Unable to open output to write CSV");
 
         $columns = array_keys($adresses->table());
-        if(!function_exists("fputcsv")) {
-            aqua_fputcsv($fp, $columns,';','"');
-        } else {
-            fputcsv($fp, $columns,';','"');
-        }
+        aqua_fputcsv($fp, $columns);
         foreach($adressesarray as $line) {
-            if(!function_exists("fputcsv")) {
-            aqua_fputcsv($fp, $line,';','"');
-            } else {
-            fputcsv($fp, $line,';','"');
-            }
+            aqua_fputcsv($fp, $line);
         }
 
         fclose($fp);
