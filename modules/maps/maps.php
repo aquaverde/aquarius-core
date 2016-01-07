@@ -48,7 +48,7 @@ class Maps extends Module {
 
     function create_marker($point, $node_id, $cache_title, $lg) {
  
-        if(empty($point['type'])) continue;
+        if(empty($point['type'])) return false;
     
         $marker = array();
         $marker['node_id'] = $node_id;
@@ -153,7 +153,8 @@ class Maps extends Module {
         if(!is_array($content->gmap)) return;
 
         foreach ($content->gmap as $point) {
-            $result_list[] = $this->create_marker($point,$node->id,$node->title,$lg);
+            $marker = $this->create_marker($point, $node->id, $node->title, $lg);
+            if ($marker) $result_list []= $marker;
         }
 
         return $result_list;        

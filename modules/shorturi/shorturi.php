@@ -67,10 +67,11 @@ class Shorturi_Detection_Step {
             if (count($path_parts) == 1) {
 
                 $shortcut = first($path_parts);
-                Log::debug("Looking for shortcut name '$shortcut'");
+                $domain = preg_replace('%^www\\.%i', '', $params['uri']->host);
+                Log::debug("Looking for shortcut name '$shortcut' for domain '$domain'.");
                 
                 $shorturi_search            = DB_DataObject::factory("shorturi");
-                $shorturi_search->domain    = substr($params['uri']->host,4);
+                $shorturi_search->domain    = $domain;
                 $shorturi_search->keyword   = mb_strtolower($shortcut);
 
                 if($shorturi_search->find(true))
