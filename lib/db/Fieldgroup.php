@@ -21,7 +21,7 @@ class db_Fieldgroup extends DB_DataObject
     public $weight;                          // int(11)  not_null multiple_key group_by
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Fieldgroup',$k,$v); }
+    static function staticGet($k,$v=NULL, $dummy=NULL) { return DB_DataObject::staticGet('db_Fieldgroup',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
@@ -79,7 +79,7 @@ class db_Fieldgroup extends DB_DataObject
         }
     }
 
-    function delete() {
+    function delete($unsupported=false) {
         foreach($this->field_selectors() as $selector) {
             $selector->delete();
         }
