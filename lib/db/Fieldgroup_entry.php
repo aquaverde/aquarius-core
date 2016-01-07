@@ -14,9 +14,6 @@ class db_Fieldgroup_entry extends DB_DataObject
     public $fieldgroup_id;                   // int(11)  not_null group_by
     public $selector;                        // varchar(765)  not_null
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Fieldgroup_entry',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 }
