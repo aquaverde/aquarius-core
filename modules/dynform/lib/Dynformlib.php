@@ -592,7 +592,7 @@ class Dynformlib {
 				foreach ($fields as $field) {
 					$ftype = $this->get_fieldtype_name($field->type) ; 
 					if ($ftype == "Text") continue ;   // no entries for texts
-					$value = $post_vars['field_'.$field->id] ; 
+					$value = get($post_vars, 'field_'.$field->id);
 					$entry_data = new db_Dynform_entry_data ; 
 					$entry_data->entry_id = $entry_id ; 
 					$entry_data->field_id = $field->id ; 

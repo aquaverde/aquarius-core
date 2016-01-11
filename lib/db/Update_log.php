@@ -16,9 +16,6 @@ class db_Update_log extends DB_DataObject
     public $module;                          // blob(196605)  not_null blob
     public $success;                         // tinyint(4)  group_by
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Update_log',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 }

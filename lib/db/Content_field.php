@@ -15,9 +15,6 @@ class db_Content_field extends DB_DataObject
     public $name;                            // varchar(750)  not_null multiple_key
     public $weight;                          // int(11)  not_null multiple_key group_by
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Content_field',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 

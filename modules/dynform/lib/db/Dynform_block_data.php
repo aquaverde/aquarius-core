@@ -15,9 +15,6 @@ class db_Dynform_block_data extends DB_DataObject
     public $lg;                              // string(6)  not_null
     public $name;                            // blob(50331645)  not_null blob
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Dynform_block_data',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 }

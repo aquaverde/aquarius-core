@@ -16,9 +16,6 @@ class db_Dynform_field_data extends DB_DataObject
     public $name;                            // blob(50331645)  not_null blob
     public $options;                         // blob(4294967295)  not_null blob
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Dynform_field_data',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 }

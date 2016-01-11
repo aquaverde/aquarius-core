@@ -14,9 +14,6 @@ class db_Content_field_value extends DB_DataObject
     public $name;                            // varchar(750)  multiple_key
     public $value;                           // blob(50331645)  not_null multiple_key blob
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Content_field_value',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 

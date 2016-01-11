@@ -15,9 +15,6 @@ class db_Dynform_block extends DB_DataObject
     public $name;                            // string(765)  not_null
     public $weight;                          // int(11)  not_null
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Dynform_block',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 }

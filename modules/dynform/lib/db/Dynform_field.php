@@ -19,9 +19,6 @@ class db_Dynform_field extends DB_DataObject
     public $num_lines;                       // int(11)  not_null
     public $width;                           // int(11)  not_null
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Dynform_field',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 }
