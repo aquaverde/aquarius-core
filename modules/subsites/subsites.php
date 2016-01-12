@@ -22,7 +22,7 @@ class Subsites extends Module {
     var $short = "subsites" ;
     var $name  = "Manage URL for subsites" ;
 
-    var $site_roots = [];
+    var $site_roots = array();
     var $domain_conf;
 
     function initialize($aquarius) {
