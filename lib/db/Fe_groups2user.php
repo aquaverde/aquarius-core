@@ -12,9 +12,6 @@ class db_Fe_groups2user extends DB_DataObject
     public $user_id;                         // int(11)  not_null primary_key group_by
     public $group_id;                        // int(11)  not_null primary_key group_by
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Fe_groups2user',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 	

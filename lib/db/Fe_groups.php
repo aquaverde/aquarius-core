@@ -13,9 +13,6 @@ class db_Fe_groups extends DB_DataObject
     public $name;                            // varchar(300)  not_null
     public $active;                          // tinyint(1)  not_null group_by
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Fe_groups',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 	

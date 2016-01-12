@@ -12,9 +12,6 @@ class db_Fe_user_address extends DB_DataObject
     public $fe_user_id;                      // int(11)  not_null primary_key group_by
     public $fe_address_id;                   // int(11)  not_null primary_key group_by
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Fe_user_address',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 }
