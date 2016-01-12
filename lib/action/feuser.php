@@ -162,22 +162,30 @@ class action_feuser_export extends action_feuser implements SideAction {
         
         // Get the adresses
         $fe_address = DB_DataObject::factory('fe_address');
-        
+
+        $group_join = "";
+        $group_pred = "";
+        if ($group_search > 0) {
+            $group_join = "JOIN fe_groups2user ON fe_groups2user.user_id = fe_users.id";
+            $group_pred = "AND fe_groups2user.group_id = $group_search";
+
+        }
+
+        $name_pred = "";
+        if (!empty($user_search)) {
+            $name_pred = 'AND fe_users.name LIKE '.$aquarius->db->quote("%$user_search%");
+        }
+
+       
         $query = "SELECT fe_users.name, `fe_address`.*
-            FROM fe_users".($group_search > 0 ? " , fe_groups2user" : "")."
+            FROM fe_users
+            $group_join
             LEFT JOIN fe_user_address ON fe_user_address.fe_user_id = fe_users.id
             LEFT JOIN fe_address ON fe_user_address.fe_address_id = fe_address.id
             WHERE 1=1
+            $group_pred
+            $name_pred
         ";
-
-        if ( !empty($user_search) ) {
-            $query .= 'AND fe_users.name LIKE '.$aquarius->db->quote("%$user_search%");
-        }
-
-        // Maybe restrict search to one group
-        if ( $group_search > 0 ) {
-            $query .= "AND fe_groups2user.user_id = fe_users.id and fe_groups2user.group_id = $group_search";
-        }
 
         $fe_address->query($query);
         $adresses = $fe_address;
