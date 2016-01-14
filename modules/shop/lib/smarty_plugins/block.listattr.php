@@ -42,7 +42,7 @@ function smarty_block_listattr($params, $content, &$smarty, &$repeat) {
         $filter = NodeFilter::create('and', array(
             NodeFilter::create('has_content', $lg),
             NodeFilter::create('active', true),
-            NodeFilter::create('not', NodeFilter::create('ids', split(',', $hide)))
+            NodeFilter::create('not', NodeFilter::create('ids', explode(',', $hide)))
         ));
         
         // push nodes given by id

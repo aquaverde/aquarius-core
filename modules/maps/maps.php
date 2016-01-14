@@ -100,7 +100,7 @@ class Maps extends Module {
                 else $marker['cat'] = $kat_node->name;
 
                 $symbol1 = $kat_node->get_symbol();
-                $symbol2 = split("/",$symbol1['file']);
+                $symbol2 = explode("/",$symbol1['file']);
                 $symbol3 = $symbol2[count($symbol2) - 1];
 
                 $marker['icontype'] = $symbol3;
@@ -238,8 +238,8 @@ class Maps extends Module {
         $stringer = '<line colour="'.POLY_COLOR.'" width="'.POLY_WIDTH.'" cat="'.strtr(htmlspecialchars($marker['cat']),$replacer).'"';
             if(isset($marker['over_cat'])) $stringer .= ' over_cat="'.strtr(htmlspecialchars($marker['over_cat']),$replacer).'" ';
         $stringer .= '>';
-        $lats = split(",",$marker['lat']);
-        $lngs = split(",",$marker['lng']);
+        $lats = explode(",",$marker['lat']);
+        $lngs = explode(",",$marker['lng']);
         for($i = 0; $i < count($lats); $i++) {
             $stringer .= '<point lat="'.$lats[$i].'" lng="'.$lngs[$i].'" />';
         }

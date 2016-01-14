@@ -11,7 +11,7 @@
 
 function smarty_modifier_email($email, $linktext)
 {
-	list($name,$domainTLD)	= split("@", $email);
+	list($name,$domainTLD)	= explode("@", $email);
 	$domain	= substr($domainTLD, 0, strrpos($domainTLD, "."));
 	$tld	= substr($domainTLD, strrpos($domainTLD, ".") + 1, strlen($domainTLD));
 	

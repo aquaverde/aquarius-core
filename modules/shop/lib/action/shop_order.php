@@ -19,7 +19,7 @@ class action_shop_order extends ModuleAction {
       */
     function _parsedate($string) {
         $now = getdate();
-        @list($day, $month, $year) = split('[^0-9]+', $string);
+        @list($day, $month, $year) = preg_split('[^0-9]+', $string);
         if (empty($year)) $year = $now['year'];
         if (empty($month)) $month = $now['mon'];
         if (empty($day)) $day = $now['mday'];

@@ -374,7 +374,7 @@ class Dynform extends Module {
         
         // In some places Aquarius erroneously recommends using semicolons to add multiple addresses.
         // We replace those semicolons with commas and tidy up a bit. Yeah yeah, quoted local parts &c not supported.
-        $target_email = join(', ', array_map('trim', array_filter(split('[,;]', $target_email))));
+        $target_email = join(', ', array_map('trim', array_filter(preg_split('[,;]', $target_email))));
         Log::debug("Dynform target_email $target_email");
         
         // Bot blocker: check that the decoy field is empty

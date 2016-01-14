@@ -42,7 +42,7 @@ function smarty_function_search_notfound_recovery() {
         $url = Url::parse($url);
 
         // Split path at common word separators
-        foreach(array_filter(split('[/?._ ]', $url->path)) as $word) {
+        foreach(array_filter(preg_split('[/?._ ]', $url->path)) as $word) {
             if (strlen($word) > 2) $words []= $word;
         }
 
@@ -54,4 +54,3 @@ function smarty_function_search_notfound_recovery() {
     }
     return implode(' ', $words);
 }
-?>

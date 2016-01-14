@@ -20,7 +20,7 @@ class Formtype_Pointing_Legend extends Formtype {
         
         $valobject->disabled_depths = array();
         if($formfield->sup4 != "") {
-            $valobject->disabled_depths  = split(",", $formfield->sup4);
+            $valobject->disabled_depths  = explode(",", $formfield->sup4);
         }
         $valobject->disabled_depths []= 0; // Root may never be selected
 

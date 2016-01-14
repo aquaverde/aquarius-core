@@ -79,7 +79,7 @@ function smarty_block_foreach_language($params, $content, $smarty, &$repeat) {
             $langs = db_Languages::getLanguages(true);
             break;
         default:
-            foreach (split(',', $langs_in) as $lg) {
+            foreach (explode(',', $langs_in) as $lg) {
                 $lang = db_Languages::staticGet($lg);
                 if ($lang) $langs[] = $lang;
             }

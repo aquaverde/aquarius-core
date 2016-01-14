@@ -262,7 +262,7 @@ class Action_Newsletter_Addaddress extends Action_Newsletter implements ChangeAc
     }
 
     function process($aquarius, $post, $result) {
-            $new_addresses = array_filter(array_map('trim', split("[ \r\n,;]", requestvar("newAddress"))), 'strlen');
+            $new_addresses = array_filter(array_map('trim', preg_split("[ \r\n,;]", requestvar("newAddress"))), 'strlen');
             $subscriptions = requestvar('addSubscriptions', array());
             if ($this->newsletter_id != 0) {
                 $subscriptions = array($this->newsletter_id);
@@ -586,7 +586,7 @@ class Action_Newsletter_Send_It extends Action_Newsletter implements ChangeActio
     function process($aquarius, $post, $result) {
         $edition_node = db_Node::get_node($this->edition_id);
         
-        $selected_languages = split(',', $this->lgs);
+        $selected_languages = explode(',', $this->lgs);
         $message = new AdminMessage('info');
         $total_count = 0;
         foreach($this->available_languages($edition_node) as $language) {
@@ -641,7 +641,7 @@ class Action_Newsletter_Send_Test extends Action_Newsletter implements ChangeAct
 
     function process($aquarius, $post, $result) {
         // Read comma separated list of mail addresses, discarding blanks
-        $recipients = array_filter(array_map('trim', split(",",$post['test_mail'])));
+        $recipients = array_filter(array_map('trim', explode(",",$post['test_mail'])));
 
         $checked_recipients = $this->check_addresses($recipients);
         if (count($checked_recipients['invalid']) > 0) {

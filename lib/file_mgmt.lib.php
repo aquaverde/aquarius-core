@@ -177,7 +177,7 @@ function get_cached_dirs($prefix = false) {
 
 function getAllDirs() {
     $dirs = array();
-    foreach ( split(";", FILE_ROOT_DIRS) as $rootDir ) {
+    foreach (explode(";", FILE_ROOT_DIRS) as $rootDir ) {
         $dirs = array_merge(getAvailableDirectories($rootDir),$dirs);
     }
     return $dirs;

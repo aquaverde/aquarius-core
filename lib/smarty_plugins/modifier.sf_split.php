@@ -23,4 +23,3 @@ function smarty_modifier_sf_split($string, $delimiter1 = ',', $delimiter2 = '=')
 
     return $result;
 }
-?> 

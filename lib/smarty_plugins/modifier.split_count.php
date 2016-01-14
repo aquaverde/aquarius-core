@@ -14,6 +14,5 @@
 function smarty_modifier_split_count($string, $delimiter = ',')
 {	
 	if (empty($string)) return 0; // empty strings have no elements
-	else                return count(split($delimiter,$string));
+	else                return count(explode($delimiter,$string));
 }
-?> 
