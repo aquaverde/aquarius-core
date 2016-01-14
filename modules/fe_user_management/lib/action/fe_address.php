@@ -121,7 +121,7 @@ class action_fe_address_edit extends action_fe_address implements DisplayAction 
         $result->use_template("fe_address_edit.tpl");
         $smarty->assign('form_data', $renderer->toArray());
         $smarty->assign('insert', false);
-        $smarty->assign('actions', [Action::make('fe_address', 'save', $this->id), Action::make('cancel')]);
+        $smarty->assign('actions', array(Action::make('fe_address', 'save', $this->id), Action::make('cancel')));
     }
 }
 
@@ -150,7 +150,7 @@ class action_fe_address_add extends action_fe_address implements DisplayAction  
         $result->use_template("fe_address_edit.tpl");
         $smarty->assign('form_data', $renderer->toArray());
         $smarty->assign('insert', true);
-        $smarty->assign('actions', [Action::make('fe_address', 'save', $this->id), Action::make('cancel')]);
+        $smarty->assign('actions', array(Action::make('fe_address', 'save', $this->id), Action::make('cancel')));
 
     }
 }
