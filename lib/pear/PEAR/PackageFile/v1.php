@@ -4,18 +4,11 @@
  *
  * PHP versions 4 and 5
  *
- * LICENSE: This source file is subject to version 3.0 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
- *
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2006 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: v1.php,v 1.69 2006/03/02 18:14:13 cellog Exp $
+ * @copyright  1997-2009 The Authors
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -279,9 +272,9 @@ define('PEAR_PACKAGEFILE_ERROR_INVALID_FILENAME', 52);
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2006 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.11
+ * @copyright  1997-2009 The Authors
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    Release: 1.10.1
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -352,9 +345,9 @@ class PEAR_PackageFile_v1
      * @param bool determines whether to return a PEAR_Error object, or use the PEAR_ErrorStack
      * @param string Name of Error Stack class to use.
      */
-    function PEAR_PackageFile_v1()
+    function __construct()
     {
-        $this->_stack = &new PEAR_ErrorStack('PEAR_PackageFile_v1');
+        $this->_stack = new PEAR_ErrorStack('PEAR_PackageFile_v1');
         $this->_stack->setErrorMessageTemplate($this->_getErrorMessage());
         $this->_isValid = 0;
     }
@@ -457,6 +450,9 @@ class PEAR_PackageFile_v1
 
     function setDirtree($path)
     {
+        if (!isset($this->_packageInfo['dirtree'])) {
+            $this->_packageInfo['dirtree'] = array();
+        }
         $this->_packageInfo['dirtree'][$path] = true;
     }
 
@@ -858,6 +854,11 @@ class PEAR_PackageFile_v1
         return false;
     }
 
+    function getProvidesExtension()
+    {
+        return false;
+    }
+
     function addFile($dir, $file, $attrs)
     {
         $dir = preg_replace(array('!\\\\+!', '!/+!'), array('/', '/'), $dir);
@@ -1192,9 +1193,24 @@ class PEAR_PackageFile_v1
                     $this->_validateError(PEAR_PACKAGEFILE_ERROR_INVALID_FILEROLE,
                         array('file' => $file, 'role' => $fa['role'], 'roles' => PEAR_Common::getFileRoles()));
                 }
-                if ($file{0} == '.' && $file{1} == '/') {
+                if (preg_match('~/\.\.?(/|\\z)|^\.\.?/~', str_replace('\\', '/', $file))) {
+                    // file contains .. parent directory or . cur directory references
                     $this->_validateError(PEAR_PACKAGEFILE_ERROR_INVALID_FILENAME,
                         array('file' => $file));
+                }
+                if (isset($fa['install-as']) &&
+                      preg_match('~/\.\.?(/|\\z)|^\.\.?/~', 
+                                 str_replace('\\', '/', $fa['install-as']))) {
+                    // install-as contains .. parent directory or . cur directory references
+                    $this->_validateError(PEAR_PACKAGEFILE_ERROR_INVALID_FILENAME,
+                        array('file' => $file . ' [installed as ' . $fa['install-as'] . ']'));
+                }
+                if (isset($fa['baseinstalldir']) &&
+                      preg_match('~/\.\.?(/|\\z)|^\.\.?/~', 
+                                 str_replace('\\', '/', $fa['baseinstalldir']))) {
+                    // install-as contains .. parent directory or . cur directory references
+                    $this->_validateError(PEAR_PACKAGEFILE_ERROR_INVALID_FILENAME,
+                        array('file' => $file . ' [baseinstalldir ' . $fa['baseinstalldir'] . ']'));
                 }
             }
         }
@@ -1291,7 +1307,7 @@ class PEAR_PackageFile_v1
         if (!class_exists('PEAR_PackageFile_Generator_v1')) {
             require_once 'PEAR/PackageFile/Generator/v1.php';
         }
-        $a = &new PEAR_PackageFile_Generator_v1($this);
+        $a = new PEAR_PackageFile_Generator_v1($this);
         return $a;
     }
 
@@ -1314,7 +1330,7 @@ class PEAR_PackageFile_v1
             if (!class_exists('Archive_Tar')) {
                 require_once 'Archive/Tar.php';
             }
-            $tar = &new Archive_Tar($this->_archiveFile);
+            $tar = new Archive_Tar($this->_archiveFile);
             $tar->pushErrorHandling(PEAR_ERROR_RETURN);
             if ($file != 'package.xml' && $file != 'package2.xml') {
                 $file = $this->getPackage() . '-' . $this->getVersion() . '/' . $file;
@@ -1353,13 +1369,8 @@ class PEAR_PackageFile_v1
         if (!$fp = @fopen($file, "r")) {
             return false;
         }
-        if (function_exists('file_get_contents')) {
-            fclose($fp);
-            $contents = file_get_contents($file);
-        } else {
-            $contents = @fread($fp, filesize($file));
-            fclose($fp);
-        }
+        fclose($fp);
+        $contents = file_get_contents($file);
         $tokens = token_get_all($contents);
 /*
         for ($i = 0; $i < sizeof($tokens); $i++) {
@@ -1454,15 +1465,6 @@ class PEAR_PackageFile_v1
                     $look_for = $token;
                     continue 2;
                 case T_STRING:
-                    if (version_compare(zend_version(), '2.0', '<')) {
-                        if (in_array(strtolower($data),
-                            array('public', 'private', 'protected', 'abstract',
-                                  'interface', 'implements', 'throw') 
-                                 )) {
-                            $this->_validateWarning(PEAR_PACKAGEFILE_ERROR_PHP5,
-                                array($file));
-                        }
-                    }
                     if ($look_for == T_CLASS) {
                         $current_class = $data;
                         $current_class_level = $brace_level;

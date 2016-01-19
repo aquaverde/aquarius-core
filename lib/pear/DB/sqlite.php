@@ -6,7 +6,7 @@
  * The PEAR DB driver for PHP's sqlite extension
  * for interacting with SQLite databases
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -21,7 +21,7 @@
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0 3.0
- * @version    CVS: $Id: sqlite.php,v 1.117 2007/09/21 14:23:28 aharvey Exp $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
 
@@ -47,7 +47,7 @@ require_once 'DB/common.php';
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0 3.0
- * @version    Release: 1.7.13
+ * @version    Release: 1.9.2
  * @link       http://pear.php.net/package/DB
  */
 class DB_sqlite extends DB_common
@@ -152,13 +152,13 @@ class DB_sqlite extends DB_common
     // {{{ constructor
 
     /**
-     * This constructor calls <kbd>$this->DB_common()</kbd>
+     * This constructor calls <kbd>parent::__construct()</kbd>
      *
      * @return void
      */
-    function DB_sqlite()
+    function __construct()
     {
-        $this->DB_common();
+        parent::__construct();
     }
 
     // }}}
@@ -755,6 +755,7 @@ class DB_sqlite extends DB_common
                 '/uniqueness constraint failed/' => DB_ERROR_CONSTRAINT,
                 '/may not be NULL/' => DB_ERROR_CONSTRAINT_NOT_NULL,
                 '/^no such column:/' => DB_ERROR_NOSUCHFIELD,
+                '/no column named/' => DB_ERROR_NOSUCHFIELD,
                 '/column not present in both tables/i' => DB_ERROR_NOSUCHFIELD,
                 '/^near ".*": syntax error$/' => DB_ERROR_SYNTAX,
                 '/[0-9]+ values for [0-9]+ columns/i' => DB_ERROR_VALUE_COUNT_ON_ROW,
@@ -828,6 +829,9 @@ class DB_sqlite extends DB_common
             $flags = '';
             if ($id[$i]['pk']) {
                 $flags .= 'primary_key ';
+                if (strtoupper($type) == 'INTEGER') {
+                    $flags .= 'auto_increment ';
+                }
             }
             if ($id[$i]['notnull']) {
                 $flags .= 'not_null ';

@@ -1,27 +1,27 @@
 <?php
 /**
- * PEAR_Installer_Role_Data
+ * PEAR_Installer_Role_Www
  *
  * PHP versions 4 and 5
  *
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2009 The Authors
+ * @copyright  2007-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
  * @link       http://pear.php.net/package/PEAR
- * @since      File available since Release 1.4.0a1
+ * @since      File available since Release 1.7.0
  */
 
 /**
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2009 The Authors
+ * @copyright  2007-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
  * @version    Release: 1.10.1
  * @link       http://pear.php.net/package/PEAR
- * @since      Class available since Release 1.4.0a1
+ * @since      Class available since Release 1.7.0
  */
-class PEAR_Installer_Role_Data extends PEAR_Installer_Role_Common {}
+class PEAR_Installer_Role_Www extends PEAR_Installer_Role_Common {}
 ?>

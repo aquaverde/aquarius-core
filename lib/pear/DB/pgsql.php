@@ -6,7 +6,7 @@
  * The PEAR DB driver for PHP's pgsql extension
  * for interacting with PostgreSQL databases
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -21,7 +21,7 @@
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: pgsql.php,v 1.138 2007/09/21 13:40:41 aharvey Exp $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
 
@@ -43,7 +43,7 @@ require_once 'DB/common.php';
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.7.13
+ * @version    Release: 1.9.2
  * @link       http://pear.php.net/package/DB
  */
 class DB_pgsql extends DB_common
@@ -148,13 +148,13 @@ class DB_pgsql extends DB_common
     // {{{ constructor
 
     /**
-     * This constructor calls <kbd>$this->DB_common()</kbd>
+     * This constructor calls <kbd>parent::__construct()</kbd>
      *
      * @return void
      */
-    function DB_pgsql()
+    function __construct()
     {
-        $this->DB_common();
+        parent::__construct();
     }
 
     // }}}
@@ -348,12 +348,12 @@ class DB_pgsql extends DB_common
          * CREATE, DECLARE, DELETE, DROP TABLE, EXPLAIN, FETCH,
          * GRANT, INSERT, LISTEN, LOAD, LOCK, MOVE, NOTIFY, RESET,
          * REVOKE, ROLLBACK, SELECT, SELECT INTO, SET, SHOW,
-         * UNLISTEN, UPDATE, VACUUM
+         * UNLISTEN, UPDATE, VACUUM, WITH
          */
         if ($ismanip) {
             $this->affected = @pg_affected_rows($result);
             return DB_OK;
-        } elseif (preg_match('/^\s*\(*\s*(SELECT|EXPLAIN|FETCH|SHOW)\s/si',
+        } elseif (preg_match('/^\s*\(*\s*(SELECT|EXPLAIN|FETCH|SHOW|WITH)\s/si',
                              $query))
         {
             $this->row[(int)$result] = 0; // reset the row counter.
@@ -463,18 +463,6 @@ class DB_pgsql extends DB_common
             return @pg_freeresult($result);
         }
         return false;
-    }
-
-    // }}}
-    // {{{ quote()
-
-    /**
-     * @deprecated  Deprecated in release 1.6.0
-     * @internal
-     */
-    function quote($str)
-    {
-        return $this->quoteSmart($str);
     }
 
     // }}}
@@ -1103,6 +1091,25 @@ class DB_pgsql extends DB_common
     }
 
     // }}}
+    // {{{ _checkManip()
+
+    /**
+     * Checks if the given query is a manipulation query. This also takes into
+     * account the _next_query_manip flag and sets the _last_query_manip flag
+     * (and resets _next_query_manip) according to the result.
+     *
+     * @param string The query to check.
+     *
+     * @return boolean true if the query is a manipulation query, false
+     * otherwise
+     *
+     * @access protected
+     */
+    function _checkManip($query)
+    {
+        return (preg_match('/^\s*(SAVEPOINT|RELEASE)\s+/i', $query)
+                || parent::_checkManip($query));
+    }
 
 }
 

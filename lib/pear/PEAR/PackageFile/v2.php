@@ -4,18 +4,11 @@
  *
  * PHP versions 4 and 5
  *
- * LICENSE: This source file is subject to version 3.0 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
- *
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2006 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: v2.php,v 1.129.2.1 2006/03/23 04:07:51 cellog Exp $
+ * @copyright  1997-2009 The Authors
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -27,9 +20,9 @@ require_once 'PEAR/ErrorStack.php';
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2006 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.11
+ * @copyright  1997-2009 The Authors
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    Release: 1.10.1
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -121,7 +114,7 @@ class PEAR_PackageFile_v2
      *
      * - package name
      * - channel name
-     * - dependencies 
+     * - dependencies
      * @var boolean
      * @access private
      */
@@ -135,10 +128,19 @@ class PEAR_PackageFile_v2
     /**
      * The constructor merely sets up the private error stack
      */
-    function PEAR_PackageFile_v2()
+    function __construct()
     {
         $this->_stack = new PEAR_ErrorStack('PEAR_PackageFile_v2', false, null);
         $this->_isValid = false;
+    }
+
+    /**
+     * PHP 4 style constructor for backwards compatibility.
+     * Used by PEAR_PackageFileManager2
+     */
+    public function PEAR_PackageFile_v2()
+    {
+        $this->__construct();
     }
 
     /**
@@ -151,7 +153,7 @@ class PEAR_PackageFile_v2
      */
     function &getPEARDownloader(&$i, $o, &$c)
     {
-        $z = &new PEAR_Downloader($i, $o, $c);
+        $z = new PEAR_Downloader($i, $o, $c);
         return $z;
     }
 
@@ -169,7 +171,7 @@ class PEAR_PackageFile_v2
         if (!class_exists('PEAR_Dependency2')) {
             require_once 'PEAR/Dependency2.php';
         }
-        $z = &new PEAR_Dependency2($c, $o, $p, $s);
+        $z = new PEAR_Dependency2($c, $o, $p, $s);
         return $z;
     }
 
@@ -191,23 +193,24 @@ class PEAR_PackageFile_v2
             $a = false;
             return $a;
         }
-        if ($this->getPackageType() == 'extsrc') {
+        if ($this->getPackageType() == 'extsrc' || $this->getPackageType() == 'zendextsrc') {
+            $releasetype = $this->getPackageType() . 'release';
             if (!is_array($installer->getInstallPackages())) {
                 $a = false;
                 return $a;
             }
             foreach ($installer->getInstallPackages() as $p) {
                 if ($p->isExtension($this->_packageInfo['providesextension'])) {
-                    if ($p->getPackageType() != 'extsrc') {
+                    if ($p->getPackageType() != 'extsrc' && $p->getPackageType() != 'zendextsrc') {
                         $a = false;
                         return $a; // the user probably downloaded it separately
                     }
                 }
             }
-            if (isset($this->_packageInfo['extsrcrelease']['binarypackage'])) {
+            if (isset($this->_packageInfo[$releasetype]['binarypackage'])) {
                 $installer->log(0, 'Attempting to download binary version of extension "' .
                     $this->_packageInfo['providesextension'] . '"');
-                $params = $this->_packageInfo['extsrcrelease']['binarypackage'];
+                $params = $this->_packageInfo[$releasetype]['binarypackage'];
                 if (!is_array($params) || !isset($params[0])) {
                     $params = array($params);
                 }
@@ -264,7 +267,8 @@ class PEAR_PackageFile_v2
      */
     function getProvidesExtension()
     {
-        if (in_array($this->getPackageType(), array('extsrc', 'extbin'))) {
+        if (in_array($this->getPackageType(),
+              array('extsrc', 'extbin', 'zendextsrc', 'zendextbin'))) {
             if (isset($this->_packageInfo['providesextension'])) {
                 return $this->_packageInfo['providesextension'];
             }
@@ -278,7 +282,8 @@ class PEAR_PackageFile_v2
      */
     function isExtension($extension)
     {
-        if (in_array($this->getPackageType(), array('extsrc', 'extbin'))) {
+        if (in_array($this->getPackageType(),
+              array('extsrc', 'extbin', 'zendextsrc', 'zendextbin'))) {
             return $this->_packageInfo['providesextension'] == $extension;
         }
         return false;
@@ -470,6 +475,9 @@ class PEAR_PackageFile_v2
      */
     function setRawState($state)
     {
+        if (!isset($this->_packageInfo['stability'])) {
+            $this->_packageInfo['stability'] = array();
+        }
         $this->_packageInfo['stability']['release'] = $state;
     }
 
@@ -564,7 +572,7 @@ class PEAR_PackageFile_v2
             $atts = $filelist[$name];
             foreach ($tasks as $tag => $raw) {
                 $task = $this->getTask($tag);
-                $task = &new $task($this->_config, $common, PEAR_TASK_INSTALL);
+                $task = new $task($this->_config, $common, PEAR_TASK_INSTALL);
                 if ($task->isScript()) {
                     $ret[] = $filelist[$name]['installed_as'];
                 }
@@ -603,10 +611,14 @@ class PEAR_PackageFile_v2
         $common->debug = $this->_config->get('verbose');
         $this->_scripts = array();
         foreach ($taskfiles as $name => $tasks) {
+            if (!isset($filelist[$name])) {
+                // file was not installed due to installconditions
+                continue;
+            }
             $atts = $filelist[$name];
             foreach ($tasks as $tag => $raw) {
                 $taskname = $this->getTask($tag);
-                $task = &new $taskname($this->_config, $common, PEAR_TASK_INSTALL);
+                $task = new $taskname($this->_config, $common, PEAR_TASK_INSTALL);
                 if (!$task->isScript()) {
                     continue; // scripts are only handled after installation
                 }
@@ -749,6 +761,14 @@ class PEAR_PackageFile_v2
         $this->_packageInfo['dependencies'] = $deps;
     }
 
+    /**
+     * WARNING - do not use this function directly unless you know what you're doing
+     */
+    function setCompatible($compat)
+    {
+        $this->_packageInfo['compatible'] = $compat;
+    }
+
     function setPackagefile($file, $archive = false)
     {
         $this->_packageFile = $file;
@@ -787,6 +807,10 @@ class PEAR_PackageFile_v2
     {
         unset($pinfo['old']);
         unset($pinfo['xsdversion']);
+        // If the changelog isn't an array then it was passed in as an empty tag
+        if (isset($pinfo['changelog']) && !is_array($pinfo['changelog'])) {
+          unset($pinfo['changelog']);
+        }
         $this->_incomplete = false;
         $this->_packageInfo = $pinfo;
     }
@@ -1023,8 +1047,8 @@ class PEAR_PackageFile_v2
                 array('time', 'version',
                     'stability', 'license', 'notes', 'contents', 'compatible',
                     'dependencies', 'providesextension', 'srcpackage', 'srcuri',
-                    'phprelease', 'extsrcrelease',
-                    'extbinrelease', 'bundle', 'changelog'), array(), 'date');
+                    'phprelease', 'extsrcrelease', 'extbinrelease', 'zendextsrcrelease',
+                    'zendextbinrelease', 'bundle', 'changelog'), array(), 'date');
         }
         $this->_packageInfo['date'] = $date;
         $this->_isValid = 0;
@@ -1039,8 +1063,8 @@ class PEAR_PackageFile_v2
                     array('version',
                     'stability', 'license', 'notes', 'contents', 'compatible',
                     'dependencies', 'providesextension', 'srcpackage', 'srcuri',
-                    'phprelease', 'extsrcrelease',
-                    'extbinrelease', 'bundle', 'changelog'), $time, 'time');
+                    'phprelease', 'extsrcrelease', 'extbinrelease', 'zendextsrcrelease',
+                    'zendextbinrelease', 'bundle', 'changelog'), $time, 'time');
         }
         $this->_packageInfo['time'] = $time;
     }
@@ -1154,10 +1178,16 @@ class PEAR_PackageFile_v2
         $this->flattenFilelist();
         if ($contents = $this->getContents()) {
             $ret = array();
+            if (!isset($contents['dir'])) {
+                return false;
+            }
             if (!isset($contents['dir']['file'][0])) {
                 $contents['dir']['file'] = array($contents['dir']['file']);
             }
             foreach ($contents['dir']['file'] as $file) {
+                if (!isset($file['attribs']['name'])) {
+                    continue;
+                }
                 $name = $file['attribs']['name'];
                 if (!$preserve) {
                     $file = $file['attribs'];
@@ -1179,22 +1209,27 @@ class PEAR_PackageFile_v2
      */
     function getConfigureOptions()
     {
-        if ($this->getPackageType() != 'extsrc') {
+        if ($this->getPackageType() != 'extsrc' && $this->getPackageType() != 'zendextsrc') {
             return false;
         }
+
         $releases = $this->getReleases();
         if (isset($releases[0])) {
-            $releases = $release[0];
+            $releases = $releases[0];
         }
+
         if (isset($releases['configureoption'])) {
             if (!isset($releases['configureoption'][0])) {
                 $releases['configureoption'] = array($releases['configureoption']);
             }
+
             for ($i = 0; $i < count($releases['configureoption']); $i++) {
                 $releases['configureoption'][$i] = $releases['configureoption'][$i]['attribs'];
             }
+
             return $releases['configureoption'];
         }
+
         return false;
     }
 
@@ -1388,6 +1423,9 @@ class PEAR_PackageFile_v2
 
     function setDirtree($path)
     {
+        if (!isset($this->_packageInfo['dirtree'])) {
+            $this->_packageInfo['dirtree'] = array();
+        }
         $this->_packageInfo['dirtree'][$path] = true;
     }
 
@@ -1545,7 +1583,7 @@ class PEAR_PackageFile_v2
                         if (strtolower($dep['name']) == strtolower($package) &&
                               $depchannel == $channel) {
                             return true;
-                        }  
+                        }
                     }
                 }
             }
@@ -1563,7 +1601,7 @@ class PEAR_PackageFile_v2
                             if (strtolower($dep['name']) == strtolower($package) &&
                                   $depchannel == $channel) {
                                 return true;
-                            }  
+                            }
                         }
                     }
                 }
@@ -1623,7 +1661,8 @@ class PEAR_PackageFile_v2
                 );
             foreach (array('required', 'optional') as $type) {
                 $optional = ($type == 'optional') ? 'yes' : 'no';
-                if (!isset($this->_packageInfo['dependencies'][$type])) {
+                if (!isset($this->_packageInfo['dependencies'][$type])
+                    || empty($this->_packageInfo['dependencies'][$type])) {
                     continue;
                 }
                 foreach ($this->_packageInfo['dependencies'][$type] as $dtype => $deps) {
@@ -1714,7 +1753,7 @@ class PEAR_PackageFile_v2
     }
 
     /**
-     * @return php|extsrc|extbin|bundle|false
+     * @return php|extsrc|extbin|zendextsrc|zendextbin|bundle|false
      */
     function getPackageType()
     {
@@ -1726,6 +1765,12 @@ class PEAR_PackageFile_v2
         }
         if (isset($this->_packageInfo['extbinrelease'])) {
             return 'extbin';
+        }
+        if (isset($this->_packageInfo['zendextsrcrelease'])) {
+            return 'zendextsrc';
+        }
+        if (isset($this->_packageInfo['zendextbinrelease'])) {
+            return 'zendextbin';
         }
         if (isset($this->_packageInfo['bundle'])) {
             return 'bundle';
@@ -1766,6 +1811,12 @@ class PEAR_PackageFile_v2
 
     function getPackagexmlVersion()
     {
+        if (isset($this->_packageInfo['zendextsrcrelease'])) {
+            return '2.1';
+        }
+        if (isset($this->_packageInfo['zendextbinrelease'])) {
+            return '2.1';
+        }
         return '2.0';
     }
 
@@ -1774,7 +1825,8 @@ class PEAR_PackageFile_v2
      */
     function getSourcePackage()
     {
-        if (isset($this->_packageInfo['extbinrelease'])) {
+        if (isset($this->_packageInfo['extbinrelease']) ||
+              isset($this->_packageInfo['zendextbinrelease'])) {
             return array('channel' => $this->_packageInfo['srcchannel'],
                          'package' => $this->_packageInfo['srcpackage']);
         }
@@ -1813,7 +1865,7 @@ class PEAR_PackageFile_v2
                 return implode('', file($file));
             }
         } else { // tgz
-            $tar = &new Archive_Tar($this->_archiveFile);
+            $tar = new Archive_Tar($this->_archiveFile);
             $tar->pushErrorHandling(PEAR_ERROR_RETURN);
             if ($file != 'package.xml' && $file != 'package2.xml') {
                 $file = $this->getPackage() . '-' . $this->getVersion() . '/' . $file;
@@ -1852,7 +1904,7 @@ class PEAR_PackageFile_v2
         if (!class_exists('PEAR_PackageFile_Generator_v2')) {
             require_once 'PEAR/PackageFile/Generator/v2.php';
         }
-        $a = &new PEAR_PackageFile_Generator_v2($this);
+        $a = new PEAR_PackageFile_Generator_v2($this);
         return $a;
     }
 
@@ -1916,16 +1968,16 @@ class PEAR_PackageFile_v2
         $this->getTasksNs();
         // transform all '-' to '/' and 'tasks:' to '' so tasks:replace becomes replace
         $task = str_replace(array($this->_tasksNs . ':', '-'), array('', ' '), $task);
-        $task = str_replace(' ', '/', ucwords($task));
-        $ps = (strtolower(substr(PHP_OS, 0, 3)) == 'win') ? ';' : ':';
-        foreach (explode($ps, ini_get('include_path')) as $path) {
-            if (file_exists($path . "/PEAR/Task/$task.php")) {
-                include_once "PEAR/Task/$task.php";
-                $task = str_replace('/', '_', $task);
-                if (class_exists("PEAR_Task_$task")) {
-                    return "PEAR_Task_$task";
-                }
-            }
+        $taskfile = str_replace(' ', '/', ucwords($task));
+        $task = str_replace(array(' ', '/'), '_', ucwords($task));
+        if (class_exists("PEAR_Task_$task")) {
+            return "PEAR_Task_$task";
+        }
+        $fp = @fopen("PEAR/Task/$taskfile.php", 'r', true);
+        if ($fp) {
+            fclose($fp);
+            require_once "PEAR/Task/$taskfile.php";
+            return "PEAR_Task_$task";
         }
         return false;
     }
