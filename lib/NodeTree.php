@@ -199,7 +199,7 @@ class NodeTree {
       *  @param lg language code of the language to be used for contentedit links
       *  @param $allow_sorting whether this node's weight can be changed
       */
-    function add_controls(&$entry, $open_nodes, $type, $add_new, $lg, $allow_sorting=false) {
+    static function add_controls(&$entry, $open_nodes, $type, $add_new, $lg, $allow_sorting=false) {
         $node = $entry['node'];
         $open = in_array($node->id, $open_nodes);
 
@@ -269,7 +269,7 @@ class NodeTree {
 
     }
 
-    function get_open_nodes($section) {
+    static function get_open_nodes($section) {
         global $aquarius;
         $open_nodes_sections = $aquarius->session_get('nodetree_open_nodes', array());
 
@@ -278,7 +278,7 @@ class NodeTree {
         return $open_nodes;
     }
     
-    function set_open_nodes($section, $nodes) {
+    static function set_open_nodes($section, $nodes) {
         global $aquarius;
         $open_nodes_sections = $aquarius->session_get('nodetree_open_nodes', array());
 

@@ -48,7 +48,7 @@ class action_user_saveUser extends action_user implements ChangeAction {
         require_once "lib/db/Users2modules.php";
 
         $editing_user = db_Users::authenticated();
-        $user =& DB_DataObject::factory('users');
+        $user = DB_DataObject::factory('users');
         
         $fields = array('name','adminLanguage','defaultLanguage');
 
@@ -133,7 +133,7 @@ class action_user_editUser extends action_user implements DisplayAction {
         require_once "lib/db/Users2nodes.php";
         require_once "lib/db/Users2modules.php";
         $editing_user = db_Users::authenticated();
-        $user =& DB_DataObject::factory('users');
+        $user = DB_DataObject::factory('users');
 
         // load user information if we edit existing
         $user->id = $this->id;
@@ -185,7 +185,7 @@ class action_user_editUser extends action_user implements DisplayAction {
 
 class action_user_deleteUser extends action_user implements ChangeAction {
     function process($aquarius, $post, $result) {
-        $user =& DB_DataObject::factory('users');
+        $user = DB_DataObject::factory('users');
         $userid = intval($this->id);
         $loaded = $user->get($userid);
         $userName = $user->name;
@@ -196,7 +196,7 @@ class action_user_deleteUser extends action_user implements ChangeAction {
 
 class action_user_toggle_active extends action_user implements ChangeAction {
     function process($aquarius, $post, $result) {
-        $user =& DB_DataObject::factory('users');
+        $user = DB_DataObject::factory('users');
         $userid = intval($this->id);
         $loaded = $user->get($userid);
         $user->active = !$user->active;

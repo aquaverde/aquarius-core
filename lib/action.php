@@ -29,7 +29,7 @@ class Action implements BasicAction {
     /** Escape codes for the action parameter escaping */
     private static $param_repl;
     private static $param_subst;
-    function init_static() {
+    static function init_static() {
         self::$param_repl  = array(self::$param_separator, '[', ']');
         self::$param_subst = array('%'.ord(self::$param_separator), '%'.ord('['), '%'.ord(']'));
     }

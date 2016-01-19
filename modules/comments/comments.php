@@ -177,7 +177,7 @@ class Comments extends Module {
         }
     }
 
-    function frontend_interface() {
+    function frontend_interface($lg) {
         return $this;
     }
     

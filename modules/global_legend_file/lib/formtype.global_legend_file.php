@@ -8,8 +8,8 @@ class Formtype_global_legend_file extends Formtype_File {
 
 
     /** Add js code to dynamically load legend when picture changes */
-    function pre_contentedit($node, $content, $formtype, $formfield, $valobject) {
-        parent::pre_contentedit($node, $content, $formtype, $formfield, $valobject);
+    function pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites) {
+        parent::pre_contentedit($node, $content, $formtype, $formfield, $valobject, $page_requisites);
         // Only add the JS when the full field is being loaded.
         if ($content) {
             /* Background to this hack: The legend is loaded dynamically, when a

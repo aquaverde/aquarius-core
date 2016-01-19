@@ -26,6 +26,6 @@ class Formtype_Pointing_Subsite extends Formtype_Pointing {
         if ($subsite) $frobulated_formfield->sup2 = $subsite->id;
 
         // Let our parent class do the work
-        return parent::pre_contentedit($node, $content, $formtype, $frobulated_formfield, $valobject);
+        return parent::pre_contentedit($node, $content, $formtype, $frobulated_formfield, $valobject, $page_requisites);
     }
 }

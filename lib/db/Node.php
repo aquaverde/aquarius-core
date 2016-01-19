@@ -236,7 +236,7 @@ class db_Node extends DB_DataObject
             // This is not supposed to happen...
             if ($this->is_root()) throw new Exception("No form set on root node $this");
             $parent = $this->get_parent();
-            $form = array_shift($parent->available_childforms());
+            $form = first($parent->available_childforms());
             if (!$form) $form = $parent->get_form();
             Log::warn("Node $this begging form $form from $parent");
         }

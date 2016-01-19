@@ -20,7 +20,7 @@ class db_Users2languages extends DB_DataObject
     ###END_AUTOCODE
 	
 	static function deleteUser($userId) {
-		$proto =& DB_DataObject::factory('users2languages');
+		$proto = DB_DataObject::factory('users2languages');
 		$proto->userId = $userId;
 		$proto->find();
 		
@@ -29,7 +29,7 @@ class db_Users2languages extends DB_DataObject
 	}
 	
 	static function addUsersLanguage($userId, $lg) {
-		$proto =& DB_DataObject::factory('users2languages');
+		$proto = DB_DataObject::factory('users2languages');
 		$proto->userId = $userId;
 		$proto->lg = $lg;
 		$proto->insert();
@@ -47,7 +47,7 @@ class db_Users2languages extends DB_DataObject
             if ($user->isSuperadmin() || $user->isSiteadmin() ) {
                 $langs = db_Languages::getLanguages();
             } else {
-                $proto =& DB_DataObject::factory('users2languages');
+                $proto = DB_DataObject::factory('users2languages');
                 $proto->userId = $user->id;
                 $found = $proto->find();
                 while ( $proto->fetch() ) {

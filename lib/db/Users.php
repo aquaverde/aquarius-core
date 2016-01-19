@@ -182,7 +182,7 @@ class db_Users extends DB_DataObject
     /** List of nodes to which this user has access permissions */
 	function getNodes() {
         if (!isset($this->cached_nodes)) {
-            $proto =& DB_DataObject::factory('users2nodes');
+            $proto = DB_DataObject::factory('users2nodes');
             $proto->userId = $this->id;
             $proto->find();
             $this->cached_nodes = array();
@@ -195,7 +195,7 @@ class db_Users extends DB_DataObject
     /** List of module-ids to which this user has access permissions */
     function getAccessableModuleIds() {
         if (!isset($this->accessible_moduleids)) {
-            $u2m =& DB_DataObject::factory('users2modules');
+            $u2m = DB_DataObject::factory('users2modules');
             $u2m->userId = $this->id;
             $u2m->find();
             $result = array();
@@ -214,7 +214,7 @@ class db_Users extends DB_DataObject
             if($this->isSuperadmin()) {
                 $this->accessible_modules=db_Modules::getModules();
             } else {
-                $u2m =& DB_DataObject::factory('users2modules');
+                $u2m = DB_DataObject::factory('users2modules');
                 $u2m->userId = $this->id;
                 $u2m->find();
                 $result = array();
@@ -232,7 +232,7 @@ class db_Users extends DB_DataObject
     
 	function getAccessableLanguages() {
 	    if (!isset($this->accessible_languages)) {
-            $u2l =& DB_DataObject::factory('users2languages');
+            $u2l = DB_DataObject::factory('users2languages');
             $u2l->userId = $this->id;
             $u2l->find();
             $result = array();
@@ -245,7 +245,7 @@ class db_Users extends DB_DataObject
 	}
 	
 	function getPrefsArray() {
-		$prefs	=& DB_DataObject::factory('users2modules');
+		$prefs	= DB_DataObject::factory('users2modules');
 		$prefs->userId = $this->id;
 		$prefs->find();
 		
