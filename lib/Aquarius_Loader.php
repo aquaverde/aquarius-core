@@ -167,11 +167,7 @@ class Aquarius_Stage_Basic_Logging extends Aquarius_Basic_Stage {
         Log::$usuallogger = $this->logger;
 
         if (DEV || DEBUG) {
-            // Unfortunately we can't enable depreciation warnings and strict
-            // standard warnings because the PEAR PHP4 compatible classes use
-            // call-time pass-by-reference.
-            error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
-
+            error_reporting(E_ALL);
             ini_set('display_errors','1');
         }
 
@@ -373,21 +369,17 @@ class Aquarius_Stage_Logging extends Aquarius_Basic_Stage {
 
         $log_php = $loader->aquarius->conf('log/php');
 
-        // Display PHP errors and warnings if desired
-        if ($log_php || $logger->echolevel < Log::INFO) {
-            // Unfortunately we can't enable depreciation warnings and strict
-            // standard warnings because the PEAR PHP4 compatible classes use
-            // call-time pass-by-reference.
-            error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
-
-            ini_set('display_errors','1');
-        }
-
         // When the option is unset, we do not disable the warnings and keep
         // the webserver settings.
         if ($log_php === false) {
             error_reporting(0);
             ini_set('display_errors','0');
+        }
+
+        // Display PHP errors and warnings if desired
+        if (DEV || DEBUG || $log_php || $logger->echolevel < Log::INFO) {
+            error_reporting(E_ALL);
+            ini_set('display_errors','1');
         }
     }
 }
