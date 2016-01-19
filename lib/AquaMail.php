@@ -65,14 +65,14 @@ class AquaMail {
 
         // Attach pics and other files as requested
         foreach($this->values as $key => $value) {
-            if ($this->html_body && eregi('^html_image', $key)) {
+            if ($this->html_body && preg_match('/^html_image/i', $key)) {
                 $image_cid = $message->embed(Swift_Image::fromPath($value));
                 
                 // replace filename in HTML body with ID of generated attachement
                 $this->html_body = str_replace($value, $image_cid);
             }
 
-            if (eregi('^file_attachment', $key)) {
+            if (preg_match('/^file_attachment/i', $key)) {
                 switch(pathinfo($value, PATHINFO_EXTENSION)) {
                 case 'jpg':
                 case 'png':

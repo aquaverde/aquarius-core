@@ -214,7 +214,7 @@ class Aquarius_Stage_Aquarius extends Aquarius_Basic_Stage {
 class Aquarius_Autloader {
     var $loader;
     
-    function using($loader) {
+    static function using($loader) {
         $autoloader = new self();
         $autoloader->loader = $loader;
         return array($autoloader, 'autoload_class');

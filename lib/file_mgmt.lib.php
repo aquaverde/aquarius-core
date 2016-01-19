@@ -603,7 +603,7 @@ class FileInfo {
             $info['type'] = 'image';
             $info['size'] = getimagesize($this->filepath);
         }
-        elseif (eregi('\.swf$', $this->name()) ) {
+        elseif (preg_match('/\.swf$/i', $this->name())) {
             $info['type'] = 'flash';
         } else {
             $info['type'] = 'other';
