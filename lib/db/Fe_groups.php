@@ -52,9 +52,10 @@ class db_Fe_groups extends DB_DataObject
 	}
  
     /** Delete this group and all user realations (DB_DataObject::delete override)*/
-    function delete() {
+    function delete($useWhere=false) {
+        if ($useWhere) throw new Exception("not supported");
         require_once("Fe_groups2user.php");
         db_Fe_groups2user::removeUsersByGroup($this->id);
-        parent::delete(); // Call the DB_DataObject delete method
+        parent::delete(false); // Call the DB_DataObject delete method
     }   
 }
