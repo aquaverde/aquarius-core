@@ -44,7 +44,7 @@ class action_modules_toggle_active extends action_modules implements ChangeActio
     var $props = array("class", "command", "id");
 
     function process($aquarius, $post, $result) {
-        $mod =& DB_DataObject::factory('modules');
+        $mod = DB_DataObject::factory('modules');
         $modid = intval($this->id);
         $mod->get($modid);
         $mod->active = !$mod->active;
