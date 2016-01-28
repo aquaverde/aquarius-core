@@ -19,7 +19,7 @@
 <button type="button" name="save_button" class="btn btn-default btn-xs btn-success" onclick="add_row_shorturi();"><span class="glyphicon glyphicon-neg glyphicon-plus-sign white"></span>
 {#s_new#}</button>
 <br/>
-<button type="submit" name="save_button" class="btn btn-primary">{#save#}</button>
+<button type="submit" name="{"shorturi:save"|makeaction}" class="btn btn-primary">{#save#}</button>
 </form>
 
 
