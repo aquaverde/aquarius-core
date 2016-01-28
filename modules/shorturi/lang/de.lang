@@ -10,5 +10,9 @@ to_url						= "Link"
 
 save						= "Speichern"
 
+shorturi_updated = "%s aktualisiert"
+shorturi_deleted = "%s gelöscht"
+shorturi_added = "%s hinzugefügt"
+
 formtype_shorturi = "Kurze URI"
 

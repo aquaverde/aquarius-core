@@ -10,4 +10,8 @@ to_url						= "To"
 
 save						= "Save"
 
+shorturi_updated = "%s updated"
+shorturi_deleted = "%s deleted"
+shorturi_added = "%s added"
+
 formtype_shorturi = "Short URI"

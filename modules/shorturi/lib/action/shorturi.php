@@ -62,11 +62,16 @@ class action_Shorturi_Save extends action_Shorturi implements ChangeAction {
                     $uri->domain 	= $request['from'][$i];
                     $uri->keyword 	= mb_strtolower($request['keyword'][$i]);
                     $uri->redirect 	= $request['url'][$i];
-                    $uri->update();
+                    $updated = $uri->update();
+
+                    if ($updated) {
+                        $result->add_message(new Translation('shorturi_updated', array($uri->keyword)));
+                    }
                 } else {
                     // Delete the record
                     $uri->get($request['uritableid'][$i]);
                     $uri->delete();
+                    $result->add_message(new Translation('shorturi_deleted', array($uri->keyword)));
                 }
             } else if(!empty($request['keyword'][$i]) && !empty($request['url'][$i]) && empty($request['delete'][$i])) {
                 //NEW URI -> KEYWORD AND TARGETURL NOT EMPTY -> INSERT
@@ -76,6 +81,8 @@ class action_Shorturi_Save extends action_Shorturi implements ChangeAction {
                 $uri->redirect 	= $request['url'][$i];
 
                 $uri->insert();
+
+                $result->add_message(new Translation('shorturi_added', array($uri->keyword)));
             }
         }
     }
