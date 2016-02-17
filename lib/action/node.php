@@ -310,7 +310,7 @@ class action_node_moveorder extends action_node_move implements ChangeAction {
         if ($parent_changed) {
             $this->move($node, $post, $result);
         } else {
-            $result->touch_region(new Node_Change_Notice($node->get_parent(), false, false));
+            $result->touch_region(new Node_Change_Notice($node->get_parent(), true, false));
         }
     }
 }
