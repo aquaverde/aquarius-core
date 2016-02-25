@@ -15,9 +15,6 @@ class db_Shorturi extends DB_DataObject
     public $keyword;                         // string(180)  not_null multiple_key binary
     public $redirect;                        // string(765)  not_null binary
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Shorturi',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 }

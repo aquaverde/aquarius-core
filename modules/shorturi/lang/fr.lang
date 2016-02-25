@@ -1,5 +1,6 @@
 Shorturi					= "Redirections"
 shorturi_menu				= "Redirections"
+shorturi_in_content     = "URI court par page"
 
 shorturi_manage				= "Éditer les redirections"
 
@@ -8,3 +9,9 @@ keyword						= "Terme"
 to_url						= "Lien"
 
 save						= "Enregistrer"
+
+shorturi_updated = "%s changé"
+shorturi_deleted = "%s effacé"
+shorturi_added = "%s ajouté"
+
+formtype_shorturi = "URI court"
