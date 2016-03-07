@@ -29,6 +29,9 @@ require_once 'core/slirconfigdefaults.class.php';
 class SLIRConfig extends SLIRConfigDefaults {
     public static $enableErrorImages  = false;
 
+    /** Don't skimp on memory */
+    public static $maxMemoryToAllocate = 1000;
+   
     /** Crop towards 'interesting' areas in pictures */
     public static $defaultCropper = SLIR::CROP_CLASS_SMART;
     
