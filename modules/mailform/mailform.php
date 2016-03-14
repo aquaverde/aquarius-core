@@ -95,7 +95,7 @@ class MailForm extends Module {
             $field_name = $formspec['target_address_field'];
             $target_address = trim($content->$field_name);
             if (strlen($target_address) < 1) throw new Exception("No target mail address in node '$node_name' field '$field_name' for $form_name");
-            Log::debug("Using target address $target_address from node $node field $target_address_field");
+            Log::debug("Using target address $target_address from node $node field $field_name");
         }
 
         $test_email = get($formspec, 'test_email');
