@@ -45,7 +45,7 @@ function smarty_function_href($params, $smarty) {
     if ($varparams) {
         if (!is_array($varparams)) $varparams = explode(',', $varparams);
         foreach($varparams as $var) {
-            $value = $smarty->get_template_vars(trim($var));
+            $value = $smarty->getTemplateVars(trim($var));
             $url->add_param($var, $value);
         }
     }
