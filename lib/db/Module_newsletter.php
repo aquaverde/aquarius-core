@@ -26,9 +26,6 @@ class db_Module_newsletter extends DB_DataObject
     public $unsubscribe_subject;             // string(765)  not_null
     public $unsubscribe_text;                // blob(50331645)  not_null blob
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Module_newsletter',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 }
