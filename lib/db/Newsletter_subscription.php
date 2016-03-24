@@ -16,9 +16,6 @@ class db_Newsletter_subscription extends DB_DataObject
     public $active;                          // int(1)  not_null
     public $activation_code;                 // string(96)  
 
-    /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('db_Newsletter_subscription',$k,$v); }
-
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 }
