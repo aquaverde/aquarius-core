@@ -563,7 +563,7 @@ class HTML_QuickForm extends HTML_Common
      * @return    HTML_QuickForm_Element
      * @throws    HTML_QuickForm_Error
      */
-    function &createElement($elementType)
+    static function &createElement($elementType)
     {
         $args    =  func_get_args();
         $element =& HTML_QuickForm::_loadElement('createElement', $elementType, array_slice($args, 1));
@@ -584,7 +584,7 @@ class HTML_QuickForm extends HTML_Common
      * @return    HTML_QuickForm_Element
      * @throws    HTML_QuickForm_Error
      */
-    function &_loadElement($event, $type, $args)
+    static function &_loadElement($event, $type, $args)
     {
         $type = strtolower($type);
         if (!HTML_QuickForm::isTypeRegistered($type)) {
@@ -1330,7 +1330,7 @@ class HTML_QuickForm extends HTML_Common
      * @access    public
      * @return    boolean
      */
-    function isTypeRegistered($type)
+    static function isTypeRegistered($type)
     {
         return isset($GLOBALS['HTML_QUICKFORM_ELEMENT_TYPES'][strtolower($type)]);
     } // end func isTypeRegistered

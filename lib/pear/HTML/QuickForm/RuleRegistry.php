@@ -54,7 +54,7 @@ class HTML_QuickForm_RuleRegistry
      * @static
      * @return    HTML_QuickForm_RuleRegistry
      */
-    function &singleton()
+    static function &singleton()
     {
         static $obj;
         if (!isset($obj)) {
@@ -125,7 +125,7 @@ class HTML_QuickForm_RuleRegistry
             if (!empty($path)) {
                 include_once($path);
             }
-            $this->_rules[$class] =& new $class();
+            $this->_rules[$class] = new $class();
         }
         $this->_rules[$class]->setName($ruleName);
         return $this->_rules[$class];
