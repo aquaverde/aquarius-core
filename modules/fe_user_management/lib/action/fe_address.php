@@ -159,7 +159,7 @@ class action_fe_address_add extends action_fe_address implements DisplayAction  
 class action_fe_address_save extends action_fe_address implements ChangeAction  {
 
     function get_title() {
-        return new Translation("fe_address_edit");
+        return new Translation("s_done");
     }
 
     function process($aquarius, $post, $result) {
