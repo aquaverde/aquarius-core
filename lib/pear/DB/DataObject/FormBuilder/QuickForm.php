@@ -219,7 +219,7 @@ class DB_DataObject_FormBuilder_QuickForm
     function _createFormObject($formName, $method, $action, $target)
     {
         if (!is_a($this->_form, 'html_quickform')) {
-            $this->_form =& new HTML_QuickForm($formName, $method, $action, $target, null, true);
+            $this->_form = new HTML_QuickForm($formName, $method, $action, $target, null, true);
         }
     }
 
