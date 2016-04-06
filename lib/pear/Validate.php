@@ -334,7 +334,7 @@ class Validate
      *
      * @access private
      */
-    function __emailRFC822(&$email, &$options)
+    static function __emailRFC822(&$email, &$options)
     {
         if (Validate::__stringToUtf7($email) != $email) {
             return false;
@@ -506,7 +506,7 @@ class Validate
      *
      * @access public
      */
-    function email($email, $options = null)
+    static function email($email, $options = null)
     {
         $check_domain = false;
         $use_rfc822 = false;
