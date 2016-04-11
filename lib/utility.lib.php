@@ -305,6 +305,9 @@ function validate($dict, $filter, &$errors = array(), $keep=false) {
         while(!$valid && $type = array_shift($types)) {
             switch($type) {
             case 'string':
+                if (is_numeric($value)) {
+                    $value = (string)$value;
+                }
                 $valid = !$empty && is_string($value);
                 break;
             case 'int':
