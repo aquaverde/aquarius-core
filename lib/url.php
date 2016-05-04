@@ -49,7 +49,7 @@ class Url {
     function str($escape=false) {
         $urlstr = "";
         if ($this->host) {
-            $urlstr .= 'http://'.$this->host;
+            $urlstr .= PROTOCOL.$this->host;
         }
         if ($this->path)
             $urlstr .= $this->path;
