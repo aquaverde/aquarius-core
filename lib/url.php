@@ -49,7 +49,15 @@ class Url {
     function str($escape=false) {
         $urlstr = "";
         if ($this->host) {
-            $urlstr .= PROTOCOL.$this->host;
+            // If we have to hostname we should also have the protocol
+            $scheme = $this->scheme;
+            if (!$scheme) {
+                // We assume that the host we link to uses the same scheme we use
+                // This is likely to be wrong in many cases.
+                $scheme = URL_SCHEME;
+                Log::debug("Using default URL scheme ".$scheme." for ".$this->host);
+            }
+            $urlstr .= $scheme.'://'.$this->host;
         }
         if ($this->path)
             $urlstr .= $this->path;

@@ -514,7 +514,7 @@ class Dynform extends Module {
                         $filename = get($mresult, 'new_name');
                         if ($filename) {
                             // Takin a wild guess
-                            $value = 'http://'.$_SERVER['SERVER_NAME'].'/'.$path.$filename;
+                            $value = PROJECT_URL.'/'.$path.$filename;
                         } else {
                             $value = '';
                         }

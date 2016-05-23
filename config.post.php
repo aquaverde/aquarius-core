@@ -78,10 +78,12 @@ defined('FILEMGR_MEMORY_LIMIT') or define('FILEMGR_MEMORY_LIMIT', 128*1024*1024)
 // Amount last changes to display
 defined('LASTCHANGES_COUNT') or define('LASTCHANGES_COUNT', 50); 
 
+defined('URL_SCHEME') or define('URL_SCHEME', isset($_SERVER['HTTPS']) ? 'https' : 'http');
+defined('PROJECT_URL') or define('PROJECT_URL', URL_SCHEME.'://'.get($_SERVER, 'SERVER_NAME')."/");
+
 /** legacy define()s
   * Some (most?) of this is not really used anymore and will be removed. */
 
-defined('PROJECT_URL') or define('PROJECT_URL', 'http://'.get($_SERVER, 'SERVER_NAME')."/");
 defined('ABSOLUTE_PROJECT_URL') or define('ABSOLUTE_PROJECT_URL', PROJECT_URL);
 
 defined('PROJECT_PATH') or define('PROJECT_PATH', $aquarius->root_path);
