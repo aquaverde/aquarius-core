@@ -46,37 +46,45 @@
   * confusion regarding DST or reconfiguration of timezone.
   */
 class Maintenance_Mode_Control {
-    const auth_file_name = 'AQUARIUS_MAINTENANCE';
-    const casual_file_name = 'AQUARIUS_MAINTENANCE.CASUAL';
+    const auth_file_name = 'SETUP';
+    const casual_file_name = 'AQUARIUS_MAINTENANCE.CASUAL'; // DEPRECATED
 
     static private function auth_file($casual=false) {
         $dir = realpath(dirname(__FILE__).'/../..').'/';
-        $file = $dir.($casual ? self::casual_file_name : self::auth_file_name);
-        return $file;
+        return $dir.($casual ? self::casual_file_name : self::auth_file_name);
     }
-
 
     /** Determine whether maintenance mode is active.
       * @return an array with status code and reason string
       * The returned status code is one of -1 (mode not active), 0 (mode active but not for this request), and 1 (mode active for this request).
-      * Only status 1 indicates that the user agent should be allowed to start maintenance operations. */
+      * Only status 1 indicates that the user agent should be allowed to start maintenance operations.
+      */
     static function validate() {
+        // DEPRECATED support old filename for casual admin mode
         $casual_file = self::auth_file(true);
         if (file_exists($casual_file)) {
-            $cdate   = filemtime($casual_file);
+            $cdate = filemtime($casual_file);
             if (is_numeric($cdate) && $cdate > strtotime('-2 hours')) {
-                return array(1, "Casual maintenance mode active.");
+                return array(1, "Legacy casual maintenance mode active.");
             }
         }
-    
+
         $auth_file = self::auth_file();
         if (!file_exists($auth_file)) {
             return array(-2, self::auth_file_name." not set.");
         }
 
         $secrecstr = file_get_contents($auth_file);
-        if (empty($secrecstr)) {
-            return array(-1, "Unable to read ".self::auth_file_name." or file empty.");
+        if ($secrecstr === FALSE) {
+            return array(-1, "Unable to read ".self::auth_file_name);
+        }
+
+        if ($secrecstr === '') {
+            $cdate = filemtime($auth_file);
+            if (is_numeric($cdate) && $cdate > strtotime('-2 hours')) {
+                return array(1, "Casual maintenance mode active.");
+            }
+            return array(-1, "Casual setup period over");
         }
 
         $secrecs = array_filter(array_map('trim', explode(',', $secrecstr)));
@@ -163,6 +171,8 @@ class Maintenance_Mode_Control {
 
 
     static function disable() {
+        $disabled = true;
+
         $auth_file = self::auth_file();
         if (file_exists($auth_file)) {
             $success = unlink($auth_file);
@@ -171,7 +181,16 @@ class Maintenance_Mode_Control {
                 $success = file_put_contents($auth_file, '');
                 if (!$success) throw new Exception("Unable to delete file $auth_file");
             }
-            return true;
+            $disabled = true;
         }
+
+        $legacy_file = self::auth_file(true);
+        if (file_exists($legacy_file)) {
+            $success = unlink($legacy_file);
+            if (!$success) throw new Exception("Unable to delete file $legacy_file");
+            $disabled = true;
+        }
+
+        return $disabled;
     }
 }
