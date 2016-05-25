@@ -112,6 +112,18 @@ try {
         array_unshift($display_actions, $action);
     }
 
+    // Post/Redirect/Get after changes
+    if ($change_actions) {
+        $next_url = clone $url;
+        foreach($side_actions as $act) $next_url->add_param($act);
+        foreach($display_actions as $act) $next_url->add_param($act);
+
+        header("HTTP/1.1 303 See Other");
+        header("Location: ".$next_url->str());
+
+        flush_exit();
+    }
+
     // See whether there's a SideAction going on
     if (!empty($side_actions)) {
         $action = first($side_actions);
@@ -240,9 +252,7 @@ try {
     $smarty->assign('messages', $proper_messages);
     $smarty->assign('messagestrs', $messagestrs);
 
-    // Tell the browser that admin pages are valid for the day before yesterday which prevents the browser from caching the page
     header("Cache-Control: private");
-    header("Expires: " . gmdate("D, d M Y H:i:s", time() - 60 * 60 * 24) . " GMT");
     header('Content-type: text/html; Charset=utf-8');
 
     Log::debug("Displaying template: ".$template);
