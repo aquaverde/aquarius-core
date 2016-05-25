@@ -43,6 +43,7 @@ class action_maintenance_mode_dialog extends action_maintenance_mode implements 
 
         if ($code === 1) {
             $result->add_message(new FixedTranslation("Maintenance mode active for you."));
+            $smarty->assign('message', "Visit <a href='/aquarius/core/backend/setup.php'>the setup page.</a>");
         }
 
         $smarty->assign('title', 'Maintenance mode control');
@@ -50,6 +51,7 @@ class action_maintenance_mode_dialog extends action_maintenance_mode implements 
             Action::make('maintenance_mode', 'start'),
             Action::make('maintenance_mode', 'stop')
         ));
+        $smarty->assign('return', true);
         $result->use_template('select.tpl');
     }
 }
