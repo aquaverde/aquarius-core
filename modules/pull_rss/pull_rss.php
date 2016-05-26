@@ -12,12 +12,12 @@ class Pull_RSS extends Module {
       * @param url         where to get the feed
       * @param fields      comma-separated list of fields you want to extract from each item, in addition to 'link,title,description,date' who are always extracted
       * @param date_format date-formatting string, preset is 'U', the UNIX epoch.
-      * @param assign      store feed structure under this name, preset is 'feed'
+      * @param var         store feed structure under this name, preset is 'feed'
       * @param limit       limit to this amount of items
       *
       * Example:
       * <code>
-      * {pull_rss->feed url=http://rss.nascar.com/rss/news_cup.rss assign=NASCAR_NEWSFEED items=999}
+      * {pull_rss->feed url=http://rss.nascar.com/rss/news_cup.rss var=NASCAR_NEWSFEED items=999}
       * <H1>NASCAR NEWS:</H1> 
       * {foreach from=$NASCAR_NEWSFEED item=NEWS date=""}
       *    <H2><A HREF="$NEWS.link">{$NEWS.title|upper}</A></H2>
@@ -54,8 +54,7 @@ class Pull_RSS extends Module {
             }
             $feed_items []= $item;
         }
-        
-        $smarty->assign(get($params, 'assign', 'feed'), $feed_items);
+        $smarty->assign(get($params, 'var', 'feed'), $feed_items);
     }
 
 }
