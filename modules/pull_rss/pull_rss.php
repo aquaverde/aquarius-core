@@ -27,7 +27,6 @@ class Pull_RSS extends Module {
       */
     function feed($params, $smarty) {
         global $aquarius;
-        require_once('lib/SimplePie/SimplePieAutoloader.php');
         $feed = new SimplePie();
         $feed->set_timeout(2); // Don't delay for too long
         $feed->set_cache_location($aquarius->cache_path($this->short));
