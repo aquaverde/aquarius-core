@@ -93,8 +93,9 @@ class AquaMail {
         
         $bcc = get($this->values, 'bcc');
         if ($bcc) $message->setBcc($bcc);
-        
-        $sender = get($this->values, 'sender');
+
+        global $aquarius;
+        $sender = $aquarius->conf('email/smtp/sender', get($this->values, 'sender'));
         if (!$sender) {
             global $aquarius;
             $sender = $aquarius->conf('email/sender');
@@ -118,14 +119,15 @@ class AquaMail {
         $replyto = get($this->values, 'replyto');
         if ($replyto) $message->setReplyto($replyto);
 
-        global $aquarius;
-        if ($sender = $aquarius->conf('email/smtp/sender')) $message->setSender($sender);
-
         $logstr = "mail to $to on behalf of ".$_SERVER['REMOTE_ADDR']."\n".$message->getHeaders()->toString()."\n\n".$this->text_body;
-
         $mailer = $aquarius->mailer();
-        $success = $mailer->send($message);
 
+        $success = false;
+        try {
+            $success = $mailer->send($message);
+        } catch(Swift_TransportException $e) {
+            Log::warn($e);
+        }
         if ($success) {
             Log::info("Sent $logstr");
         } else {
