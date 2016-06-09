@@ -7,8 +7,6 @@
 require '../lib/init.php';
 require 'backend.php';
 
-require 'lib/AdminMessage.php';
-
 try {
 
     // Retrieve the requested actions
@@ -112,11 +110,23 @@ try {
         array_unshift($display_actions, $action);
     }
 
+    $change_messages = $changeresult->messages;
+    if ($node_changes) {
+        $additional_messages = array_flatten($aquarius->execute_hooks('node_changed', $node_changes));
+        $change_messages = array_merge($change_messages, $additional_messages);
+    }
+
     // Post/Redirect/Get after changes
     if ($change_actions) {
         $next_url = clone $url;
         foreach($side_actions as $act) $next_url->add_param($act);
         foreach($display_actions as $act) $next_url->add_param($act);
+
+        // HACK stow messages and node changes in the session
+        // These should be passed in the URL too but doing so has security
+        // implications which I don't want to address right now
+        $aquarius->session_set('admin_messages', AdminMessage::process_messages($change_messages));
+        $aquarius->session_set('admin_node_change', $node_changes);
 
         header("HTTP/1.1 303 See Other");
         header("Location: ".$next_url->str());
@@ -188,18 +198,27 @@ try {
         }
     }
     
+    // Retrieve the messages and the node change that may have been put into the
+    // session.
+    $pending_messages = $aquarius->session_get('admin_messages');
+    $aquarius->session_set('admin_messages', array());
+
+    $pending_node_change = $aquarius->session_get('admin_node_change');
+    $aquarius->session_set('admin_node_change', false);
+
     // Close the session
     // As long as we have the session open, all other requests using this session remain blocked at session_start(). Thus we close as early as possible.
     session_write_close();
 
+
     // Read results
     $template = $displayresult->template;
     $messages = array_merge($changeresult->messages, $displayresult->messages);
-
-    if ($node_changes) {
-        $additional_messages = array_flatten($aquarius->execute_hooks('node_changed', $node_changes));
-        $messages = array_merge($messages, $additional_messages);
+    $messages = AdminMessage::process_messages($messages); // Converts legacy messages
+    if (is_array($pending_messages)) {
+        $messages = array_merge($pending_messages, $messages);
     }
+
 
     // If the display action requests not to be included in action history, we use use the next history action as last action instead.
     // This means that AJAX requests can still have the same $lastaction and pending actions as the page they are called from.
@@ -209,36 +228,17 @@ try {
 
     // The rest of the actions are not executed now but stored in the url again
     $simpleurl = clone $url; // Save an url that does not contain pending actions
-    foreach($display_actions as $pendingaction)
+    foreach($display_actions as $pendingaction) {
         $url->add_param($pendingaction->actionstr());
-
-    // Process legacy messages into strings
-    $messagestrs = array();
-    $proper_messages = array();
-    foreach($messages as $message) {
-        if ($message instanceof AdminMessage) {
-            $proper_messages []= $message;
-        } else {
-            if (is_array($message)) {
-                $message[0] = $smarty->get_config_vars($message[0]);
-                $str = call_user_func_array('sprintf', $message);
-            } elseif (is_object($message)) {
-            $str = str($message); 
-            } else {
-                $str = $smarty->get_config_vars($message);
-                if (empty($str)) $str = $message;
-            }
-            Log::message($str);
-            $messagestrs[] = $str;
-        }
     }
+
 
     // Check whether the navig frame should be reloaded
     $navig_reload_node = false;
-    if ($node_changes) {
-        $navig_reload_node = $node_changes->changed_node;
+    if ($pending_node_change) {
+        $navig_reload_node = $pending_node_change->changed_node;
         // With structural changes we update the parent node because the node may be new or deleted
-        if ($node_changes->structural && !$navig_reload_node->is_root()) {
+        if ($pending_node_change->structural && !$navig_reload_node->is_root()) {
             $navig_reload_node = $navig_reload_node->get_parent();
         }
     }
@@ -249,8 +249,7 @@ try {
     $smarty->assign('lastaction', $lastaction);
     $smarty->assign('simpleurl', $simpleurl);
     $smarty->assign('url', $url);
-    $smarty->assign('messages', $proper_messages);
-    $smarty->assign('messagestrs', $messagestrs);
+    $smarty->assign('messages', $messages);
 
     header("Cache-Control: private");
     header('Content-type: text/html; Charset=utf-8');

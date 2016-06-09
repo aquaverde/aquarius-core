@@ -21,6 +21,45 @@ class AdminMessage {
         return $message;
     }
 
+    static function with_raw_lines($type, $lines) {
+        $message = new self($type);
+        foreach($lines as $line) {
+            $message->parts []= array(
+                'type'  => 'line',
+                'text' => $line
+            );
+        }
+        return $message;
+    }
+
+    // Process legacy messages into strings
+    static function process_messages($messages) {
+        $messagestrs = array();
+        $proper_messages = array();
+        foreach($messages as $message) {
+            if ($message instanceof AdminMessage) {
+                $proper_messages []= $message;
+            } else {
+                if (is_array($message)) {
+                    $message[0] = $smarty->get_config_vars($message[0]);
+                    $str = call_user_func_array('sprintf', $message);
+                    $proper_messages []= AdminMessage::with_raw_line('ok', array($str));
+                } elseif (is_object($message)) {
+                    $str = str($message);
+                } else {
+                    $str = $smarty->get_config_vars($message);
+                    if (empty($str)) $str = $message;
+                }
+                $messagestrs[] = $str;
+            }
+        }
+
+        if ($messagestrs) {
+            $proper_messages []= AdminMessage::with_raw_lines('ok', $messagestrs);
+        }
+        return $proper_messages;
+    }
+
     function add_line($key) {
         $args = func_get_args();
         $key = array_shift($args);
