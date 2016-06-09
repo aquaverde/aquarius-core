@@ -3,9 +3,9 @@
 class Pull_RSS extends Module {
     var $short = "pull_rss";
     var $name  = "Pull RSS from other sites";
-    var $register_hooks = array('smarty_config_frontend');
+    var $register_hooks = array('smarty_config_frontend', 'clear_content_cache');
     
-    function frontend_interface() { return $this; }
+    function frontend_interface($lg) { return $this; }
     
     /** Load an RSS-feed into a smarty variable
       *
@@ -26,11 +26,10 @@ class Pull_RSS extends Module {
       * </code>
       */
     function feed($params, $smarty) {
-        global $aquarius;
         $feed = new SimplePie();
         $feed->set_timeout(2); // Don't delay for too long
-        $feed->set_cache_location($aquarius->cache_path($this->short));
-        $feed->set_useragent("SimplePie / Aquarius rev".$aquarius->revision()." ".$this->short);
+        $feed->set_cache_location($this->cache_path());
+        $feed->set_useragent("SimplePie / Aquarius rev".$this->aquarius->revision()." ".$this->short);
         
         $feed_url = get($params, 'url');
         $feed->set_feed_url($feed_url);
@@ -55,6 +54,16 @@ class Pull_RSS extends Module {
             $feed_items []= $item;
         }
         $smarty->assign(get($params, 'var', 'feed'), $feed_items);
+    }
+
+    function clear_content_cache() {
+        require_once "file_mgmt.lib.php";
+        $feed_cache = $this->cache_path();
+        if (is_dir($feed_cache)) rmall($feed_cache);
+    }
+
+    private function cache_path() {
+        return $this->aquarius->cache_path($this->short);
     }
 
 }

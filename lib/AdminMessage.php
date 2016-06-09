@@ -47,7 +47,7 @@ class AdminMessage {
                 } elseif (is_object($message)) {
                     $str = str($message);
                 } else {
-                    $str = $smarty->get_config_vars($message);
+                    $str = str(new Translation($message));
                     if (empty($str)) $str = $message;
                 }
                 $messagestrs[] = $str;

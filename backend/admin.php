@@ -101,8 +101,10 @@ try {
         Log::debug("Clearing smarty frontend cache");
         $smarty_frontend = $aquarius->get_smarty_frontend_container(false);
         $smarty_frontend->clear_all_cache();
-        
+
         $aquarius->db->query("UPDATE content SET cache_fields = null;");
+
+        $aquarius->execute_hooks('clear_content_cache');
     }
 
     foreach($changeresult->inject_actions as $action) {
