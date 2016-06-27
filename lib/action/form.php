@@ -55,7 +55,7 @@ class action_form_export extends action_form implements SideAction {
             'rootName' => 'form',
             'defaultTagName' => 'form_field',
         );
-        $form->get_fields() ;
+        $form->fields = $form->get_fields() ;
         $Serializer = new XML_Serializer($serializer_options);
         $status = $Serializer->serialize($form);
         if (PEAR::isError($status)) throw new Exception("Unable to serialize form $form->title");
