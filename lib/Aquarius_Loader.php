@@ -264,7 +264,9 @@ class Aquarius_Stage_PHP_Basic_Settings extends Aquarius_Basic_Stage {
         ob_start();
 
         // We use UTF8 exclusively
-        mb_internal_encoding('UTF-8');
+        if (function_exists('mb_internal_encoding')) {
+            mb_internal_encoding('UTF-8');
+        }
 
         date_default_timezone_set('UTC');
     }

@@ -629,33 +629,39 @@ function pear_error_to_exception($err) {
 function process_exception($exception) {
     // Ensure no partial output hanging around, but only if we're not debugging
     global $echolevel;
-    if ($echolevel >= Log::INFO) {
+    if (class_exists('Log') && $echolevel >= Log::INFO) {
         // Remove all content from output buffers
         while(@ob_end_clean());
     }
     
-    // Set proper status code so that user agents (and robots) act accordingly
-    header("HTTP/1.1 500 Failed processing request");
-
     // Informal message for user
-    echo '<html>
-    <body>
-        <div style="border: 2px solid #FBC2C4; background-color: #FBE3E4; color:#8A1F11; margin: 15px; padding: 12px; width: 50%; font-size: 12px; background-image: url(picts/error.png); background-repeat: no-repeat; background-position: 8px 10px; padding-left: 70px;">
-        <b>Failed processing request</b><br/><i>Error message:</i></br>'.$exception->getMessage().'
-        </div>
-        <!--
-        
+    if (php_sapi_name() === 'cli') {
+        echo "Failed with error: ".$exception->getMessage()."\n";
+        echo $exception->getTraceAsString();
+    } else {
+        // Set proper status code so that user agents (and robots) act accordingly
+        header("HTTP/1.1 500 Failed processing request");
+
+        echo '<html>
+            <body>
+                <div style="border: 2px solid #FBC2C4; background-color: #FBE3E4; color:#8A1F11; margin: 15px; padding: 12px; width: 50%; font-size: 12px; background-image: url(picts/error.png); background-repeat: no-repeat; background-position: 8px 10px; padding-left: 70px;">
+                <b>Failed processing request</b><br/><i>Error message:</i></br>'.$exception->getMessage().'
+                </div>
+                <!--
+
 '.error_haiku().'
-        
-        -->
-    </body>
-</html>';
+
+                -->
+            </body>
+        </html>';
+    }
+
     flush();
 
     // Hope the system is in a state that allows writing to the log file (This is done last since it may fail itself)
-    Log::fail($exception);
+    if (class_exists('Log')) Log::fail($exception);
 
-    exit();
+    exit(1);
 }
 
 
