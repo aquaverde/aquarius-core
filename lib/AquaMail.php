@@ -93,17 +93,28 @@ class AquaMail {
         
         $bcc = get($this->values, 'bcc');
         if ($bcc) $message->setBcc($bcc);
+        
+        // Determine the sender address used for the return-path on the envelope
+        // and Sender: header.
+        $sender = get($this->values, 'sender');
 
         global $aquarius;
-        $sender = $aquarius->conf('email/smtp/sender', get($this->values, 'sender'));
-        if (!$sender) {
-            global $aquarius;
-            $sender = $aquarius->conf('email/sender');
-            if (strpos('@', $sender) === false) {
+
+        // DEPRECATED The sender address may be set in email/smtp/sender
+        $smtp_sender = $aquarius->conf('email/smtp/sender');
+
+        // When the sender is set in the SMTP config, it is always forced DEPRECATED
+        $force_sender = $aquarius->conf('email/force_sender') || $smtp_sender;
+        if (!$sender || $force_Sender) {
+            // If deprecated smtp/sender is set, use that
+            $sender = $smtp_sender ? $smtp_sender : $aquarius->conf('email/sender');
+
+            // Add domain if only local part was supplied
+            if (strpos($sender, '@') === false) {
                 $sender .= '@'.preg_replace('/^www./', '', $_SERVER['SERVER_NAME']);
             }
         }
-        
+
         $message->setReturnPath($sender);
         $message->setSender($sender);
         

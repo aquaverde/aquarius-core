@@ -210,17 +210,33 @@ $config['admin']['link_target'] = '';
 $config['admin']['allpass'] = false;
 
 
-/** Standard email address to use as sender address
-  * This is used in the "Sender:" header when the system generates mails. The
-  * "From:" header will also be set to this address should it not be set
-  * explicitly.
+/** Mail options:
+  *
+  * sender: Standard email address to use as sender address
+  *     This is used in the "Sender:" header when the system generates mails. The
+  *     "From:" header will also be set to this address should it not be set
+  *     explicitly.
   * 
-  * The "@host" part may be omitted, and only the local part (before the "@")
-  * specified. In this case the request-hostname will be used, with the
-  * "www." stripped off.
+  *     The "@host" part may be omitted, and only the local part (before the "@")
+  *     specified. In this case the request-hostname will be used, with the
+  *     "www." stripped off.
+  *
+  * force_sender: Flag to force Sender: and Return-Path: envelope headers
+  *     to the sender address as configured in this config. This is useful
+  *     or even required to avoid anti-spam measures taken by mailservers.
+  *
+  * smtp: Dict with SMTP configuration
+  *     host: SMTP host to connect to
+  *     port: 25, 465, 587 are likely choices (preset is 25)
+  *     user: username for SMTP auth
+  *     pass: password for SMTP auth
+  *     auth_plain: use PLAIN auth instead of CRAMMD5 (preset true)
+  *     ssl: set to true to enable SSL (preset false)
+  *
   */
 $config['email'] = array(
     'sender' => 'info',
+    'force_sender' => false,
     'smtp' => false
 );
 
@@ -231,9 +247,17 @@ $config['email']['smtp'] = array(
     'port' => 25,
     'user' => 'egg@bulkspam.example',
     'pass' => 'ham',
-    'sender' => 'egg@bulkspam.example' // Force the mail sender to be this address
 );
 
+// Example SMTP config for Cyon
+$config['email']['smtp'] = array(
+    'host' => 'mail.cyon.ch',
+    'port' => 465,
+    'user' => 'bee@hive.example',
+    'pass' => 'honey2',
+    'auth_plain' => false,
+    'ssl' => true
+);
 // Testing config for perl fakesmtpd.pl
 $config['email']['smtp'] = array(
     'host'     => 'localhost',

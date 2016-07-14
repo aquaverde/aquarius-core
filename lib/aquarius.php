@@ -445,6 +445,8 @@ class Aquarius {
             $transport = Swift_SmtpTransport::newInstance(get($smtp, 'host', 'localhost'), get($smtp, 'port', 25));
             if ($user = get($smtp, 'user')) $transport->setUsername($user);
             if ($password = get($smtp, 'pass')) $transport->setPassword($password);
+            if (get($smtp, 'auth_plain', true)) $transport->setAuthMode('PLAIN');
+            if (get($smtp, 'ssl')) $transport->setEncryption('ssl');
         } else {
             $transport = Swift_MailTransport::newInstance('');
         }

@@ -86,6 +86,7 @@ class FormattedTextMail {
         
         global $aquarius;
         if ($sender = $aquarius->conf('email/smtp/sender')) $message->setSender($sender);
+        if ($sender = $aquarius->conf('email/sender')) $message->setSender($sender);
 
         $logstr = "mail to $to \n".$message->getHeaders()->toString()."\n\n".$text;
 
