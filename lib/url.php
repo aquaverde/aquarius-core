@@ -55,7 +55,6 @@ class Url {
                 // We assume that the host we link to uses the same scheme we use
                 // This is likely to be wrong in many cases.
                 $scheme = URL_SCHEME;
-                Log::debug("Using default URL scheme ".$scheme." for ".$this->host);
             }
             $urlstr .= $scheme.'://'.$this->host;
         }
