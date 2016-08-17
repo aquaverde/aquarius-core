@@ -18,7 +18,8 @@ function smarty_function_subpage($params, $smarty) {
     $default_lang = $smarty->get_template_vars('lg');
     if ($pnode instanceof db_Content) $content_lang = $pnode->lg;
 
-    $node = or_die(db_Node::get_node($pnode), "Unable to load node '$pnode'");
+    $node = db_Node::get_node($pnode);
+    if (!$node) throw new Exception("Unable to load node '$pnode'");
     $lg = get($params, 'lg', $clg);
 
     global $aquarius;
