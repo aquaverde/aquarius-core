@@ -571,6 +571,7 @@ class db_Node extends DB_DataObject
             $content_copy->load_fields();
             $content_copy->node_id = $copy->id;
             $content_copy->title = $content_copy->title().$title_append;
+            unset($content_copy->urltitle);
             $content_copy->insert();
         }
 
