@@ -603,8 +603,8 @@ class FileInfo {
             $info['type'] = 'image';
             $info['size'] = getimagesize($this->filepath);
         }
-        elseif (preg_match('/\.swf$/i', $this->name())) {
-            $info['type'] = 'flash';
+        elseif (preg_match('/\.pdf$/i', $this->name())) {
+            $info['type'] = 'pdf';
         } else {
             $info['type'] = 'other';
         }

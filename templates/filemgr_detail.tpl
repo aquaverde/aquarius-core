@@ -1,14 +1,27 @@
 {include file="header.tpl"}
-
-<div class="bigbox">
+<div class="topbar">
 <div style="float: right">
-    {include file="filemgr_thumbnail.tpl" fileinfo=$attrs}
+    {if $prev}<a href="{url action=$prev}"><span class="glyphicon glyphicon-circle-arrow-left"></span></a>{/if}
+    <a href="{url}"><span class="glyphicon glyphicon-circle-arrow-up"></span></a>
+    {if $next}<a href="{url action=$next}"><span class="glyphicon glyphicon-circle-arrow-right"></span></a>{/if}
 </div>
-{#s_filename#}: "{$attrs.name|escape}"<br>
-{if $attrs.type == "image"}{#s_dimensions#}: {$attrs.size.0}x{$attrs.size.1}px<br>{else}&nbsp;{/if}
-{#s_filesize#}: {$file->size('kB')}&nbsp;kB<br>
-<a href="{$attrs.publicpath|download}"><span class="glyphicon glyphicon-download"></span> Download</a><br>
-
+<table>
+    <tr>
+        <th>{#s_filename#}</th>
+        <td>{$attrs.name|escape}</td>
+        <td><a href="{$attrs.publicpath|download}"><span class="glyphicon glyphicon-download"></span> Download</a></td>
+    </tr>
+    <tr>
+        <th>{#s_filesize#}</th>
+        <td>{$file->size('kB')}kB</td>
+    <tr>
+{if $attrs.type == "image"}
+    <tr>
+        <th>{#s_dimensions#}</th>
+        <td>{$attrs.size.0}x{$attrs.size.1}px</td>
+    </tr>
+{/if}
+<table>
 {if $attrs.references}
 <h3>{#s_references#}</h3>
 <div class="ref_cell">
@@ -49,8 +62,16 @@
     <br>
 {/if}
 
-{if $prev}<a href="{url action=$prev}">&lt;&lt;</a>{/if}
-<a href="{url}">{#s_close#}</a>
-{if $next}<a href="{url action=$next}">&gt;&gt;</a>{/if}
 
 </div>
+
+{if $attrs.type == "image"}
+<div style="padding: 1em; border: inset;">
+    <img src="{resize image=$attrs.publicpath w=1000}" alt="{$attrs.name}" style="max-width: 100%"/>
+</div>
+{elseif $attrs.type == "pdf"}
+    <iframe src="{$attrs.publicpath}" style="width: 100%; height: 80em">
+{else}
+    <img src="buttons/{$attrs.button}" alt="{$attrs.name}" title="{$attrs.name}"/></a>
+{/if}
+{include file="footer.tpl"}
