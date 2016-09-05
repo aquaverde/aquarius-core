@@ -12,12 +12,6 @@
         {include file="filemgr_browse.tpl"}
 	{/if}
 
-    {action action="filemgr:delete_in:$selectedDir:"}
-    <div class="action pull-right">{#s_forselection#}:
-        <input name="{$action}" type="submit" onClick="return confirm('{$smarty.config.s_delete_files|escape}');" value="{#s_delFileDelete#}" class="btn btn-default btn-sm" />
-    </div>
-    {/action}
-
 {if $hasSpinner}
 	{include file="spinner.tpl"}
 {/if}

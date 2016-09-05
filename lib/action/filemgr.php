@@ -17,7 +17,6 @@ class action_filemgr_list extends action_filemgr implements DisplayAction {
     function process($aquarius, $request, $smarty, $result) {
         require_once "lib/file_mgmt.lib.php";
         require_once "lib/spinner.class.php";
-        $dir_props = DB_DataObject::factory('directory_properties');
 
         $managerStyle = $this->command;
         $isPopup = in_array('popup', $this->params);
@@ -62,12 +61,6 @@ class action_filemgr_list extends action_filemgr implements DisplayAction {
             
             $fileinfo = $file->fileinfo();
 
-            // Get a list of references to this image
-            $references = references($file);
-
-            // Image may be deleted if there are no references
-            $fileinfo['may_delete'] = count($references) < 1;
-
             // Create special attr string to limit thumbnail width and height to max 85
             if ($fileinfo['type'] == 'image' && isset($fileinfo['th_size'])) {
                 $fileinfo['th_attrs'] = $fileinfo['th_size'][3];
@@ -77,16 +70,9 @@ class action_filemgr_list extends action_filemgr implements DisplayAction {
                     if ($fileinfo['th_size'][1] > FILE_SHOW_THUMB_MAX) $fileinfo['th_attrs'] = 'height="'.FILE_SHOW_THUMB_MAX.'"';
                 }
             }
-            
-            //In list view, load the referenced content as well
-            if ($managerStyle == "list") {
-                $fileinfo['references'] = array();
-                foreach($references as $content_id) {
-                    $ref_content = DB_DataObject::factory('content');
-                    $loaded = $ref_content->get($content_id);
-                    $fileinfo['references'][] = $ref_content;
-                }
-            }
+
+            $fileinfo['detail'] = Action::make('filemgr', 'detail', $this->subdir.DIRECTORY_SEPARATOR.$file->name(), $myFilter);
+
             $files[] = $fileinfo;
         }
         $smarty->assign("files", $files);
@@ -97,6 +83,7 @@ class action_filemgr_list extends action_filemgr implements DisplayAction {
 
         
         // Load directory settings
+        $dir_props = DB_DataObject::factory('directory_properties');
         $dir_props->load($this->subdir);
         $smarty->assign('dir_props', $dir_props);
 
@@ -124,6 +111,7 @@ class action_filemgr_list extends action_filemgr implements DisplayAction {
     }
 }
 
+
 /** Same as action_filemgr_list except that files are shown in a grid view. */
 class action_filemgr_browse extends action_filemgr_list implements DisplayAction {
     // This is a separate class for historical reasons
@@ -132,6 +120,99 @@ class action_filemgr_browse extends action_filemgr_list implements DisplayAction
         $smarty->assign("managerStyle", 'browse');
     }
 }
+
+
+/** Show details for a file
+  *
+  * Params:
+  *   path: path to the file, relative to filebasedir
+  *   filter: filter to use when looking for files to link as prev and next
+  */
+class action_filemgr_detail extends action_filemgr implements DisplayAction {
+
+    var $props = array("class", "command", "path", "filter");
+
+    function process($aquarius, $request, $smarty, $result) {
+        require_once "lib/file_mgmt.lib.php";
+
+        $dir = dirname($this->path);
+        $name = basename($this->path);
+
+        // Because we want to link to prev and next file, we load the full list
+        // of files in the directory then search through it.
+        $files = listFileInfo($dir, $this->filter);
+
+
+        $file = false;
+        $attrs = false;
+        $last = false;
+        $prev = false;
+        $next = false;
+        $may_delete = false;
+        foreach($files as $fileinfo) {
+            if ($name === $fileinfo->name()) {
+                $attrs = $fileinfo->fileinfo();
+                $references = references($fileinfo);
+
+                // Image may be deleted if there are no references
+                $may_delete = count($references) < 1;
+
+                $attrs['references'] = array();
+                foreach($references as $content_id) {
+                    $ref_content = DB_DataObject::factory('content');
+                    $ref_content->get($content_id);
+                    $attrs['references'][] = $ref_content;
+                }
+
+                $file = $fileinfo;
+                $prev = $last;
+            }
+
+            if ($last && $name === $last->name()) {
+                $next = $fileinfo;
+            }
+
+            $last = $fileinfo;
+        }
+
+        if ($next) {
+            $smarty->assign('next', Action::make('filemgr', 'detail', $dir.DIRECTORY_SEPARATOR.$next->name(), $this->filter));
+        }
+
+        if ($prev) {
+            $smarty->assign('prev', Action::make('filemgr', 'detail', $dir.DIRECTORY_SEPARATOR.$prev->name(), $this->filter));
+        }
+
+        $smarty->assign('may_delete', $may_delete);
+        if (!empty($request['delete'])) {
+            $smarty->assign('delete', Action::make('filemgr', 'delete', $this->path));
+        }
+
+        $smarty->assign("file", $file);
+        $smarty->assign("attrs", $attrs);
+        $smarty->assign("project_url", ABSOLUTE_PROJECT_URL);
+
+        if ($file) {
+            $result->use_template('filemgr_detail.tpl');
+        } else {
+            // If the file was not found, this probably means it was deleted and we
+            // fall back to the previous action
+        }
+    }
+}
+
+
+class action_filemgr_delete extends action_filemgr implements ChangeAction {
+    function process($aquarius, $request, $result) {
+        require_once "lib/file_mgmt.lib.php";
+       
+        $file = ensure_filebasedir_path($this->file);
+        Log::debug("Deleting ".$file);
+        unlink(file);
+        $messages[] = array('s_message_file_deleted', $myFile);
+    }
+}
+
 
 /** Show controls to upload files into a directory */
 class action_filemgr_upload extends action_filemgr implements DisplayAction {
@@ -168,24 +249,5 @@ class action_filemgr_showPicture extends action_filemgr implements DisplayAction
     function process($aquarius, $request, $smarty, $result) {
         $smarty->assign("file", $this->file);
         $result->use_template('popup_picture.tpl');
-    }
-}
-
-/** Remove files listed in POST variable 'fileChk' */
-class action_filemgr_delete_in extends action_filemgr implements ChangeAction {
-    function process($aquarius, $request, $result) {
-        require_once "lib/file_mgmt.lib.php";
-        $fileChk = get($_POST, 'fileChk');
-        if (is_array($fileChk)) {
-            foreach($fileChk as $myFile) {
-                Log::debug("Deleting ".FILEBASEDIR.'/'.$this->subdir.'/'.$myFile);
-                @unlink(FILEBASEDIR.'/'.$this->subdir.'/'.$myFile);
-                @unlink(FILEBASEDIR.'/'.$this->subdir.'/th_'.$myFile);
-                @unlink(FILEBASEDIR.'/'.$this->subdir.'/alt_'.$myFile);
-                $messages[] = array('s_message_file_deleted', $myFile);
-            }
-        } else {
-            Log::warn("Expected array 'fileChk' in POST");
-        }
     }
 }

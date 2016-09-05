@@ -13,9 +13,6 @@
                     <div class="pict">
                         {include file="filemgr_thumbnail.tpl"}
                         <p>
-                            {if $fileinfo.may_delete }
-                                <input type="checkbox" name="fileChk[]" value="{$fileinfo.name}"/>&nbsp;
-                            {/if}
                             <a title="{$file->name()}" data-toggle="tooltip">{$file->name()|truncate:15:"...":false:true}</a>
                         </p>
                     </div>
