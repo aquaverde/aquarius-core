@@ -31,7 +31,7 @@
     </div>
     {else}
     <a href="{url action=$lastaction}&delete=1">
-        <span class="glyphicon glyphicon-trash gi-15x" tilte="{#s_delete#}"></span>
+        <span class="glyphicon glyphicon-trash gi-15x" title="{#s_delete#}"></span>
     </a>
     {/if}
 {/if}
