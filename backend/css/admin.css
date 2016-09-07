@@ -20,6 +20,7 @@ table.table { border-bottom: 1px solid #DDDDDD;}
 .btn-link { color: #000; padding:0; margin:0; }
 
 .glyphicon { color: #535353; -webkit-font-smoothing:grayscale; font-size: 12px !important;}
+.gi-15x { font-size: 1.5em !important; } /* bigger size for glyphicons */
 .alert .glyphicon { font-size: 24px !important; vertical-align: middle; margin-top: -6px; margin-right: 6px; }
 
 .alert-danger .glyphicon { color: #b94a48; }
@@ -431,3 +432,14 @@ div.nodetree_container+div.right { margin-top: -20px;}
 /* file selection popup */
 body.file_select { min-width: 300px; }
 body.file_select .wrapper { padding: 5px 15px 15px 15px; border: 0; margin-right: 5px;}
+
+/* file details */
+table.meta-file {
+    border-collapse: separate;
+    border-spacing: 0.3em;
+    float: left;
+}
+table.meta-file th {
+    vertical-align: top;
+    text-align: right;
+}
