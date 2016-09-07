@@ -512,19 +512,6 @@ function properName($name,$image_type) {
 function references($file) {
     global $aquarius;
 
-    /* Digging through all RTE fields to check for a filename is slow, we do it
-     * for files in locations where the richtext is configured to take files. */
-    $check_rte = false;
-    $dir = dirname($file->publicpath());
-    $rteconf = $aquarius->conf('admin/rte');
-    foreach(array('browse_path_img', 'browse_path_file') as $config_name) {
-        $rte_path = $rteconf[$config_name];
-        if ($dir == $rte_path) {
-            $check_rte = true;
-            break;
-        }
-    }
-    
     $relative_name = $file->publicpath();
     $basename = basename($relative_name);
     $query_params = array($basename, $relative_name, $relative_name);
@@ -542,14 +529,11 @@ function references($file) {
         AND cfv.value = ?
     ";
 
-    $check_rte_sql = '';
-    if ($check_rte) {
-        $check_rte_sql = " OR (
-                form_field.type = 'rte'
-            AND content_field_value.value LIKE  ?
-          )";
-        $query_params []= '%'.$relative_name.'%';
-    }
+    $check_rte_sql = " OR (
+            form_field.type = 'rte'
+        AND content_field_value.value LIKE  ?
+        )";
+    $query_params []= '%'.$relative_name.'%';
 
     // Find all content that references the file
     // The form_field that is joined in provides the base directory, the path must start with this
