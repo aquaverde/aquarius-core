@@ -4,6 +4,9 @@
   * sup1 defines the height of the RTE, default is 180, minimum is 50.
   *
   * More toolbars may be added in public_html/admin/fckconfig/fckconfig.js.
+  *
+  * The RTE field keeps extra 'fidx' entries in the DB that can be used to
+  * narrow file reference lookups.
   */
 class Formtype_RTE extends Formtype {
     /** Load FCKEditor */
@@ -26,9 +29,12 @@ class Formtype_RTE extends Formtype {
 
 
     function db_get($values, $form_field, $lg) {
-        foreach ($values as $value) {
+        // Skip the index fields
+        foreach ($values as $key => $value) {
+            if ($key === 'fidx') continue;
             return $value;
         }
+        return null;
     }
 
     
@@ -51,6 +57,39 @@ class Formtype_RTE extends Formtype {
         $empty = $empty && stripos($val, '<iframe') === FALSE;
         
         return $empty ? array() : array($val);
+    }
+
+    function db_set_field($vals, $formfield, $lg) {
+        $entries = array();
+
+        $vals = $this->db_set($vals, $formfield, $lg);
+
+        // Extract filename references from RTE text
+        // The index is used to narrow the search space and is allowed to
+        // include irrelevant or bogus entries.
+        //
+        // We expect the filename to be quoted (lookbehind for quotes) and start
+        // with a slash (absolute paths but without the domain part)
+        $fileattr_matcher = '#(?<=["\'])/[^"\']+#';
+        // so these would be extracted:
+        //   <a href="/subdir/file.ico">
+        //   <iframe src='/pdfs/doc.pdf'>
+        //   And she said "/What is this shit?/ /Let them eat cake!/"
+        // and these would not:
+        //   <a href="https://binggu.example">
+        //   Check example "files/example.doc"
+        foreach($vals as $val) {
+            $entries []= array('rte' => $val);
+
+            preg_match_all($fileattr_matcher, $val, $matches);
+            $filenames = $matches[0];
+            $basenames = array_filter(array_map('basename', $filenames));
+
+            foreach($basenames as $basename) {
+                $entries []= array('fidx' => $basename);
+            }
+        }
+        return $entries;
     } 
 
 

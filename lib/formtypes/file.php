@@ -18,10 +18,13 @@
   * A content_field with
   *     file: site1/bildli.jpg
   *     legend: Bildli for Site1
+  *     fidx: bildli.jpg
   *
   * After loading, the field looks like this:
   *     file: /pictures/content/site1/bildli.jpg
   *     legend: Bildli for Site1
+  *
+  * File fields keep a 'fidx' field for narrowing file reference searches.
   */
 class Formtype_File extends Formtype {
 
@@ -124,13 +127,16 @@ class Formtype_File extends Formtype {
         if (!$field->multi) return first($resultvals);
         else return $resultvals;
     }
-    
+
     function db_get($values, $form_field, $lg) {
         // Prepend file path
         $file = get($values, 'file');
         if (!empty($file)) {
             $values['file'] = '/'.$form_field->sup3.'/'.$file;
         }
+
+        unset($values['fidx']); // Only needed in DB
+
         return $values;
     }
 
@@ -139,6 +145,11 @@ class Formtype_File extends Formtype {
         $path_prefix = '/'.$form_field->sup3.'/';
         if (strpos($values['file'], $path_prefix) === 0) {
             $values['file'] = substr($values['file'], strlen($path_prefix));
+        }
+
+        $basename = basename($values['file']);
+        if ($basename) {
+            $values['fidx'] = $basename;
         }
 
         return $values;

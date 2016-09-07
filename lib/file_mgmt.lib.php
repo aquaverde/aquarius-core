@@ -526,13 +526,26 @@ function references($file) {
     }
     
     $relative_name = $file->publicpath();
-    $query_params = array($relative_name, $relative_name);
+    $basename = basename($relative_name);
+    $query_params = array($basename, $relative_name, $relative_name);
     
+    // Finding file references by joining paths does not allow using indexes.
+    // We rely on the 'fidx' field to narrow the search to content that
+    // references files with the same basename before we compare full paths.
+    $narrow_search = "
+        SELECT content.id
+        FROM content c
+        JOIN content_field cf ON c.id = cf.content_id
+        JOIN content_field_value cfv ON cf.id = cfv.content_field_id
+        WHERE
+            cfv.name = 'fidx'
+        AND cfv.value = ?
+    ";
+
     $check_rte_sql = '';
     if ($check_rte) {
         $check_rte_sql = " OR (
                 form_field.type = 'rte'
-            AND form_field.name = content_field.name
             AND content_field_value.value LIKE  ?
           )";
         $query_params []= '%'.$relative_name.'%';
@@ -548,13 +561,15 @@ function references($file) {
         JOIN content ON node.id = content.node_id
         JOIN content_field ON content.id = content_field.content_id
         JOIN content_field_value ON content_field.id = content_field_value.content_field_id
-        WHERE (
+        WHERE
+            content.id IN ($narrow_search)
+         AND form_field.name = content_field.name
+         AND ((
                 form_field.type IN ('file', 'global_legend_file')
             AND BINARY ? LIKE CONCAT(form_field.sup3, '%')
-            AND form_field.name = content_field.name
             AND content_field_value.name = 'file'
             AND BINARY CONCAT(form_field.sup3, '/', content_field_value.value) = ?
-          ) $check_rte_sql
+          ) $check_rte_sql)
         ORDER BY content.cache_title, content.lg
     ", $query_params);
 }

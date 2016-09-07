@@ -30,7 +30,7 @@ class Formtype_global_legend_file extends Formtype_File {
         }
     }
 
-    /** Save legend into 'file_legend' table and do not pass through to DB */
+    /** Save legend into 'file_legend' table */
     function db_set($values, $formfield, $lg) {
         global $aquarius;
 
