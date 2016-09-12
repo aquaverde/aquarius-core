@@ -199,11 +199,14 @@ class db_Content extends DB_DataObject
         $content_proto->find();
         $content_langs = array();
         while($content_proto->fetch()) $content_langs[] = clone $content_proto;
-        
-        // Just delete all content fields and write them anew
-        // To make this more robust, we might first select the content_field_ids for this content and delete them only after the new ones have been inserted, this would prevent lost content on insert failures.
-        $this->delete_contentfields();
-        
+
+        $old_fields = $aquarius->db->listquery("
+            SELECT content_field.id
+            FROM content_field
+            JOIN content ON content.id = content_field.content_id
+            WHERE content.id = ?
+              AND content.lg = ?
+        ", array($this->id, $this->lg));
         $formtypes = $aquarius->get_formtypes();
         $formfields = $this->get_formfields();
         foreach($formfields as $formfield) {
@@ -213,7 +216,13 @@ class db_Content extends DB_DataObject
 
             // In case of multilingual fields we must delete the field in all languages, and save to all of them
             if ($formfield->language_independent) {
-                self::delete_contentfield($this->node_id, $name);
+                $old_fields = array_merge($old_fields, $aquarius->db->listquery("
+                    SELECT content_field.id
+                    FROM content_field
+                    JOIN content ON content_field.content_id = content.id
+                    WHERE content.node_id = ?
+                    AND name = ?
+                ", array($this->node_id, $name)));
                 $save_to_contents = $content_langs;
             }
 
@@ -248,6 +257,18 @@ class db_Content extends DB_DataObject
         $this->cache_title = join(', ', $this->titlefields());
 
         $this->update();
+
+        // Some content does not have one single content field filled out
+        if ($old_fields) {
+            // Remove the old fields
+            $aquarius->db->query("
+                DELETE cf, cfv
+                FROM content_field cf
+                LEFT JOIN content_field_value cfv ON cf.id = cfv.content_field_id
+                WHERE cf.id IN (".join(',', array_fill(0, count($old_fields), '?')).")
+                ", $old_fields
+            );
+        }
         
         // Lose the cached object
         unset($GLOBALS['_AQUARIUS_CONTENT_CACHE'][$this->node_id][$this->lg]);
