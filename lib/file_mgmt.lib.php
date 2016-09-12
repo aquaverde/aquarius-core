@@ -516,19 +516,6 @@ function references($file) {
     $basename = basename($relative_name);
     $query_params = array($basename, $relative_name, $relative_name);
     
-    // Finding file references by joining paths does not allow using indexes.
-    // We rely on the 'fidx' field to narrow the search to content that
-    // references files with the same basename before we compare full paths.
-    $narrow_search = "
-        SELECT content.id
-        FROM content c
-        JOIN content_field cf ON c.id = cf.content_id
-        JOIN content_field_value cfv ON cf.id = cfv.content_field_id
-        WHERE
-            cfv.name = 'fidx'
-        AND cfv.value = ?
-    ";
-
     $check_rte_sql = " OR (
             form_field.type = 'rte'
         AND content_field_value.value LIKE  ?
@@ -538,17 +525,24 @@ function references($file) {
     // Find all content that references the file
     // The form_field that is joined in provides the base directory, the path must start with this
     // Note the "BINARY" to make comparison case-sensitive
+
+    // Finding file references by joining paths does not allow using indexes.
+    // We rely on the 'fidx' field to narrow the search to content that
+    // references files with the same basename before we compare full paths.
+    // check the cfw_narrow JOIN
+
     return $aquarius->db->listquery("
         SELECT DISTINCT content.id
         FROM form_field
         JOIN node ON form_field.form_id = node.form_id
         JOIN content ON node.id = content.node_id
         JOIN content_field ON content.id = content_field.content_id
+        JOIN content_field_value cfv_narrow ON content_field.id = cfv_narrow.content_field_id
         JOIN content_field_value ON content_field.id = content_field_value.content_field_id
-        WHERE
-            content.id IN ($narrow_search)
-         AND form_field.name = content_field.name
-         AND ((
+        WHERE cfv_narrow.name = 'fidx'
+          AND cfv_narrow.value = ? 
+          AND form_field.name = content_field.name
+          AND ((
                 form_field.type IN ('file', 'global_legend_file')
             AND BINARY ? LIKE CONCAT(form_field.sup3, '%')
             AND content_field_value.name = 'file'
