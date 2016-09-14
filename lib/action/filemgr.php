@@ -203,13 +203,16 @@ class action_filemgr_detail extends action_filemgr implements DisplayAction {
 
 
 class action_filemgr_delete extends action_filemgr implements ChangeAction {
+
+    var $props = array("class", "command", "file");
+
     function process($aquarius, $request, $result) {
         require_once "lib/file_mgmt.lib.php";
-       
+
         $file = ensure_filebasedir_path($this->file);
         Log::debug("Deleting ".$file);
-        unlink(file);
-        $messages[] = array('s_message_file_deleted', $myFile);
+        unlink($file);
+        $result->add_message(AdminMessage::with_line('ok', 's_message_file_deleted', $this->file));
     }
 }
 
