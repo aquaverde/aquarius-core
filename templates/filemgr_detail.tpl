@@ -1,4 +1,6 @@
 {include file="header.tpl"}
+
+<h1>{$attrs.name|escape}</h1>
 <div class="topbar">
 <div style="float: right;">
     <a href="{$attrs.publicpath|download}"><span class="glyphicon glyphicon-download gi-15x" title="{#s_download#}"></span></a></td>
@@ -44,6 +46,10 @@
     <tr>
         <th>{#s_filesize#}</th>
         <td>{$file->size('kB')}kB</td>
+    </tr>
+    <tr>
+        <th>{#s_last_change#}</th>
+        <td>{$file->mtime()|date_format}</td>
     </tr>
 {if $attrs.type == "image"}
     <tr>
