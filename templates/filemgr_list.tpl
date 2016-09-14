@@ -13,7 +13,7 @@
     		<td width="50">
                 <a href="{url action=$lastaction action2=$fileinfo.detail}" alt="{$attrs.name}" title="{#s_open#}" data-toggle="tooltip">
             {if $fileinfo.type == "image"}
-                    <img src="{$fileinfo.publicpath|th}" alt="{#s_show_file#}" title="{#s_show_file#}" {$fileinfo.th_attrs} data-toggle="tooltip"/>
+                    <img src="{$fileinfo.publicpath|th}" alt="{#s_show_file#}" title="{#s_show_file#}" data-toggle="tooltip"/>
             {else}
                     <img src="buttons/{$fileinfo.button}" alt="{$fileinfo.name}" title="{$fileinfo.name}"/></a>
             {/if}

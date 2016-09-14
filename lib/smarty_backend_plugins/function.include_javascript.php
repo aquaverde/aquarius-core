@@ -19,8 +19,7 @@ function smarty_function_include_javascript($params, $template) {
         $lib = get($params, 'lib', false);
         $location = $lib ? 'jslib' : 'js';
 
-        $file_loader = Action::use_class('file');
-        $action = action_file::make($location, $file);
+        $action = Action::make('file', $location, $file);
         $url = new Url('admin.php');
         $url->add_param($action);
         

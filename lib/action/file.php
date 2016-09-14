@@ -37,24 +37,24 @@ class action_file extends Action implements SideAction {
     /** Build file load action
       * Adds the file's last modification time to the url to allow for mindless caching
       */
-    static function make($location, $file) {
-        $known_location = self::get_location($location);
-        $filepath = self::get_realpath($known_location, $file);
+    function init($aquarius) {
+        $known_location = self::get_location();
+        $filepath = self::get_realpath($known_location);
         $realfile = basename($filepath);
-        $action = Action::make('file', $location, $realfile);
+        $this->file = $realfile;
 
         // Overwrite action sequence number with file modification time.
         // This is done for one reason, caching:
         // 1. Keep the URL the same if the file didn't change so that browsers cache it
         // 2. Change the URL if the file did change, which ensures that user agents always use the current copy
-        $action->sequence = filemtime($filepath);
+        $this->sequence = filemtime($filepath);
 
-        return $action;
+        return true;
     }
 
     /** Check that a user is logged in or that the location does not require authentication */
     function permit() {
-        $location = self::get_location($this->location);
+        $location = self::get_location();
 
         if ($location['require_login'] && !db_Users::authenticated()) return false;
 
@@ -62,8 +62,8 @@ class action_file extends Action implements SideAction {
     }
 
     function process($aquarius, $request) {
-        $location = $this->get_location($this->location);
-        $filepath = $this->get_realpath($location, $this->file);
+        $location = $this->get_location();
+        $filepath = $this->get_realpath($location);
 
         header('Content-Type: '.$location['type']);
 
@@ -83,15 +83,15 @@ class action_file extends Action implements SideAction {
         if (!$success) throw new Exception("Failed including $filepath");
     }
 
-    private static function get_location($location) {
-        $known_location = get(self::$known_locations, $location);
+    private function get_location() {
+        $known_location = get(self::$known_locations, $this->location);
         if (!$known_location) throw new Exception("Unknown location '$location'");
         return $known_location;
     }
 
-    private static function get_realpath($known_location, $file) {
+    private function get_realpath($known_location) {
         global $aquarius;
-        $file = basename($file); // Remove any path information to avoid the infamous '..' hack
+        $file = basename($this->file); // Remove any path information to avoid the infamous '..' hack
         foreach(explode(PATH_SEPARATOR, get_include_path()) as $root_path) {
             $candidate_path = $root_path.$known_location['path'].$file;
             if (@file_exists($candidate_path)) { // The infamous PHP open_basedir restriction generates a warning when we access stuff outside our confines, hence the @

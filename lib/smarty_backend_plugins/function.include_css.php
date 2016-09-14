@@ -5,12 +5,11 @@ require_once 'lib/action.php';
   *
   * @param file filename of the stylesheet
 */
-function smarty_function_include_css($params, &$smarty) {
+function smarty_function_include_css($params, $smarty) {
 
     $file = get($params, 'file');
 
-    $file_loader = Action::use_class('file');
-    $action = action_file::make('css', $file);
+    $action = Action::make('file', 'css', $file);
     $url = new Url('admin.php');
     $url->add_param($action);
     
