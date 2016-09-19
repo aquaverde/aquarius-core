@@ -53,6 +53,7 @@ function reorderWeights(tbody) {
 	var weight = 10;
 	for(var i = 0; i < childs.length; i++) {
 		var input_weight = document.getElementById(childs[i].id + "_weight");
+        if (!input_weight) continue;
 		input_weight.value = weight;
 		weight += 10;
 	}
@@ -118,7 +119,7 @@ function TableDnD() {
 			e = e.firstChild; // a table cell
 		}
 
-        while (e.offsetParent){
+        while (e && e.offsetParent){
             left += e.offsetLeft;
             top  += e.offsetTop;
             e     = e.offsetParent;
