@@ -1,7 +1,7 @@
 <?php 
 class action_pointing_legend_ajax extends AdminAction {
 
-    var $props = array("class", "request");
+    var $props = array("class", "op");
 
     /** Always permits for logged-in users */
     function permit_user($user) {
@@ -35,7 +35,6 @@ class action_pointing_legend_ajax_empty_row extends action_pointing_legend_ajax 
         $fileval = first($field['value']);
         $fileval['myindex'] = $new_id;
         $fileval['popupid'] = $field['htmlid']."_".$new_id;
-        $fileval['weight'] = $new_id * 10 + 10;
         $fileval['ajax'] = true;
         $fileval['node'] = false;
         $fileval['legend'] = '';

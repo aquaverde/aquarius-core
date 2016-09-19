@@ -26,12 +26,9 @@ class Formtype_Pointing_Legend extends Formtype {
 
         $valobject->formname = "field[".$formfield->name."][node][]";
         $valobject->formname2 = "field[".$formfield->name."][legend][]";
-        $valobject->formname3 = "field[".$formfield->name."][weight][]";
         
         $valobject->pointings = array();
         $valobject->legends = array();
-        $valobject->weights = array();
-        $weight = 10;
 
         // Add an empty element at the end
         $valobject->value[] = array(
@@ -41,25 +38,19 @@ class Formtype_Pointing_Legend extends Formtype {
         $values = $valobject->value;
         
         $i = 0;
-        $valWeight = 10;
         foreach ($valobject->value as &$poiObject) {
             $poiObject['myindex'] = $i;
-            $poiObject['weight'] = $valWeight;
             $poiObject['popupid'] = $valobject->htmlid . "_" . $i;
             $poiObject['ajax'] = false;
             $i++;
-            $valWeight += 10;
         }
 
         foreach($values as $poivalue) {
             $valobject->pointings[] = get($poivalue, 'node', '');
             $valobject->legends[] = get($poivalue, 'legend', '');
-            $valobject->weights[] = $weight;
-            $weight += 10;
         }
         
         $valobject->poiformcount = count($valobject->pointings);
-        $valobject->lastweight = $weight;
 
         $valobject->popup_action = Action::build(
             array(
@@ -76,24 +67,22 @@ class Formtype_Pointing_Legend extends Formtype {
         $valobject->row_action = Action::make('pointing_legend_ajax', 'empty_row');
     }
 
-    function post_contentedit($formtype, $field, $value, $node, $content) {        
+    function post_contentedit($formtype, $field, $value, $node, $content) {
         $nodes = get($value, "node", null);
         $legends = get($value, "legend", null);
-        $weights = get($value, "weight", null);
 
         $value = array();
         for($i = 0; $i < count($nodes); $i++) {
             if(!empty($nodes[$i])) {
+                $node =  db_Node::get_node($nodes[$i]);
+                $legend = get($legends, $i, '');
                 
-                if(!isset($legends[$i])) $legends[$i] = "";
-                
-                if($weights[$i] == "") $weights[$i] = ($i+1)*10;
-                
-                $value[$weights[$i]] = array('node' => db_Node::get_node($nodes[$i]), 'legend' => $legends[$i]);
+                $value[] = array(
+                    'node' => $node,
+                    'legend' => $legend
+                );
             }
         }
-        ksort($value);
-        $value = array_values($value);
         
         return $value;
     }

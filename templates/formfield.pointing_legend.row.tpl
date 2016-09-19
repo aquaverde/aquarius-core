@@ -44,7 +44,6 @@
 	</td>
 
     <td width="30"  align="center">
-        <input type="hidden" class="inputweight" style="margin:0" name="{$field.formname3}" value="{$fileval.weight}" id="{$field.htmlid}_{$fileval.myindex}_weight"/>
         <button type='button' class='imagebutton' id="{$field.htmlid}_{$fileval.myindex}_move_row" title="{#s_move#}" alt="{#s_move#}">
             <span class="glyphicon glyphicon-move" title="" data-original-title="{#s_move#}"></span>
         </button>
