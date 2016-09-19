@@ -24,7 +24,7 @@
             </span>
         </div>
         <div style="float:right;">
-            <input type="hidden" id="{$field.htmlid}_{$fileval.myindex}_selected" name="{$field.formname}" value="{$fileval.node->id}" />
+            <input type="hidden" id="{$field.htmlid}_{$fileval.myindex}_selected" name="{$field.formname}" value="{if $fileval.node}{$fileval.node->id}{/if}" />
             <input type="text" class="form-control" placeholder="Text"  style="width:250px;" name="{$field.formname2}" value="{$fileval.legend|escape}"/>
         </div>
     </td>

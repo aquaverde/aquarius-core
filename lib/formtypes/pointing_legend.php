@@ -33,7 +33,11 @@ class Formtype_Pointing_Legend extends Formtype {
         $valobject->weights = array();
         $weight = 10;
 
-        $valobject->value[] = array();
+        // Add an empty element at the end
+        $valobject->value[] = array(
+            'node' => false,
+            'legend' => ""
+        );
         $values = $valobject->value;
         
         $i = 0;

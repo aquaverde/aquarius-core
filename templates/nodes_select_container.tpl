@@ -1,5 +1,5 @@
 {strip}
-<div class="nodetree_row {if !$entry.node->newaction}nodetree_node{/if}" style="clear:both">
+<div class="nodetree_row nodetree_node" style="clear:both">
     {if $entry.show_toggle}
          <a class="nodetree_toggle {if $entry.open}expand{else}contract{/if} {if $entry.open}open{/if}"></a>
     {/if}
@@ -19,12 +19,7 @@
 {if $entry.open}
     <ul class="nodetree_children">
     {foreach from=$entry.children item=childentry}
-        <li class="nodetree_entry{if !$childentry.last} nodetree_connection{/if}">
-        {if $childentry.last}
-            <img class="nodetree_connection" src="picts/joinbottom.gif" alt="" />
-        {else}
-            <img class="nodetree_connection" src="picts/join.gif" alt="" />
-        {/if}
+        <li class="nodetree_entry{if !$childentry@last} nodetree_connection{/if}">
             <div class="nodetree_container" {if $childentry.node->id} id="nodetree_entry_{$childentry.node->id}"{/if} data-node="{$childentry.node->id}">
                 {include file="nodes_select_container.tpl" entry=$childentry hide_root=false}
             </div>

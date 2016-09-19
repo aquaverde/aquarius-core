@@ -145,11 +145,6 @@ class action_nodes_select extends AdminAction {
         foreach($tree['children'] as &$child) {
             $this->add_control_settings($child);
         }
-
-        // Hack: Add 'last' indicator to last entry in children. The reason we do this here is because the foreach we use in smarty does not easily provide this information when using the template recursively
-        if (!empty($tree['children'])) {
-            $tree['children'][count($tree['children'])-1]['last'] = true;
-        }
     }
 }
 
