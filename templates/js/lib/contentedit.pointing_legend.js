@@ -61,6 +61,7 @@ function add_pointing_ajax(table, before) {
         var row_elm = jQuery(new_row);
         if (before) {
             jQuery(tbody).find('.prepend_new_pointing').after(row_elm);
+            row_elm.find('.delete_pointing_legend').show();
         } else {
             jQuery(tbody).find('tr').removeClass('last');
             row_elm.addClass('last');
