@@ -108,8 +108,7 @@ function TableDnD() {
     this.getPosition = function(e){
         var left = 0;
         var top  = 0;
-		/** Safari fix -- thanks to Luis Chato for this! */
-		if (e.offsetHeight == 0) {
+		if (e && e.offsetHeight == 0) {
 			/** Safari 2 doesn't correctly grab the offsetTop of a table row
 			    this is detailed here:
 			    http://jacob.peargrove.com/blog/2006/technical/table-row-offsettop-bug-in-safari/
@@ -119,14 +118,16 @@ function TableDnD() {
 			e = e.firstChild; // a table cell
 		}
 
-        while (e && e.offsetParent){
+        if (e) {
+            while (e.offsetParent){
+                left += e.offsetLeft;
+                top  += e.offsetTop;
+                e     = e.offsetParent;
+            }
+
             left += e.offsetLeft;
             top  += e.offsetTop;
-            e     = e.offsetParent;
         }
-
-        left += e.offsetLeft;
-        top  += e.offsetTop;
 
         return {x:left, y:top};
     }
@@ -179,7 +180,7 @@ function TableDnD() {
 			if (nodrop == null || nodrop == "undefined") {  //There is no NoDnD attribute on rows I want to drag
 				var rowY    = this.getPosition(row).y;
 				var rowHeight = parseInt(row.offsetHeight)/2;
-				if (row.offsetHeight == 0) {
+				if (row.offsetHeight == 0 && row.firstChild) {
 					rowY = this.getPosition(row.firstChild).y;
 					rowHeight = parseInt(row.firstChild.offsetHeight)/2;
 				}
