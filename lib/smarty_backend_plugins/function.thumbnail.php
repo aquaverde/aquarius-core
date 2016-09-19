@@ -43,7 +43,7 @@ function smarty_function_thumbnail($params, $smarty) {
                 $popup_height = $image_dimensions[1] + 20;
                 $file_href = $file->href();
                 $title = new Translation('s_preview');
-                $onclick = "onclick=\"openBrWindow('$file_href','$preview_translation', 'height=$popup_height,width=$popup_width,top=100,left=200,toolbar=no,status=yes,resizable=yes,menubar=no,scrollbars=yes')\"";
+                $onclick = "onclick=\"openBrWindow('$file_href','', 'height=$popup_height,width=$popup_width,top=100,left=200,toolbar=no,status=yes,resizable=yes,menubar=no,scrollbars=yes')\"";
             }
             return "<img src='$thumb_path' alt='$filename' title='$title' class='$class' $onclick />";
         case 'swf':

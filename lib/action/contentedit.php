@@ -317,7 +317,6 @@ class action_contentedit_edit extends action_contentedit implements DisplayActio
         }
 
         // Show tabs if there are at least two
-        $active_fields = $all_field_names;
         $active_tab = false;
         if (count($tabs) > 1) {
             // Sort tabs by weight
@@ -339,6 +338,8 @@ class action_contentedit_edit extends action_contentedit implements DisplayActio
             $smarty->assign('active_tab_id', $active_tab_id);
         } else {
             $smarty->assign('tabs', false);
+            $smarty->assign('active_fields', $all_field_names);
+            $smarty->assign('active_tab_id', false);
         }
 
         if ($node->id) {
@@ -377,6 +378,7 @@ class action_contentedit_edit extends action_contentedit implements DisplayActio
         }
 
         /* Build subtree */
+        $entry = false;
         if ($node->id && !$node->is_content()) {
 
             $open_nodes = NodeTree::get_open_nodes('contentedit');
@@ -386,10 +388,12 @@ class action_contentedit_edit extends action_contentedit implements DisplayActio
             NodeTree::add_controls($tree, $open_nodes, 'sitemap', true, $this->lg);
 
             if (!empty($tree['children'])) {
-                $smarty->assign('entry', $tree);
+                $entry = $tree;
                 $smarty->assign('forallaction', Action::make('nodetree', 'forall'));
+            } else {
             }
         }
+        $smarty->assign('entry', $entry);
 
         // Prepare functions to save and close contentedit
         // Use $this action as template and replace the command with 'save'

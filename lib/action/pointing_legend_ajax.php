@@ -37,6 +37,8 @@ class action_pointing_legend_ajax_empty_row extends action_pointing_legend_ajax 
         $fileval['popupid'] = $field['htmlid']."_".$new_id;
         $fileval['weight'] = $new_id * 10 + 10;
         $fileval['ajax'] = true;
+        $fileval['node'] = false;
+        $fileval['legend'] = '';
         
         $smarty->assign('field', $field);
         $smarty->assign('fileval', $fileval);

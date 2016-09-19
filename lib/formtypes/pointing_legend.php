@@ -46,6 +46,7 @@ class Formtype_Pointing_Legend extends Formtype {
             $poiObject['myindex'] = $i;
             $poiObject['weight'] = $valWeight;
             $poiObject['popupid'] = $valobject->htmlid . "_" . $i;
+            $poiObject['ajax'] = false;
             $i++;
             $valWeight += 10;
         }
