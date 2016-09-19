@@ -5,7 +5,12 @@
 {include_javascript file='tablednd.js' lib=true}
 
 <table cellpadding="0" cellspacing="0" border="0" class="table darker" 
-    id="pointing_table_{$field.htmlid}" data-newurl="{$simpleurl->with_param($field.row_action)}">
+    id="pointing_table_{$field.htmlid}" data-newurl="{$simpleurl->with_param($field.row_action)}"
+    data-formfield="{$field.formfield->id}"
+    data-htmlid="{$field.htmlid}"
+    data-lg="{$content->lg}"
+    >
+    <tr class="prepend_new_pointing"><td colspan="4"><button type="button">+</button></td></tr>
     {foreach from=$field.value item='fileval'}
         {include file='formfield.pointing_legend.row.tpl' last=$fileval@last}
     {/foreach}

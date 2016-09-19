@@ -12,7 +12,7 @@ function bind_pointing_legend() {
             $row.find('.delete_pointing_legend').show();
 
             if ($row.hasClass('last')) {
-                add_pointing_ajax($row.data('formfield'), $row.data('htmlid'), $row.data('lg'));
+                add_pointing_ajax($row.parents('table'), false);
             }
         });
     });
@@ -24,6 +24,13 @@ function bind_pointing_legend() {
         jQuery(this).parents('tr').remove();
         reInitTableDnD(table);
     });
+
+    jQuery('.prepend_new_pointing button')
+    .unbind('click')
+    .click(function() {
+        var table = jQuery(this).parents('table');
+        add_pointing_ajax(table, true);
+    });
 }
 
 jQuery(bind_pointing_legend);
@@ -33,15 +40,17 @@ function reInitTableDnD(table) {
     tableDnD.init(table);
 }
 
-function add_pointing_ajax(formfield, htmlid, lg) {
+function add_pointing_ajax(table, before) {
+    var formfield = table.data('formfield');
+    var htmlid = table.data('htmlid')
+    var lg = table.data('lg');
+
     var id = 'pointing_table_'+htmlid;
 	var table = document.getElementById(id);
 	var tbody = table.tBodies[0];
 	var rows = tbody.rows;
-	var rows_index = rows.length;
-	var last_row = rows[rows_index - 1];
 
-	var new_id = rows_index;
+	var new_id = rows.length + 1;
     jQuery.ajax({ url: jQuery(table).data('newurl')
                 , data: { formfield: formfield
                         , new_id: new_id
@@ -49,8 +58,14 @@ function add_pointing_ajax(formfield, htmlid, lg) {
                         }
                 }
     ).done(function(new_row) {
-        jQuery(tbody).find('tr').removeClass('last');
-        jQuery(tbody).append(new_row);
+        var row_elm = jQuery(new_row);
+        if (before) {
+            jQuery(tbody).find('.prepend_new_pointing').after(row_elm);
+        } else {
+            jQuery(tbody).find('tr').removeClass('last');
+            row_elm.addClass('last');
+            jQuery(tbody).append(row_elm);
+        }
         reInitTableDnD(table);
         bind_pointing_legend();
     });

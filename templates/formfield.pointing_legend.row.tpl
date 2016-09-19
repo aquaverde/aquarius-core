@@ -1,8 +1,4 @@
-<tr id="{$field.htmlid}_{$fileval.myindex}" {if $last OR $fileval.ajax}class="last"{/if} 
-    data-formfield="{$field.formfield->id}"
-    data-htmlid="{$field.htmlid}"
-    data-lg="{$content->lg}"
->
+<tr id="{$field.htmlid}_{$fileval.myindex}" {if $last OR $fileval.ajax}class="last"{/if}>
     <td style="width:50px;">
         <button
             type='button'
