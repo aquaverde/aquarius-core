@@ -8,7 +8,7 @@
   *    assign: optional parameter to assign links to a variable name instead of returning a string
   * The function shows nothing if there's only one lang.
   */
-function smarty_function_contentlanguageedit($params, &$smarty) {
+function smarty_function_contentlanguageedit($params, $smarty) {
     $smarty->loadPlugin('smarty_modifier_makeaction');
     
     $node_id = get($params, 'node');
@@ -55,4 +55,3 @@ function smarty_function_contentlanguageedit($params, &$smarty) {
         return (count($links) > 1) ? implode(" ",$links) : '';
     }
 }
-?>

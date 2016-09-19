@@ -1,13 +1,12 @@
-
-{if !$hide_root}
-    <div class="nodetree_row {if !$entry.node->newaction}nodetree_node{/if}">
+{if !$hide_root|default:false}
+    <div class="nodetree_row {if !$entry.newaction}nodetree_node{/if}">
 
         {if $entry.show_toggle}
             <a class="nodetree_toggle {if $entry.open}expand{else}contract{/if} {if $entry.open}open{/if}"></a>
         {/if}
 
-        {if $entry.node->newaction}
-            <a href="{url action=$lastaction|default:false action1=$entry.node->newaction}" title="{#s_new_child#}">
+        {if $entry.newaction}
+            <a href="{url action=$lastaction|default:false action1=$entry.newaction}" title="{#s_new_child#}">
                 <span class="glyphicon glyphicon-file"></span>
                 <span class="glyphicon glyphicon-plus"></span>
             </a>

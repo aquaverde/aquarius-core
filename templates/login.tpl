@@ -42,7 +42,7 @@
               <h4>Login</h4>
                 <form action="" method="post" name="login" enctype="multipart/form-data" class="form"  role="form">
                     <div class="form-group">
-                        <input type="text" name="username" id="username" value="{$smarty.post.username|escape}" placeholder="{#login_username#}" class="form-control">
+                        <input type="text" name="username" id="username" value="{$smarty.post.username|default:""|escape}" placeholder="{#login_username#}" class="form-control">
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" id="password" placeholder="{#login_password#}" class="form-control">

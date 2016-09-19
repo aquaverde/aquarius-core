@@ -131,14 +131,20 @@ class NodeTree {
 
     /* Display functions */
     
-    /** Add virtual 'new' nodes to children (This is a dummy object that has the 'newaction' property set to an action that will create a new child) */
+    /** Add virtual 'new' nodes to children
+      * Instead of a node property these have a newaction property with an
+      * action that will create a new child) */
     static function add_new(&$entry, $lg) {
         $node = $entry["node"];
         $newaction = Action::make("contentedit", "create", $node->id, $lg);
         if ($newaction) {
-            $new = new stdClass();
-            $new->newaction = $newaction;
-            $entry['children'][] = array('node' => $new, 'children' => array());
+            $entry['children'][] = array(
+                'newaction' => $newaction,
+                'children' => array(),
+                'show_toggle' => false,
+                'open' => false,
+                'node' => false
+            );
         }
     }
 
@@ -205,7 +211,8 @@ class NodeTree {
 
         $entry['title'] = strip_tags($node->get_contenttitle($lg));
         $entry['open'] = $open;
-        
+        $entry['newaction'] = false;
+       
         if ($type == 'sitemap' || $type == 'super' || $type == 'contentedit') {
             $entry['has_content'] = (bool)$node->get_content($lg);
 

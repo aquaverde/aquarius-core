@@ -337,6 +337,8 @@ class action_contentedit_edit extends action_contentedit implements DisplayActio
             $smarty->assign('tabs', $tabs);
             $smarty->assign('active_fields', $active_fields);
             $smarty->assign('active_tab_id', $active_tab_id);
+        } else {
+            $smarty->assign('tabs', false);
         }
 
         if ($node->id) {
@@ -370,6 +372,8 @@ class action_contentedit_edit extends action_contentedit implements DisplayActio
             $last_update = db_Journal::last_update($content);
             $smarty->assign('last_update', $last_update);
             if ($last_update) $smarty->assign('last_user', $last_update->get_user());
+        } else {
+            $smarty->assign('change_form', false);
         }
 
         /* Build subtree */
