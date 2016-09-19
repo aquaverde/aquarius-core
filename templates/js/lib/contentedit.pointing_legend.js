@@ -25,7 +25,7 @@ function bind_pointing_legend() {
         reInitTableDnD(table);
     });
 
-    jQuery('.prepend_new_pointing button')
+    jQuery('.prepend_new_pointing span')
     .unbind('click')
     .click(function() {
         var table = jQuery(this).parents('table');

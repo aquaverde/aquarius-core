@@ -10,7 +10,7 @@
     data-htmlid="{$field.htmlid}"
     data-lg="{$content->lg}"
     >
-    <tr class="prepend_new_pointing"><td colspan="4"><button type="button">+</button></td></tr>
+    <tr class="prepend_new_pointing"><td colspan="4"><span class="glyphicon glyphicon-plus"></span></td></tr>
     {foreach from=$field.value item='fileval'}
         {include file='formfield.pointing_legend.row.tpl' last=$fileval@last}
     {/foreach}
