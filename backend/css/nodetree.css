@@ -25,14 +25,18 @@ li.ui-sortable-helper div.nodetree_node, li.ui-sortable-helper li.nodetree_plus 
 li.nodetree_entry { width: 100%; display: block; position: relative; border: 0; padding: 0; margin: 0; }
 
 li.nodetree_entry:before { content: ""; position: absolute; top: 15px; left: -10px; width: 8px; height: 0; border-top: 1px #ccc solid; }
+#nodeselect_modal li.nodetree_entry:before { top: 10px; }
 
 form#leftnav li.nodetree_entry:before { top: 12px; }
 
 div.nodetree_row { padding: 6px 0 5px; border-top: 1px solid #ccc; background: transparent; clear: both; }
 
 form#leftnav div.nodetree_row { padding: 4px 0 3px; border-top: 0 none; }
+#nodeselect_modal div.nodetree_row { padding: 2px 0 2px; border-top: none;}
 
 form#leftnav ul ul div.nodetree_row { padding: 4px 0 0; }
+
+input.node_select { position: relative; top: 2px; }
 
 div.nodetree_row a:link, div.nodetree_row a:active, div.nodetree_row a:visited { color: #000; text-decoration: none; }
 
@@ -71,6 +75,7 @@ div.nodetree_row div.controls > div > div.dropdown ul.dropdown-menu li a:hover s
 div.nodetree_row a.nodetree_toggle { position: absolute; top: 10px; left: -15px; width: 12px; height: 12px; display: block; margin: 0; padding: 0; background: #f5f5f5; cursor: pointer; }
 
 form#leftnav div.nodetree_row a.nodetree_toggle { top: 6px; }
+#nodeselect_modal div.nodetree_row a.nodetree_toggle { top: 4px; }
 
 div.nodetree_row a.nodetree_toggle.expand:before { content: ""; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #535353; display: block; margin: 4px 0 0 1px; }
 
