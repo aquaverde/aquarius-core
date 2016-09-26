@@ -59,7 +59,7 @@ class Formtype_File extends Formtype {
         $valobject->show_file_select = (bool)$formfield->sup2;
         $valobject->file_row_ids = array();
         $valobject->next_id = 0;
-        $valobject->extra_js_includes = [];
+        $valobject->extra_js_includes = array();
 
         $valobject->popup_action = Action::make(
             'file_select',
