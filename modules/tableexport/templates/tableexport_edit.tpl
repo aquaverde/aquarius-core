@@ -3,7 +3,7 @@
 
 <div id="outer">
   
-  <form {$form_data.attributes}>
+  <form method="POST" action="{url}">
     {foreach from=$form_data.elements item=form_field}
         {$form_field.html}
     {/foreach}
@@ -36,7 +36,7 @@
 
     {/foreach}
 
-    <input name="__submit__" value="{#s_done#}" type="submit" class="submit"/>
+    <input name="{$save_action}" value="{#s_done#}" type="submit" class="submit"/>
     <input name="cancel" value="{#s_cancel#}" type="submit" class="cancel"/>
 
   </form>
