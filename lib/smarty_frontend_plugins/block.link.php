@@ -8,6 +8,7 @@
   *   class: Class attribute of the a tag. A second class may be specified after a comma to be used when the link is 'on'
   *   loadcontent: load the content of the linked node inside the block, like {usecontent}
   *   data-*: data attributes to add to the link-tag
+  *   title: title attribute copied to the tag
   *
   * The parameters of the href plugin can be used as well
   *
@@ -66,6 +67,10 @@ function smarty_block_link($params, $content, $smarty, &$repeat) {
         }
         $data_str = '';
         if ($data_attrs) $data_str = ' '.join(' ', $data_attrs);
+
+        if (isset($params['title'])) {
+            $data_str .= ' title="'.htmlspecialchars($params['title']).'"';
+        }
         
         // Wrap the content in a link
         $content = '<a href="'.$href.'"'.$class_str.$data_str.'>'.$content.'</a>';
