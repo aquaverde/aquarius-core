@@ -44,7 +44,7 @@ div.nodetree_row a:hover { color: #009de5; text-decoration: none; }
 
 div.nodetree_row span.nodetree_title a:hover span, div.nodetree_row a:hover span:before { color: #009DE5 !important; }
 
-div.nodetree_row div.controls { float: right; width: 220px; }
+div.nodetree_row div.controls { float: right; width: 310px; }
 
 div.nodetree_row div.controls div.left { float: left; }
 
