@@ -1,16 +1,9 @@
 {include file='header.tpl'}
 <h1>Move nodes</h1>
 
-{include_javascript file='prototype.js' lib=true}
-{js}
-{literal}
-function nodes_selected(_, selected_nodes) {
-    for (new_parent in selected_nodes) {
-        $('node_target').value = new_parent
-        $('node_target_title').update(selected_nodes[new_parent])
-    }
-}
-{/literal}{/js}
+{include_javascript file='nodetree.js'}
+{include_javascript file='nodes_select.js' lib=true}
+{include_javascript file='contentedit.pointing.js' lib=true}
 <form action="{url}" method="post">
     <div class="bigbox">
     <div class="bigboxtitle"><h2>The following nodes will be moved</h2></div>
@@ -28,10 +21,13 @@ function nodes_selected(_, selected_nodes) {
         type='button'
         name=''
         value='{#move_copy_select_from_all#}'
-        class='button'
-        onclick='open_attached_popup("{$simpleurl->with_param($parent_selection)}&selected="+$("node_target").value,0, "height=450,width=350,status=yes,resizable=yes,scrollbars=yes"); return false;'/>
+        class='button pointing_selection'
+        data-url="{$simpleurl->with_param($parent_selection)}"
+        data-selected_field="node_target"
+        data-target="node_target"
+    />
 
-        {#move_copy_target_location#}: <span id='node_target_title'>{$common_ancestor->get_contenttitle()}</span><br/><br/>
+        {#move_copy_target_location#}: <span id='node_target_titles'>{$common_ancestor->get_contenttitle()}</span><br/><br/>
         <input type='hidden' id='node_target' name='node_target' value='{$common_ancestor->id}'/>
         
         {include file="select_buttons.tpl"}
