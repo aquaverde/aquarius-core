@@ -15,7 +15,7 @@ function pointing_selection_setup(button, on_select) {
     var selected = $selected_field.val();
 
     // The 'titles' field is a DOM node whose text content shows the titles
-    // if the currently selected nodes
+    // of the currently selected nodes
     var titles_id = '#'+target_id+'_titles';
     var $titles_field = jQuery(titles_id);
     if ($titles_field.length == 0) console.log("Pointing selection missing 'title' field "+titles_id);
