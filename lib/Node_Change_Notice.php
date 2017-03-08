@@ -31,7 +31,7 @@ class Node_Change_Notice {
     }
     
     static function concerning($node) {
-        return new self($node, true, true);
+        return new self($node, false, false);
     }
     
     /* Create a new notice by merging two notices.
@@ -42,17 +42,22 @@ class Node_Change_Notice {
      * @return new notice covering both notices
      */
     function merge(Node_Change_Notice $other) {
+        $structural = $this->structural || $other->structural;
+        $affects_children =  $this->affects_children || $other->affects_children;
+
         $common_parent = $this->changed_node;
         while(!($common_parent->id == $other->changed_node->id 
              || $common_parent->ancestor_of($other->changed_node)
         )) {
             $common_parent = $common_parent->get_parent();
             if (!$common_parent) throw new Exception("Unable to find common parent of $this and $other");
+            $affects_children = true;
         }
-        return new self(
-            $common_parent,
-            $this->structural || $other->structural,
-            $this->affects_children || $other->affects_children
-        );
+
+        return new self
+            ( $common_parent
+            , $structural
+            , $affects_children
+            );
     }
 }
