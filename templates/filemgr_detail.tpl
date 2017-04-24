@@ -58,11 +58,11 @@
     </tr>
 {/if}
 </table>
-<table class="meta-file">
+<table class="meta-file" style="float: right; margin: 0 30px; width: 40%;">
     <tr>
 {if $attrs.references}
-        <th>{#s_references#}</th>
         <td>
+        <h3>{#s_references#}</h3>
         {foreach from=$attrs.references item=content}
             {assign var="editaction" value="contentedit:edit:`$content->node_id`:`$content->lg`"|makeaction}
             {if $editaction}
@@ -84,7 +84,7 @@
 <div style="margin: 1em 0;">
 {if $attrs.type == "image"}
     <a href="{$attrs.publicpath}" target="_blank">
-        <img src="{resize image=$attrs.publicpath w=1000}" alt="{$attrs.name}" style="max-width: 100%; padding: 1em; border: inset;"/>
+        <img src="{resize image=$attrs.publicpath w=1000}" alt="{$attrs.name}" style="max-width: 100%;"/>
     </a>
 {elseif $attrs.type == "pdf"}
     <iframe src="{$attrs.publicpath}" style="width: 100%; height: 80em">
