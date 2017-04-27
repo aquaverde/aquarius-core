@@ -340,7 +340,7 @@ ul.tabs li.active:hover { background: #F3F3F3; }
 
 .contentedit_ef .ef, .contentedit_ef .mle, .contentedit_select .select { margin-bottom: 0; }
 .contentedit_rte { margin-top: 10px; }
-.contentedit_file input.legend { width: 45%; margin-top: 3px;}
+.contentedit_file input.legend { width: 100%; margin-top: 10px; font-size: 12px; height: 22px; border: 1px solid #d6d6d6; background: #f5f5f5;}
 .contentedit_file input.empty_legend { font-style: italic; color: grey; }
 .contentedit_file .choose_button { margin: 3px; margin-left: 0; vertical-align: middle; cursor: pointer; }
 .contentedit_file label { cursor: pointer; }
