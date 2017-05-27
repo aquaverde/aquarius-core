@@ -14,6 +14,10 @@ class action_dir_settings extends AdminAction {
 }
 
 class action_dir_settings_edit extends action_dir_settings implements DisplayAction {
+    function permit_user($user) {
+        return $user->isSiteadmin();
+    }
+
     function process($aquarius, $request, $smarty, $result) {
         $directoriesData = get_cached_dirs();
         $dirs = array();
@@ -26,6 +30,7 @@ class action_dir_settings_edit extends action_dir_settings implements DisplayAct
         $smarty->assign("typeOptions", array('m' => 'm', 'w' => 'w', 'h' => 'h'));
         $smarty->assign("dirData", $dirs);
         $smarty->assign("resize", PICTURE_RESIZE == 'm' ? 'MaxSize' : 'Width');
+        $smarty->assign("save", Action::make('dir_settings', 'save'));
         $smarty->assign("newdir", Action::make('dir_settings', 'mkdir'));
         $smarty->assign("dirs", $directoriesData);
         $result->use_template("directory_settings.tpl");
@@ -82,16 +87,16 @@ class action_dir_settings_cache_dirs extends action_dir_settings implements Chan
     }
 
     function process($aquarius, $post, $result) {
-        $dirs = getAllDirs('');
-        $aquarius->db->query("TRUNCATE TABLE cache_dirs");
-        foreach($dirs as $dir)
-            $aquarius->db->query('INSERT INTO cache_dirs SET path = ?', array($dir));
-
-        $result->add_message(new FixedTranslation("Cached ".count($dirs)." dirs"));
+        update_cached_dirs();
+        $result->add_message(new FixedTranslation("Cached ".count(get_cached_dirs())." dirs"));
     }
 }
 
 class action_dir_settings_mkdir extends action_dir_settings implements ChangeAction {
+    function permit_user($user) {
+        return $user->isSiteadmin();
+    }
+
     function get_title() {
         return new Translation('create_dir');
     }
@@ -125,8 +130,7 @@ class action_dir_settings_mkdir extends action_dir_settings implements ChangeAct
         if ($success) {
             $result->add_message(new Translation("created_dir_s_in_s", array($dirname, $target)));
 
-            // HACK should use the touch() interface but then we'd have to adjust the other action as well
-            Action::make('dir_settings', 'cache_dirs')->process($aquarius, $post, $result);
+            update_cached_dirs();
         } else {
             print_r(new Translation("unable_to_create_dir_s_in_s", array($dirname, $target)));
             $result->add_message(AdminMessage::with_line('warn', new Translation("unable_to_create_dir_s_in_s", array($dirname, $target))));

@@ -1,6 +1,6 @@
 {include file="header.tpl"}
-        
     <h1>FileManager : Directory Settings</h1>
+{if $save}        
 	<form method="post" action="{url action=$lastaction}">
 		
 		<div class="topbar">
@@ -51,12 +51,10 @@
 			</tr>
 		{/foreach}
 		</table>
-    {action action="dir_settings:save"}
-		<input type="submit" name="{$action}" value="{#s_save#}" class="btn btn-primary" />
+		<input type="submit" name="{$save}" value="{#s_save#}" class="btn btn-primary" />
         &nbsp;
-    {/action}
 	</form>
-    
+{/if}    
     <br><br>
     <div class="topbar">
     <form method="post" action="{url action=$lastaction}">
