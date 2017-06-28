@@ -25,9 +25,9 @@ class Aquarius {
 
     /** Associative list of module's short name => module object*/
     var $modules = array();
-    
+
     var $module_manager;
-    
+
     /** Functions that are called from specific points in the CMS processing.
       * Mostly used by modules
       */
@@ -50,7 +50,7 @@ class Aquarius {
         $this->core_path = $core_path;
         $this->install_path = realpath($core_path.'..').DIRECTORY_SEPARATOR;
     }
-    
+
     /** Return the installed aquarius revision as string
       * Currently, the revision string is read from the file 'revision' in the core path. */
     function revision() {
@@ -65,7 +65,7 @@ class Aquarius {
       * - core_path/config.override.php Apply override settings depending on modes (DEV/STAGING)
       * - install_path/config.local.php Options specific to this installation
       * - core_path/config.post.php    Default define() statements based on configuration
-      * 
+      *
       * Note that the main config.php file will be reloaded after loading the
       * modules. This allows modules to load config presets which may be
       * overridden in the main config.
@@ -73,7 +73,7 @@ class Aquarius {
     function load_configs() {
         // all the default values of aquarius
         $this->use_config($this->core_path."config.base.php");
-        
+
         // site specific values that overwrite the defaults
         $this->use_config($this->install_path."config.php");
 
@@ -82,16 +82,16 @@ class Aquarius {
 
         // local config values used for stuff that specific to each webserver
         $this->use_config($this->install_path."config.local.php");
-        
+
         // Another core config mostly to define stuff that depends on other
         // configuration files
         $this->use_config($this->core_path."config.post.php");
-        
+
         $this->domain_conf = new DomainConfigs($this->conf('frontend/domains'));
     }
 
     /** Load aquarius modules
-     * 
+     *
       * The configuration file of each module, 'modulename/modulename.config.php'
       * is loaded, then the module is initialized. The main configuration is
       * reloaded after loading the preset configs so that module presets can be
@@ -126,17 +126,17 @@ class Aquarius {
     /** Load a file into the aquarius configuration.
       * @param $config_path   include this config file
       * @param $hide_warnings Suppress PHP warnings when including configs. Optional, preset is false.
-      * 
+      *
       * Care must be taken not to override settings from configs
       * loaded previously. For example, the line
-      *  
+      *
       *   $config = array('my_setting' => 'is important');
-      * 
+      *
       * would clear the whole config and leave only this setting. Instead,
       * the line must be written as
-      * 
+      *
       *   $config['my_setting'] = 'is important';
-      * 
+      *
       * which leaves intact other entries in the $config construct.
       */
     function use_config($config_path, $hide_warnings=false) {
@@ -211,12 +211,12 @@ class Aquarius {
                 session_save_path($save_path);
                 $set_save_path = session_save_path($save_path);
                 if ($set_save_path !== $save_path) Log::debug("Failed setting session path to $save_path, is $set_save_path");
-                
+
                 // Make sure session files are garbage collected when the
                 // path is changed from the server preset
                 ini_set('session.gc_probability', 1);
             }
-            
+
             if (false !== $lifetime=$this->conf('session/lifetime', false)) {
                 ini_set("session.gc_maxlifetime", $lifetime);
             }
@@ -237,9 +237,9 @@ class Aquarius {
         if (isset($_SESSION['aquarius3'][$name])) return $_SESSION['aquarius3'][$name];
         else return $default;
     }
-    
+
     /** Set session variable
-      * This opens the session if it wasn't open before. 
+      * This opens the session if it wasn't open before.
       * To avoid third-party scripts overwriting aquarius3 session vars, they are stored under 'aquarius3' in the session.
       * @param $name Name of the session var to set
       * @param $value The value to be stored under name
@@ -285,7 +285,7 @@ class Aquarius {
                 $result = null;
                 if (is_object($handler)) {
                     // Call handler's method named $event
-                    $result = call_user_func_array(array($handler, $event), $args); 
+                    $result = call_user_func_array(array($handler, $event), $args);
                 } else {
                     // Must be a callback type then
                     $result = call_user_func_array($handler, $args);
@@ -309,7 +309,7 @@ class Aquarius {
         $smarty->registerPlugin('modifier', 'alt', 'smarty_modifier_alt');
         $smarty->registerPlugin('modifier', 'th', 'smarty_modifier_th');
         $smarty->registerPlugin('modifier', 'date_format', 'smarty_modifier_date_format');
-        
+
         // Quickfix to allow periods in filenames without requiring quotes
         // All template text of the form {include file=xxx.tpl} is translated to
         // {include file='xxx.tpl'}
@@ -318,7 +318,7 @@ class Aquarius {
             $source = preg_replace('%{include file=([a-zA-Z/0-9.-_]+)}%', '{include file="$1"}', $source);
             return $source;
         }, '__invoke')); // Smarty doesn't expect a closure as filter parameter, thus wrapping the old-style callback array :-)
-        
+
         // Let the modules configure the container as well
         $this->execute_hooks('smarty_config', $smarty);
 
@@ -330,7 +330,7 @@ class Aquarius {
       * @param $admin_lg The backend-language to use. This determines the
       *                  language used in the interface, mainly the menu
       *                  translation
-      * 
+      *
       * If the admin_lg parameter is omitted, the global variable $admin_lg is
       * read. This behaviour is DEPRECATED.
       *
@@ -338,19 +338,19 @@ class Aquarius {
     function get_smarty_backend_container($admin_lg=false) {
         // Legacy hack when $admin_lg is not given
         if (!$admin_lg) $admin_lg = $GLOBALS['admin_lg'];
-        
+
         $smarty = $this->get_smarty_container();
-        
+
         $smarty->template_dir = array($this->core_path.'templates/');
         $smarty->cache_dir    = $this->cache_path('smarty_backend/cache/');
         $smarty->compile_dir  = $this->cache_path('smarty_backend/compile/');
-        
+
         $smarty->addPluginsDir($this->core_path.'lib/smarty_backend_plugins/');
 
         // Adjust caching
         $smarty->force_compile = false;
         $smarty->caching = false; // Never cache for backend
-        
+
         // Load the config containing the admin language translation
         $smarty->config_booleanize = false;
         $smarty->configLoad($this->core_path."lang/".$admin_lg.'.lang');
@@ -367,28 +367,28 @@ class Aquarius {
     function get_smarty_frontend_container($lg, $node = false) {
         // Legacy hack when $lg is not given
         if (!$lg) $lg = $GLOBALS['lg'];
-    
+
         $smarty = $this->get_smarty_container();
-        
+
         // Content must be active to be shown. This may be overridden by preview mode.
         $smarty->require_active = true;
 
         $smarty->addTemplateDir($this->install_path.'templates/');
-        $smarty->compile_dir  = $this->cache_path('smarty_frontend/compile/'); 
+        $smarty->compile_dir  = $this->cache_path('smarty_frontend/compile/');
         $smarty->cache_dir    = $this->cache_path('smarty_frontend/cache/');
-    
+
         // Put our plugin dirs in front of the internal smarty dir, so we can override smarty plugins
         $smarty->insertPluginsDir($this->core_path.'lib/smarty_frontend_plugins/');
         $smarty->insertPluginsDir($this->install_path.'templates/smarty_plugins/'); // Site-specific plugins
 
         // Prefilter for wording tags
         $smarty->load_filter('pre', 'wording');
-        
+
         $smarty->escape_html = $this->conf('frontend/smarty/auto_escape');
 
 		// Outputfilter replace intern Aqualinks generated by RTE
 		$smarty->load_filter('output', 'replace_aqualink');
-        
+
         // register a function to avoid caching for template blocks
         // use: {dynamic} part of the template which should not be cached {/dynamic}
         $smarty->register_block('dynamic', 'smarty_block_dynamic', false);
@@ -423,8 +423,8 @@ class Aquarius {
     function get_formtypes() {
         return $this->formtypes;
     }
-    
-    
+
+
     /** Get a caching path
       * @param subdir Optional, append this subdir. Create it if it doesn't exist.
       * @return Absolute path to cache directory, including trailing slash. */
@@ -436,13 +436,13 @@ class Aquarius {
         }
         return realpath($cache_path).'/';
     }
-    
-    
+
+
     function mailer() {
         $smtp = $this->conf('email/smtp');
         $transport = false;
-        if ($smtp) { 
-            $transport = Swift_SmtpTransport::newInstance(get($smtp, 'host', 'localhost'), get($smtp, 'port', 25));
+        if ($smtp) {
+            $transport = Swift_SmtpTransport::newInstance(get($smtp, 'host', 'localhost'), get($smtp, 'port', 25), get($smtp, 'encryption', 'tls'));
             if ($user = get($smtp, 'user')) $transport->setUsername($user);
             if ($password = get($smtp, 'pass')) $transport->setPassword($password);
             if (get($smtp, 'auth_plain', true)) $transport->setAuthMode('PLAIN');
