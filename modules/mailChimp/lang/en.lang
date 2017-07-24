@@ -1,5 +1,3 @@
-<?
-	//MODULE
+
     mailChimp_menu					= "Mailchimp Newsletter"
     mailChimp_upload				= "Preview/Upload"
-?>
