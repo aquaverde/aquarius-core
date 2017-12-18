@@ -54,10 +54,9 @@
     </tr>
 {/if}
 </table>
-<table class="meta-file">
+<table class="meta-file" style="float: right; margin: 0 30px; width: 40%;">
     <tr>
 {if $attrs.references}
-        <th>{#s_references#}</th>
         <td>
             <div style="max-height: 75px; overflow: scroll;">
             {foreach from=$attrs.references item=content}

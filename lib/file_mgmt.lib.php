@@ -175,6 +175,17 @@ function get_cached_dirs($prefix = false) {
     return $dirs;
 }
 
+/** Rebuild directory cache
+  */
+function update_cached_dirs() {
+    global $aquarius;
+    $dirs = getAllDirs('');
+    $aquarius->db->query("TRUNCATE TABLE cache_dirs");
+    foreach($dirs as $dir) {
+        $aquarius->db->query('INSERT INTO cache_dirs SET path = ?', array($dir));
+    }
+}
+
 function getAllDirs() {
     $dirs = array();
     foreach (explode(";", FILE_ROOT_DIRS) as $rootDir ) {

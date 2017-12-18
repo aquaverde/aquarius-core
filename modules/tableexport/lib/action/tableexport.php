@@ -4,7 +4,7 @@ require_once("pear/HTML/QuickForm/Renderer/ArraySmarty.php");
 
 class action_tableexport extends ModuleAction {
 	var $modname = "tableexport";
-    var $props = array('class', 'op', 'id');
+    var $props = array('class', 'op');
 
     function valid($user) {
       return (bool)$user;
@@ -28,7 +28,6 @@ class action_tableexport extends ModuleAction {
 
 
 class Action_Tableexport_view extends action_tableexport implements DisplayAction {
-    var $props = array('class', 'op');
     function process($aquarius, $get, $smarty, $result) {
             $bookings_proto = DB_DataObject::factory(TABLEEXPORT_TABLE);
 
@@ -52,39 +51,62 @@ class Action_Tableexport_view extends action_tableexport implements DisplayActio
 }
 class Action_Tableexport_view1 extends action_tableexport_view implements DisplayAction {} // It was already like that when I got it
 
-class Action_Tableexport_edit extends action_tableexport implements ChangeAction {
-    function process($aquarius, $post, $result) {
-            global $admin_lg;
-            if($this->id != 'null') {
-                $bookings_proto = DB_DataObject::factory(TABLEEXPORT_TABLE);
-                $keyfields = $bookings_proto->keys();
-                $keyfield = $keyfields[0];
-                $bookings_proto->$keyfield = $this->id;
-                $bookings_proto->find(true);
-                
-                $fg = DB_DataObject_FormBuilder::create($bookings_proto);
-                $form =
-                $fg->getForm("admin.php?lg=".$admin_lg."&".str(
-                    Action::make('tableexport','edit',$this->id)));
-                //$form->updateElementAttr($form->_elements, 'class="ef"');
-                $form->addElement('submit', 'cancel', 'Cancel');
-                $renderer =& new HTML_QuickForm_Renderer_Array();
-                $form->accept($renderer);
+class Action_Tableexport_edit extends action_tableexport implements DisplayAction {
+    var $props = array('class', 'op', 'id');
+    function process($aquarius, $request, $smarty, $result) {
+		if (!is_numeric($this->id)) return; // Bail out
 
-                $smarty->tmplname = "tableexport_edit.tpl";
-                $smarty->assign('form_data', $renderer->toArray());
-                if ($form->validate()) {
-                    $form->process(array(&$fg,'processForm'), false);
-                    $form->freeze();
-                    $action = Action::make('tableexport','view');
-                    $result->add_message(new Translation("tableexport_entry_edited"));
-                }
-            }
+		$bookings_proto = DB_DataObject::factory(TABLEEXPORT_TABLE);
+		$keyfields = $bookings_proto->keys();
+		$keyfield = $keyfields[0];
+		$bookings_proto->$keyfield = $this->id;
+		$found = $bookings_proto->find(true);
+		if (!$found) return;
+
+		$fg = DB_DataObject_FormBuilder::create($bookings_proto);
+		$form = $fg->getForm();
+		$renderer = new HTML_QuickForm_Renderer_Array();
+		$form->accept($renderer);
+
+		$smarty->assign('form_data', $renderer->toArray());
+
+		$submit_url = $smarty->get_template_vars('url');
+		$smarty->assign('save_action', Action::make('tableexport', 'save', $this->id));
+
+		$result->use_template("tableexport_edit.tpl");
+    }
+}
+
+class Action_Tableexport_save extends action_tableexport implements ChangeAction {
+    var $props = array('class', 'op', 'id');
+    function process($aquarius, $post, $result) {
+		if (!is_numeric($this->id)) return; // Bail out
+
+		$bookings_proto = DB_DataObject::factory(TABLEEXPORT_TABLE);
+		$keyfields = $bookings_proto->keys();
+		$keyfield = $keyfields[0];
+		$bookings_proto->$keyfield = $this->id;
+		$found = $bookings_proto->find(true);
+		if (!$found) return;
+
+		$fg = DB_DataObject_FormBuilder::create($bookings_proto);
+		$form = $fg->getForm();
+		$renderer =& new HTML_QuickForm_Renderer_Array();
+		$form->accept($renderer);
+
+		if ($form->validate()) {
+			$form->process(array(&$fg,'processForm'), false);
+			$form->freeze();
+			$result->add_message(new Translation("tableexport_entry_edited"));
+		} else {
+			$result->inject_action(Action::make('tableexport', 'save', $this->id));
+		}
     }
 }
 
 
 class Action_Tableexport_delete extends action_tableexport implements ChangeAction {
+    var $props = array('class', 'op', 'id');
     function process($aquarius, $post, $result) {
             if($this->id != 'null') {
                 $bookings_proto = DB_DataObject::factory(TABLEEXPORT_TABLE);
@@ -132,7 +154,6 @@ class Action_Tableexport_exportdown extends action_tableexport implements SideAc
     var $props = array('class', 'op');
     function process($aquarius, $get) {
             ob_clean();
-
             $latin1 = $this->module->conf('latin1');
             $delimiter = $this->module->conf('delimiter');
             header('Content-type: text/csv'.($latin1 ? '' : '; charset=utf-8'));
@@ -144,7 +165,6 @@ class Action_Tableexport_exportdown extends action_tableexport implements SideAc
             $out = fopen("php://output", "w");
 
             $columns = array_keys($bookings->table());
-
             aqua_fputcsv($out, $columns, $delimiter);
 
             while($bookings->fetch()) {
@@ -158,5 +178,3 @@ class Action_Tableexport_exportdown extends action_tableexport implements SideAc
             }
     }
 }
-
-
