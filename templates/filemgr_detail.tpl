@@ -7,26 +7,26 @@
     &nbsp;&nbsp;
     {if $prev}
         <a href="{url action=$prev}">
-            <span class="glyphicon glyphicon-circle-arrow-left gi-15x" title="{#s_next#}"></span>
+            <span class="glyphicon glyphicon-circle-arrow-left gi-15x" title="Previous"></span>
         </a>
     {else}
         &nbsp;&nbsp;&nbsp;&nbsp;
     {/if}
     <a href="{url}"><span class="glyphicon glyphicon-circle-arrow-up gi-15x" title="{#s_back#}"></span></a>
-    {if $next}<a href="{url action=$next}"><span class="glyphicon glyphicon-circle-arrow-right gi-15x" title="{#s_prev#}"></span></a>{/if}
+    {if $next}<a href="{url action=$next}"><span class="glyphicon glyphicon-circle-arrow-right gi-15x" title="Next"></span></a>{/if}
 </div>
-<div style="float: right; margin: 0 0.5em;">
+<div style="float: right; margin: 0 2em;">
 {if $may_delete}
     {if $delete}
     <div>
     <form action="{url action=$next}" method="post" style="display: inline">
         {$smarty.config.s_confirm_delete_file|sprintf:$attrs.name}<br>
-        <button type="submit" name="{$delete}" class="btn btn-default" title="{#s_delete#}">
+        <button type="submit" name="{$delete}" class="btn btn-primary" title="{#s_delete#}">
             {#s_delete#}
         </button>
     </form>
     <form action="{url action=$lastaction}" method="post" style="display: inline">
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-default">
             {#s_cancel#}
         </button>
     </form>
@@ -38,11 +38,7 @@
     {/if}
 {/if}
 </div>
-<table class="meta-file">
-    <tr>
-        <th>{#s_filename#}</th>
-        <td>{$attrs.name|escape}</td>
-    </tr>
+<table class="meta-file" style="width: 250px;">
     <tr>
         <th>{#s_filesize#}</th>
         <td>{$file->size('kB')}kB</td>
@@ -63,17 +59,19 @@
 {if $attrs.references}
         <th>{#s_references#}</th>
         <td>
-        {foreach from=$attrs.references item=content}
-            {assign var="editaction" value="contentedit:edit:`$content->node_id`:`$content->lg`"|makeaction}
-            {if $editaction}
-                <a href="{url action0=$editaction action1=$lastaction}" class="little">&gt;
-            {/if}
-                {$content->cache_title|strip_tags|truncate:50}{if $lg != $content->lg} ({$content->lg}){/if}
-            {if $editaction}
-                </a>
-            {/if}
-            {if $content@last}{else}<br/>{/if}
-        {/foreach}
+            <div style="max-height: 75px; overflow: scroll;">
+            {foreach from=$attrs.references item=content}
+                {assign var="editaction" value="contentedit:edit:`$content->node_id`:`$content->lg`"|makeaction}
+                {if $editaction}
+                    <a href="{url action0=$editaction action1=$lastaction}" class="little">&gt;
+                {/if}
+                    {$content->cache_title|strip_tags|truncate:50}{if $lg != $content->lg} ({$content->lg}){/if}
+                {if $editaction}
+                    </a>
+                {/if}
+                {if $content@last}{else}<br/>{/if}
+            {/foreach}
+            </div>
         </td>
 {/if}
     </tr>
@@ -84,7 +82,7 @@
 <div style="margin: 1em 0;">
 {if $attrs.type == "image"}
     <a href="{$attrs.publicpath}" target="_blank">
-        <img src="{resize image=$attrs.publicpath w=1000}" alt="{$attrs.name}" style="max-width: 100%; padding: 1em; border: inset;"/>
+        <img src="{resize image=$attrs.publicpath w=1500}" alt="{$attrs.name}" style="max-width: 100%;"/>
     </a>
 {elseif $attrs.type == "pdf"}
     <iframe src="{$attrs.publicpath}" style="width: 100%; height: 80em">

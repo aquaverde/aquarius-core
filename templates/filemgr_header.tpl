@@ -17,7 +17,7 @@
 	</head>
 
 <body {if $isPopup}onload="getSelectedFromOpener();"{/if} bgcolor="#FFFFFF">
-<div class="wrapper">
+<div class="wrapper" style="max-width: 100%;">
 {include file='messages.tpl'}
 <script language="JavaScript" type="text/javascript">
 <!--
