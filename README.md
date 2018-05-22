@@ -3,29 +3,6 @@
 Aquarius3 is a content management system (CMS) developed by [aquaverde GmbH](http://aquaverde.ch).
 
 
-# Requirements
-see doc/requirements.txt
-
-
-# Installation
-Have a look at the [blank aquarius template](http://github.com/aquaverde/aquarius-blank)
-repository. Installing from scratch is not documented.
-
-# Easy Installation
-[Download installer here](http://www.aquarius-cms.com/en/download.html)
-
-# Documentation
-see doc/aquadoc.txt
-
-
-# Development
-see doc/coding-guidelines.txt
-
-
-# Implementation
-see [wiki](https://github.com/aquaverde/aquarius-core/wiki) for more informations about implementation 
-
-
 # Licence
 
 This program is free software: you can redistribute it and/or modify
