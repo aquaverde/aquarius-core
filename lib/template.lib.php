@@ -189,7 +189,7 @@ function smarty_function_resize($params, $smarty) {
         $slir_options ['l']= (int)$blur;
     }
 
-    $option_strings = "";
+    $option_strings = [];
     foreach($slir_options as $option => $value) $option_strings []= $option.$value;
 
     require_once "file_mgmt.lib.php";
