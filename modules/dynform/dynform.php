@@ -555,20 +555,20 @@ class Dynform extends Module {
         // Take the first address as sender address if there are multiple
         $sender = trim(first(explode(',', $target_email)));
         
-        $this->send_mail($target_email, $client_email, $sender, $content, $submit_node_name, $mailtxt, $confirmation=false);
+        $this->send_mail($target_email, $client_email, $sender, $content, $submit_node_name, $mailtxt, $confirmation=false, $dynformId=$df_entry->dynform_id);
 
         
         if ($content->send_confirmation_mail && $client_email) {
             if ($content->email_confirmation_sender) $conf_sender = $content->email_confirmation_sender ; 
             else $conf_sender = "info@".$_SERVER['SERVER_NAME'];
-            $this->send_mail($client_email, $conf_sender, $conf_sender, $content, $submit_node_name, $mailtxt, $confirmation=true);
+            $this->send_mail($client_email, $conf_sender, $conf_sender, $content, $submit_node_name, $mailtxt, $confirmation=true, $dynformId=$df_entry->dynform_id);
         }
 
         return nl2br($content->email_thanx); 
     }
 
 
-    private function send_mail($recipient, $replyto, $sender, $content, $submit_node_name, $rows, $confirmation=false) {
+    private function send_mail($recipient, $replyto, $sender, $content, $submit_node_name, $rows, $confirmation=false, $dynformId) {
         $subject = $content->email_subject;
         if (!empty($submit_node_name)) $subject .= ' | '.$submit_node_name;
 
@@ -588,8 +588,12 @@ class Dynform extends Module {
             }
         } else {
             $newMail->addText($subject);
+            $newMail->addDelimiter();
+            $newMail->addText('New response, see in aquarius (login first):'); 
+            $newMail->addText(PROJECT_URL.'aquarius/admin/admin.php?lg=fr&action%5B0%24dynform_menu%24data%24fr%5D%5B%5D&action%5B1723%24dynform_data%24show%24'.$dynformId.'%24%5D%5B%5D');
         }
 
+        /*
         $newMail->nextBlock(100, array(40, false));
         $newMail->addDelimiter();
 
@@ -602,6 +606,11 @@ class Dynform extends Module {
         }
 
         $newMail->addDelimiter();
+        */
+
+         
+        $newMail->addDelimiter();
+
         return $newMail->sendMail(); 
     }
 
