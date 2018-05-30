@@ -593,24 +593,21 @@ class Dynform extends Module {
             $newMail->addText(PROJECT_URL.'aquarius/admin/admin.php?lg=fr&action%5B0%24dynform_menu%24data%24fr%5D%5B%5D&action%5B1723%24dynform_data%24show%24'.$dynformId.'%24%5D%5B%5D');
         }
 
-        /*
-        $newMail->nextBlock(100, array(40, false));
-        $newMail->addDelimiter();
-
-        foreach($rows as $key => $txt) {
-            if (is_array($txt)) {
-                $newMail->addTextRow($txt[0], $txt[1]);
-            } else {
-                $newMail->addText($txt);
+        // Don't sent privacy data per mail
+        if ($this->conf('privacy_mails')) {
+            $newMail->addDelimiter();
+        } else {
+            $newMail->nextBlock(100, array(40, false));
+            $newMail->addDelimiter();
+            foreach($rows as $key => $txt) {
+                if (is_array($txt)) {
+                    $newMail->addTextRow($txt[0], $txt[1]);
+                } else {
+                    $newMail->addText($txt);
+                }
             }
+            $newMail->addDelimiter();
         }
-
-        $newMail->addDelimiter();
-        */
-
-         
-        $newMail->addDelimiter();
-
         return $newMail->sendMail(); 
     }
 

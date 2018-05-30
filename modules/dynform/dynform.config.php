@@ -11,3 +11,8 @@ $config['dynform']['test_email'] = false;
  * Relative to the root dir
  */
 $config['dynform']['upload_dir'] = '';
+
+
+/* Block sent privacy data per Mail
+ */
+$config['dynform']['privacy_mails'] = false;
