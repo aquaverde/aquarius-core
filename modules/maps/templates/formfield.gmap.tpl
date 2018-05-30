@@ -33,7 +33,7 @@
         var script = document.createElement("script");
         script.type = "text/javascript";
         script.defer = true;
-        script.src = "http://maps.googleapis.com/maps/api/js?key={$field.map_options.presets->api_key}&libraries=drawing,places&sensor=false&callback=mapinit";
+        script.src = "https://maps.googleapis.com/maps/api/js?key={$field.map_options.presets->api_key}&libraries=drawing,places&sensor=false&callback=mapinit";
         document.body.appendChild(script);
     }
 
