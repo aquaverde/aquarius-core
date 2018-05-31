@@ -221,7 +221,11 @@ class Action_Dynform_Data_Show extends action_dynform_data implements DisplayAct
         
         $smarty->assign("columntitles", $columntitles) ; 
         $smarty->assign("records", $ordered_records); 
-        $smarty->assign("form_name", $DL->get_form_name($this->form_id, $this->lg)) ; 
+        if ($this->lg) {
+            $smarty->assign("form_name", $DL->get_form_name($this->form_id, $this->lg)) ; 
+        } else {
+            $smarty->assign("form_name", $DL->get_form_name($this->form_id, 'fr')) ; 
+        }
         $smarty->assign("lg_desc", $lg_desc) ; 
         $smarty->assign("form_id", $this->form_id) ; 
         if (!$shown_lg) $smarty->assign("show_all_lgs", true) ; 

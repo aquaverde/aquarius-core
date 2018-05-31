@@ -1,5 +1,6 @@
 {include file='header.tpl'}
-<h1>{if $form_name}{$form_name} : {/if}{$lg_desc}</h1>
+<h1> {if $form_name}{$form_name}{/if}</h1>
+<h2>{$lg_desc}</h2>
 
 {literal}
 <script type="text/javascript">
@@ -17,7 +18,7 @@
 {/literal}
 
 <div>
-	{include file='dynform_list_data_commands.tpl'}
+	{*include file='dynform_list_data_commands.tpl'*}
 	{action action="dynform_data:delete_selected:`$form_id`:`$lg`"}
 	<form style="display: inline" name="entryForm" method="post" action="{url action0=$lastaction action1=$action}"  enctype="multipart/form-data">
 	<table border="0" cellpadding="0" cellspacing="0" class="table">
@@ -32,8 +33,9 @@
 			<tr class="{cycle values='odd,even'}">
 				<td nowrap="nowrap">
 					<input type="checkbox" class="button" name="sel_records[]" value="{$id}"/>&nbsp;&nbsp;
+
                         {action action="dynform_data:edit_entry:`$id`:`$lg_filter`"}
-                            <a href="{url action0=$lastaction action1=$action}" title="Edit entry"><span class="glyphicon glyphicon-pencil"></span></a>
+                            <a href="{url action0=$lastaction action1=$action}" title="Open/Edit entry"><span class="glyphicon glyphicon-eye-open"></span></a>
                         {/action}
 					
 				&nbsp;&nbsp;

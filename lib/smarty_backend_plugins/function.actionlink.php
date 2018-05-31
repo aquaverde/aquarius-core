@@ -69,7 +69,7 @@ function smarty_function_actionlink($params, $smarty) {
             $content = array();
             if ($icon) {
                 if (strpos($icon, '.') !== false) {
-                    $content[] = "<img src='$icon' alt='$title' title='$title'/>";
+                    $content[] = "<img src='$icon' alt='$title' title='$title' style='margin-top:-4px;'>&nbsp;";
                 } else {
                     $content[] = "<span class='glyphicon glyphicon-".$icon."'></span>";
                 }
