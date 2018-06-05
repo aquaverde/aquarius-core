@@ -1,8 +1,9 @@
 {include file='header.tpl'}
-<h1>{$form_name} : {$lg_desc}</h1>
+
+<h1>{#export#} {if $form_name}{$form_name}{/if}</h1>
+
 
 <div class="bigbox">
-	<h2>{$form_name}&nbsp;{#export#}</h2>
 	<p>{#welche_felder#}</p><br/>
 	<form action="{url}" method="post" accept-charset="utf-8">	
 		{foreach from=$columntitles key=id item=column}

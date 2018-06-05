@@ -14,11 +14,11 @@
         }
     }
 </script>
-<style>.wrapper{border:none;}</style>
+<style>.wrapper{border:none; max-width: none;}</style>
 {/literal}
 
 <div>
-	{*include file='dynform_list_data_commands.tpl'*}
+	{include file='dynform_list_data_commands_top.tpl'}
 	{action action="dynform_data:delete_selected:`$form_id`:`$lg`"}
 	<form style="display: inline" name="entryForm" method="post" action="{url action0=$lastaction action1=$action}"  enctype="multipart/form-data">
 	<table border="0" cellpadding="0" cellspacing="0" class="table">

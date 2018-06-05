@@ -249,7 +249,14 @@ class Action_Dynform_Data_Export extends action_dynform_data implements DisplayA
         else $lg_desc = $this->lg ;
 
         $smarty->assign("columntitles", $columntitles) ;  
-        $smarty->assign("form_name", $DL->get_form_name($this->form_id, $this->lg)) ; 
+        //$smarty->assign("form_name", $DL->get_form_name($this->form_id, $this->lg)) ; 
+
+        if ($this->lg) {
+            $smarty->assign("form_name", $DL->get_form_name($this->form_id, $this->lg)) ; 
+        } else {
+            $smarty->assign("form_name", $DL->get_form_name($this->form_id, 'de')) ; 
+        }
+
         $smarty->assign("lg_desc", $lg_desc) ; 
         $smarty->assign("form_id", $this->form_id) ; 
         if(isset($_COOKIE['dynform_csvec'][$this->form_id])) {

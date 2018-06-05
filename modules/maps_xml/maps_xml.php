@@ -7,8 +7,8 @@ class Maps_Xml extends Module {
 
 	function daily() {
 		$files = array(
-					'http://www.tomas.ch/irs/exports/waadtland/Jura_Region.xml', 
-					'http://www.tomas.ch/irs/exports/waadtland/Pays3Lacs.xml'
+					'https://www.tomas.ch/irs/exports/waadtland/Jura_Region.xml', 
+					'https://www.tomas.ch/irs/exports/waadtland/Pays3Lacs.xml'
 					);	
 		$markers = array();
 		$replacer = array(chr(0xC2).chr(0x92) => "'", chr(13) => "", chr(96) => "'");
