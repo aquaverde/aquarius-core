@@ -1,5 +1,11 @@
 {include file='header.tpl'}
 
+<style type="text/css">
+    {literal}
+        .wrapper { max-width: none !important; }
+    {/literal}    
+</style>
+
 {include_javascript file='module.shorturi.js'}
 <script type="text/javascript">
     uri_index = {$uris|@count};
@@ -10,6 +16,20 @@
 <form action="{url action=$lastaction}" method="post">
 
 <table class="table" id="uri_table">
+    <tr id="uri_row_{$myindex}">
+        <td>
+            {#from_domain#}
+        </td>
+        <td></td>
+        <td>
+            {#keyword#}
+        </td>
+        <td></td>
+        <td>
+            {#to_url#}
+        </td>
+        <td></td>
+    </tr>
     {foreach from=$uris item=uri key=myindex}
         {include file='uritable.row.tpl'}
     {/foreach}
