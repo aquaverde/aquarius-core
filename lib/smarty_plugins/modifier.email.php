@@ -9,7 +9,7 @@
     <p>{$email|email:$linktext}</p>
 */
 
-function smarty_modifier_email($email, $linktext)
+function smarty_modifier_email($email, $linktext='')
 {
 	list($name,$domainTLD)	= explode("@", $email);
 	$domain	= substr($domainTLD, 0, strrpos($domainTLD, "."));
