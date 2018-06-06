@@ -2,7 +2,7 @@
 <h1>{#s_cms_users#}</h1>
 
 <form action="{url action0=$lastaction}" method="post">
-		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table">
+		<table border="0" width="100%" cellpadding="0" cellspacing="0" class="table table-hover table-condensed">
 			<tr>
 				<th>&nbsp;</th>
 				<th>{#s_users#}</th>
@@ -15,7 +15,7 @@
 		{foreach item="user" from=$users}
             {action var="editaction" action="user:editUser:`$user->id`"}
 			<tr>
-				<td width="25">&nbsp;
+				<td width="25">
 					{activationbutton action="user:toggle_active:`$user->id`" active=$user->active class=imagebutton}
 				</td>
    				<td>

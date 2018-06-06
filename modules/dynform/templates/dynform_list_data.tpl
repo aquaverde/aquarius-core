@@ -21,7 +21,8 @@
 	{include file='dynform_list_data_commands_top.tpl'}
 	{action action="dynform_data:delete_selected:`$form_id`:`$lg`"}
 	<form style="display: inline" name="entryForm" method="post" action="{url action0=$lastaction action1=$action}"  enctype="multipart/form-data">
-	<table border="0" cellpadding="0" cellspacing="0" class="table">
+		<div class="table-responsive">
+	<table border="0" cellpadding="0" cellspacing="0" class="table table-hover table-condensed">
 		<tr class="header">
 			<td nowrap="nowrap"><input type="checkbox" onChange="selectAll(this)" class="button"  title="Select all" />&nbsp;</td>
 			{foreach from=$columntitles item=title}
@@ -48,6 +49,7 @@
 			</tr>
 		{/foreach}
 	</table>
+</div>
 	</form>
 	{/action}
 	<br />
