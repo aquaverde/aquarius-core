@@ -589,8 +589,11 @@ class Dynform extends Module {
         } else {
             $newMail->addText($subject);
             $newMail->addDelimiter();
-            $newMail->addText('New response, see in aquarius (login first):'); 
+            $newMail->addText('New response, see in aquarius:
+                Nouvelle demande, consulter dans aquarius:
+                Neue Anfrage, im aquarius öffnen:'); 
             $newMail->addText(PROJECT_URL.'aquarius/admin/admin.php?lg=fr&action%5B0%24dynform_menu%24data%24fr%5D%5B%5D&action%5B1723%24dynform_data%24show%24'.$dynformId.'%24%5D%5B%5D');
+            $newMail->addText('Please login first | Se connecter préalablement | Bitte zuerst einloggen'); 
         }
 
         // Don't sent privacy data per mail
