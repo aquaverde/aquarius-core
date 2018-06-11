@@ -113,6 +113,22 @@ function smarty_function_render_form_entry($params, &$smarty) {
 							</td>' ; 
 							break ; 
 
+
+						case "Upload":
+
+
+							$str .= '
+							<td class="formInput">' ;
+								
+								if ( is_image( $DL->get_entry_value_for_field($entry->id, $field->id) ) ) {
+									$str .= '<a href="'.$DL->get_entry_value_for_field($entry->id, $field->id).'" target="_blank"><img src="'.$DL->get_entry_value_for_field($entry->id, $field->id).'" width="200"></a>' ;
+								} else {
+									$str .= '<a href="'.$DL->get_entry_value_for_field($entry->id, $field->id).'" target="_blank">'.$DL->get_entry_value_for_field($entry->id, $field->id).'</a>' ;
+								}
+
+							$str .=' </td>' ; 
+							break ; 
+
 						default:
 							$str .= '<td class="formInput">'.$ftype.'</td>' ; 
 							break ; 
@@ -123,6 +139,8 @@ function smarty_function_render_form_entry($params, &$smarty) {
 		}
 	}
 	
+
+
 	
 	require_once("lib/action.php") ;
 	$cancelaction = Action::make("dynform_data", "show", $entry->dynform_id, $fallback_lg) ;
@@ -137,4 +155,16 @@ function smarty_function_render_form_entry($params, &$smarty) {
 	$str .= '</form>' ; 
 	
 	echo $str ; 
+}
+
+function is_image($path)
+{
+    $a = getimagesize($path);
+    $image_type = $a[2];
+     
+    if(in_array($image_type , array(IMAGETYPE_JPEG ,IMAGETYPE_PNG)))
+    {
+        return true;
+    }
+    return false;
 }
