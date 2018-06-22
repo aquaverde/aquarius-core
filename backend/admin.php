@@ -7,41 +7,56 @@
 require '../lib/init.php';
 require 'backend.php';
 
-try {
+class ActionQueues {
+    static function from_request() {
+        // Retrieve the requested actions
+        return new self(Action::request_actions($_REQUEST));
+    }
 
-    // Retrieve the requested actions
-    $requestactions = Action::request_actions($_REQUEST);
+    var $changes = [];
+    var $sides = [];
+    var $displays = [];
 
-    // Sort them by their sequence
-    usort($requestactions, create_function('$a, $b', 'return $b->sequence - $a->sequence;'));
-
-    // Remove duplicates from remaining pending actions and restrict to max 10
-    $pendingactions = array();
-    foreach($requestactions as $requestaction) {
-        $keep = true;
-        foreach($pendingactions as $pendingaction) {
-            if ($requestaction->equals($pendingaction)) {
-                $keep = false;
-                break;
+    function __construct($actions) {
+        // Remove duplicates from actions
+        $pending = array();
+        foreach($actions as $action) {
+            $keep = true;
+            foreach($pending as $pendingaction) {
+                if ($action->equals($pendingaction)) {
+                    $keep = false;
+                    break;
+                }
+            }
+            if ($keep) {
+                $pending []= $action;
+                Log::debug("Pushing ".$action->actionstr());
             }
         }
-        if ($keep) {
-            $pendingactions[] = $requestaction;
-            Log::debug("Pushing ".$requestaction->actionstr());
+
+        // Sort them by their sequence
+        usort($pending, function($a, $b) { return $b->sequence - $a->sequence; });
+
+        // Sort them into action groups
+        foreach($pending as $action) {
+            if      ($action instanceof ChangeAction) $this->changes  []= $action;
+            else if ($action instanceof SideAction)   $this->sides    []= $action;
+            else                                      $this->displays []= $action;
         }
-        if (count($pendingactions) >= 10) break;
     }
 
-    // Sort them into action groups
-    $change_actions = array();
-    $side_actions = array();
-    $display_actions = array();
-    foreach($pendingactions as $action) {
-        if      ($action instanceof ChangeAction)            $change_actions[] = $action;
-        else if ($action instanceof SideAction)              $side_actions[] = $action;
-        else                                                 $display_actions[] = $action;
+    function inject($action) {
+        array_unshift($this->displays, $action);
     }
+}
     
+try {
+    $pending = ActionQueues::from_request();
+
+    if ($pending->changes && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+        throw new Exception("Action $action is a change action which must be sent by POST. It arrived in a ".$_SERVER['REQUEST_METHOD']." request.");
+    }
+
     // Initialize smarty container
     $displayresult = new DisplayResult();
     $smarty = $aquarius->get_smarty_backend_container();
@@ -51,9 +66,7 @@ try {
 
     // Perform changes first
     $changeresult = new ChangeResult();
-    foreach($change_actions as $action) {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST')
-            throw new Exception("Action $action is a change action which must be sent by POST. It arrived in a ".$_SERVER['REQUEST_METHOD']." request.");
+    foreach($pending->changes as $action) {
         Log::debug("Processing ChangeAction $action");
         $action->process($aquarius, clean_magic($_POST), $changeresult);
     }
@@ -109,7 +122,7 @@ try {
 
     foreach($changeresult->inject_actions as $action) {
         Log::debug("Injecting $action");
-        array_unshift($display_actions, $action);
+        $pending->inject($action);
     }
 
     $change_messages = $changeresult->messages;
@@ -119,10 +132,10 @@ try {
     }
 
     // Post/Redirect/Get after changes
-    if ($change_actions) {
+    if ($pending->changes) {
         $next_url = clone $url;
-        foreach($side_actions as $act) $next_url->add_param($act);
-        foreach($display_actions as $act) $next_url->add_param($act);
+        foreach($pending->sides as $act) $next_url->add_param($act);
+        foreach($pending->displays as $act) $next_url->add_param($act);
 
         // HACK stow messages and node changes in the session
         // These should be passed in the URL too but doing so has security
@@ -137,9 +150,9 @@ try {
     }
 
     // See whether there's a SideAction going on
-    if (!empty($side_actions)) {
-        $action = first($side_actions);
-        if (count($side_actions) > 1) Log::warn("Multiple (".count($side_actions).") SideActions, processing first only: $action");
+    if ($pending->sides) {
+        $action = first($pending->sides);
+        if (count($pending->sides) > 1) Log::warn("Multiple (".count($side_actions).") SideActions, processing first only: $action");
 
         Log::debug("Processing SideAction $action");
 
@@ -153,6 +166,7 @@ try {
 
     // Loop until we have a template to display
     $lastaction = false;
+    $display_actions = $pending->displays;
     while(!$displayresult->template) {
         if ($displayresult->inject_actions) {
             $action = array_shift($displayresult->inject_actions);
@@ -229,8 +243,9 @@ try {
     }
 
     // The rest of the actions are not executed now but stored in the url again
+    // A maximum of ten actions are passed to keep the URL from ballooning
     $simpleurl = clone $url; // Save an url that does not contain pending actions
-    foreach($display_actions as $pendingaction) {
+    foreach(array_slice($display_actions, 0, 10) as $pendingaction) {
         $url->add_param($pendingaction->actionstr());
     }
 
