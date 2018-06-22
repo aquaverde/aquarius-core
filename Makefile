@@ -1,6 +1,6 @@
 COMPOSER=bin/composer.phar
 VENDOR=vendor/autoload.php
-ADMINER=../dbadmin/index.php
+ADMINER=dbadmin/index.php
 REVISION:=$(shell git describe --abbrev=4 --dirty --always)
 
 all: $(VENDOR) $(ADMINER) revision
