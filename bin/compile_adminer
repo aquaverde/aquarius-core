@@ -3,8 +3,14 @@ set -e
 
 cd `dirname $0`/..
 
-mkdir -p ../dbadmin
-cd ../dbadmin
-php ../core/vendor/vrana/adminer/compile.php mysql 2> /dev/null
+mkdir -p dbadmin
+cd dbadmin
+php ../vendor/vrana/adminer/compile.php mysql 2> /dev/null
 mv adminer-*-mysql.php index.php
 rm -f editor-mysql.php
+cd ..
+
+
+# HACK
+# Create link to adminer in outer dir if this is used as submodule
+[ "$(basename "$(pwd)")" = core ] && ln -s core/dbadmin ../dbadmin
