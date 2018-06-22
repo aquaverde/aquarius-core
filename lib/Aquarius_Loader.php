@@ -359,7 +359,8 @@ class Aquarius_Stage_Logging extends Aquarius_Basic_Stage {
     
     function init($loader) {
         $loader->include_file('Logging_Manager.php');
-        $this->logging_manager = new Logging_Manager(ECHOKEY, $loader->aquarius->conf('log'), $loader->install_path);   
+        $echokey = defined('ECHOKEY') ? ECHOKEY : 'nonce';
+        $this->logging_manager = new Logging_Manager($echokey, $loader->aquarius->conf('log'), $loader->install_path);   
     }
 
     function load($loader) {
