@@ -596,9 +596,7 @@ class Dynform extends Module {
         }
 
         // Don't sent privacy data per mail
-        if ($this->conf('privacy_mails')) {
-            $newMail->addDelimiter();
-        } else {
+        if (!$this->conf('privacy_mails')) {
             $newMail->nextBlock(100, array(40, false));
             $newMail->addDelimiter();
             foreach($rows as $key => $txt) {
@@ -608,8 +606,8 @@ class Dynform extends Module {
                     $newMail->addText($txt);
                 }
             }
-            $newMail->addDelimiter();
         }
+        $newMail->addDelimiter();
         return $newMail->sendMail(); 
     }
 
