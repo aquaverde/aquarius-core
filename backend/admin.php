@@ -6,54 +6,14 @@
 
 require '../lib/init.php';
 require 'backend.php';
-
-class ActionQueues {
-    static function from_request() {
-        // Retrieve the requested actions
-        return new self(Action::request_actions($_REQUEST));
-    }
-
-    var $changes = [];
-    var $sides = [];
-    var $displays = [];
-
-    function __construct($actions) {
-        // Remove duplicates from actions
-        $pending = array();
-        foreach($actions as $action) {
-            $keep = true;
-            foreach($pending as $pendingaction) {
-                if ($action->equals($pendingaction)) {
-                    $keep = false;
-                    break;
-                }
-            }
-            if ($keep) {
-                $pending []= $action;
-                Log::debug("Pushing ".$action->actionstr());
-            }
-        }
-
-        // Sort them by their sequence
-        usort($pending, function($a, $b) { return $b->sequence - $a->sequence; });
-
-        // Sort them into action groups
-        foreach($pending as $action) {
-            if      ($action instanceof ChangeAction) $this->changes  []= $action;
-            else if ($action instanceof SideAction)   $this->sides    []= $action;
-            else                                      $this->displays []= $action;
-        }
-    }
-
-    function inject($action) {
-        array_unshift($this->displays, $action);
-    }
-}
     
 try {
-    $pending = ActionQueues::from_request();
+    $pending = Action::request_actions($_REQUEST);
+    $authorized = array_filter($pending, function($action) { return $action->permit(); });
+    $queued = new ActionQueues($authorized);
 
-    if ($pending->changes && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+    if ($queued->changes() && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+        $action = $queued->changes()[0];
         throw new Exception("Action $action is a change action which must be sent by POST. It arrived in a ".$_SERVER['REQUEST_METHOD']." request.");
     }
 
@@ -66,7 +26,7 @@ try {
 
     // Perform changes first
     $changeresult = new ChangeResult();
-    foreach($pending->changes as $action) {
+    foreach($queued->changes() as $action) {
         Log::debug("Processing ChangeAction $action");
         $action->process($aquarius, clean_magic($_POST), $changeresult);
     }
@@ -122,7 +82,7 @@ try {
 
     foreach($changeresult->inject_actions as $action) {
         Log::debug("Injecting $action");
-        $pending->inject($action);
+        $queued->inject($action);
     }
 
     $change_messages = $changeresult->messages;
@@ -132,10 +92,10 @@ try {
     }
 
     // Post/Redirect/Get after changes
-    if ($pending->changes) {
+    if ($queued->changes()) {
         $next_url = clone $url;
-        foreach($pending->sides as $act) $next_url->add_param($act);
-        foreach($pending->displays as $act) $next_url->add_param($act);
+        foreach($queued->sides() as $act) $next_url->add_param($act);
+        foreach($queued->rest() as $act) $next_url->add_param($act);
 
         // HACK stow messages and node changes in the session
         // These should be passed in the URL too but doing so has security
@@ -150,9 +110,9 @@ try {
     }
 
     // See whether there's a SideAction going on
-    if ($pending->sides) {
-        $action = first($pending->sides);
-        if (count($pending->sides) > 1) Log::warn("Multiple (".count($side_actions).") SideActions, processing first only: $action");
+    if ($queued->sides()) {
+        $action = first($queued->sides());
+        if (count($queued->sides()) > 1) Log::warn("Multiple (".count($side_actions).") SideActions, processing first only: $action");
 
         Log::debug("Processing SideAction $action");
 
@@ -166,7 +126,7 @@ try {
 
     // Loop until we have a template to display
     $lastaction = false;
-    $display_actions = $pending->displays;
+    $display_actions = $queued->rest();
     while(!$displayresult->template) {
         if ($displayresult->inject_actions) {
             $action = array_shift($displayresult->inject_actions);

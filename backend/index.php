@@ -36,12 +36,23 @@ $navig_url->add_param('display', $menu_entry->name);
 
 $admin_url = new Url("admin.php");
 $admin_url->add_param('lg', $lg);
-$action = $menu_entry->get_action();
-if ($action) {
-    if ($action instanceof MenuLink) {
-        $admin_url = $action->get_link();
-    } else {
-        $admin_url->add_param(Action::make('message_load'));
+
+$menu_action = $menu_entry->get_action();
+
+if ($menu_action instanceof MenuLink) {
+    $admin_url = $action->get_link();
+} else {
+    // Always display messages on backend load
+    $actions = [ Action::make('message_load') ];
+
+    // Add pending actions
+    $queued = new ActionQueues(Action::request_actions($_REQUEST));
+    $actions = array_merge($actions, $queued->displays());
+
+    // Menu entry is added last so pending displays are shown first
+    $actions []= $menu_action;
+
+    foreach($actions as $action) {
         $admin_url->add_param($action);
     }
 }

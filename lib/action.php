@@ -74,9 +74,7 @@ class Action implements BasicAction {
                 $named_params[$key] = $value;
             }
         }
-        $action = Action::build($params, $named_params);
-        if (!$action) Log::info("Could not build requested action for '".join(self::$param_separator, $actionparams)."', permission denied? ");
-        return $action;
+        return Action::build($params, $named_params);
     }
 
     /** Parse an action string.
@@ -109,21 +107,16 @@ class Action implements BasicAction {
             } else {
                 $actionstr = $keystr;
             }
-            $action = Action::parse_parameters($actionstr);
-            if ($action)
-                $actions[] = $action;
-            else
-                Log::info("Could not build requested action for '".$actionstr."' (permission denied?) ");
+            $actions []= Action::parse_parameters($actionstr);
         }
         return $actions;
     }
     
     /** Checks that this action may be used.
       * This includes checking the user's authorization but also whether the action is plausible.
-      * Subclasses must override the permit() method because this one always returns false.
       */
     function permit() {
-      return false;
+        throw new Exception("Not implemented.");
     }
     
     /** Perform the action, child classes override this method to implement their stuff.
@@ -214,19 +207,14 @@ class Action implements BasicAction {
             }
         }
 
-        // Now create the thing
-        $thing = new $classname($params, $named_params, $sequence);
+        $action = new $classname($params, $named_params, $sequence);
 
         // Initialize the action
         global $aquarius;
-        $valid = $thing->init($aquarius);
+        $valid = $action->init($aquarius);
         if (!$valid) return false;
 
-        // Check that the user has permission to use the action
-        if ($thing->permit())
-            return $thing;
-        else
-            return false; // We do NOT throw an exception here, it is explicitly permitted to try building actions
+        return $action;
     }
 
     /** Constructor that writes the params to properties of the action.

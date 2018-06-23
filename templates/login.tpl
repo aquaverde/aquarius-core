@@ -50,6 +50,9 @@
                     <div class="form-group">
                         <button type="submit" value="Login" name="backend_login" class="btn btn-default">Login</button>  
                     </div>
+                {foreach from=$actions item=action}
+                    <input type="hidden" name="{$action}" value="">
+                {/foreach}
                 </form>
             </div>
         </div>

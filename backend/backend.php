@@ -6,6 +6,10 @@
 
 Log::backtrace('backend');
 
+require_once "lib/adminaction.php";
+require_once "lib/moduleaction.php";
+require '../lib/ActionQueues.php';
+
 /* Use sessions in backend */
     $aquarius->session_start();
 
@@ -90,15 +94,21 @@ Log::backtrace('backend');
         // primitive check that we had a session cookie submitted
         $cookie_missing = (isset($_GET['returning']) || (bool)$login_status) && empty($_COOKIE);
         
+        // Preserve display actions through login
+        $queued = new ActionQueues(Action::request_actions($_REQUEST));
+
         if ($request_uri == $correct_uri) {
             $smarty->assign(compact('login_failed', 'cookie_missing'));
             $smarty->assign('session_id', session_id());
             $smarty->assign('revision', first(explode('-', $aquarius->revision())));
+            $smarty->assign('actions', $queued->displays());
             $smarty->display('login.tpl');
         } else {
             $correct_uri->params = array();
             $correct_uri->add_param('returning');
+            foreach($queued->displays() as $action) $correct_uri->add_param($action);
             $smarty->assign('correct_uri', $correct_uri);
+            // The redirect is done by JS to break out of frames
             $smarty->display('login-redirect.tpl');
         }
         flush_exit();
@@ -107,6 +117,4 @@ Log::backtrace('backend');
 
 /* Load libraries used in backend */
     require_once "lib/db/Users2languages.php";
-    require_once "lib/adminaction.php";
-    require_once "lib/moduleaction.php";
     require_once "lib/Translation.php";
