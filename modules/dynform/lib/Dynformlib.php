@@ -518,6 +518,7 @@ class Dynformlib {
 
 	function get_entries_data($form_id, $lg=false) { 
 		$field_ids = $this->get_data_fields_ids($form_id) ;
+		if (!$field_ids) return [];
 		
 		global $DB;
         $form_id = intval($form_id);
