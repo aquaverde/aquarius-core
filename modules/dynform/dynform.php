@@ -588,8 +588,8 @@ class Dynform extends Module {
             }
         } else {
             $newMail->addText($subject);
-            $newMail->addDelimiter();
             if ($this->conf('privacy_mails')) {
+                $newMail->addDelimiter();
                 $newMail->addText('New response, see in aquarius:
                     Nouvelle demande, consulter dans aquarius:
                     Neue Anfrage, im aquarius öffnen:'); 
