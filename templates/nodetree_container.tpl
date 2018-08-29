@@ -30,44 +30,74 @@
             {/if}
             </span>
 
-            {if !$entry.title|strstr:"--"}
-            <div class="controls">
-                <div class="left">
-                    <div class="lang">
-                        {contentlanguageedit node=$entry.node->id currentlg=$lg}
-                    </div>
-                </div>
-                <div class="right">
-                    {if $entry.movable}
-                        <div class="move">
-                            <span class="glyphicon glyphicon-move" title="{#s_update_weights#}"></span>
+            {if $entry.title|strstr:"--"}
+                <div class="controls">
+                    <div class="right">
+                        {if $entry.movable}
+                            <div class="move">
+                                <span class="glyphicon glyphicon-move" title="{#s_update_weights#}"></span>
+                            </div>
+                        {/if}
+                        <div class="dropdown pull-right">
+                            <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#" title="{#s_node_dropdown#}...">
+                                <span class="glyphicon glyphicon-cog"></span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <li>{activationbutton action=$entry.actions.toggle_active active=$entry.node->active show_title=true}</li>
+                                {assign var=moveorcopy value="node:moveorcopy:`$entry.node->id`:`$lg`"|makeaction}
+                                {if $moveorcopy}
+                                    <li>{actionlink action=$moveorcopy show_title=true}</li>
+                                {/if}
+                                {if $entry.actions.delete}
+                                    <li>{actionlink action=$entry.actions.delete show_title=true}</li>
+                                {/if}
+                                <li class="divider"></li>
+                                {if $entry.actions.editprop}
+                                    <li><button name="{$entry.actions.editprop}" class="btn btn-link"><span class="glyphicon glyphicon-wrench"></span>{#s_node_properties#}</button></li>
+                                {/if}
+                            </ul>
                         </div>
-                    {/if}
-                    <div class="check">
-                        <input type="checkbox" name="selected[{$entry.node->id}]" value="1"/>
-                    </div>
-                    <div class="dropdown pull-right">
-                        <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#" title="{#s_node_dropdown#}...">
-                            <span class="glyphicon glyphicon-cog"></span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            <li>{activationbutton action=$entry.actions.toggle_active active=$entry.node->active show_title=true}</li>
-                            {assign var=moveorcopy value="node:moveorcopy:`$entry.node->id`:`$lg`"|makeaction}
-                            {if $moveorcopy}
-                                <li>{actionlink action=$moveorcopy show_title=true}</li>
-                            {/if}
-                            {if $entry.actions.delete}
-                                <li>{actionlink action=$entry.actions.delete show_title=true}</li>
-                            {/if}
-                            <li class="divider"></li>
-                            {if $entry.actions.editprop}
-                                <li><button name="{$entry.actions.editprop}" class="btn btn-link"><span class="glyphicon glyphicon-wrench"></span>{#s_node_properties#}</button></li>
-                            {/if}
-                        </ul>
                     </div>
                 </div>
-            </div>
+            {else}
+                <div class="controls">
+                    <div class="left">
+                        <div class="lang">
+                            {contentlanguageedit node=$entry.node->id currentlg=$lg}
+                        </div>
+                    </div>
+                    <div class="right">
+                        {if $entry.movable}
+                            <div class="move">
+                                <span class="glyphicon glyphicon-move" title="{#s_update_weights#}"></span>
+                            </div>
+                        {/if}
+                        <div class="check">
+                            <input type="checkbox" name="selected[{$entry.node->id}]" value="1"/>
+                        </div>
+                        <div class="dropdown pull-right">
+                            <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#" title="{#s_node_dropdown#}...">
+                                <span class="glyphicon glyphicon-cog"></span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <li>{activationbutton action=$entry.actions.toggle_active active=$entry.node->active show_title=true}</li>
+                                {assign var=moveorcopy value="node:moveorcopy:`$entry.node->id`:`$lg`"|makeaction}
+                                {if $moveorcopy}
+                                    <li>{actionlink action=$moveorcopy show_title=true}</li>
+                                {/if}
+                                {if $entry.actions.delete}
+                                    <li>{actionlink action=$entry.actions.delete show_title=true}</li>
+                                {/if}
+                                <li class="divider"></li>
+                                {if $entry.actions.editprop}
+                                    <li><button name="{$entry.actions.editprop}" class="btn btn-link"><span class="glyphicon glyphicon-wrench"></span>{#s_node_properties#}</button></li>
+                                {/if}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             {/if}
         {/if}
     </div>
