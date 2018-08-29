@@ -7,9 +7,9 @@
     {assign var="nodetitle" value=$tree.node->get_contenttitle()|strip_tags}
     {assign var="action" value="contentedit:edit:`$tree.node->id`:$lg"|makeaction}
     {if $action}<a href="{url url=$adminurl action=$action action2=$lastaction|default:false}" title="{$nodetitle}: {#s_edit#} ({$tree.node->id})">{/if}
-    <span class="glyphicon glyphicon-file{if !$tree.node->active} off{/if}"></span>
-    <span class="nodetree_title{if $tree.node->is_content()} nodetree_title_content{/if}{if !$tree.node->get_content($lg)} dim{/if}">
-        {$nodetitle|truncate:38}
+    <span class="glyphicon {if $nodetitle|strstr:"--"}{else}glyphicon-file{/if}{if !$tree.node->active} off{/if}"></span>
+    <span class="nodetree_title{if $tree.node->is_content()} nodetree_title_content{/if}{if !$tree.node->get_content($lg)} dim{/if}" {if $nodetitle|strstr:"--"}style="font-weight: lighter;"{/if}>
+        {if $nodetitle|strstr:"--"}<span style="color: #ccc; font-weight: lighter;">────────────────────{else}{$nodetitle|truncate:38}{/if}{if $nodetitle|strstr:"--"}</span>{/if}
         {if $tree.node->access_restricted == 1} 
             &nbsp;<span class="glyphicon glyphicon-lock" title="{#s_access_restricted#}"></span>
         {/if}

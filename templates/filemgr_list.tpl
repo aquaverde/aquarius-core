@@ -19,7 +19,7 @@
             {/if}
                 </a>
 			</td>
-    		<td><a href="{url action=$lastaction action2=$fileinfo.detail}" title="{#s_open#}" data-toggle="tooltip">{$file->name()}</a></td>
+    		<td><a href="{url action=$lastaction action2=$fileinfo.detail}" title="{#s_open#}" data-toggle="tooltip">{$file->name()}</a>{if $fileinfo.type == "image"}<br>{$fileinfo.size.0}x{$fileinfo.size.1}px{/if}</td>
             <td>{$file->mtime()|date_format}</td>
     	</tr>
 	{/foreach}

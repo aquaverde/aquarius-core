@@ -1,7 +1,7 @@
 {if !$hide_root|default:false}
     <div class="nodetree_row {if !$entry.newaction}nodetree_node{/if}">
 
-        {if $entry.show_toggle}
+        {if $entry.show_toggle && !$entry.title|strstr:"--"}
             <a class="nodetree_toggle {if $entry.open}expand{else}contract{/if} {if $entry.open}open{/if}"></a>
         {/if}
 
@@ -17,8 +17,8 @@
             <span class="nodetree_title{if $entry.node->is_content()} nodetree_title_content{/if}">
             {if $entry.actions.contentedit}
                 <a href="{url action0=$lastaction|default:false action1=$entry.actions.contentedit}" title="{$altedittitle}">
-                    <span class="glyphicon glyphicon-file{if !$entry.node->active} off{/if}"></span>
-                    <span class="contenttitle{if !$entry.has_content} dim{/if}">{$entry.title|truncate:75}</span>
+                    <span class="glyphicon {if $entry.title|strstr:"--"}{else}glyphicon-file{/if}{if !$entry.node->active} off{/if}"></span>
+                    <span class="contenttitle{if !$entry.has_content} dim{/if}">{if $entry.title|strstr:"--"}&nbsp;{else}{$entry.title|truncate:100}{/if}
                 </a>
             {else}
                 <span class="glyphicon glyphicon-file{if !$entry.node->active} off{/if}"></span>
@@ -30,6 +30,7 @@
             {/if}
             </span>
 
+            {if !$entry.title|strstr:"--"}
             <div class="controls">
                 <div class="left">
                     <div class="lang">
@@ -67,6 +68,7 @@
                     </div>
                 </div>
             </div>
+            {/if}
         {/if}
     </div>
 {/if}
