@@ -588,11 +588,13 @@ class Dynform extends Module {
             }
         } else {
             $newMail->addText($subject);
-            $newMail->addDelimiter();
-            $newMail->addText('New response, see in aquarius:
-                Nouvelle demande, consulter dans aquarius:
-                Neue Anfrage, im aquarius öffnen:'); 
-            $newMail->addText(PROJECT_URL.'aquarius/admin/?lg=fr&display=menu_modules&action%5B10000%24dynform_data%24show%24'.$dynformId.'%24%5D%5B%5D');
+            if ($this->conf('privacy_mails')) {
+                $newMail->addDelimiter();
+                $newMail->addText('New response, see in aquarius:
+                    Nouvelle demande, consulter dans aquarius:
+                    Neue Anfrage, im aquarius öffnen:'); 
+                $newMail->addText(PROJECT_URL.'aquarius/admin/?lg=fr&display=menu_modules&action%5B10000%24dynform_data%24show%24'.$dynformId.'%24%5D%5B%5D');
+            }
         }
 
         // Don't sent privacy data per mail
