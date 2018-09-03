@@ -23,11 +23,11 @@ class action_db_maintenance_dialog extends action_db_maintenance implements Disp
     function process($aquarius, $request, $smarty, $result) {
         $smarty->assign('actions', array(
             Action::make('db_maintenance', 'update_node_cache'),
-            Action::make('db_maintenance', 'generate_classes'),
+            // Action::make('db_maintenance', 'generate_classes'),
             Action::make('checkdb', 'show'),
             Action::make('db_maintenance', 'wtfutf'),
-            Action::make('db_maintenance', 'export'),
-            Action::make('db_maintenance', 'runcron')
+            Action::make('db_maintenance', 'runcron'),
+            Action::make('db_maintenance', 'export')
         ));
         $result->use_template('confirm_actions.tpl');
     }

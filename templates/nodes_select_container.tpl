@@ -4,7 +4,7 @@
          <a class="nodetree_toggle {if $entry.open}expand{else}contract{/if} {if $entry.open}open{/if}"></a>
     {/if}
     <div style="width: 15px; padding-top: 2px; display:inline">
-        {if $entry.selectable}
+        {if $entry.selectable && !$entry.title|strstr:"--"}
             {if $multi}
                 <input id="select_{$entry.node->id}" name="node_select" class="node_select" type="checkbox" data-title="{$entry.title|escape:htmlall:'UTF-8'}" {if $entry.selected}checked="checked"{/if} value='{$entry.node->id}'/>
             {else}
@@ -13,7 +13,11 @@
         {/if}
     </div>
     <label  style="display:inline" for="select_{$entry.node->id}" class="nodetree_title{if $entry.node->is_content()} nodetree_title_content{/if}">
-        &nbsp;{if !$entry.node->active}<span style="color:red">{/if}{$entry.title}{if !$entry.node->active}</span>{/if}
+
+        {if $entry.title|strstr:"--"}<span style="color: #ccc; font-weight: lighter;">────────────────────{else}&nbsp;{if !$entry.node->active}<span style="color:red">{/if}{$entry.title}{if !$entry.node->active}</span>{/if}
+        {/if}
+
+        
     </label>
 </div>
 {if $entry.open}
