@@ -63,8 +63,11 @@ class db_Form extends DB_DataObject
             $formfield_prototype->orderBy("weight ASC");
             $formfield_prototype->find();
             while ($formfield_prototype->fetch()) {
-                assert("preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\$/', '$formfield_prototype->name'); /* Field name must be a valid variable name */");
-                $fields[$formfield_prototype->name] = clone $formfield_prototype;
+		$name = $formfield_prototype->name;
+                if (preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $name) === 0) {
+                    throw new Exception("Field name must be a valid variable name, found: '$name'");
+		}
+                $fields[$name] = clone $formfield_prototype;
             }
             return $fields;
     	});

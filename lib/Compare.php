@@ -19,8 +19,8 @@ class ObjectCompare {
     }
 
     function by_field_cmp($o1, $o2) {
-        assert('is_object($o1)');
-        assert('is_object($o2)');
+        assert(is_object($o1));
+        assert(is_object($o2));
         return call_user_func($this->comp, $o1->{$this->field}, $o2->{$this->field});
     }
 }
@@ -52,10 +52,10 @@ class ArrayCompare {
     }
 
     function by_entry_cmp($a1, $a2) {
-        assert('is_array($a1)');
-        assert('isset($a1[$this->key])');
-        assert('is_array($a2)');
-        assert('isset($a2[$this->key])');
+        assert(is_array($a1));
+        assert(isset($a1[$this->key]));
+        assert(is_array($a2));
+        assert(isset($a2[$this->key]));
         return call_user_func($this->comp, $a1[$this->key], $a2[$this->key]);
     }
 }
