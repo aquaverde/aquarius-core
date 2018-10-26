@@ -34,7 +34,7 @@ class Formtype_global_legend_file extends Formtype_File {
     function db_set($values, $formfield, $lg) {
         global $aquarius;
 
-        $values = parent::db_set($values, $formfield);
+        $values = parent::db_set($values, $formfield, $lg);
 
         $path ='/'.$formfield->sup3.'/'.get($values, 'file');
         $legend = get($values, 'legend');
