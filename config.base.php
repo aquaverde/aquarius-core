@@ -6,7 +6,7 @@
 // Available log levels: NEVER | FAIL |  WARN | INFO | MESSAGES | DEBUG | BACKTRACE | ALL
 
 /** What messages to log to file, recommended is INFO */
-$config['log']['level']     = 'INFO';
+$config['log']['level']     = 'NEVER';
 
 /** Write log messages to this file, path relative to aquarius dir, must be
   * writable by webserver. */
