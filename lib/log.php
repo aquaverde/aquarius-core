@@ -136,7 +136,7 @@ class Logger {
     function sql($msg) { $this->log(Log::SQL, "SQL", $msg); }
     function backtrace($msg) { $this->log(Log::BACKTRACE, "BACKTRACE", $msg); }
 
-    function __construct($file = false, $loglevel = Log::INFO, $echolevel = Log::NEVER, $firelevel = Log::NEVER) {
+    function __construct($file = false, $loglevel = Log::NEVER, $echolevel = Log::NEVER, $firelevel = Log::NEVER) {
         if (is_string($loglevel)) $loglevel = constant("Log::$loglevel");
         if (is_string($echolevel)) $echolevel = constant("Log::$echolevel");
         if (is_string($firelevel)) $firelevel = constant("Log::$firelevel");
