@@ -18,4 +18,9 @@ foreach($require_writable as $dir) {
     }
 }
 
-if ($halt) "<form action=''><input type='submit' value='Retry'/></form>";
+if ($halt) {
+    echo "<form action=''><input type='submit' value='Retry'/></form>";
+} else {
+    # Quickfix CVE-2019-9724
+    file_put_contents($install_dir."cache/.htaccess", "Deny from all");
+}
