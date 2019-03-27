@@ -161,7 +161,7 @@ class Logger {
         if ($level >= min($this->loglevel, $this->echolevel, $this->firelevel) && $this->enabled) {
             $logmessage = "";
             $backtrace = "";
-            $showrequest = false; // Maybe show _REQUEST array
+
             // Process exceptions
             if ($msg instanceof Exception || $msg instanceof Error) {
                 $excmessage = method_exists($msg, 'getDetailMessage') ? $msg->getDetailMessage() : $msg->getMessage();
@@ -178,8 +178,8 @@ class Logger {
                 $this->log_firephp($msg,$level);
             }
             
-            // Append request variables to log message if so desired
-            if ($showrequest && count($_REQUEST) > 0) $logmessage .= "REQUEST ".print_r($_REQUEST, true);
+            // Append request variables to log message for BACKTRACE statements
+            if ($level == Log::BACKTRACE && count($_REQUEST) > 0) $logmessage .= "REQUEST ".print_r($_REQUEST, true);
 
             // Write to logfile
             if ($this->file && $level >= $this->loglevel) {
