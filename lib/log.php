@@ -166,13 +166,11 @@ class Logger {
             if ($msg instanceof Exception || $msg instanceof Error) {
                 $excmessage = method_exists($msg, 'getDetailMessage') ? $msg->getDetailMessage() : $msg->getMessage();
                 $logmessage = $leveltext.": ".$excmessage."\n".Log::prettybacktrace($msg->getTrace());
-                $showrequest = true;
             } else {
                 $logmessage = $leveltext.": ". print_r($msg,true)."\n";
                 // Generate a backtrace if it was requested or in severe cases
                 if ($level == Log::BACKTRACE || $level >= Log::FAIL) {
                     $backtrace = "\n".Log::prettybacktrace();
-                    $showrequest = true;
                 }
             }
 
