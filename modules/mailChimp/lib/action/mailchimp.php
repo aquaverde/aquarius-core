@@ -115,34 +115,42 @@ class action_mailChimp_create_campaign extends action_mailChimp implements Chang
         $this->list_id = get($post, 'list_id', $this->list_id);
         
         $smarty->assign("newsletter", $newsletter);
+        $html_content = $smarty->fetch("newsletter_mail.tpl");
 
+        $api = $this->MCAPI();
+        $res = $api->post("campaigns", 
+            [ 'type' => 'regular'
+            , 'recipients' => [ 'list_id' => $this->list_id ]
+            , 'settings' =>
+                [ 'subject_line' => $smarty->get_template_vars('title')
+                , 'title' => $smarty->get_template_vars('title')." ($this->lg)"
+                , 'from_name' => $this->module->conf('name')
+                , 'reply_to' => $this->module->conf('email')
+                , 'authenticate' => true
+                ]
+            , 'tracking' =>
+                [ 'opens' => true
+                , 'html_clicks' => true
+                , 'text_clicks' => false
+                ]
+            ]
+        );
 
-        $type = 'regular';
-        
-        $opts['list_id']    = $this->list_id;
-        $opts['subject']    = $smarty->get_template_vars('title');
-        $opts['from_email'] = $this->module->conf('email'); 
-        $opts['from_name']  = $this->module->conf('name');
+        if (!$api->success()) {
+            $result->add_message(AdminMessage::with_html('warn', "Erstellen der Kampagne fehlgeschlagen: ".$api->getLastError()));
+            return;
+	}
 
-        $opts['tracking']   = array('opens' => true, 'html_clicks' => true, 'text_clicks' => false);
+        $campaign_id = $res['id'];
 
-        $opts['authenticate']   = true;
-        //$opts['analytics']        = array('google'=>'my_google_analytics_key');
-        $opts['title']          = $smarty->get_template_vars('title')." ($this->lg)";
+        $api->put("/campaigns/$campaign_id/content", [ 'html' => $html_content ]);
 
-        $myhtml = $smarty->fetch("newsletter_mail.tpl");
-        $content = array(
-                    'html'=> $myhtml
-                );
+        if (!$api->success()) {
+            $result->add_message(AdminMessage::with_html('warn', "Übertragen des HTML-Inhalts fehlgeschlagen: ".$api->getLastError()));
+            return;
+	}
 
-        $api =  $this->MCAPI();
-        $retval = $api->campaignCreate($type, $opts, $content);
-
-        if ($api->errorCode) {
-            $result->add_message(AdminMessage::with_html('warn', "Es konnte leider keine neue Kampagne erstellt werden! Code=$api->errorCode Msg=$api->errorMessage"));
-        } else {
-            $result->add_message("Neue Kampagne '$newsletter->title' erfolgreich auf MailChimp erstellt!");
-        }
+        $result->add_message("Neue Kampagne '$newsletter->title' erfolgreich auf MailChimp erstellt!");
     }
 
 }
