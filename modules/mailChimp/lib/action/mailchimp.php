@@ -1,14 +1,17 @@
 <?php
+
+require('MailChimp-api.php');
+use \DrewM\MailChimp\MailChimp;
+
 class action_mailChimp extends ModuleAction {
-	var $modname = "mailChimp";
+    var $modname = "mailChimp";
     
     function valid($user) {
       return (bool)$user;
     }
     
     function MCAPI() {
-        require_once 'MCAPI.class.php';
-        return new MCAPI($this->module->conf('apikey'));
+        return new MailChimp($this->module->conf('apikey'));
     }
 }
 
@@ -22,15 +25,14 @@ class action_mailChimp_upload extends action_mailChimp implements DisplayAction 
 
         $api = $this->MCAPI();
 
-        $retval = $api->campaigns();
+        $retval = $api->get("campaigns");
 
-        if ($api->errorCode){
-            echo "Unable to Pull list of Campaign!";
-            echo "\n\tCode=".$api->errorCode;
-            echo "\n\tMsg=".$api->errorMessage."\n";
+        if ($api->success()){
+            $campaigns = $retval['campaigns'];
+            $smarty->assign("count_campaigns", count($campaigns));
+            $smarty->assign("campaigns", $campaigns);
         } else {
-            $smarty->assign("count_campaigns", sizeof($retval['data']));
-            $smarty->assign("campaigns", $retval['data']);
+            $smarty->assign("apierror", "Unable to Pull list of Campaign: ".$api->getLastError());
         }
 
         $result->use_template("upload.tpl");
@@ -80,14 +82,15 @@ class action_mailChimp_select_list extends action_mailChimp implements DisplayAc
         $smarty->assign("newsletter", $newsletter);
         $smarty->assign("newsletter_lg", $this->lg);
 
-		$api = $this->MCAPI();
-		$listsw = $api->lists();
+        $api = $this->MCAPI();
+        $listsw = $api->get("lists");
 
-		if ($api->errorCode) throw new Exception("Failed fetching list of mailing lists: Code= ($api->errorCode), Msg=$api->errorMessage.");
+	if (!$api->success()) {
+            throw new Exception("Failed fetching list of mailing lists: ".$api->getLastError());
+        }
 
-        $smarty->assign("lists", $listsw['data']);
+        $smarty->assign("lists", $listsw['lists']);
         $smarty->assign("nextaction", Action::make('mailchimp', 'create_campaign', $this->node_id, $this->lg, false));
-        
 		$result->use_template("mailchimp_select_list.tpl");
 	}
 }
@@ -112,34 +115,42 @@ class action_mailChimp_create_campaign extends action_mailChimp implements Chang
         $this->list_id = get($post, 'list_id', $this->list_id);
         
         $smarty->assign("newsletter", $newsletter);
+        $html_content = $smarty->fetch("newsletter_mail.tpl");
 
+        $api = $this->MCAPI();
+        $res = $api->post("campaigns", 
+            [ 'type' => 'regular'
+            , 'recipients' => [ 'list_id' => $this->list_id ]
+            , 'settings' =>
+                [ 'subject_line' => $smarty->get_template_vars('title')
+                , 'title' => $smarty->get_template_vars('title')." ($this->lg)"
+                , 'from_name' => $this->module->conf('name')
+                , 'reply_to' => $this->module->conf('email')
+                , 'authenticate' => true
+                ]
+            , 'tracking' =>
+                [ 'opens' => true
+                , 'html_clicks' => true
+                , 'text_clicks' => false
+                ]
+            ]
+        );
 
-        $type = 'regular';
-        
-        $opts['list_id']    = $this->list_id;
-        $opts['subject']    = $smarty->get_template_vars('title');
-        $opts['from_email'] = $this->module->conf('email'); 
-        $opts['from_name']  = $this->module->conf('name');
+        if (!$api->success()) {
+            $result->add_message(AdminMessage::with_html('warn', "Erstellen der Kampagne fehlgeschlagen: ".$api->getLastError()));
+            return;
+	}
 
-        $opts['tracking']   = array('opens' => true, 'html_clicks' => true, 'text_clicks' => false);
+        $campaign_id = $res['id'];
 
-        $opts['authenticate']   = true;
-        //$opts['analytics']        = array('google'=>'my_google_analytics_key');
-        $opts['title']          = $smarty->get_template_vars('title')." ($this->lg)";
+        $api->put("/campaigns/$campaign_id/content", [ 'html' => $html_content ]);
 
-        $myhtml = $smarty->fetch("newsletter_mail.tpl");
-        $content = array(
-                    'html'=> $myhtml
-                );
+        if (!$api->success()) {
+            $result->add_message(AdminMessage::with_html('warn', "Übertragen des HTML-Inhalts fehlgeschlagen: ".$api->getLastError()));
+            return;
+	}
 
-        $api =  $this->MCAPI();
-        $retval = $api->campaignCreate($type, $opts, $content);
-
-        if ($api->errorCode) {
-            $result->add_message(AdminMessage::with_html('warn', "Es konnte leider keine neue Kampagne erstellt werden! Code=$api->errorCode Msg=$api->errorMessage"));
-        } else {
-            $result->add_message("Neue Kampagne '$newsletter->title' erfolgreich auf MailChimp erstellt!");
-        }
+        $result->add_message("Neue Kampagne '$newsletter->title' erfolgreich auf MailChimp erstellt!");
     }
 
 }

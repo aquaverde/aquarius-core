@@ -7,7 +7,12 @@
     <h2>2. Zielliste wählen</h2>
     <ul>
     {foreach from=$lists item=list}
-        <li style="padding:5px 0;"><input type='radio' value='{$list.id|escape}' name='list_id' {if $list.default_language == $newsletter_lg}checked="checked"{/if}> {$list.name|escape}</li>
+        <li style="padding:5px 0;">
+            <label>
+                <input type='radio' value='{$list.id|escape}' name='list_id' {if $list.default_language == $newsletter_lg}checked="checked"{/if}>
+                {$list.name|escape}
+            </label>
+        </li>
     {/foreach}
     </ul>
     <input name='' value='abbrechen' type='submit' class="btn btn-default"/>
