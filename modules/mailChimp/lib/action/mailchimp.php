@@ -82,14 +82,15 @@ class action_mailChimp_select_list extends action_mailChimp implements DisplayAc
         $smarty->assign("newsletter", $newsletter);
         $smarty->assign("newsletter_lg", $this->lg);
 
-		$api = $this->MCAPI();
-		$listsw = $api->lists();
+        $api = $this->MCAPI();
+        $listsw = $api->get("lists");
 
-		if ($api->errorCode) throw new Exception("Failed fetching list of mailing lists: Code= ($api->errorCode), Msg=$api->errorMessage.");
+	if (!$api->success()) {
+            throw new Exception("Failed fetching list of mailing lists: ".$api->getLastError());
+        }
 
-        $smarty->assign("lists", $listsw['data']);
+        $smarty->assign("lists", $listsw['lists']);
         $smarty->assign("nextaction", Action::make('mailchimp', 'create_campaign', $this->node_id, $this->lg, false));
-        
 		$result->use_template("mailchimp_select_list.tpl");
 	}
 }
