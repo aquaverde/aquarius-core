@@ -27,14 +27,12 @@ class action_mailChimp_upload extends action_mailChimp implements DisplayAction 
 
         $retval = $api->get("campaigns");
 
-        if ($api->errorCode){
-            echo "Unable to Pull list of Campaign!";
-            echo "\n\tCode=".$api->errorCode;
-            echo "\n\tMsg=".$api->errorMessage."\n";
-        } else {
+        if ($api->success()){
             $campaigns = $retval['campaigns'];
             $smarty->assign("count_campaigns", count($campaigns));
             $smarty->assign("campaigns", $campaigns);
+        } else {
+            $smarty->assign("apierror", "Unable to Pull list of Campaign: ".$api->getLastError());
         }
 
         $result->use_template("upload.tpl");

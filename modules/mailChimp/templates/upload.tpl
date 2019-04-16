@@ -20,7 +20,11 @@
     {/foreach}
     </table>
 <br/>
-<h1>Kampagnen (Anzahl: {$count_campaigns})</h1>
+<h1>Kampagnen</h1>
+{if $apierror}
+	<div style="color: red">{$apierror}</div>
+{else}
+Anzahl: {$count_campaigns}
 <table class="table" cellspacing="0" cellpadding="0" border="0">
     <tr>
         <th>Kampagne</th>
@@ -37,4 +41,5 @@
         </tr>
     {/foreach}
 </table>
+{/if}
 {include file='footer.tpl'}
