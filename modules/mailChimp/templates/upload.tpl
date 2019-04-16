@@ -30,7 +30,7 @@
     </tr>
     {foreach from=$campaigns item=campaign}
         <tr>
-        <td>{$campaign.title}</td>
+        <td>{$campaign.settings.title}</td>
         <td>{$campaign.status} </td>
         <td>{$campaign.send_time}</td>
         <td style="text-align:center;"><b>{$campaign.emails_sent}</b></td>

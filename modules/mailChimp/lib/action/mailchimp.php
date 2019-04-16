@@ -1,14 +1,17 @@
 <?php
+
+require('MailChimp-api.php');
+use \DrewM\MailChimp\MailChimp;
+
 class action_mailChimp extends ModuleAction {
-	var $modname = "mailChimp";
+    var $modname = "mailChimp";
     
     function valid($user) {
       return (bool)$user;
     }
     
     function MCAPI() {
-        require_once 'MCAPI.class.php';
-        return new MCAPI($this->module->conf('apikey'));
+        return new MailChimp($this->module->conf('apikey'));
     }
 }
 
@@ -22,15 +25,16 @@ class action_mailChimp_upload extends action_mailChimp implements DisplayAction 
 
         $api = $this->MCAPI();
 
-        $retval = $api->campaigns();
+        $retval = $api->get("campaigns");
 
         if ($api->errorCode){
             echo "Unable to Pull list of Campaign!";
             echo "\n\tCode=".$api->errorCode;
             echo "\n\tMsg=".$api->errorMessage."\n";
         } else {
-            $smarty->assign("count_campaigns", sizeof($retval['data']));
-            $smarty->assign("campaigns", $retval['data']);
+            $campaigns = $retval['campaigns'];
+            $smarty->assign("count_campaigns", count($campaigns));
+            $smarty->assign("campaigns", $campaigns);
         }
 
         $result->use_template("upload.tpl");
