@@ -81,7 +81,7 @@ class FilterParserTest extends PHPUnit_Framework_TestCase {
             and\rtrue\nand\ttrue
                                                                                                                             ")->pass('whatever'));
     }
-    
+
     function testBigLong() {
         $long_sentence = "true";
         for($n=0; $n<100; $n++) {
