@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+use PHPUnit\Framework\TestCase;
 
 require_once dirname(__FILE__)."/../lib/FilterParser.php";
 
@@ -41,8 +42,8 @@ class FilterParserTest_PredicateNot {
     }
 }
 
-class FilterParserTest extends PHPUnit_Framework_TestCase {
-    function setUp() {
+class FilterParserTest extends TestCase {
+    protected function setUp(): void {
         $this->parser = new FilterParser();
         $this->parser->add_predicates(array(
             'true' => function($parser) {
@@ -100,45 +101,51 @@ class FilterParserTest extends PHPUnit_Framework_TestCase {
     }
 
     function testInvalidOrPrefixed() {
-        try {
-            $this->parser->interpret('or true');
-            $this->fail('Expected FilterParsingException');
-        } catch (FilterParsingException $expected) {}
+        $this->expectException(FilterParsingException::class);
+
+        $this->parser->interpret('or true');
+        $this->fail('Expected FilterParsingException');
     }
+
     function testInvalidAndPostfixed() {
-        try {
-            $this->parser->interpret('true and true and');
-            $this->fail('Expected FilterParsingException');
-        } catch (FilterParsingException $expected) {}
+        $this->expectException(FilterParsingException::class);
+
+        $this->parser->interpret('true and true and');
+        $this->fail('Expected FilterParsingException');
     }
+
     function testInvalidLoneNot() {
-        try {
-            $this->parser->interpret('not');
-            $this->fail('Expected FilterParsingException');
-        } catch (FilterParsingException $expected) {}
+        $this->expectException(FilterParsingException::class);
+
+        $this->parser->interpret('not');
+        $this->fail('Expected FilterParsingException');
     }
+
     function testInvalidOrphanArgument() {
-        try {
-            $this->parser->interpret('true oprhan');
-            $this->fail('Expected FilterParsingException');
-        } catch (FilterParsingException $expected) {}
+        $this->expectException(FilterParsingException::class);
+
+        $this->parser->interpret('true oprhan');
+        $this->fail('Expected FilterParsingException');
     }
+
     function testInvalidOprhanArgumentBeforeOperator() {
-        try {
-            $this->parser->interpret('true orphan and true');
-            $this->fail('Expected FilterParsingException');
-        } catch (FilterParsingException $expected) {}
+        $this->expectException(FilterParsingException::class);
+
+        $this->parser->interpret('true orphan and true');
+        $this->fail('Expected FilterParsingException');
     }
+
     function testInvalidPredicate() {
-        try {
-            $this->parser->interpret('EICAROsi0quee');
-            $this->fail('Expected FilterParsingException');
-        } catch (FilterParsingException $expected) {}
+        $this->expectException(FilterParsingException::class);
+
+        $this->parser->interpret('EICAROsi0quee');
+        $this->fail('Expected FilterParsingException');
     }
+
     function testInvalidPredicateAfterOperator() {
-        try {
-            $this->parser->interpret('true and EICAROsi3queee');
-            $this->fail('Expected FilterParsingException');
-        } catch (FilterParsingException $expected) {}
+        $this->expectException(FilterParsingException::class);
+
+        $this->parser->interpret('true and EICAROsi3queee');
+        $this->fail('Expected FilterParsingException');
     }
 }

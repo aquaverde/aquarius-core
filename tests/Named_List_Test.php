@@ -1,9 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+use PHPUnit\Framework\TestCase;
 
 require_once dirname(__FILE__)."/../lib/Named_List.php";
 
-class Named_List_Test extends PHPUnit_Framework_TestCase {
-    function setUp() {
+class Named_List_Test extends TestCase {
+    function setUp(): void {
         $this->list = new Named_List();
     }
 
