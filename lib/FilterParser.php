@@ -12,30 +12,27 @@ class FilterParser {
     function __construct($dir=false) {
         $this->predicates = array();
         $this->predicate_dir = $dir;
-        $this->predicate_cache = array();
     }
 
     /** Add predicate parser functions
       * Existing predicates of same name will be overridden. */
     function add_predicates(array $predicates) {
         $this->predicates = array_merge($this->predicates, $predicates);
-        $this->predicate_cache = array();
     }
 
     function load_predicate($predicate) {
         if (!$this->valid_identifier($predicate)) {
             $this->fail("Illegal predicate name '$predicate'");
         }
-        if (isset($this->predicates[$predicate])) {
-            return $this->predicates[$predicate];
-        }
         if ($this->predicate_dir) {
             $predicate_path = $this->predicate_dir.'/'.$predicate.'.php';
-            $parser_function_source = @file_get_contents($predicate_path, FILE_USE_INCLUDE_PATH);
-            if ($parser_function_source) {
-                return create_function('$parser', $parser_function_source);
-                if (!$parser_function) $this->fail('Error parsing '.$predicate_path);
+            $resolved_path = stream_resolve_include_path($predicate_path);
+            if ($resolved_path === FALSE) {
+                $this->fail("Unable to load predicate '$predicate', was looking for $predicate_path");
             }
+
+            $this->predicates[$predicate] = require $resolved_path;
+            return;
         }
         $this->fail("predicate '$predicate' is undefined");
     }
@@ -71,10 +68,10 @@ class FilterParser {
     function parse_predicate() {
         $predicate = $this->consume_word();
         $this->current_predicate = $predicate;
-        if (!isset($this->predicate_cache[$predicate])) {
-            $this->predicate_cache[$predicate] = $this->load_predicate($predicate);
+        if (!isset($this->predicates[$predicate])) {
+            $this->load_predicate($predicate);
         }
-        return call_user_func($this->predicate_cache[$predicate], $this);
+        return $this->predicates[$predicate]($this);
     }
 
 

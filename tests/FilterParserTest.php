@@ -45,10 +45,19 @@ class FilterParserTest extends PHPUnit_Framework_TestCase {
     function setUp() {
         $this->parser = new FilterParser();
         $this->parser->add_predicates(array(
-            'true' => create_function('$parser', 'return new FilterParserTest_PredicateTrue();'),
-            'and'  => create_function('$parser', '$clauses = array($parser->consume_statement(), $parser->parse()); return new FilterParserTest_PredicateAnd($clauses);'),
-            'or'  => create_function('$parser', '$clauses = array($parser->consume_statement(), $parser->parse()); return new FilterParserTest_PredicateOr($clauses);'),
-            'not'  => create_function('$parser', '$clause = $parser->parse_predicate(); return new FilterParserTest_PredicateNot($clause);'),
+            'true' => function($parser) {
+                return new FilterParserTest_PredicateTrue(); },
+            'and' => function($parser) {
+                return new FilterParserTest_PredicateAnd(array(
+                    $parser->consume_statement(),
+                    $parser->parse())); },
+            'or' => function($parser) {
+                return new FilterParserTest_PredicateOr(array(
+                    $parser->consume_statement(),
+                    $parser->parse())); },
+            'not' => function($parser) {
+                return new FilterParserTest_PredicateNot(
+                    $parser->parse_predicate()); },
         ));
     }
     function testEmpty() {
