@@ -65,7 +65,6 @@ class Named_List_Test extends PHPUnit_Framework_TestCase {
         $this->list->add('three', 333);
         $this->list->add('twoandahalf', 25, 'before', 'three');
         $items = $this->list->items();
-        print_r($this->list);
         foreach(array(111, 222, 25, 333) as $value) {
             $this->assertEquals($value, array_shift($items));
         }
