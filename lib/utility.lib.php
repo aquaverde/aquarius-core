@@ -5,7 +5,7 @@
   * All fields, even empty ones, are wrapped in the enclosure. No Exceptions.
   * Unlike fputcsv(), this function uses CRLF line-endings because there is
   * intolerant software that can't deal with lines ending on a single LF.
-  * 
+  *
   * @param $handle writable resource
   * @param $fields list of values to write
   * @param $delimiter the field-delimiter, preset is a comma character ','
@@ -55,7 +55,7 @@ function array_replace_aqua(&$base, $in) {
   * @return Object whith properties named after the array's keys containing the corresponding values. */
 function array_to_object($array, $recurse = false) {
     $object = new stdClass();
-    
+
     foreach ($array as $key => $value) {
         // Make sure key is a valid variable name
         if (preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $key)) {
@@ -85,7 +85,7 @@ function object_to_array($object, $recurse = false) {
         }
     }
     return $array;
-} 
+}
 
 /** Remove one array nesting level
   * @param $array an array of arrays (elements that are not arrays are ignored)
@@ -146,7 +146,7 @@ function checkEmail($Email, $doDeepCheck = true) {
    require_once("Validate.php");
    return Validate::email($Email);
 }
-	
+
 /** clean_magic() (TM) cleans incoming $thing (strings and arrays with nested strings) from stupid magic quotes.
  * Removes quotes only if get_magic_quotes_gpc() is on.*/
 function clean_magic($thing) {
@@ -167,7 +167,7 @@ function file_prefix($path, $prefix) {
     return dirname($path).'/'.$prefix.basename($path);
 }
 
-/** 
+/**
  * Convert a thing to a string. Works like strval(), but uses __toString() for objects. strval() does this since PHP 5.2, but we can't rely on having a recent PHP.
  return string
  */
@@ -184,7 +184,7 @@ function WriteSize($pict)
 	$size = GetImageSize($pict) ;
 	return $size[3] ;
 }
-	
+
 /** Get an array item or $default if it's not defined (this function does not generate an 'index undefined' warning)
 */
 function get($array, $name, $default = false) {
@@ -404,7 +404,7 @@ function requestvar($name, $default = false) {
 }
 
 function convert_chars($str, $fill_char="_"){
-    
+
     $chars = array(
         'ä'=>'a',
         'ö'=>'o',
@@ -460,18 +460,18 @@ function getInterfaceLanguages() {
     global $aquarius;
 	$dir = new DirectoryIterator($aquarius->core_path."lang");
 	$interfaceLgs = array();
-	
+
 	while($dir->valid()) {
 		$file = $dir->getFilename();
 		if (strpos($file, ".") !== 0) {
             $myLang = substr($file,0,2);
             $interfaceLgs[$myLang] = $myLang;
 		}
-		
+
 		$dir->next();
 	}
-	
-	
+
+
 	return $interfaceLgs;
 }
 
@@ -487,7 +487,7 @@ function nmail($to, $subject, $message, $headers=array()) {
   foreach ($headers as $headerln) {
 	if (ereg("[\r\n]", $headerln)) return false; // Reject if there are newlines in a header line
 	else $headerstr .= $headerln."\n";
-  }      
+  }
   return mail($to, $subject, $message, $headerstr);
 }
 
@@ -514,7 +514,7 @@ function fetch_into_list($prototype) {
     return $list;
 }
 
-/** Search the $array for an object (or array) that has an $attribute (resp. key) equal to the given $value, the index (key) of the first match is returned. 
+/** Search the $array for an object (or array) that has an $attribute (resp. key) equal to the given $value, the index (key) of the first match is returned.
  * Example: $array = array(
  *            array('id'=>12),
  *            array('id'=>13),
@@ -542,7 +542,7 @@ function preview_hash($base) {
     return md5($_SERVER['REMOTE_ADDR'].$base);
 }
 
-/** Parse date string into UNIX epoch timestamp 
+/** Parse date string into UNIX epoch timestamp
   * @param $datestr Date as string either in the format of the config variable DATE_FORMAT or in strtotime() format.
   * @param $format=DATE_FORMAT optional format to use instead of DATE_FORMAT. strtotime() is still attempted if this fails.
   * @param $use_strtotime=true optional flag to disable strtotime parsing
@@ -561,7 +561,7 @@ function parse_date($datestr, $format=DATE_FORMAT, $use_strtotime=true) {
             // This means the function cannot be used to parse times on those PHP versions.
             $t['tm_hour'] = $t['tm_min'] = $t['tm_sec']= 0;
         }
-        // There are systems where strptime() is returning years counting from 1900 (eg. 109 for 2009) without mktime() recognizing this. 
+        // There are systems where strptime() is returning years counting from 1900 (eg. 109 for 2009) without mktime() recognizing this.
         if ($t['tm_year'] < 1000) {
             $t['tm_year'] += 1900;
         }
@@ -633,7 +633,7 @@ function process_exception($exception) {
         // Remove all content from output buffers
         while(@ob_end_clean());
     }
-    
+
     // Informal message for user
     if (php_sapi_name() === 'cli') {
         echo "Failed with error: ".$exception->getMessage()."\n";
@@ -711,7 +711,7 @@ class Wrapper {
 /** Exception class that allows adding additional information */
 class AquaException extends Exception {
     var $detail_message = "";
-    
+
     function __construct($messages) {
         if (is_array($messages)) {
             $message = array_shift($messages);
@@ -721,7 +721,7 @@ class AquaException extends Exception {
         }
         parent::__construct($message);
     }
-    
+
     function getDetailMessage() {
         return parent::getMessage().'. '.$this->detail_message;
     }

@@ -1090,12 +1090,12 @@ class Archive_Tar extends PEAR
         $v_magic = 'ustar ';
 
         $v_version = ' ';
-        
+
         if (function_exists('posix_getpwuid'))
         {
           $userinfo = posix_getpwuid($v_info[4]);
           $groupinfo = posix_getgrgid($v_info[5]);
-          
+
           $v_uname = $userinfo['name'];
           $v_gname = $groupinfo['name'];
         }
@@ -1179,7 +1179,7 @@ class Archive_Tar extends PEAR
         {
           $userinfo = posix_getpwuid($p_uid);
           $groupinfo = posix_getgrgid($p_gid);
-          
+
           $v_uname = $userinfo['name'];
           $v_gname = $groupinfo['name'];
         }
@@ -1188,7 +1188,7 @@ class Archive_Tar extends PEAR
           $v_uname = '';
           $v_gname = '';
         }
-        
+
         $v_devmajor = '';
 
         $v_devminor = '';
