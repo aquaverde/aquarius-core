@@ -667,6 +667,7 @@ function process_exception($exception) {
 
 function handle_fatal_errors() {
     $error = error_get_last();
+    if (!$error) return;
     if ($error['type'] == E_ERROR) {
         process_exception(new Exception("Fatal error in ".basename($error['file'])." line ".$error['line'].": ".$error['message']));
     }
