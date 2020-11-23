@@ -106,7 +106,7 @@ class Archive_Tar extends PEAR
     *                   boolean value 'true' means 'gz'.
     * @access public
     */
-    function Archive_Tar($p_tarname, $p_compress = null)
+    function __construct($p_tarname, $p_compress = null)
     {
         $this->PEAR();
         $this->_compress = false;
@@ -559,7 +559,7 @@ class Archive_Tar extends PEAR
         }
 
         // ----- Get the arguments
-        $v_att_list = &func_get_args();
+        $v_att_list = func_get_args();
 
         // ----- Read the attributes
         $i=0;
@@ -1090,12 +1090,12 @@ class Archive_Tar extends PEAR
         $v_magic = 'ustar ';
 
         $v_version = ' ';
-        
+
         if (function_exists('posix_getpwuid'))
         {
           $userinfo = posix_getpwuid($v_info[4]);
           $groupinfo = posix_getgrgid($v_info[5]);
-          
+
           $v_uname = $userinfo['name'];
           $v_gname = $groupinfo['name'];
         }
@@ -1179,7 +1179,7 @@ class Archive_Tar extends PEAR
         {
           $userinfo = posix_getpwuid($p_uid);
           $groupinfo = posix_getgrgid($p_gid);
-          
+
           $v_uname = $userinfo['name'];
           $v_gname = $groupinfo['name'];
         }
@@ -1188,7 +1188,7 @@ class Archive_Tar extends PEAR
           $v_uname = '';
           $v_gname = '';
         }
-        
+
         $v_devmajor = '';
 
         $v_devminor = '';
