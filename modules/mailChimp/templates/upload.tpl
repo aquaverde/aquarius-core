@@ -21,7 +21,7 @@
     </table>
 <br/>
 <h1>Kampagnen</h1>
-{if $apierror}
+{if isset($apierror)}
 	<div style="color: red">{$apierror}</div>
 {else}
 Anzahl: {$count_campaigns}

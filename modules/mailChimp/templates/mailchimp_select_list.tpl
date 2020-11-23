@@ -9,7 +9,7 @@
     {foreach from=$lists item=list}
         <li style="padding:5px 0;">
             <label>
-                <input type='radio' value='{$list.id|escape}' name='list_id' {if $list.default_language == $newsletter_lg}checked="checked"{/if}>
+                <input type='radio' value='{$list.id|escape}' name='list_id' {if isset($list.default_language) && $list.default_language == $newsletter_lg}checked="checked"{/if}>
                 {$list.name|escape}
             </label>
         </li>
